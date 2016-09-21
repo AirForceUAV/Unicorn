@@ -1,7 +1,7 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import serial,time,string
+import serial,time
 from library import open_serial,encode_hex
 from config import config
 
@@ -35,7 +35,7 @@ class compass(object):
         res=self.ser.read(size)
         res=encode_hex(res)
         return res.split()
-        
+
     def decode_heading(self,package):
         sign=package[4][0]
         data=int(package[4][1])*100+int(package[5])

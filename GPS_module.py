@@ -1,7 +1,7 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import serial,pynmea2,time,string
+import serial,pynmea2,time
 from config import config
 from library import open_serial
 
@@ -17,7 +17,7 @@ class GPS(object):
 	def parseGPS(self):		
 		while  True:
 			line=self.ser.readline()
-			if line.find('GGA')>0:
+			if line.find('GGA')>=0:
 				print "Catching GPS information successfully !"
 				msg=pynmea2.parse(line)
 				return msg
@@ -30,9 +30,14 @@ class GPS(object):
 		msg=self.parseGPS()
 		print msg
 		return [msg.latitude,msg.longitude]
+
 	def get_alt(self):
 		msg=self.parseGPS()
 		return msg.altitude
+
+	def get_num_sats(self):
+		msg=self.parseGPS()
+		return msg.num_sats
 
 	def close(self):
 		if self.ser.is_open is True:
@@ -42,5 +47,5 @@ if __name__=="__main__":
 	gps=GPS()
 	print gps.get_location()
 	print gps.get_alt()
-
+	print get_num_sats()
 	gps.close()

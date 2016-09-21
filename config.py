@@ -46,6 +46,8 @@ class config(object):
         return [self.subElement(self.root,8,1),self.subElement(self.root,8,2)]
     def get_compass(self):
         return [self.subElement(self.root,9,1),self.subElement(self.root,9,2)]
+    def get_MPU(self):
+        return [self.subElement(self.root,10,1),self.subElement(self.root,10,2)]
 if __name__=="__main__":
     config=config()
     print config.get_cloud()
@@ -58,4 +60,5 @@ if __name__=="__main__":
     print config.get_mavlink()
     print config.get_GPS()
     print config.get_compass()
+    print config.get_MPU()
 
