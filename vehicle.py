@@ -3,33 +3,49 @@
 
 import math,time
 from config import config
-from GPS_module import GPS
-from compass_module import compass
-from mavlink_module import mavutil
 from library import CancelWatcher,radio_package,GCS_package,list_assign
 from library import get_location_metres,get_distance_metres,get_bearing
+from library import Singleton
 
-class Drone(object):
-    def __init__(self):     
-        self.home_location=[]               # home location -- [lat,lon]
-        self.target=[]                      # target location -- [lat,lon]
-        self.mode=''
-        self.mav=mavutil()                  # instance of serial object
-        # self.GPS=GPS()                      # instancce of GPS module object
-        # self.horizon_alt=self.GPS.get_alt() # set horizon altitude
-        # self.compass=compass()            # instancce of compass module object
 
-        self.config=config()                # instance of configuration object
-        self.AIL=self.config.get_AIL()      # Aileron :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.ELE=self.config.get_ELE()      # Elevator:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.THR=self.config.get_THR()      # Throttle:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.RUD=self.config.get_RUD()      # Rudder  :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.mode=self.config.get_Mode()    # Mode    :[channel number,mode1,mode2,mode3]
-        self.PIT=self.config.get_PIT()      # Pitch   :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+if config.get_MCU()[0] is 1:
+    print 'Connecting to MCU'
+    from MCU_module import mcu
 
+if config.get_compass()[0] is 1:
+    print 'Connecting to compass'
+    from compass_module import compass          # instancce of compass module object
+
+if config.get_GPS()[0] is 1:
+    print 'connecting to GPS'
+    from GPS_module import gps                                   # instancce of GPS module object
+    self.home_location=self.get_location()             # home location -- [lat,lon]
+    self._log('Home location :{}'.format(self.home_location))
+    self.horizon_alt=gps.get_alt()                # set horizon altitude
+    # self._log('Horizon altitude:{}'.format(self.horizon_alt))
+
+class Vehicle(object):
+    __metaclass__=Singleton
+    def __init__(self):
+        global config
+        self._log('Vehicle Type:{}'.format(config.get_type()))
+        self._log('Flight Controller:{}'.format(config.get_FC()))
+        self.mqtt=None
+        self.target=None                    # target location -- [lat,lon]
+        self.AIL=config.get_AIL()      # Aileron :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.ELE=config.get_ELE()      # Elevator:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.THR=config.get_THR()      # Throttle:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.RUD=config.get_RUD()      # Rudder  :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.mode=config.get_mode()    # Mode    :[channel number,mode1,mode2,mode3]
+        self.PIT=config.get_PIT()      # Pitch   :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.mode_name='Radio'
         self.channels=self.init_channels()  # 8 channels PWM:[0,CH1,CH2,CH3,CH4,CH5,CH6,CH7,CH8]
         self.channels_mid=self.init_channels_mid()
-
+        self.mcu=None
+        self.compass=None 
+        self.GPS=None
+        
+        
     def init_channels(self):
         channels=[0,0,0,0,0,0,0,0]
         channels[self.AIL[0]]=self.AIL[2]
@@ -51,59 +67,60 @@ class Drone(object):
         return channels
 
     def set_channels_mid(self):
-        mid=self.mav.read_channels()
-        print 'Channels Mid:',mid
+        self._log('Switch to Study mode')
+        self.mode_name='Study'
+        mid=mcu.read_channels()
+        self._log('Channels Mid:{}'.format(mid))
         list_assign(self.channels,mid)
         list_assign(self.channels_mid,mid)
-        self.AIL[2]=self.channels_mid[self.AIL[0]]
-        self.ELE[2]=self.channels_mid[self.ELE[0]]
-        self.THR[2]=self.channels_mid[self.THR[0]]
-        self.RUD[2]=self.channels_mid[self.RUD[0]]
-        self.PIT[2]=self.channels_mid[self.PIT[0]]
+        self.AIL[2]=mid[self.AIL[0]]
+        self.ELE[2]=mid[self.ELE[0]]
+        self.THR[2]=mid[self.THR[0]]
+        self.RUD[2]=mid[self.RUD[0]]
+        self.PIT[2]=mid[self.PIT[0]]
+        # self.radio()
 
     def print_channels(self):
-        print "Current channels PWM :",self.channels
+        self._log("Current channels PWM :{}".format(self.channels))
 
     def print_channels_mid(self):
-        print "Channels Mid PWM :",self.channels_mid
+        self._log("Channels Mid PWM :{}".format(self.channels_mid))
 
     def print_func(self):
-        print "Aileron:",self.AIL
-        print "Elevatro:",self.ELE
-        print "Throttle:",self.THR
-        print "Rudder:",self.RUD
-        print "Pitch:",self.PIT
-        print "Mode:",self.mode
+        self._log("Aileron:{} Elevator:{} Throttle:{} Rudder:{} Pitch:{} Mode:{}".format(self.AIL,self.ELE,self.THR,self.RUD,self.PIT,self.mode))
 
-    def arm(self):
+    def arm(self,duration=3):
         # self.home_location=self.get_location()
         self.channels[self.THR[0]]=self.THR[1]
         self.channels[self.RUD[0]]=self.RUD[3]
-        self.send_mavlink()
-        time.sleep(3)
+        self.send_pwm()
+        time.sleep(duration)
         self.channels[self.RUD[0]]=self.RUD[2]
-        self.send_mavlink()
+        self.send_pwm()
 
-    def set_home(self,lat,lon):
-        # self.home_location=[]
-        pass
-
-    def disarm(self):
-        self.home_location=self.get_location()
+    def disarm(self,duration=3):
         self.channels[self.THR[0]]=self.THR[1]
         self.channels[self.RUD[0]]=self.RUD[1]
-        self.send_mavlink()
-        time.sleep(5)
+        self.send_pwm()
+        time.sleep(duration)
         self.channels[self.RUD[0]]=self.RUD[2]
-        self.send_mavlink()
+        self.send_pwm()
+
+    def stall(self):
+        self._log("Stall !!!")
+        self.channels[self.THR[0]]=self.THR[1]
+        self.channels[self.PIT[0]]=self.PIT[1]
+        self.send_pwm()
 
     def takeoff(self,alt=5):
         self.channels[self.THR[0]]=self.THR[2]
-        self.send_mavlink()
+        self.send_pwm()
     
     def set_target(self,dNorth,dEast):
-        currentLocation=self.get_location()
-        self.target=get_location_metres(currentLocation,dNorth,dEast)
+        origin=self.get_location()
+        if origin == None:
+            return -1
+        self.target=get_location_metres(origin,dNorth,dEast)
 
     def set_target2(self,lat,lon):
         self.target=[lat,lon]
@@ -111,171 +128,223 @@ class Drone(object):
     def get_target(self):
         return self.target
 
-    def get_location(self):
-        location=self.GPS.get_location()
-        return location
+    def get_heading(self):
+        return compass.get_heading()
+    def get_pitch(self):
+        return compass.get_pitch()
+    def get_roll(self):
+        return compass.get_roll()
+    def get_alt(self,relative=True):
+        alt=gps.get_alt()
+        if relative==True:
+            return alt-self.horizon_alt
+        else:
+            return alt
+    def get_mode(self):
+        return self.mode_name
 
     def set_horizon_alt(self):
         """
         Set horizon altitude
         """
-        self.horizon_alt=self.GPS.get_alt()
-
-    def get_alt(self):
-        return self.GPS.get_alt()-self.horizon_alt
-
-    def condition_yaw(self,heading,relative=True):
-        """
-        0<heading<360 ;Angle deviation is 2 degree.
-        """
-        if heading<=0 or heading>=360:
-            return -1
-
-        watcher=CancelWatcher()
-        if relative==True:
-            angle=(self.get_heading()+heading)%360
-        else:
-            angle=heading
-        if angle>180:
-            angle=360-angle
-            print 'Turn Left',angle
-            self.yaw_left()
-            while abs(angle-self.get_heading())>2 and not watcher.IsCancel():
-                time.sleep(.2)
-        elif angle<=180:
-            print 'Turn Right',angle
-            self.yaw_right()
-            while abs(angle-self.get_heading())>2 and not watcher.IsCancel():
-                time.sleep(.2)
-        self.brake()
-        return 1
+        self.horizon_alt=gps.get_alt()
 
     def yaw_left(self):
         self.channels[self.RUD[0]]=self.RUD[2]-self.RUD[4]
-        self.send_mavlink()
+        self.send_pwm()
     def yaw_right(self):
         self.channels[self.RUD[0]]=self.RUD[2]+self.RUD[4]
-        self.send_mavlink()
+        self.send_pwm()
     def ele_forward(self):
-        self.channels[self.ELE[0]]=self.ELE[2]-self.ELE[4]
-        self.send_mavlink()
+        self._log('Forward')
+        # self.channels[self.ELE[0]]=self.ELE[2]-self.ELE[4]
+        # self.send_pwm()
 
-    def turn_forward(self,heading=0,duration=3):
-        self.condition_yaw(heading)
+    def turn_forward(self,heading=0,duration=3,relative=True):
+        self.condition_yaw(heading,relative)
         self.ele_forward()
-        
-    def navigation(self):
-        watcher=CancelWatcher()
-        target=self.get_target()
-        if target is None:
-            self.drone._log("Target is None!Please set_target(lat,lon) or set_target_metres(dNorth,dEast).")
-            return 0    
+        time.sleep(duration)
+        self.brake()
 
-        while not watcher.IsCancel():
-            distance=round(self.get_distance_metres(self.get_location(),target),2)          
-            if distance<3:
-                self._log("Reached Target Waypoint!")
-                self.brake()
-                return 1    
-            angle=self.angle_heading_target()
-            decision=strategy.Decision(angle_heading_target)
-            angle=decision[1]
-
-            self.drone.fly(distance,angle)
-            # self.fly(angle)
-            time.sleep(defer)
-        return 0
-
-    def left(self):
+    def left(self,duration=2):
+        self._log('Yaw Left')
         self.channels[self.RUD[0]]=self.RUD[2]-self.RUD[4]
-        self.send_mavlink()
-        time.sleep(10)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def right(self):
+    def right(self,duration=2):
+        self._log('Yaw Right')
         self.channels[self.RUD[0]]=self.RUD[2]+self.RUD[4]
-        self.send_mavlink()
-        time.sleep(2)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def forward(self):
+    def forward(self,duration=2):
+        self._log('Forward')
         self.channels[self.ELE[0]]=self.ELE[2]-self.ELE[4]
-        self.send_mavlink()
-        time.sleep(2)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def backward(self):
+    def backward(self,duration=2):
+        self._log('Backward')
         self.channels[self.ELE[0]]=self.ELE[2]+self.ELE[4]
-        self.send_mavlink()
-        time.sleep(6)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def roll_left(self):
+    def roll_left(self,duration=2):
+        self._log('Roll Left')
         self.channels[self.AIL[0]]=self.AIL[2]-self.AIL[4]
-        self.send_mavlink()
-        time.sleep(4)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def roll_right(self):
+    def roll_right(self,duration=2):
+        self._log('Roll Right')
         self.channels[self.AIL[0]]=self.AIL[2]+self.AIL[4]
-        self.send_mavlink()
-        time.sleep(2)
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def up(self):
+
+    def up(self,duration=1):
+        self._log('Throttle Up')
         self.channels[self.THR[0]]=self.THR[2]+self.THR[4]
-        self.send_mavlink()
-        time.sleep(2)
+        self.channels[self.PIT[0]]=self.PIT[2]+self.PIT[4]
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
-    def down(self):
+    def down(self,duration=1):
+        self._log('Throttle Down')
         self.channels[self.THR[0]]=self.THR[2]-self.THR[4]
-        self.send_mavlink()
-        time.sleep(2)
+        self.channels[self.PIT[0]]=self.PIT[2]+self.PIT[4]
+        self.send_pwm()
+        time.sleep(duration)
         self.brake()
 
-    def brake(self):
+    def brake(self,duration=1):
         list_assign(self.channels,self.channels_mid)
-        print 'brake:',self.channels
-        self.send_mavlink()
-        # time.sleep(1)
+        self._log('brake')
+        self.send_pwm()
+        time.sleep(duration)
 
-    def send_mavlink(self):
-        return self.mav.send_pwm(self.channels)
+    def send_pwm(self):
+        return mcu.send_pwm(self.channels)
 
     def GCS(self):
         self._log('Switch to GCS')
+        self.mode_name='PosHold'
         msg=GCS_package()
-        self.mav.send_msg(msg)
+        mcu.send_msg(msg)
 
     def radio(self):
-        self._log('Switch to radio')
+        self._log('Switch to Radio')
+        self.mode_name='Radio'
         msg=radio_package()
-        self.mav.send_msg(msg)
+        mcu.send_msg(msg)
 
-    def mode1(self):
-        self.channels[self.mode[0]]=self.mode[1]
-        self.send_mavlink()
+    def _angle(self,angle):
+        if angle>180:
+            diff=360-angle
+        return angle
 
-    def mode2(self):
-        self.channels[self.mode[0]]=self.mode[2]
-        self.send_mavlink()
+    def condition_yaw(self,heading=0,relative=True,deviation=2):
+        """
+        0<heading<360 ;Angle deviation is degree.
+        """
+        if heading>=360 or (relative==True and heading==0):
+            return -1
+        elif heading<0 and heading>-180:
+            heading+=360
+        else:
+            return -1
 
-    def mode3(self):
-        self.channels[self.mode[0]]=self.mode[3]
-        self.send_mavlink() 
+        current_heading=self.get_heading()
+        watcher=CancelWatcher()
+        # Relative angle to heading
+        if relative==True:
+            target_angle=(current_heading+heading)%360          
+        else:
+            # Absolute angle
+            target_angle=heading
 
-    def angle_north_target(self,target):
-        '''
-        Return the bearing between currentLocation and Target
-        ''' 
-        currentLocation=self.get_location()     
-        angle_North=self.get_bearing(currentLocation,target)     
-        return int(angle_North)
+        direction=(360+target_angle-heading)%360
+        if direction>0 and direction<180:
+            self._log('Turn right',direction)                
+            # self.yaw_right()
+        elif direction>=180 and direction<360:
+            self._log('Turn left',360-direction)
+            # self.yaw_left()
+        
+        # self._log ('Need to reached angle {}'.format(target_angle))
+        while not watcher.IsCancel():
+            # self._log('current angle:{}'.format(self.get_heading()))
+            angle=(360+target_angle-self.get_heading())
+            if self._angle(angle)<=deviation:
+                break    
+        self._log('Reached Angle')
+        # self.brake()
+        return 1
 
-    def angle_heading_target(self):       
-        target=self.get_target()
-        if target is None:
-            self._log("Target is None! ")
-            return 0
-        angle_North=self.angle_north_target(target)
-        angle_heading=angle_North-self.get_heading()
-        if angle_heading<0:
-            angle_heading+=360
-        return int(angle_heading)
+    def angle_heading_target(self,origin,target):       
+        assert origin!=None,['Origin Location is None']
+        assert target!=None,['Target Location is None']
+        target_north=get_bearing(origin,target)
+        heading_target=target_north-self.get_heading()
+        if heading_target<0:
+            heading_target+=360
+        return int(heading_target)
+
+    def RTL(self):
+        self.guided('RTL')
+
+    def Guided(self,_type='Guided',checktime=5,deviation=2):
+        watcher=CancelWatcher()
+        if _type is "Guided":
+            target=self.get_target()
+            if target is None:
+                self._log("Target is None!")
+                return -1
+            self.mode_name='Guided'
+            self._log('Guided to Location {}'.format(target))
+            
+        elif _type is 'RTL':
+            target=self.get_home()
+            if target is None:
+                self._log("Home is None!")
+                return -1
+            self.mode_name='RTL'
+            self._log('RTL Location {}'.format(target))
+        elif _type is 'AUTO':
+            pass
+
+        while not watcher.IsCancel():
+            current_location =self.get_location()
+            if current_location == None:
+                # self.cancel()
+                return -1
+            distance=round(get_distance_metres(current_location,target),2)
+            self._log("Distance to Target {}m".format(distance))
+            if distance<3:
+                self._log("Reached Target Waypoint!")
+                # self.brake()
+                return 1    
+            angle=self.angle_heading_target(current_location,target)
+            if self._angle(angle)>deviation:
+                # self.brake()
+                self.condition_yaw(angle)
+            self.ele_forward()
+            time.sleep(checktime)
+        self.mode_name='PosHold'
+        return 0
+
+    def distance_to_home(self):
+        location=self.get_location()
+        home=self.get_home()
+        if location is None or home is None:
+            return -1
+        return get_distance_metres(location,home)
+    def distance_to_target(self,target):
+        location=self.get_location()
+        if location is None or target is None:
+            return -1
+        return get_distance_metres(location,target)
 
     def set_home(self):
         self.home_location=self.get_location()
@@ -283,49 +352,50 @@ class Drone(object):
     def get_home(self):
         return self.home_location
 
+    def get_location(self):
+        loc=gps.get_location()
+        if loc is None:
+            self._log("GPS is not healthy.[Debug]:num_stars is {}".format(gps.get_num_stars()))
+        return loc
+
     def cancel(self):
         CancelWatcher.cancel=True
         self.brake()
+        self.mode_name='PosHold'
 
     def _log(self,msg):
         print msg
         pass
-    
+
+vehicle=Vehicle()
+
 if __name__=="__main__":
-    drone=Drone()
-    # drone.print_channels()
-    # drone.print_channels_mid()
-    # drone.print_func()
+    # vehicle.print_channels()
+    # vehicle.print_channels_mid()
+    # vehicle.print_func()
+
+    # vehicle.GCS()
+    # vehicle.arm()
+    while True:
+        raw_input("Next")
+        vehicle.set_channels_mid()
+
+    # vehicle.left()
+    # vehicle.right()
+    # vehicle.roll_left()
+    # vehicle.roll_right()
+    # vehicle.forward()
+    # vehicle.backward()
+    # vehicle.up()
+    # vehicle.down()
+    # vehicle.radio()
+    # vehicle.set_target(10,0)
+    # while True:
+    #     raw_input('Next')
+    #     print 'heading',vehicle.get_heading()
+    #     print "heading_target",vehicle.angle_heading_target(vehicle.get_location(),vehicle.get_target())
+    # vehicle.Guided()
+
     
-    # time.sleep(3)
-    drone.set_channels_mid()
-    drone.GCS()
-    # drone.arm()
-    
-    # time.sleep(10)
-    # drone.GCS()
-    # time.sleep(10)
-    # drone.radio()
-    # print "left"
-    # drone.left()
-    # print "right"
-    # drone.right()
-    print "roll_left"
-    drone.roll_left()
-    # print "roll_right"
-    # drone.roll_right()
-    # print "forward"
-    # drone.forward()
-    # print "backward"
-    # drone.backward()
-    # print "up"
-    # drone.up()
-    # print "down"
-    # drone.down()
-    # print "disarm"
-    # drone.disarm()
-    drone.radio()
-    # drone.set_target(50,0)
-    # print drone.get_target()
 
 

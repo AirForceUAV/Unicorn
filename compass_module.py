@@ -4,59 +4,61 @@
 import serial,time
 from library import open_serial,encode_hex
 from config import config
+from library import Singleton
 
-class compass(object):
+class Compass(object):
+    __metaclass__=Singleton
     def __init__(self):
-        tmp=config().get_compass()
-        portname=tmp[0]
-        baud=tmp[1]
         print "Connecting to Compass Module"
-        self.ser = open_serial(portname,baud)
+        con=config.get_compass()       
+        self.ser = open_serial(con[1],con[2])
 
     def get_heading(self):
         command='6804000307'   
         package=self.compass_info(command,8)
-        heading=self.decode_heading(package)
-        return heading
+        heading=self.decode_BCD(package[8:14])
+        return int(heading)
     def get_pitch(self):
         command='6804000105'   
         package=self.compass_info(command,8)
-        pitch=self.decode_pitch(package)
+        pitch=self.decode_BCD(package[8:14])
         return pitch
     def get_roll(self):
-        command='6804000206'   
+        command='6804000206'
         package=self.compass_info(command,8)
-        roll=self.decode_roll(package)
+        roll=self.decode_BCD(package[8:14])
         return roll
-
-    def compass_info(self,command,size):  
+    def get_attitude(self):
+        command='6804000408'
+        package=self.compass_info(command,28)
+        pitch=self.decode_BCD(package[8:14])
+        yaw=self.decode_BCD(package[14:20])
+        roll=self.decode_BCD(package[20:26])
+        return [pitch,yaw,roll]
+    def compass_info(self,command,size=8):  
         command=command.decode("hex")
         n=self.ser.write(command)
         res=self.ser.read(size)
-        res=encode_hex(res)
-        return res.split()
+        package=encode_hex(res)
+        print package
+        return package
 
-    def decode_heading(self,package):
-        sign=package[4][0]
-        data=int(package[4][1])*100+int(package[5])
+    def decode_BCD(self,package):
+        sign=package[0]
+        data=int(package[1:])/100.0
         if sign=='1':
             data=-data
         return data
-    def decode_pitch(self,package):
-        sign=package[4][0]
-        data=int(package[4][1])*100+int(package[5])+round(int(package[6])/100,2)
-        if sign=='1':
-            data=-data
-        return data
-    def decode_roll(self,package):
-        sign=package[4][0]
-        data=int(package[4][1])*100+int(package[5])+round(int(package[6])/100,2)
-        if sign=='1':
-            data=-data
-        return data
+
+    def close(self):
+        if self.ser.is_open is True:
+            self.ser.close()
+# Global compass
+compass=Compass()
 
 if __name__=='__main__':
-    compass=compass()
-    print compass.get_heading()
+    
     print compass.get_pitch()
     print compass.get_roll()
+    print compass.get_heading()
+    print compass.get_attitude()

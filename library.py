@@ -1,7 +1,7 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import time,serial,traceback,sys
+import time,serial,traceback,sys,math
 
 def open_serial(portname,baudrate):
     com = None
@@ -43,11 +43,11 @@ def get_location_metres(original_location, dNorth, dEast):
 
     The algorithm is relatively accurate over small distances (10m within 1km) except close to the poles."""
     earth_radius = 6378137.0  # Radius of "spherical" earth
-    #Coordinate offsets in radians
+    # Coordinate offsets in radians
     dLat = dNorth/earth_radius
     dLon = dEast/(earth_radius*math.cos(math.pi*original_location[0]/180))
 
-    #New position in decimal degrees
+    # New position in decimal degrees
     newlat = original_location[0] + (dLat * 180/math.pi)
     newlon = original_location[1] + (dLon * 180/math.pi)
     targetlocation=[newlat,newlon]
@@ -62,20 +62,7 @@ def get_distance_metres(aLocation1, aLocation2):
     dlong = aLocation2[1] - aLocation1[1]
     return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
 
-
 def encode_hex(argv): 
-    """
-    Transform ascii to 16h
-    """
-    result = '' 
-    hLen = len(argv)  
-    for i in xrange(hLen):  
-        hvol = ord(argv[i])
-        hhex = '%02x'%hvol
-        result += hhex+' '  
-    return result
-
-def encode_hex2(argv): 
     """
     Transform ascii to 16h
     """
@@ -87,22 +74,18 @@ def encode_hex2(argv):
         result += hhex  
     return result
 
-def encode_10h(int_10):
+def encode_10h(int_10,length=4):
     """
     Transform  10h to 16h(sizeof 2B)
     """
     int_16=hex(int_10)[2:]
-    length=len(int_16)
-    if length is 3:
-        int_16='0'+int_16
-    elif length==2:
-        int_16='00'+int_16
-    elif length==1:
-        int_16='000'+int_16
+    num=len(int_16)
+    if num<length:
+        int_16='0'*(length-num)+int_16    
     return int_16
 
 def list_assign(list1,list2):
-    for i in range(len(list2)):
+    for i in xrange(len(list2)):
         list1[i]=list2[i]
 def radio_package():
     return 'R'
@@ -123,16 +106,29 @@ class CancelWatcher(object):
         if self.__class__.count==0:
             self.__class__.Cancel = False
 
+class Singleton(type):  
+    def __init__(cls, name, bases, dict):  
+        super(Singleton, cls).__init__(name, bases, dict)  
+        cls._instance = None  
+    def __call__(cls, *args, **kw):  
+        if cls._instance is None:  
+            cls._instance = super(Singleton, cls).__call__(*args, **kw)  
+        return cls._instance 
+
 class switch(object):
     def __init__(self, value):
         self.value = value
         self.fall = False
     def __iter__(self):
-        """Return the match method once, then stop"""
+        """
+        Return the match method once, then stop
+        """
         yield self.match
         raise StopIteration
     def match(self, *args):
-        """Indicate whether or not to enter a case suite"""
+        """
+        Indicate whether or not to enter a case suite
+        """
         if self.fall or not args:
             return True
         elif self.value in args: # changed for v1.5, see below
@@ -161,10 +157,17 @@ class switch(object):
 #     if case(): # default, could also just omit condition or 'if True'
 #         print "something else!"
 #         # No need to break here, it'll stop anyway
+class Location(object):
+    def __init__(self,lat,lon,alt=-1):
+        self.lat=lat
+        self.lon=lon
+        self.alt=alt
+    def __str__(self):
+        print "Latitude:{} Longitude:{} Altitude:{}".format(self._lat,self._lon,self._alt)
+
 
 
 if __name__=='__main__':
-    # open_serial('/dev/ttyUSB0',9600)
-    print encode_10h(1024)
-    
+    open_serial('/dev/ttyUSB0',9600)
+   
 
