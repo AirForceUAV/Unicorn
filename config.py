@@ -4,12 +4,10 @@
 import sys
 from library import Singleton
 
-
-
 class Config(object):
     __metaclass__=Singleton
     def __init__(self):
-        file_name='HEX4.xml'
+        file_name='Copter.xml'
         try: 
             import xml.etree.cElementTree as ET
         except ImportError: 
@@ -23,17 +21,25 @@ class Config(object):
         self._type  = self._root.get('type')
         self._FC    = self._root.get('FlightController')
         self._cloud = [self.get_node(0,1),self.get_node(0,2),self.get_node(0,3)]
-        self._AIL   = [self.get_node(1,1)-1,self.get_node(1,2),self.get_node(1,3),self.get_node(1,4),self.get_node(1,5)]
-        self._ELE   = [self.get_node(2,1)-1,self.get_node(2,2),self.get_node(2,3),self.get_node(2,4),self.get_node(2,5)]
-        self._THR   = [self.get_node(3,1)-1,self.get_node(3,2),self.get_node(3,3),self.get_node(3,4),self.get_node(3,5)]
-        self._RUD   = [self.get_node(4,1)-1,self.get_node(4,2),self.get_node(4,3),self.get_node(4,4),self.get_node(4,5)]
-        self._PIT   = [self.get_node(5,1)-1,self.get_node(5,2),self.get_node(5,3),self.get_node(5,4),self.get_node(5,5)]
+        self._AIL   = self.ch(1)
+        self._ELE   = self.ch(2)
+        self._THR   = self.ch(3)
+        self._RUD   = self.ch(4)
+        self._PIT   = self.ch(5)
         self._mode  = [self.get_node(6,1)-1,self.get_node(6,2)]
         self._MCU   = [self.get_node(7,1),self.get_node(7,2),self.get_node(7,3)]
         self._GPS   = [self.get_node(8,1),self.get_node(8,2),self.get_node(8,3)]
-        self._Comp = [self.get_node(9,1),self.get_node(9,2),self.get_node(9,3)]
+        self._Comp  = [self.get_node(9,1),self.get_node(9,2),self.get_node(9,3)]
         self._Baro  = [self.get_node(10,1),self.get_node(10,2),self.get_node(10,3)]
         self._lidar = [self.get_node(11,1),self.get_node(11,2),self.get_node(11,3),self.get_node(11,4)]
+    def ch(self,index):
+        num=self.get_node(index,1)-1
+        low=self.get_node(index,2)
+        mid=self.get_node(index,3)
+        hig=self.get_node(index,4)
+        var=int(self.get_node(index,5)/100.0*(hig-mid))
+        return [num,low,mid,hig,var]
+
     def isInt(self,x):
         try:
             return isinstance(int(x),int)

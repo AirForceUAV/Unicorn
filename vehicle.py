@@ -18,11 +18,9 @@ if config.get_compass()[0] is 1:
 
 if config.get_GPS()[0] is 1:
     print 'connecting to GPS'
-    from GPS_module import gps                                   # instancce of GPS module object
-    self.home_location=self.get_location()             # home location -- [lat,lon]
-    self._log('Home location :{}'.format(self.home_location))
-    self.horizon_alt=gps.get_alt()                # set horizon altitude
-    # self._log('Horizon altitude:{}'.format(self.horizon_alt))
+    from GPS_module import gps                         # instancce of GPS module object
+    assert gps!=None,["GPS is None"]
+    
 
 class Vehicle(object):
     __metaclass__=Singleton
@@ -31,7 +29,7 @@ class Vehicle(object):
         self._log('Vehicle Type:{}'.format(config.get_type()))
         self._log('Flight Controller:{}'.format(config.get_FC()))
         self.mqtt=None
-        self.target=None                    # target location -- [lat,lon]
+        self.target=None               # target location -- [lat,lon]
         self.AIL=config.get_AIL()      # Aileron :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
         self.ELE=config.get_ELE()      # Elevator:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
         self.THR=config.get_THR()      # Throttle:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
@@ -41,10 +39,21 @@ class Vehicle(object):
         self.mode_name='Radio'
         self.channels=self.init_channels()  # 8 channels PWM:[0,CH1,CH2,CH3,CH4,CH5,CH6,CH7,CH8]
         self.channels_mid=self.init_channels_mid()
-        self.mcu=None
-        self.compass=None 
-        self.GPS=None
-        
+
+        self.home_location=None
+        self.init_alt=None
+        if config.get_GPS()[0] is 1:
+            self._log('Waiting for home location')
+            while True:
+                home=self.get_location
+                if home == None:
+                    continue
+                else:
+                    self.home_location=home
+            # self._log('Home location :{}'.format(self.home_location))
+            # self.init_alt=gps.get_alt()                # set init altitude
+            # self._log('init altitude:{}'.format(self.init_alt))
+            pass
         
     def init_channels(self):
         channels=[0,0,0,0,0,0,0,0]
@@ -67,8 +76,8 @@ class Vehicle(object):
         return channels
 
     def set_channels_mid(self):
-        self._log('Switch to Study mode')
-        self.mode_name='Study'
+        self._log('Catching balance point...')
+        # self.mode_name='Study'
         mid=mcu.read_channels()
         self._log('Channels Mid:{}'.format(mid))
         list_assign(self.channels,mid)
@@ -109,12 +118,12 @@ class Vehicle(object):
     def stall(self):
         self._log("Stall !!!")
         self.channels[self.THR[0]]=self.THR[1]
-        self.channels[self.PIT[0]]=self.PIT[1]
+        self.channels[self.PIT[0]]=self.PIT[3]
         self.send_pwm()
 
-    def takeoff(self,alt=5):
-        self.channels[self.THR[0]]=self.THR[2]
-        self.send_pwm()
+    # def takeoff(self,alt=5):
+    #     self.channels[self.THR[0]]=self.THR[2]
+    #     self.send_pwm()
     
     def set_target(self,dNorth,dEast):
         origin=self.get_location()
@@ -137,17 +146,17 @@ class Vehicle(object):
     def get_alt(self,relative=True):
         alt=gps.get_alt()
         if relative==True:
-            return alt-self.horizon_alt
+            return alt-self.init_alt
         else:
             return alt
     def get_mode(self):
         return self.mode_name
 
-    def set_horizon_alt(self):
+    def set_init_alt(self):
         """
-        Set horizon altitude
+        Set init altitude
         """
-        self.horizon_alt=gps.get_alt()
+        self.init_alt=gps.get_alt()
 
     def yaw_left(self):
         self.channels[self.RUD[0]]=self.RUD[2]-self.RUD[4]
@@ -166,39 +175,39 @@ class Vehicle(object):
         time.sleep(duration)
         self.brake()
 
-    def left(self,duration=2):
+    def left(self,duration=10):
         self._log('Yaw Left')
         self.channels[self.RUD[0]]=self.RUD[2]-self.RUD[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
-    def right(self,duration=2):
+    def right(self,duration=5):
         self._log('Yaw Right')
         self.channels[self.RUD[0]]=self.RUD[2]+self.RUD[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
-    def forward(self,duration=2):
+    def forward(self,duration=3):
         self._log('Forward')
         self.channels[self.ELE[0]]=self.ELE[2]-self.ELE[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
-    def backward(self,duration=2):
+    def backward(self,duration=3):
         self._log('Backward')
         self.channels[self.ELE[0]]=self.ELE[2]+self.ELE[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
-    def roll_left(self,duration=2):
+    def roll_left(self,duration=3):
         self._log('Roll Left')
-        self.channels[self.AIL[0]]=self.AIL[2]-self.AIL[4]
+        self.channels[self.AIL[0]]=self.AIL[2]+self.AIL[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
-    def roll_right(self,duration=2):
+    def roll_right(self,duration=3):
         self._log('Roll Right')
-        self.channels[self.AIL[0]]=self.AIL[2]+self.AIL[4]
+        self.channels[self.AIL[0]]=self.AIL[2]-self.AIL[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
@@ -206,7 +215,7 @@ class Vehicle(object):
     def up(self,duration=1):
         self._log('Throttle Up')
         self.channels[self.THR[0]]=self.THR[2]+self.THR[4]
-        self.channels[self.PIT[0]]=self.PIT[2]+self.PIT[4]
+        self.channels[self.PIT[0]]=self.PIT[2]-self.PIT[4]
         self.send_pwm()
         time.sleep(duration)
         self.brake()
@@ -282,7 +291,7 @@ class Vehicle(object):
         # self.brake()
         return 1
 
-    def angle_heading_target(self,origin,target):       
+    def angle_heading_target(self,origin,target):
         assert origin!=None,['Origin Location is None']
         assert target!=None,['Target Location is None']
         target_north=get_bearing(origin,target)
@@ -374,22 +383,22 @@ if __name__=="__main__":
     # vehicle.print_channels_mid()
     # vehicle.print_func()
 
-    # vehicle.GCS()
+    
     # vehicle.arm()
-    while True:
-        raw_input("Next")
-        vehicle.set_channels_mid()
-
+    vehicle.set_channels_mid()
+    vehicle.GCS()
     # vehicle.left()
     # vehicle.right()
-    # vehicle.roll_left()
-    # vehicle.roll_right()
+    vehicle.roll_left(6)
+    # vehicle.roll_right(5)
     # vehicle.forward()
     # vehicle.backward()
     # vehicle.up()
     # vehicle.down()
-    # vehicle.radio()
-    # vehicle.set_target(10,0)
+    vehicle.radio()
+    
+    # vehicle.set_target(40,0)
+    # assert vehilce.get_location!=None,['GPS is unhealthy!!!']
     # while True:
     #     raw_input('Next')
     #     print 'heading',vehicle.get_heading()

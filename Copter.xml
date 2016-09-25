@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<config type='HEX4' FlightController='Pixhawk'>
+<config type='Coptor-550' FlightController='ACE_ONE'>
     <entry index="0" name="Cloud">
         <description>Cloud param.</description>
         <param index="1" value="1">Whether is cloud module? 0:close 1:open</param>
@@ -9,76 +9,81 @@
     <entry index="1" name="AIL">
         <description>Aileron PWM.</description>
         <param index="1" value="1">Aileron Channel Number</param>
-        <param index="2" value="723">LOW AIL PWM </param>
-        <param index="3" value="954">MID AIL PWM </param>
-        <param index="4" value="1186">HIG AIL PWM </param>
-        <param index="5" value="15">Variation </param>
+        <param index="2" value="1018">LOW AIL PWM </param>
+        <param index="3" value="1412">MID AIL PWM </param>
+        <param index="4" value="1800">HIG AIL PWM </param>
+        <param index="5" value="10">Variation rate.</param>
+        <param index="6" value="-">PWM Direction.</param>
     </entry>
     <entry index="2" name="ELE">
         <description>Elevator PWM.</description>
         <param index="1" value="2">Elevator Channel Number</param>
-        <param index="2" value="723">LOW ELE PWM </param>
-        <param index="3" value="954">MID ELE PWM </param>
-        <param index="4" value="1186">HIG ELE PWM </param>
-        <param index="5" value="15">Variation </param>
+        <param index="2" value="1022">LOW ELE PWM </param>
+        <param index="3" value="1414">MID ELE PWM </param>
+        <param index="4" value="1802">HIG ELE PWM </param>
+        <param index="5" value="10">Variation rate.</param>
+        <param index="6" value="+">PWM Direction.</param>
     </entry>
     <entry index="3" name="THR">
         <description>Throttle PWM.</description>
         <param index="1" value="3">Throttle Channel Number</param>
-        <param index="2" value="723">LOW THR PWM </param>
-        <param index="3" value="954">MID THR PWM </param>
-        <param index="4" value="1186">HIG THR PWM </param>
-        <param index="5" value="15">Variation </param>
+        <param index="2" value="990">LOW THR PWM </param>
+        <param index="3" value="990">MID THR PWM </param>
+        <param index="4" value="1806">HIG THR PWM </param>
+        <param index="5" value="10">Variation rate.</param>
+        <param index="6" value="+">PWM Direction.</param>
     </entry>
     <entry index="4" name="RUD">
         <description>Rudder PWM.</description>
         <param index="1" value="4">Rudder Channel Number</param>
-        <param index="2" value="723">LOW RUD PWM </param>
-        <param index="3" value="954">MID RUD PWM </param>
-        <param index="4" value="1186">HIG RUD PWM </param>
-        <param index="5" value="15">Variation </param>
+        <param index="2" value="882">LOW RUD PWM </param>
+        <param index="3" value="1259">MID RUD PWM </param>
+        <param index="4" value="1644">HIG RUD PWM </param>
+        <param index="5" value="10">Variation rate.</param>
+        <param index="6" value="+">PWM Direction.</param>
     </entry>
     <entry index="5" name="PIT">
         <description>Pitch PWM.</description>
-        <param index="1" value="8">Pitch Channel Number</param>
-        <param index="2" value="0">LOW PIT PWM.</param>
-        <param index="3" value="0">MID PIT PWM.</param>
-        <param index="4" value="0">HIG PIT PWM.</param>
-        <param index="5" value="20">Variation </param>
+        <param index="1" value="5">Pitch Channel Number</param>
+        <param index="2" value="1019">LOW PIT PWM. </param>
+        <param index="3" value="1216">MID PIT PWM.</param>
+        <param index="4" value="1513">HIG PIT PWM.</param>
+        <param index="5" value="10">Variation rate.</param>
+        <param index="6" value="-">PWM Direction.</param>
     </entry>
     <entry index="6" name="Mode">
         <description>Flight Mode.</description>
-        <param index="1" value="5">Flight Mode Channel Number.</param>
-        <param index="2" value="954">PosHold mode PWM.</param>
+        <param index="1" value="6">Flight Mode Channel Number.</param>
+        <param index="2" value="1417">PosHold mode PWM.</param>
     </entry>
     <entry index="7" name="MCU">
         <description>MCU module.</description>
         <param index="1" value="1">Whether is MCU_module open? 0:close 1:open  </param>
-        <param index="2" value="/dev/ttyUSB0">Serial port</param>
+        <param index="2" value="/dev/ttyUSB0">Serial port name</param>
         <param index="3" value="57600">Baudrate. </param>
     </entry>
     <entry index="8" name="GPS">
         <description>GPS_module.</description>
         <param index="1" value="0">Whether is GPS_module open? 0:close 1:open </param>
-        <param index="2" value="/dev/ttyUSB0">Serial port</param>
+        <param index="2" value="/dev/ttyUSB0">Serial port name</param>
         <param index="3" value="9600">Baudrate. </param>
     </entry>
     <entry index="9" name="compass">
         <description>Compass_module.</description>
         <param index="1" value="0">Whether is Compass_module open? 0:close 1:open </param>
-        <param index="2" value="/dev/ttyUSB0">Serial port</param>
+        <param index="2" value="/dev/ttyUSB0">Serial port name</param>
         <param index="3" value="9600">Baudrate. </param>
     </entry>
     <entry index="10" name="Barometer">
         <description>Barometer module.</description>
         <param index="1" value="0">Whether is Barometer_module open? 0:close 1:open </param>
-        <param index="2" value="/dev/ttyUSB0">Serial port</param>
+        <param index="2" value="/dev/ttyUSB0">Serial port name</param>
         <param index="3" value="9600">Baudrate. </param>
     </entry>
     <entry index="11" name="Lidar">
         <description>Lidar module.</description>
         <param index="1" value="0">Whether is Lidar module open? 0:close 1:open </param>
-        <param index="2" value="/dev/ttyUSB0">Serial port</param>
+        <param index="2" value="/dev/ttyUSB0">Serial port name</param>
         <param index="3" value="1500">Safety Distance. </param>
         <param index="4" value="3000">Detection Distance. </param>
     </entry>

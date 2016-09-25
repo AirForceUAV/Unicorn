@@ -17,7 +17,7 @@ def on_connect(client, userdata, rc):
     client.subscribe("Command",qos=1)
 
 def on_message(client, userdata, msg):
-    # print str(msg.payload)
+    print str(msg.payload)
     requests = threadpool.makeRequests(eval_wrapper,(str(msg.payload),))
     [pool.putRequest(req) for req in requests]
 

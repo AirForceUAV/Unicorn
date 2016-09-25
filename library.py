@@ -3,13 +3,13 @@
 
 import time,serial,traceback,sys,math
 
-def open_serial(portname,baudrate):
+def open_serial(portname,baudrate,timeout=0.5):
     com = None
     while True:
         if com is None:
           try:
             print "Connecting to port:{0},baudrate:{1}".format(portname,baudrate)
-            com = serial.Serial(portname,baudrate, timeout=1.0)
+            com = serial.Serial(portname,baudrate, timeout=timeout)
             return com
           except serial.SerialException:
             # traceback.print_exc()
