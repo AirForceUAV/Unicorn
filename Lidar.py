@@ -7,6 +7,9 @@ from library import CancelWatcher,get_distance_metres,Singleton
 from vehicle import vehicle
 from library import Singleton
 
+global vehicle
+global config
+
 class Lidar(object):
     _pipeSet = {}
     __metaclass__=Singleton
@@ -21,10 +24,7 @@ class Lidar(object):
             self.__class__._pipeSet[(replyPipe,requestPipe)]["Request"] =  open(requestPipe,"w")
         self.request = self.__class__._pipeSet[(replyPipe,requestPipe)]["Request"]
         self.reply= self.__class__._pipeSet[(replyPipe,requestPipe)]["Reply"]
-        pid = os.fork()
-        if pid == 0:
-            os.execl("./ultra_simple","ultra_simple",con[1],str(con[2]),str(con[3]),"")
-            exit(0)
+        
 
     def Decision(self,targetDirection):
         targetDirection = (360 - targetDirection) % 360
@@ -58,12 +58,13 @@ class Lidar(object):
         while not watcher.IsCancel():
             current_location =vehicle.get_location()
             if current_location == None:
-                # self.cancel()
+                vehicle.mode_name='PosHold'
                 return -1
             distance=round(get_distance_metres(current_location,target),2)
             self._log("Distance to Target {}m".format(distance))
             if distance<3:
                 self._log("Reached Target Waypoint!")
+                vehicle.mode_name='PosHold'
                 # self.brake()
                 return 1    
             angle=vehicle.angle_heading_target(current_location,target)
@@ -83,7 +84,12 @@ class Lidar(object):
     def _log(self,msg):
         vehicle._log(msg)
 
-# Global lidar        
+
+pid = os.fork()
+    if pid == 0:
+        os.execl("./ultra_simple","ultra_simple",con[1],str(con[2]),str(con[3]),"")
+        exit(0)
+# Global lidar       
 lidar=Lidar()
 
 if __name__ == "__main__" :

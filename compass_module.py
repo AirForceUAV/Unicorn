@@ -12,37 +12,63 @@ class Compass(object):
         print "Connecting to Compass Module"
         con=config.get_compass()       
         self.ser = open_serial(con[1],con[2])
+        self.state=1    # 1:healthy -1:not healthy
+    def info(self):
+        return '{}'.format(self.state)
 
     def get_heading(self):
         command='6804000307'   
-        package=self.compass_info(command,8)
-        heading=self.decode_BCD(package[8:14])
-        return int(heading)
+        package=self.compass_info(command,83,8)
+        if package==None:
+            return None
+        else:
+            heading=self.decode_BCD(package[8:14])
+            return int(heading)
     def get_pitch(self):
         command='6804000105'   
-        package=self.compass_info(command,8)
-        pitch=self.decode_BCD(package[8:14])
-        return pitch
+        package=self.compass_info(command,81,8)
+        if package==None:
+            return None
+        else:
+            pitch=self.decode_BCD(package[8:14])
+            return pitch
     def get_roll(self):
         command='6804000206'
-        package=self.compass_info(command,8)
-        roll=self.decode_BCD(package[8:14])
-        return roll
+        package=self.compass_info(command,82,8)
+        if package==None:
+            return None
+        else:
+            roll=self.decode_BCD(package[8:14])
+            return roll
     def get_attitude(self):
         command='6804000408'
-        package=self.compass_info(command,28)
-        pitch=self.decode_BCD(package[8:14])
-        yaw=self.decode_BCD(package[14:20])
-        roll=self.decode_BCD(package[20:26])
-        return [pitch,yaw,roll]
-    def compass_info(self,command,size=8):  
+        package=self.compass_info(command,84,14)
+        if package==None:
+            return None
+        else:
+            pitch=self.decode_BCD(package[8:14])
+            yaw=self.decode_BCD(package[14:20])
+            roll=self.decode_BCD(package[20:26])
+            return [pitch,yaw,roll]
+    def compass_info(self,command,ack,size=8):  
         command=command.decode("hex")
-        n=self.ser.write(command)
-        res=self.ser.read(size)
-        package=encode_hex(res)
-        print package
-        return package
-
+        times=0
+        while times<config.get_compass()[3]:
+            times+=1
+            self.ser.write(command)
+            res=self.ser.readline()
+            package=encode_hex(res)
+            index=package.find('68')
+            if index==-1 or len(package)<index+size*2:
+                continue
+            package=package[index:index+size*2]
+            # print package
+            if package[6:8]==str(ack):
+                return package
+        print 'Compass Timeout(5 times)'
+        return None
+    def checksum(self,package):
+        pass
     def decode_BCD(self,package):
         sign=package[0]
         data=int(package[1:])/100.0
@@ -57,8 +83,9 @@ class Compass(object):
 compass=Compass()
 
 if __name__=='__main__':
-    
-    print compass.get_pitch()
-    print compass.get_roll()
-    print compass.get_heading()
-    print compass.get_attitude()
+    while True:
+        raw_input('Next') 
+        print compass.get_pitch()
+        print compass.get_roll()
+        print compass.get_heading()
+        print compass.get_attitude()

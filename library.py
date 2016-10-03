@@ -1,7 +1,8 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import time,serial,traceback,sys,math
+import time,serial,math
+import signal,traceback,os,sys
 
 def open_serial(portname,baudrate,timeout=0.5):
     com = None
@@ -12,7 +13,6 @@ def open_serial(portname,baudrate,timeout=0.5):
             com = serial.Serial(portname,baudrate, timeout=timeout)
             return com
           except serial.SerialException:
-            # traceback.print_exc()
             info=sys.exc_info()
             print info[0],":",info[1]
             time.sleep(1.0)
@@ -32,7 +32,7 @@ def get_bearing(aLocation1, aLocation2):
         bearing += 360.00
     return bearing
 
-def get_location_metres(original_location, dNorth, dEast):
+def get_location_metres(original_location, dNorth, dEast, alt):
     """
     Returns a LocationGlobal object containing the latitude/longitude `dNorth` and `dEast` metres from the 
     specified `original_location`. The returned LocationGlobal has the same `alt` value
@@ -50,7 +50,7 @@ def get_location_metres(original_location, dNorth, dEast):
     # New position in decimal degrees
     newlat = original_location[0] + (dLat * 180/math.pi)
     newlon = original_location[1] + (dLon * 180/math.pi)
-    targetlocation=[newlat,newlon]
+    targetlocation=[newlat,newlon,alt]
             
     return targetlocation
 
@@ -61,7 +61,21 @@ def get_distance_metres(aLocation1, aLocation2):
     dlat = aLocation2[0] - aLocation1[0]
     dlong = aLocation2[1] - aLocation1[1]
     return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
+    
+def angle_heading_target(origin,target,heading):
+    target_north=get_bearing(origin,target)
+    heading_target=(360+target_north-heading)%360
+    return int(heading_target)
 
+
+'''
+decode(解码)的作用是将其他编码的字符串转换成unicode编码, str.decode('hex')  >> hex->unicode
+encode(编码)的作用是将unicode编码转换成其他编码的字符串  str.encode('hex')  >> unicode->hex
+hex(int10) hex(1024) >> 0x400
+int('ff',16)  >> 255
+chr(0x30) >> '0'    chr(48) >> '0'
+ord('0')  >> 48    '%02x'%ord('0')  >> '30'
+'''    
 def encode_hex(argv): 
     """
     Transform ascii to 16h
@@ -113,7 +127,50 @@ class Singleton(type):
     def __call__(cls, *args, **kw):  
         if cls._instance is None:  
             cls._instance = super(Singleton, cls).__call__(*args, **kw)  
-        return cls._instance 
+        return cls._instance
+
+class Watcher(object):  
+    """this class solves two problems with multithreaded 
+    programs in Python, (1) a signal might be delivered 
+    to any thread (which is just a malfeature) and (2) if 
+    the thread that gets the signal is waiting, the signal 
+    is ignored (which is a bug). 
+ 
+    The watcher is a concurrent process (not thread) that 
+    waits for a signal and the process that contains the 
+    threads.  See Appendix A of The Little Book of Semaphores. 
+    http://greenteapress.com/semaphores/ 
+ 
+    I have only tested this on Linux.  I would expect it to 
+    work on the Macintosh and not work on Windows. 
+    """  
+  
+    def __init__(self):  
+        """ Creates a child thread, which returns.  The parent 
+            thread waits for a KeyboardInterrupt and then kills 
+            the child thread. 
+        """  
+        self.child = os.fork()  
+        if self.child == 0:  
+            return  
+        else:  
+            self.watch()  
+  
+    def watch(self):  
+        try:  
+            os.wait()  
+        except KeyboardInterrupt:  
+            # I put the capital B in KeyBoardInterrupt so I can  
+            # tell when the Watcher gets the SIGINT  
+            print 'KeyBoardInterrupt'  
+            self.kill()  
+        sys.exit()  
+  
+    def kill(self):  
+        try:  
+            os.kill(self.child, signal.SIGKILL)  
+        except OSError: pass  
+
 
 class switch(object):
     def __init__(self, value):

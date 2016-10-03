@@ -18,27 +18,33 @@ class Config(object):
         except Exception, e: 
             print "Error:cannot parse file:",file_name
             sys.exit(1)
-        self._type  = self._root.get('type')
-        self._FC    = self._root.get('FlightController')
-        self._cloud = [self.get_node(0,1),self.get_node(0,2),self.get_node(0,3)]
-        self._AIL   = self.ch(1)
+        self._type  = self._root.get('type')                 # vehicle type
+        self._FC    = self._root.get('FlightController')     # FC  version
+        self._cloud = [self.get_node(0,1),self.get_node(0,2),self.get_node(0,3)]      #[open?,ip,port]
+        self._AIL   = self.ch(1)            
         self._ELE   = self.ch(2)
         self._THR   = self.ch(3)
         self._RUD   = self.ch(4)
         self._PIT   = self.ch(5)
-        self._mode  = [self.get_node(6,1)-1,self.get_node(6,2)]
-        self._MCU   = [self.get_node(7,1),self.get_node(7,2),self.get_node(7,3)]
-        self._GPS   = [self.get_node(8,1),self.get_node(8,2),self.get_node(8,3)]
-        self._Comp  = [self.get_node(9,1),self.get_node(9,2),self.get_node(9,3)]
-        self._Baro  = [self.get_node(10,1),self.get_node(10,2),self.get_node(10,3)]
-        self._lidar = [self.get_node(11,1),self.get_node(11,2),self.get_node(11,3),self.get_node(11,4)]
-    def ch(self,index):
+        self._mode  = [self.get_node(6,1)-1,self.get_node(6,2)]        #[ch No.,mode pwm]
+        self._MCU   = [self.get_node(7,1),self.get_node(7,2),self.get_node(7,3),self.get_node(7,4)]      #[open?,port,baudrate]
+        self._GPS   = [self.get_node(8,1),self.get_node(8,2),self.get_node(8,3),self.get_node(8,4)]      #[open?,port,baudrate]
+        self._Comp  = [self.get_node(9,1),self.get_node(9,2),self.get_node(9,3),self.get_node(9,4)]      #[open?,port,baudrate]
+        self._Baro  = [self.get_node(10,1),self.get_node(10,2),self.get_node(10,3),self.get_node(10,4)]   #[open?,port,baudrate]
+        self._lidar = [self.get_node(11,1),self.get_node(11,2),self.get_node(11,3),self.get_node(11,4)]     #[open?,port,safety distance,detected distance]
+        self._gear  = [self.get_node(12,1),self.get_node(12,2),self.get_node(12,3),self.get_node(12,4)]     #[Current Gear,Low Gear,Mid Gear,High Gear]
+        self._MD    = [self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
+        self._BD    = [self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
+        self._DD    = [self.get_node(15,1),self.get_node(15,2),self.get_node(15,3)]
+    def ch(self,index):          # [ch No.,low PWM,mid PWM,high PWM,variation,sign]
         num=self.get_node(index,1)-1
         low=self.get_node(index,2)
         mid=self.get_node(index,3)
         hig=self.get_node(index,4)
-        var=int(self.get_node(index,5)/100.0*(hig-mid))
-        return [num,low,mid,hig,var]
+        var=hig-low
+        sign=self.get_node(index,5)
+        rate=self.get_node(index,6)
+        return [num,low,mid,hig,var,sign,rate]
 
     def isInt(self,x):
         try:
@@ -79,23 +85,36 @@ class Config(object):
         return self._Baro
     def get_lidar(self):
         return self._lidar
-
+    def get_gear(self):
+        return self._gear
+    def get_MD(self):
+        return self._MD
+    def get_BD(self):
+        return self._BD
+    def get_DD(self):
+        return self._DD
 
 # Global config
 config=Config()
 
 if __name__=="__main__":
-    print config._type
-    print config.get_cloud()
-    print config.get_AIL()
-    print config.get_ELE()
-    print config.get_THR()
-    print config.get_RUD()   
-    print config.get_PIT()
-    print config.get_mode()
-    print config.get_MCU()
-    print config.get_GPS()
-    print config.get_compass()
-    print config.get_Baro()
-    print config.get_lidar()
+    print 'Vehicle type:',config._type
+    print 'FC version:',config._FC
+    print 'Cloud:',config.get_cloud()
+    print 'AIL:',config.get_AIL()
+    print 'ELE:',config.get_ELE()
+    print 'THR:',config.get_THR()
+    print 'RUD:',config.get_RUD()   
+    print 'PIT:',config.get_PIT()
+    print 'Mode:',config.get_mode()
+    print 'MCU:',config.get_MCU()
+    print 'GPS:',config.get_GPS()
+    print 'Compass:',config.get_compass()
+    print 'Barometre:',config.get_Baro()
+    print 'Lidar:',config.get_lidar()
+    print 'Gear:',config.get_gear()
+    print 'Movement Duration',config.get_MD()
+    print 'Brake Duration',config.get_BD()
+    print 'Decision Duration',config.get_DD()
+
 
