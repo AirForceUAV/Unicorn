@@ -44,7 +44,7 @@ if __name__=='__main__':
     global vehicle
 
     if config.get_lidar()[0]>0:
-        from Lidar import lidar
+        from lidar_module import lidar
 
     timer_interval=2
     

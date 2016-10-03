@@ -9,7 +9,7 @@ from library import CancelWatcher,Watcher
 global vehicle
 global config
 if config.get_lidar()[0] > 0:
-    from Lidar import lidar
+    from lidar_module import lidar
     global lidar
 
 pool = threadpool.ThreadPool(1)
