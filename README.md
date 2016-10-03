@@ -29,9 +29,11 @@ sudo pip install apscheduler,threadpool,pynmea2
 ```
 Generate pipe -> Replay and Request
 
-Please read and modify *.xml
 
-Example
+### Example
+
+configure *.xml
+
 ```python
 sudo python config.py
 
