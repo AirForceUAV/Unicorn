@@ -32,7 +32,7 @@ Generate pipe -> Replay and Request
 
 ### Example
 
-configure *.xml
+configure  *.xml
 
 ```python
 sudo python config.py
@@ -45,7 +45,7 @@ sudo python GPS_module.py
 
 sudo python vehicle.py
 
-sudo python Lidar.py
+sudo python lidar_module.py
 
 sudo python sudo python cloud_module.py
 ```
