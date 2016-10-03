@@ -7,7 +7,7 @@ Unicorn
 
 `GPS` is NEO-M8N
 
-`Compass` is [msensor-HCM365](http://www.msensor.com.cn)
+`Compass` is [msensor-HCM365](http://www.msensor.com.cn/52/i-2104.html)
 
 `MCU` is STM32
 
