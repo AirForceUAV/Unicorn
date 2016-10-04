@@ -33,9 +33,9 @@ class Config(object):
         self._Baro  = [self.get_node(10,1),self.get_node(10,2),self.get_node(10,3),self.get_node(10,4)]   #[open?,port,baudrate]
         self._lidar = [self.get_node(11,1),self.get_node(11,2),self.get_node(11,3),self.get_node(11,4)]     #[open?,port,safety distance,detected distance]
         self._gear  = [self.get_node(12,1),self.get_node(12,2),self.get_node(12,3),self.get_node(12,4)]     #[Current Gear,Low Gear,Mid Gear,High Gear]
-        self._MD    = [self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
-        self._BD    = [self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
-        self._DD    = [self.get_node(15,1),self.get_node(15,2),self.get_node(15,3)]
+        self._MD    = [1,self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
+        self._BD    = [1,self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
+        self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3)]
     def ch(self,index):          # [ch No.,low PWM,mid PWM,high PWM,variation,sign]
         num=self.get_node(index,1)-1
         low=self.get_node(index,2)

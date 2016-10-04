@@ -107,14 +107,14 @@ class Vehicle(object):
         mcu.send_msg(msg)
 
     def print_channels(self):
-        self._log("Current channels PWM :{}".format(self.channels))
+        self._log("Current PWM :{}".format(self.channels))
 
     def print_channels_mid(self):
-        self._log("Channels Mid PWM :{}".format(self.channels_mid))
+        self._log("Loiter PWM :{}".format(self.channels_mid))
 
     def set_gear(self,gear):
         if int(gear) in [1,2,3]:
-            self.gear[0]=int(gear)-1
+            self.gear[0]=int(gear)
         else:
             self._log('Gear is unvalid')
 
@@ -148,8 +148,7 @@ class Vehicle(object):
 
     def takeoff(self,alt=5):
         pass
-     
-    
+         
     def set_target(self,dNorth,dEast,alt=None):
         origin=self.get_location()
         if origin == None:
@@ -181,23 +180,23 @@ class Vehicle(object):
         return compass.get_roll()
     def get_alt(self,relative=True):
         alt=gps.get_alt()
-        if relative==True:
+        if relative:
             return alt-self.init_alt
         else:
             return alt
     def get_mode(self):
         return self.mode_name
     def movement(self,att,sign=1):
-        # print att
         rate=self.gear[self.get_gear()]/100.0
         variation=int(att[5]*att[4]*rate)
         self.channels[att[0]]=att[2]+sign*variation
-        # print self.channels[att[0]]
+        # print att,self.channels[att[0]]
 
     def movement2(self,att,sign=1):
-        rate=self.att[6]/100.0
+        rate=att[6]/100.0
         variation=int(att[5]*att[4]*rate)
         self.channels[att[0]]=att[2]+sign*variation
+        # print att,self.channels[att[0]]
 
     def yaw_left(self):
         self.movement2(self.RUD,-1)
@@ -307,21 +306,22 @@ class Vehicle(object):
         if relative:
             target_angle=(current_heading+heading)%360          
         else:
-            # Absolute angle
+        # Absolute angle
             target_angle=heading
 
-        direction=(360+target_angle-current_heading)%360
-        if direction>0 and direction<180:
-            self._log('Turn right {}'.format(direction))              
-            self.yaw_right()
-        elif direction>=180 and direction<360:
-            self._log('Turn left {}'.format(360-direction))
-            self.yaw_left()
         while not watcher.IsCancel():
-            self._log('Current_angle {},{}'.format(self.get_heading(),target_angle))
+            direction=(360+target_angle-self.get_heading())%360
+            if direction>0 and direction<180:
+                self._log('Turn right {}'.format(direction))              
+                self.yaw_right()
+            elif direction>=180 and direction<360:
+                self._log('Turn left {}'.format(360-direction))
+                self.yaw_left()
+        
+            # self._log('Current_angle:{},Target_angel:{}'.format(self.get_heading(),target_angle))s
             angle=(360+target_angle-self.get_heading())%360
             if self._angle(angle)<=deviation:
-                break    
+                break
         self._log('Reached Angle')
         self.brake()
         return 1
@@ -403,29 +403,29 @@ class Vehicle(object):
             log["GPS"]=gps.info()                          #[state,stars]
             log['Target']=self.get_target()                #[lat,lon,alt]
         else:
-            log["HomeLocation"]=None
-            log["LocationGlobal"]=None   
-            log["DistanceFromHome"]=None
-            log["DistanceToTarget"]=None
-            log["GPS"]=None
-            log['Target']=None
+            log["HomeLocation"]="{},{},{}".format(36.01234,116.12375,0.0)
+            log["LocationGlobal"]="{},{},{}".format(36.01234,116.12375,0.0)  
+            log["DistanceFromHome"]=0.0
+            log["DistanceToTarget"]=0.0
+            log["GPS"]=-1
+            log['Target']="{},{},{}".format(36.01234,116.12375,0.0)
         if config.get_compass()[0] > 0:
             log["Gimbal"]= "{},{},{}".format(self.get_pitch(),self.get_heading(),self.get_roll())  # [pitch,yaw,roll]
             log["Compass"]=compass.info()      #[state]
         else:
-            log['Gimbal']=None
-            log['Compass']=None
-        log["Battery"]=None       # [Voltage,Current,Capacity]
-        log["Velocity"]=None      # [x,y,z]
-        log["EKF"]=None
-        log["Groundspeed"]=None   # speed
-        log["Airspeed"]=None      # speed
+            log['Gimbal']="{},{},{}".format(0.2,-0.3,355)
+            log['Compass']=-1
+        log["Battery"]='{},{},{}'.format(12,2.5,100)       # [Voltage,Current,Capacity]
+        log["Velocity"]="{},{},{}".format(0.2,0.1,0.5)      # [x,y,z]
+        log["EKF"]=1
+        log["Groundspeed"]=2.0   # speed
+        log["Airspeed"]=3.0     # speed
         log["Mode"]=self.get_mode()  # mode
-        log["IMU"]=None
-        log["ServoIntput"]=None    # [ch1~ch8]
+        log["IMU"]=-1
+        # log["ServoIntput"]=None    # [ch1~ch8]
         # log["ServoInput"]=None   # [ch1~ch8]
         log["TimeStamp"]=int(time.time())
-        log['Gear']=self.get_gear()+1  # Gear
+        log['Gear']=self.get_gear()  # Gear
         log['CurrentChannels']=','.join(self.str_channels(self.channels))    # ch1~ch8
         log['LoiterChannels']=','.join(self.str_channels(self.channels_mid)) # ch1~ch8
         log['RPM']=1600    # RPM
