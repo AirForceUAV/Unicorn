@@ -16,7 +16,7 @@ def MCU_heartbeat(mcu):
     pass
 def Compass_heartbeat(compass):
     heading=compass.get_heading()
-    if heading ==None
+    if heading ==None:
         compass.state=-1
         _log('Warning:Compass is not heartbeat')
     else:
