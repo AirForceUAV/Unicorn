@@ -4,7 +4,7 @@
 from library import root,get_location_metres
 
 class Waypoint(object):
-    def __init__(self,init_location,index):     
+    def __init__(self,init_location,index=0):     
       file_path='waypoint.xml'
       self._root=root(file_path)[index]
       self._init=init_location
