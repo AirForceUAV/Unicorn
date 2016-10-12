@@ -23,7 +23,7 @@ class Compass(object):
             return None
         else:
             heading=self.decode_BCD(package[8:14])
-            return int(heading)
+            return int(heading%360)
     def get_pitch(self):
         command='6804000105'   
         package=self.compass_info(command,81,8)

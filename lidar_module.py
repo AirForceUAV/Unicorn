@@ -35,14 +35,14 @@ class Lidar(object):
         angle = (360 - angle) %360;
         return angle
 
-    def Guided_Avoid(self,_type='Guided',checktime=5,deviation=2):        
+    def Guided_Avoid2(self,_type='Guided',checktime=5,deviation=2):        
         watcher=CancelWatcher()
         if _type is "Guided":
             target=vehicle.get_target()
             if target is None:
                 self._log("Target is None!")
                 return -1
-            vehicle.mode_name='Guided_Avoid'
+            vehicle.mode_name='Guided_AVOID'
             vehicle._log('Guided with Avoidance to Location {}'.format(target))
             
         elif _type is 'RTL':
@@ -50,31 +50,29 @@ class Lidar(object):
             if target is None:
                 self._log("Home is None!")
                 return -1
-            vehicle.mode_name='RTL_Avoid'
+            vehicle.mode_name='RTL_AVOID'
             self._log('RTL ! Home is {}'.format(target))
-        elif _type is 'AUTO':
-            pass
 
         while not watcher.IsCancel():
             current_location =vehicle.get_location()
             if current_location == None:
-                vehicle.mode_name='PosHold'
-                return -1
+                print "GPS is ERROR!"
+                vehicle.brake()
+                break
             distance=round(get_distance_metres(current_location,target),2)
             self._log("Distance to Target {}m".format(distance))
             if distance<3:
                 self._log("Reached Target Waypoint!")
-                vehicle.mode_name='PosHold'
-                # self.brake()
-                return 1    
+                vehicle.brake()
+                break  
             angle=vehicle.angle_heading_target(current_location,target)
             angle_avoid=self.Decision(angle)
             if vehicle._angle(angle_avoid)>deviation:
-                # self.brake()
+                vehicle.brake()
                 vehicle.condition_yaw(angle_avoid)
-            vehicle.ele_forward()
+            vehicle.forward()
             time.sleep(checktime)
-        vehicle.mode_name='PosHold'
+        vehicle.mode_name='Loiter'
         return 0
 
     def RTL_Avoid(self):

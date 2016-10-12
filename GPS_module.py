@@ -20,12 +20,15 @@ class GPS(object):
     def parseGPS(self):
         times=0
         while times<config.get_GPS()[3]:
+            times+=1
             self.ser.flushInput()
             line=self.ser.readline()
+            # print line
             if line.find('GNGGA')!=-1:
                 msg=pynmea2.parse(line)
                 if msg.altitude!=None:
                     return msg
+        print "GPS timeout ({} times)".format(times)
         return None
 
     def get_location(self):    
@@ -33,7 +36,7 @@ class GPS(object):
         if msg==None:
             return None
         else:
-            return [round(msg.latitude,5),round(msg.longitude,5),msg.altitude]
+            return [msg.latitude,msg.longitude]
 
     def get_alt(self):
         msg=self.parseGPS()
@@ -57,20 +60,18 @@ class GPS(object):
 gps=GPS()
 
 if __name__=="__main__":
-    print gps.get_alt()
-    # origin=gps.get_location()
-    # # print 'origin:{}'.format(origin)
-    # # # assert origin!=None
-    # target=get_location_metres(origin,0,-20)
-    # # distance=get_distance_metres(origin,target)
-    # # print 'origin:{} Target:{},distance:{}'.format(origin,target,distance)
-    # while True:
-    #   raw_input('Next')
-    #   loc=gps.get_location()     
-    #   distance=get_distance_metres(loc,target)
-    #   # print 'cur_location:{},num_stars:{}'.format(loc,gps.get_num_stars())
-    #   print 'Distance to Target {}'.format(distance)
-    #   if distance<2:
-    #     print 'reached'
-    #     break
-    # gps.close()
+    origin=gps.get_location()
+    print 'origin:{}'.format(origin)
+    assert origin!=None
+    target=get_location_metres(origin,0,-20)
+    distance=get_distance_metres(origin,target)
+    print 'Distance:{}'.format(distance)
+    while True:
+      raw_input('Next')
+      loc=gps.get_location()     
+      distance=get_distance_metres(loc,target)
+      print 'Distance to Target {}'.format(distance)
+      if distance<2:
+        print 'reached'
+        break
+    gps.close()

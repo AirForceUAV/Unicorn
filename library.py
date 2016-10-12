@@ -17,6 +17,18 @@ def open_serial(portname,baudrate,timeout=0.5):
             print info[0],":",info[1]
             time.sleep(1.0)
             continue
+def root(file_name):
+        try: 
+            import xml.etree.cElementTree as ET
+        except ImportError: 
+            import xml.etree.ElementTree as ET   
+        try: 
+            tree = ET.parse(file_name)
+            _root = tree.getroot()
+        except Exception, e: 
+            print "Error:cannot parse file:",file_name
+            sys.exit(1)
+        return _root
 
 def get_bearing(aLocation1, aLocation2):
     """
@@ -32,7 +44,7 @@ def get_bearing(aLocation1, aLocation2):
         bearing += 360.00
     return bearing
 
-def get_location_metres(original_location, dNorth, dEast, alt):
+def get_location_metres(original_location, dNorth, dEast):
     """
     Returns a LocationGlobal object containing the latitude/longitude `dNorth` and `dEast` metres from the 
     specified `original_location`. The returned LocationGlobal has the same `alt` value
@@ -50,7 +62,7 @@ def get_location_metres(original_location, dNorth, dEast, alt):
     # New position in decimal degrees
     newlat = original_location[0] + (dLat * 180/math.pi)
     newlon = original_location[1] + (dLon * 180/math.pi)
-    targetlocation=[newlat,newlon,alt]
+    targetlocation=[newlat,newlon]
             
     return targetlocation
 
@@ -66,6 +78,26 @@ def angle_heading_target(origin,target,heading):
     target_north=get_bearing(origin,target)
     heading_target=(360+target_north-heading)%360
     return int(heading_target)
+def _angle(angle):
+    if angle>180:
+        return 360-angle
+    else:
+        return angle
+def isNum(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+
+    return False
 
 
 '''
@@ -112,6 +144,8 @@ class CancelWatcher(object):
     Cancel=False
     count=0
     def __init__(self):
+        if self.__class__.count==0 and self.__class__.Cancel==True:
+            self.__class__.Cancel=False
         self.__class__.count+=1
     def IsCancel(self):
         return self.__class__.Cancel

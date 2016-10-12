@@ -4,7 +4,6 @@
 import time,threading
 from config import config
 from vehicle import vehicle
-from threading import Timer
 from apscheduler.schedulers.background import BackgroundScheduler
 from library import Watcher
 
@@ -14,19 +13,19 @@ def MCU_heartbeat(mcu):
     # mcu.state=-1
     # _log('Warning:MCU is not heartbeat')
     pass
+
 def Compass_heartbeat(compass):
     heading=compass.get_heading()
     if heading ==None:
         compass.state=-1
-        _log('Warning:Compass is not heartbeat')
+        _log('Warning:Compass has no heartbeats')
     else:
         compass.state=1
     
-    pass
 def GPS_heartbeat(gps):
     if gps.get_location() is None:
         gps.state=-1
-        _log('Warning:GPS is not heartbeat')
+        _log('Warning:GPS has no heartbeats')
     else:
         gps.state=1
     
@@ -50,6 +49,7 @@ if __name__=='__main__':
     
     scheduler = BackgroundScheduler()
     # scheduler.add_job(test,'interval',args=('test',),seconds=2)
+    vehicle.download()
 
     if config.get_MCU()[0]>0:                       # instancce of MCU module object
         _log('Connecting to MCU')

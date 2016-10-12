@@ -5,22 +5,23 @@ import math,time,json
 from config import config
 from library import CancelWatcher,radio_package,GCS_package,list_assign
 from library import get_location_metres,get_distance_metres,get_bearing,angle_heading_target
-from library import Singleton
+from library import Singleton,isNum,_angle
+from waypoint import Waypoint
 
-global conifg
+global config
 
 if config.get_MCU()[0]>0:                       # instancce of MCU module object
-    print 'Connecting to MCU'
+    # print 'Connecting to MCU'
     from MCU_module import mcu
     global mcu
 
 if config.get_compass()[0]>0:
-    print 'Connecting to compass'
+    # print 'Connecting to compass'
     from compass_module import compass          # instancce of compass module object
     global compass
 
 if config.get_GPS()[0]>0:
-    print 'connecting to GPS'
+    # print 'connecting to GPS'
     from GPS_module import gps                  # instancce of GPS module object
     global gps
     
@@ -32,12 +33,12 @@ class Vehicle(object):
         self._log('Vehicle Type:{}'.format(config.get_type()))
         self._log('Flight Controller:{}'.format(config.get_FC()))
         self.target= None                  # target location -- [lat,lon,alt]
-        self.AIL   = config.get_AIL()      # Aileron :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.ELE   = config.get_ELE()      # Elevator:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.THR   = config.get_THR()      # Throttle:[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.RUD   = config.get_RUD()      # Rudder  :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
-        self.mode  = config.get_mode()     # Mode    :[channel number,mode1,mode2,mode3]
-        self.PIT   = config.get_PIT()      # Pitch   :[channel number,low PWM ,mid PWM,high PWM ,variation PWM]
+        self.AIL   = config.get_AIL()      # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
+        self.ELE   = config.get_ELE()      # Elevator:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.THR   = config.get_THR()      # Throttle:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.RUD   = config.get_RUD()      # Rudder  :[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.mode  = config.get_mode()     # Mode    :[ch number,Loiter PWM]
+        self.PIT   = config.get_PIT()      # Pitch   :[chnumber, exit?]
         self.gear  = config.get_gear()
         self.MD    = config.get_MD()
         self.BD    = config.get_BD()
@@ -45,6 +46,8 @@ class Vehicle(object):
         self.mode_name='Radio'
         self.channels=self.init_channels()  # 8 channels PWM:[0,CH1,CH2,CH3,CH4,CH5,CH6,CH7,CH8]
         self.channels_mid=self.init_channels_mid()
+        self.wp=[]
+        self.cur_wp=0
 
         self.home_location=None
         self.init_alt=None
@@ -52,15 +55,36 @@ class Vehicle(object):
             self._log('Waiting for home location')
             while True:
                 home=self.get_location()
-                if home == None:
-                    continue
-                else:
+                stars=gps.get_num_stars()
+                if home != None and stars>9:
                     self.home_location=home
                     break
             self._log('Home location :{}'.format(self.home_location))
             self.init_alt=gps.get_alt()                # set init altitude
             self._log('init altitude:{}'.format(self.init_alt))
+
+    def download(self,index=0):
+        if config.get_GPS()[0]<=0:
+            print "GPS is closed"
+            return -1
+        loc=self.get_location()
+        if loc is None:
+            self._log('GPS is Error')
+            return -1
+        # loc=[39.11111,116.33333]
+        self.wp=Waypoint(loc,index).get_all_wp()
+        self.AUTO()
         
+
+    def json_all_wp(self):
+        if self.wp == []:
+            return None
+        
+        result=[]
+        for point in self.wp:
+            result.append('{}+{}'.format(point[0],point[1]))
+        return ','.join(result)
+
     def init_channels(self):
         channels=[0,0,0,0,0,0,0,0]
         channels[self.AIL[0]]=self.AIL[2]
@@ -68,7 +92,8 @@ class Vehicle(object):
         channels[self.THR[0]]=self.THR[1]
         channels[self.RUD[0]]=self.RUD[2]
         channels[self.mode[0]]=self.mode[1]
-        channels[self.PIT[0]]=self.PIT[1]
+        if self.PIT[1]>0:
+            channels[self.PIT[0]]=self.PIT_curve(self.THR[1])
         return channels
 
     def init_channels_mid(self):
@@ -78,8 +103,14 @@ class Vehicle(object):
         channels[self.THR[0]]=self.THR[2]
         channels[self.RUD[0]]=self.RUD[2]
         channels[self.mode[0]]=self.mode[1]
-        channels[self.PIT[0]]=self.PIT[2]
+        if self.PIT[1]>0:
+            channels[self.PIT[0]]=self.PIT_curve(self.THR[2])
         return channels
+
+    def PIT_curve(self,pwm):
+        per=100*(pwm-self.THR[1])/(self.THR[3]-self.THR[1])
+        PIT_PWM=int(((0.0022*per*per-0.85*per+63)/63.0)*(self.PIT[3]-self.PIT[2]))+self.PIT[2]
+        return PIT_PWM
 
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
@@ -91,12 +122,11 @@ class Vehicle(object):
         self.ELE[2]=mid[self.ELE[0]]
         self.THR[2]=mid[self.THR[0]]
         self.RUD[2]=mid[self.RUD[0]]
-        self.PIT[2]=mid[self.PIT[0]]
         # self.radio()
 
     def GCS(self):
         self._log('Switch to GCS')
-        self.mode_name='GCS'
+        self.mode_name='LOITER'
         msg=GCS_package()
         mcu.send_msg(msg)
 
@@ -141,9 +171,10 @@ class Vehicle(object):
         pass
 
     def stall(self):
-        self._log("Stall !!!")
+        self._log("stall")
         self.channels[self.THR[0]]=self.THR[1]
-        self.channels[self.PIT[0]]=self.PIT[3]
+        if self.PIT[1]>0:
+            self.channels[self.PIT[0]]=self.PIT_curve(self.THR[1])
         self.send_pwm()
 
     def takeoff(self,alt=5):
@@ -154,21 +185,21 @@ class Vehicle(object):
         if origin == None:
             self._log('GPS is Error')
             return -1
-        if not str(dNorth).isdigit() or not str(dEast).isdigit():
+        if not isNum(dNorth) or not isNum(dEast):
             self._log('dNorth , dEast are unvalid')
             return -1
-        if not str(alt).isdigit() or alt==None:
+        if alt==None:
             self._log('Set to Current Altitude')
             alt=self.get_alt()
-        self.target=get_location_metres(origin,dNorth,dEast,alt)
+        self.target=get_location_metres(origin,dNorth,dEast)
 
     def set_target2(self,lat,lon,alt=None):
-        if not str(lat).isdigit() or not str(lon).isdigit():
+        if not isNum(lat) or not isNum(lon):
             self._log('lat , lon are unvalid')
             return -1
-        if not str(alt).isdigit() or alt==None:
+        if alt==None:
             alt=self.get_alt()
-        self.target=[round(lat,5),round(lon,5),alt]
+        self.target=[lat,lon]
 
     def get_target(self):
         return self.target
@@ -178,39 +209,48 @@ class Vehicle(object):
         return compass.get_pitch()
     def get_roll(self):
         return compass.get_roll()
-    def get_alt(self,relative=True):
+    def get_alt(self,relative=1):
         alt=gps.get_alt()
-        if relative:
+        if relative>0:
             return alt-self.init_alt
         else:
             return alt
     def get_mode(self):
         return self.mode_name
+
     def movement(self,att,sign=1):
         rate=self.gear[self.get_gear()]/100.0
         variation=int(att[5]*att[4]*rate)
         self.channels[att[0]]=att[2]+sign*variation
-        # print att,self.channels[att[0]]
+        return self.channels[att[0]]
 
     def movement2(self,att,sign=1):
         rate=att[6]/100.0
         variation=int(att[5]*att[4]*rate)
         self.channels[att[0]]=att[2]+sign*variation
-        # print att,self.channels[att[0]]
+        return self.channels[att[0]]
 
     def yaw_left(self):
-        self.movement2(self.RUD,-1)
-        self.send_pwm()
+        self._log('Turn Left')
+        # self.movement2(self.RUD,-1)
+        # self.send_pwm()
     def yaw_right(self):
-        self.movement2(self.RUD)
-        self.send_pwm()
+        self._log('Turn Right')
+        # self.movement2(self.RUD)
+        # self.send_pwm()
     def forward(self,duration=None):
-        self._log('Forward')
-        self.movement(self.ELE)
-        self.send_pwm()
-        if str(duration).isdigit():
-            time.sleep(duration)
-            self.brake()
+        self._log('Forward....')
+        # self.movement(self.ELE)
+        # self.send_pwm()
+        # if duration!=None:
+        #     time.sleep(duration)
+        #     self.brake()
+    def brake(self):
+        self._log('brake')
+        # duration=self.BD[self.get_gear()]
+        # list_assign(self.channels,self.channels_mid)       
+        # self.send_pwm()
+        # time.sleep(duration)
 
     def yaw_left_brake(self):
         duration=self.mDuration()
@@ -223,7 +263,7 @@ class Vehicle(object):
         duration=self.mDuration()
         self._log('Yaw Right')
         self.movement2(self.RUD)
-        self.yaw_send_pwm()
+        self.send_pwm()
         time.sleep(duration)
         self.brake()
     def forward_brake(self):
@@ -258,41 +298,38 @@ class Vehicle(object):
     def up_brake(self):
         duration=self.mDuration()
         self._log('Throttle Up')
-        self.movement(self.THR)
-        self.movement(self.PIT)
+        pwm=self.movement(self.THR)
+        if self.PIT[1]>0:
+            self.channels[self.PIT[0]]=self.PIT_curve(pwm)
         self.send_pwm()
         time.sleep(duration)
         self.brake()
     def down_brake(self):
         duration=self.mDuration()
         self._log('Throttle Down')
-        self.movement(self.THR,-1)
-        self.movement(self.PIT,-1)    
+        pwm=self.movement(self.THR,-1)
+        if self.PIT[1]>0:
+            self.channels[self.PIT[0]]=self.PIT_curve(pwm)    
         self.send_pwm()
         time.sleep(duration)
         self.brake()
     def mDuration(self):
         return self.MD[self.get_gear()]
-    def brake(self):
-        print 'brake'
-        # duration=self.BD[self.get_gear()]
-        # list_assign(self.channels,self.channels_mid)
-        # self._log('brake')
-        # self.send_pwm()
-        # time.sleep(duration)
+    
 
     def send_pwm(self):
-        print 'send_pwm'
-        # mcu.send_pwm(self.channels)
+        mcu.send_pwm(self.channels)
 
-    def _angle(self,angle):
-        if angle>180:
-            diff=360-angle
-        return angle
+    def diff_angle(self,origin,target,sign):
+        diff=(360+sign*(target-origin))%360
+        if diff<180:
+            return True
+        else:
+            return False
 
-    def condition_yaw(self,heading=0,relative=True,deviation=2):
+    def condition_yaw(self,heading=0,relative=True):
         """
-        0<=heading<360 ;Angle deviation is degree.
+        0<=heading<360
         """
         if heading<0 or heading>=360:
             self._log('0<=heading<360')
@@ -309,65 +346,90 @@ class Vehicle(object):
         # Absolute angle
             target_angle=heading
 
-        while not watcher.IsCancel():
-            direction=(360+target_angle-self.get_heading())%360
-            if direction>0 and direction<180:
-                self._log('Turn right {}'.format(direction))              
-                self.yaw_right()
-            elif direction>=180 and direction<360:
-                self._log('Turn left {}'.format(360-direction))
-                self.yaw_left()
-        
-            # self._log('Current_angle:{},Target_angel:{}'.format(self.get_heading(),target_angle))s
-            angle=(360+target_angle-self.get_heading())%360
-            if self._angle(angle)<=deviation:
-                break
-        self._log('Reached Angle')
+        direction=(360+target_angle-current_heading)%360
+        if direction>0 and direction<180:
+            is_cw=1
+            self._log('Turn right {}'.format(direction))              
+            self.yaw_right()
+        elif direction>=180 and direction<360:
+            is_cw=-1
+            self._log('Turn left {}'.format(360-direction))
+            self.yaw_left()
+                  
+        while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
+            self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
+            time.sleep(.2)
+        self._log('Reached Angle {}'.format(self.get_heading()))
         self.brake()
         return 1
 
-    def RTL(self):
-        self.guided('RTL')
-
-    def Guided(self,_type='Guided',deviation=2):
+    def navigation(self,target,deviation=10):
         checktime=self.DD[self.get_gear()]
+        checktime=3
         watcher=CancelWatcher()
-        if _type is "Guided":
-            target=self.get_target()
-            if target is None:
-                self._log("Target is None!")
-                self.brake()
-                return -1
-            self._log('Guided to Location {}'.format(target))
-            
-        elif _type is 'RTL':
-            target=self.get_home()
-            if target is None:
-                self._log("Home is None!")
-                self.brake()
-                return -1
-            self._log('RTL Location {}'.format(target))
-        
         while not watcher.IsCancel():
             current_location =self.get_location()
             if current_location == None:
-                self._log('GPS is Error')
+                self._log("GPS is Error")
                 self.brake()
-                return -1
+                break
             distance=round(get_distance_metres(current_location,target),2)
             self._log("Distance to Target {}m".format(distance))
             if distance<3:
                 self._log("Reached Target Waypoint!")
                 self.brake()
-                return 1    
+                break   
             angle=angle_heading_target(current_location,target,self.get_heading())
-            if self._angle(angle)>deviation:
+            if _angle(angle)>deviation:
                 self.brake()
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(checktime)
         return 0
+    def RTL(self):
+        target=self.get_home()
+        if target is None:                
+            self._log("Home is None!")
+            self.brake()
+            return -1
+        self.mode_name='RTL'
+        
+        self.navigation(target)
+        self.mode_name="Loiter"
 
+    def Auto(self):
+        if self.wp == []:
+            self._log('Waypoint is none')
+            return -1
+        self.mode_name='AUTO'
+        watcher=CancelWatcher()
+        for point in wp:
+            if watcher.IsCancel():
+                break
+            self._log("Target is None!")
+            self.navigation(point)
+        
+        self.mode_name="Loiter"
+        self.clear()
+
+    def Guided(self):
+        target=self.get_target()
+        if target is None:                
+            self._log("Target is None!")
+            self.brake()
+            return -1
+        self.mode_name="GUIDED"
+            
+        self.navigation(target)
+        self.mode_name="Loiter"
+        self.target=None
+
+    def clear(self):
+        self.wp=[]
+        self.cur_wp=0
+
+    def GPS_ERR(self):
+        return "GPS is ERROR ! num_stars:{}".format(gps.get_num_stars())
     def distance_from_home(self):
         location=self.get_location()
         home=self.get_home()
@@ -390,18 +452,19 @@ class Vehicle(object):
     def get_location(self):
         loc=gps.get_location()
         if loc is None:
-            self._log("GPS is not healthy.[Debug]:num_stars is {}".format(gps.get_num_stars()))
+            self._log("GPS is not healthy.num_stars is {}".format(gps.get_num_stars()))
         return loc
     def FlightLog(self):
         log={}
-        log["id"]=time.time()     
+        log["id"]=time.time()
+        log["Flag"]=1     
         if config.get_GPS()[0] > 0:
-            log["HomeLocation"]=self.get_home()           # [lat,lon,alt]     
-            log["LocationGlobal"]=self.get_location()     # [lat,lon,alt]
+            log["HomeLocation"]=self.get_home()           # [lat,lon]     
+            log["LocationGlobal"]=self.get_location()     # [lat,lon]
             log["DistanceFromHome"]=self.distance_from_home() # distance
             log["DistanceToTarget"]=self.distance_to_target() # distance
             log["GPS"]=gps.info()                          #[state,stars]
-            log['Target']=self.get_target()                #[lat,lon,alt]
+            log['Target']=self.get_target()                #[lat,lon]
         else:
             log["HomeLocation"]="{},{},{}".format(36.01234,116.12375,0.0)
             log["LocationGlobal"]="{},{},{}".format(36.01234,116.12375,0.0)  
@@ -428,6 +491,8 @@ class Vehicle(object):
         log['Gear']=self.get_gear()  # Gear
         log['CurrentChannels']=','.join(self.str_channels(self.channels))    # ch1~ch8
         log['LoiterChannels']=','.join(self.str_channels(self.channels_mid)) # ch1~ch8
+        log['CurrentWpNumber']=self.wp._number
+        log['AllWp']=self.json_all_wp()
         log['RPM']=1600    # RPM
         
         return json.dumps(log)
@@ -461,32 +526,45 @@ class Vehicle(object):
 vehicle=Vehicle()
 
 if __name__=="__main__":
+    # vehicle.print_channels()
+    # vehicle.print_channels_mid()
+    # print vehicle.PIT_curve(1618)
+    # print vehicle.PIT_curve(1455)
+    # print vehicle.PIT_curve(vehicle.THR[3])
     # print vehicle
-    # vehicle.set_channels_mid()
+    # while True:
+    #     raw_input("NEXT")
+    #     vehicle.set_channels_mid()
+    #     print vehicle.PIT_curve(vehicle.channels_mid[2])
     # vehicle.GCS()
+    # vehicle.set_gear(3)
     # vehicle.yaw_left_brake()
+    # time.sleep(3)
     # vehicle.yaw_right_brake()
     # vehicle.roll_left_brake()
+    # time.sleep(2)
     # vehicle.roll_right_brake()
     # vehicle.forward_brake()
+    # time.sleep(2)
     # vehicle.backward_brake()
     # vehicle.up_brake()
+    # time.sleep(2)
     # vehicle.down_brake()
     # vehicle.yaw_left()
     # vehicle.yaw_right()
     # vehicle.forward(5)
-    # vehicle.radio()
-    vehicle.condition_yaw(30)
-    vehicle.condition_yaw(270)
+   
+    # vehicle.condition_yaw(30)
+    # vehicle.condition_yaw(270)
     
-    # vehicle.set_target(40,0)
+    vehicle.set_target(40,0)
     # assert vehilce.get_location!=None,['GPS is unhealthy!!!']
     # while True:
     #     raw_input('Next')
     #     print 'heading',vehicle.get_heading()
     #     print "heading_target",angle_heading_target(vehicle.get_location(),vehicle.get_target(),vehicle.get_heading())
-    # vehicle.Guided()
-
+    vehicle.Guided()
+    # vehicle.radio()
     
 
 

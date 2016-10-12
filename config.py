@@ -2,22 +2,13 @@
 #coding:utf-8
 
 import sys
-from library import Singleton
+from library import Singleton,root
 
 class Config(object):
     __metaclass__=Singleton
-    def __init__(self):
-        file_name='Copter.xml'
-        try: 
-            import xml.etree.cElementTree as ET
-        except ImportError: 
-            import xml.etree.ElementTree as ET   
-        try: 
-            tree = ET.parse(file_name)
-            self._root = tree.getroot()
-        except Exception, e: 
-            print "Error:cannot parse file:",file_name
-            sys.exit(1)
+    def __init__(self,index=0):
+        file_name='Vehicle.xml'
+        self._root = root(file_name)[index]
         self._type  = self._root.get('type')                 # vehicle type
         self._FC    = self._root.get('FlightController')     # FC  version
         self._cloud = [self.get_node(0,1),self.get_node(0,2),self.get_node(0,3)]      #[open?,ip,port]
@@ -25,7 +16,7 @@ class Config(object):
         self._ELE   = self.ch(2)
         self._THR   = self.ch(3)
         self._RUD   = self.ch(4)
-        self._PIT   = self.ch(5)
+        self._PIT   = [self.get_node(5,1)-1,self.get_node(5,2),self.get_node(5,3),self.get_node(5,4)]
         self._mode  = [self.get_node(6,1)-1,self.get_node(6,2)]        #[ch No.,mode pwm]
         self._MCU   = [self.get_node(7,1),self.get_node(7,2),self.get_node(7,3),self.get_node(7,4)]      #[open?,port,baudrate]
         self._GPS   = [self.get_node(8,1),self.get_node(8,2),self.get_node(8,3),self.get_node(8,4)]      #[open?,port,baudrate]
@@ -36,6 +27,8 @@ class Config(object):
         self._MD    = [1,self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
         self._BD    = [1,self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
         self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3)]
+        self._LG    = [self.get_node(16,1),self.get_node(16,2),self.get_node(16,3)]
+
     def ch(self,index):          # [ch No.,low PWM,mid PWM,high PWM,variation,sign]
         num=self.get_node(index,1)-1
         low=self.get_node(index,2)
