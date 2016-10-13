@@ -232,25 +232,25 @@ class Vehicle(object):
 
     def yaw_left(self):
         self._log('Turn Left')
-        # self.movement2(self.RUD,-1)
-        # self.send_pwm()
+        self.movement2(self.RUD,-1)
+        self.send_pwm()
     def yaw_right(self):
         self._log('Turn Right')
-        # self.movement2(self.RUD)
-        # self.send_pwm()
+        self.movement2(self.RUD)
+        self.send_pwm()
     def forward(self,duration=None):
         self._log('Forward....')
-        # self.movement(self.ELE)
-        # self.send_pwm()
-        # if duration!=None:
-        #     time.sleep(duration)
-        #     self.brake()
+        self.movement(self.ELE)
+        self.send_pwm()
+        if duration!=None:
+            time.sleep(duration)
+            self.brake()
     def brake(self):
         self._log('brake')
-        # duration=self.BD[self.get_gear()]
-        # list_assign(self.channels,self.channels_mid)       
-        # self.send_pwm()
-        # time.sleep(duration)
+        duration=self.BD[self.get_gear()]
+        list_assign(self.channels,self.channels_mid)       
+        self.send_pwm()
+        time.sleep(duration)
 
     def yaw_left_brake(self):
         duration=self.mDuration()
@@ -406,6 +406,7 @@ class Vehicle(object):
         for point in wp:
             if watcher.IsCancel():
                 break
+            self.cur_wp+=1
             self._log("Target is None!")
             self.navigation(point)
         
@@ -491,7 +492,7 @@ class Vehicle(object):
         log['Gear']=self.get_gear()  # Gear
         log['CurrentChannels']=','.join(self.str_channels(self.channels))    # ch1~ch8
         log['LoiterChannels']=','.join(self.str_channels(self.channels_mid)) # ch1~ch8
-        log['CurrentWpNumber']=self.wp._number
+        log['CurrentWpNumber']=self.cur_wp
         log['AllWp']=self.json_all_wp()
         log['RPM']=1600    # RPM
         
