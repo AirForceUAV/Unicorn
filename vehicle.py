@@ -532,10 +532,10 @@ if __name__=="__main__":
     # print vehicle.PIT_curve(1455)
     # print vehicle.PIT_curve(vehicle.THR[3])
     # print vehicle
-    # while True:
-    #     raw_input("NEXT")
-    #     vehicle.set_channels_mid()
-    #     print vehicle.PIT_curve(vehicle.channels_mid[2])
+    while True:
+        raw_input("NEXT")
+        vehicle.set_channels_mid()
+        print vehicle.PIT_curve(vehicle.channels_mid[2])
     # vehicle.GCS()
     # vehicle.set_gear(3)
     # vehicle.yaw_left_brake()
@@ -549,22 +549,22 @@ if __name__=="__main__":
     # vehicle.backward_brake()
     # vehicle.up_brake()
     # time.sleep(2)
-    # vehicle.down_brake()
-    # vehicle.yaw_left()
-    # vehicle.yaw_right()
-    # vehicle.forward(5)
+    #vehicle.down_brake()
+    #vehicle.yaw_left()
+    #vehicle.yaw_right()
+    #vehicle.forward(5)
    
-    # vehicle.condition_yaw(30)
-    # vehicle.condition_yaw(270)
-    
-    vehicle.set_target(40,0)
-    # assert vehilce.get_location!=None,['GPS is unhealthy!!!']
+    #vehicle.condition_yaw(30)
+    #vehicle.condition_yaw(270)
+    #
+    #vehicle.set_target(40,0)
+    #assert vehilce.get_location!=None,['GPS is unhealthy!!!']
     # while True:
     #     raw_input('Next')
     #     print 'heading',vehicle.get_heading()
     #     print "heading_target",angle_heading_target(vehicle.get_location(),vehicle.get_target(),vehicle.get_heading())
-    vehicle.Guided()
-    # vehicle.radio()
+    # vehicle.Guided()
+    vehicle.radio()
     
 
 

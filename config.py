@@ -6,7 +6,7 @@ from library import Singleton,root
 
 class Config(object):
     __metaclass__=Singleton
-    def __init__(self,index=0):
+    def __init__(self,index=1):
         file_name='Vehicle.xml'
         self._root = root(file_name)[index]
         self._type  = self._root.get('type')                 # vehicle type

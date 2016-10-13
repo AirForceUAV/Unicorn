@@ -183,7 +183,7 @@
         <entry index="7" name="MCU">
             <description>MCU module.</description>
             <param index="1" value="1"     unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
+            <param index="2" value="/dev/ttyAMA0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10"    unit="times">ARQ times. </param>
         </entry>
@@ -196,7 +196,7 @@
         </entry>
         <entry index="9" name="compass">
             <description>Compass_module.</description>
-            <param index="1" value="0"    unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
+            <param index="1" value="1"    unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
             <param index="2" value="/dev/ttyUSB1" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10"   unit="times">ARQ times. </param>
@@ -323,7 +323,7 @@
         <entry index="9" name="compass">
             <description>Compass_module.</description>
             <param index="1" value="0"    unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
+            <param index="2" value="/dev/ttyUSB1" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10"   unit="times">ARQ times. </param>
         </entry>
