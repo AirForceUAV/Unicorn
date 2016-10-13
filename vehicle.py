@@ -60,7 +60,7 @@ class Vehicle(object):
                     self.home_location=home
                     break
             self._log('Home location :{}'.format(self.home_location))
-            self.init_alt=gps.get_alt()                # set init altitude
+            self.init_alt=home[2]                # set init altitude
             self._log('init altitude:{}'.format(self.init_alt))
 
     def download(self,index=0):
@@ -190,7 +190,7 @@ class Vehicle(object):
             return -1
         if alt==None:
             self._log('Set to Current Altitude')
-            alt=self.get_alt()
+            alt=origin[2]
         self.target=get_location_metres(origin,dNorth,dEast)
 
     def set_target2(self,lat,lon,alt=None):
