@@ -30,7 +30,7 @@ def on_message(command):
         Cancel()
     elif command.find('Route')!=-1:
         info=command[6:-1]
-        print 'WayPoints',inof
+        print 'WayPoints',info
         requests = threadpool.makeRequests(Route,(info,))
         [pool2.putRequest(req) for req in requests]             
     else:
