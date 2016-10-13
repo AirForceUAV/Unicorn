@@ -26,7 +26,7 @@ class Config(object):
         self._gear  = [self.get_node(12,1),self.get_node(12,2),self.get_node(12,3),self.get_node(12,4)]     #[Current Gear,Low Gear,Mid Gear,High Gear]
         self._MD    = [1,self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
         self._BD    = [1,self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
-        self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3),self.get_node(15,4)]
+        self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3),self.get_node(15,4),,self.get_node(15,5)]
         self._LG    = [self.get_node(16,1),self.get_node(16,2),self.get_node(16,3)]
         self._degree= [self.get_node(17,1),self.get_node(17,2)]
 
