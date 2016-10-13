@@ -26,8 +26,9 @@ class Config(object):
         self._gear  = [self.get_node(12,1),self.get_node(12,2),self.get_node(12,3),self.get_node(12,4)]     #[Current Gear,Low Gear,Mid Gear,High Gear]
         self._MD    = [1,self.get_node(13,1),self.get_node(13,2),self.get_node(13,3)]
         self._BD    = [1,self.get_node(14,1),self.get_node(14,2),self.get_node(14,3)]
-        self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3)]
+        self._DD    = [1,self.get_node(15,1),self.get_node(15,2),self.get_node(15,3),self.get_node(15,4)]
         self._LG    = [self.get_node(16,1),self.get_node(16,2),self.get_node(16,3)]
+        self._degree= [self.get_node(17,1),self.get_node(17,2)]
 
     def ch(self,index):          # [ch No.,low PWM,mid PWM,high PWM,variation,sign]
         num=self.get_node(index,1)-1
@@ -86,7 +87,8 @@ class Config(object):
         return self._BD
     def get_DD(self):
         return self._DD
-
+    def get_degree(self):
+        return self._degree
 # Global config
 config=Config()
 
@@ -109,5 +111,6 @@ if __name__=="__main__":
     print 'Movement Duration',config.get_MD()
     print 'Brake Duration',config.get_BD()
     print 'Decision Duration',config.get_DD()
+    print 'Degree',config.get_degree()
 
 

@@ -363,9 +363,9 @@ class Vehicle(object):
         self.brake()
         return 1
 
-    def navigation(self,target,deviation=10):
-        checktime=self.DD[self.get_gear()]
-        checktime=3
+    def navigation(self,target):
+        deviation=config.get_degree()[0]
+        checktime=config.get_DD()[4]
         watcher=CancelWatcher()
         while not watcher.IsCancel():
             current_location =self.get_location()

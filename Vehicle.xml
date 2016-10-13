@@ -114,6 +114,7 @@
             <param index="1" value="1"  unit="seconds">Gear 'L' Duration</param>
             <param index="2" value="1"  unit="seconds">Gear 'M' Duration.</param>
             <param index="3" value="1"  unit="seconds">Gear 'H' Duration.</param>
+            <param index="4" value="3" unit="seconds">Checktim in Navigation .</param>
         </entry>
         <entry index="16" name="LandingGear">
             <description>LandingGear.</description>
@@ -121,6 +122,11 @@
             <param index="1" value="8"     unit="No.">LandingGear Channel Number</param>
             <param index="2" value="1000"  unit="pwm">Deploy</param>
             <param index="3" value="1900"  unit="pwm">Retract.</param>
+        </entry>
+        <entry index="17" name="Degree">
+            <description>Ignore Degree.</description>
+            <param index="1" value="10"   unit="degree">Guided.</param>
+            <param index="1" value="10"   unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
 
@@ -218,15 +224,15 @@
         <entry index="12" name="Gears">
             <description>Vehicle Gears.</description>
             <param index="1" value="1"  unit="Gear"> 1:'L', 2:'M', 3:'H'</param>
-            <param index="2" value="10" unit="%">Gear 'L' rate</param>
-            <param index="3" value="15" unit="%">Gear 'M' rate. </param>
-            <param index="4" value="20" unit="%">Gear 'H' rate. </param>       
+            <param index="2" value="15" unit="%">Gear 'L' rate</param>
+            <param index="3" value="20" unit="%">Gear 'M' rate. </param>
+            <param index="4" value="25" unit="%">Gear 'H' rate. </param>       
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
             <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="3" unit="seconds">Gear 'H' Duration.</param>
+            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
+            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -237,8 +243,9 @@
         <entry index="15" name="Decision Duration">
             <description>Decision Duration.</description>
             <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="3" unit="seconds">Gear 'H' Duration.</param>
+            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
+            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="4" value="3" unit="seconds">Checktim in Navigation .</param>
         </entry>]
         <entry index="16" name="LandingGear">
             <description>LandingGear.</description>
@@ -246,6 +253,11 @@
             <param index="1" value="7"     unit="No.">LandingGear Channel Number</param>
             <param index="2" value="1000"  unit="pwm">Deploy</param>
             <param index="3" value="1900"  unit="pwm">Retract.</param>
+        </entry>
+        <entry index="17" name="Degree">
+            <description>Ignore Degree.</description>
+            <param index="1" value="10"   unit="degree">Guided.</param>
+            <param index="1" value="10"   unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
 
@@ -365,6 +377,7 @@
             <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
             <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
             <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="4" value="3" unit="seconds">Checktim in Navigation .</param>
         </entry>]
         <entry index="16" name="LandingGear">
             <description>LandingGear.</description>
@@ -372,6 +385,11 @@
             <param index="1" value="7"     unit="No.">LandingGear Channel Number</param>
             <param index="2" value="1000"  unit="pwm">Deploy</param>
             <param index="3" value="1900"  unit="pwm">Retract.</param>
+        </entry>
+        <entry index="17" name="Degree">
+            <description>Ignore Degree.</description>
+            <param index="1" value="10"   unit="degree">Guided.</param>
+            <param index="1" value="10"   unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
 </vehicles>

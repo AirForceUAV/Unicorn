@@ -35,24 +35,40 @@ class Lidar(object):
         angle = (360 - angle) %360;
         return angle
 
-    def Guided_Avoid2(self,_type='Guided',checktime=5,deviation=2):        
-        watcher=CancelWatcher()
-        if _type is "Guided":
-            target=vehicle.get_target()
-            if target is None:
-                self._log("Target is None!")
-                return -1
-            vehicle.mode_name='Guided_AVOID'
-            vehicle._log('Guided with Avoidance to Location {}'.format(target))
-            
-        elif _type is 'RTL':
-            target=vehicle.get_home()
-            if target is None:
-                self._log("Home is None!")
-                return -1
-            vehicle.mode_name='RTL_AVOID'
-            self._log('RTL ! Home is {}'.format(target))
+    def Guided_Avoid(self):        
+        target=vehicle.get_target()
+        if target is None:
+            self._log("Target is None!")
+            return -1
+        vehicle.mode_name='Guided_Avoid'
+        vehicle._log('Guided with Avoidance to Location {}'.format(target))
 
+        vehicle.Avoid(target)  
+        vehicle.target=None
+        vehicle.mode_name='Loiter'
+        return 0
+
+    def Auto_Avoid(self):
+        if vehicle.wp == []:
+            self._log('Waypoint is none')
+            return -1
+        vehicle.mode_name='AUTO_Avoid'
+        watcher=CancelWatcher()
+        for point in wp:
+            if watcher.IsCancel():
+                break
+            vehicle.cur_wp+=1
+            self._log("Target is None!")
+            self.Avoid(point)
+        
+        vehicle.mode_name="Loiter"
+        vehicle.clear()
+
+    def Avoid(self,target,way=1):
+        checktime=1
+        deviation=config.get_degree()[1]
+
+        watcher=CancelWatcher()
         while not watcher.IsCancel():
             current_location =vehicle.get_location()
             if current_location == None:
@@ -69,16 +85,30 @@ class Lidar(object):
             angle_avoid=self.Decision(angle)
             if vehicle._angle(angle_avoid)>deviation:
                 vehicle.brake()
+                angle_avoid=self.more_angle(angle_avoid)
                 vehicle.condition_yaw(angle_avoid)
             vehicle.forward()
             time.sleep(checktime)
-        vehicle.mode_name='Loiter'
-        return 0
 
     def RTL_Avoid(self):
-        self.Guided_Avoid('RTL')
-    def Auto_Avoid(self):
-        self.Guided_Avoid('AUTO')
+        target=vehicle.get_home()
+        if target is None:
+            self._log("Home is None!")
+            return -1
+
+        vehicle.mode_name='RTL_Avoid'
+        self._log('RTL with Avoid! Home is {}'.format(target))
+        self.Avoid(target)
+
+        vehicle.mode_name='Loiter'
+        return 0
+   
+    def more_angle(self,angle):
+        if angle>=0 and angle<180:
+            angle+=10
+        else:
+            angle-=10
+        return angle
     def _log(self,msg):
         vehicle._log(msg)
 
