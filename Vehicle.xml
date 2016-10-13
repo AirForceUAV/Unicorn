@@ -170,7 +170,7 @@
         </entry>
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
-            <param index="1" value="5"    unit="No.">Pitch Channel Number</param>
+            <param index="1" value="6"    unit="No.">Pitch Channel Number</param>
             <param index="2" value="0"    unit="bool">Whether is pitch used?. 0:not used 1:used</param>
             <param index="3" value="1019"  unit="pwm">Whether is pitch used?. 0:not used 1:used</param>
             <param index="4" value="1513" unit="pwm">Whether is pitch used?. 0:not used 1:used</param>
@@ -189,10 +189,10 @@
         </entry>
         <entry index="8" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="0"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="1" value="1"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
             <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="10"   unit="times">ARQ times. </param>
+            <param index="4" value="1000"  unit="times">ARQ times. </param>
         </entry>
         <entry index="9" name="compass">
             <description>Compass_module.</description>
@@ -225,8 +225,8 @@
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
             <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
+            <param index="3" value="3" unit="seconds">Gear 'H' Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>

@@ -60,7 +60,7 @@ class Vehicle(object):
                     self.home_location=home
                     break
             self._log('Home location :{}'.format(self.home_location))
-            self.init_alt=gps.get_alt()                # set init altitude
+            self.init_alt=home[2]                # set init altitude
             self._log('init altitude:{}'.format(self.init_alt))
 
     def download(self,index=0):
@@ -190,7 +190,7 @@ class Vehicle(object):
             return -1
         if alt==None:
             self._log('Set to Current Altitude')
-            alt=self.get_alt()
+            alt=origin[2]
         self.target=get_location_metres(origin,dNorth,dEast)
 
     def set_target2(self,lat,lon,alt=None):
@@ -232,25 +232,25 @@ class Vehicle(object):
 
     def yaw_left(self):
         self._log('Turn Left')
-        # self.movement2(self.RUD,-1)
-        # self.send_pwm()
+        self.movement2(self.RUD,-1)
+        self.send_pwm()
     def yaw_right(self):
         self._log('Turn Right')
-        # self.movement2(self.RUD)
-        # self.send_pwm()
+        self.movement2(self.RUD)
+        self.send_pwm()
     def forward(self,duration=None):
         self._log('Forward....')
-        # self.movement(self.ELE)
-        # self.send_pwm()
-        # if duration!=None:
-        #     time.sleep(duration)
-        #     self.brake()
+        self.movement(self.ELE)
+        self.send_pwm()
+        if duration!=None:
+            time.sleep(duration)
+            self.brake()
     def brake(self):
         self._log('brake')
-        # duration=self.BD[self.get_gear()]
-        # list_assign(self.channels,self.channels_mid)       
-        # self.send_pwm()
-        # time.sleep(duration)
+        duration=self.BD[self.get_gear()]
+        list_assign(self.channels,self.channels_mid)       
+        self.send_pwm()
+        time.sleep(duration)
 
     def yaw_left_brake(self):
         duration=self.mDuration()
@@ -406,6 +406,7 @@ class Vehicle(object):
         for point in wp:
             if watcher.IsCancel():
                 break
+            self.cur_wp+=1
             self._log("Target is None!")
             self.navigation(point)
         
@@ -491,7 +492,7 @@ class Vehicle(object):
         log['Gear']=self.get_gear()  # Gear
         log['CurrentChannels']=','.join(self.str_channels(self.channels))    # ch1~ch8
         log['LoiterChannels']=','.join(self.str_channels(self.channels_mid)) # ch1~ch8
-        log['CurrentWpNumber']=self.wp._number
+        log['CurrentWpNumber']=self.cur_wp
         log['AllWp']=self.json_all_wp()
         log['RPM']=1600    # RPM
         

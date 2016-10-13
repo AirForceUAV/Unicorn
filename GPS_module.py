@@ -36,7 +36,7 @@ class GPS(object):
         if msg==None:
             return None
         else:
-            return [msg.latitude,msg.longitude]
+            return [msg.latitude,msg.longitude,msg.altitude]
 
     def get_alt(self):
         msg=self.parseGPS()
