@@ -173,7 +173,7 @@
             <param index="3" value="1385"  unit="PWM">MID RUD PWM </param>
             <param index="4" value="1772" unit="PWM">HIG RUD PWM </param>
             <param index="5" value="1"   unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10"   unit="%">Variation Rate.</param>
+            <param index="6" value="7"   unit="%">Variation Rate.</param>
         </entry>
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
@@ -190,14 +190,14 @@
         <entry index="7" name="MCU">
             <description>MCU module.</description>
             <param index="1" value="1"     unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
+            <param index="2" value="/dev/ttyAMA0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10"    unit="times">ARQ times. </param>
         </entry>
         <entry index="8" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="1"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB2" unit="Device">Serial port name</param>
+            <param index="1" value="0"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="1000"  unit="times">ARQ times. </param>
         </entry>
@@ -225,9 +225,9 @@
         <entry index="12" name="Gears">
             <description>Vehicle Gears.</description>
             <param index="1" value="1"  unit="Gear"> 1:'L', 2:'M', 3:'H'</param>
-            <param index="2" value="15" unit="%">Gear 'L' rate</param>
-            <param index="3" value="20" unit="%">Gear 'M' rate. </param>
-            <param index="4" value="25" unit="%">Gear 'H' rate. </param>       
+            <param index="2" value="10" unit="%">Gear 'L' rate</param>
+            <param index="3" value="15" unit="%">Gear 'M' rate. </param>
+            <param index="4" value="20" unit="%">Gear 'H' rate. </param>       
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
@@ -237,16 +237,16 @@
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="2" unit="seconds">Gear 'L' Duration</param>
+            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
+            <param index="3" value="2" unit="seconds">Gear 'H' Duration.</param>
         </entry>
         <entry index="15" name="Decision Duration">
             <description>Decision Duration.</description>
             <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
             <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
             <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
-            <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
+            <param index="4" value="3" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
         </entry>]
         <entry index="16" name="LandingGear">
@@ -322,21 +322,21 @@
         </entry>
         <entry index="7" name="MCU">
             <description>MCU module.</description>
-            <param index="1" value="0"     unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
+            <param index="1" value="1"     unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
             <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10"    unit="times">ARQ times. </param>
         </entry>
         <entry index="8" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="0"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
+            <param index="1" value="1"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="2" value="/dev/ttyUSB2" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="1000"   unit="times">ARQ times. </param>
         </entry>
         <entry index="9" name="compass">
             <description>Compass_module.</description>
-            <param index="1" value="0"    unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
+            <param index="1" value="1"    unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
             <param index="2" value="/dev/ttyUSB1" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="100"   unit="times">ARQ times. </param>
