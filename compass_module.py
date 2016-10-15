@@ -84,8 +84,9 @@ compass=Compass()
 
 if __name__=='__main__':
     while True:
-        raw_input('Next') 
-        print compass.get_pitch()
-        print compass.get_roll()
+        #raw_input('Next') 
+        #print compass.get_pitch()
+        #print compass.get_roll()
         print compass.get_heading()
-        print compass.get_attitude()
+        #print compass.get_attitude()
+        time.sleep(.1)

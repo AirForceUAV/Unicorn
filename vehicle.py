@@ -322,7 +322,7 @@ class Vehicle(object):
 
     def diff_angle(self,origin,target,sign):
         diff=(360+sign*(target-origin))%360
-        if diff<180:
+        if diff<180 and diff>2:
             return True
         else:
             return False
@@ -358,9 +358,10 @@ class Vehicle(object):
                   
         while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
             self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
-            time.sleep(.2)
-        self._log('Reached Angle {}'.format(self.get_heading()))
+            time.sleep(.1)
+        #self._log('Reached Angle {}'.format(self.get_heading()))
         self.brake()
+        self._log('Reached Angle {}'.format(self.get_heading()))
         return 1
 
     def navigation(self,target):
@@ -534,18 +535,20 @@ if __name__=="__main__":
     # print vehicle.PIT_curve(vehicle.THR[3])
     # print vehicle
     while True:
-        raw_input("NEXT")
+        #raw_input("NEXT")
+        time.sleep(.5)
         vehicle.set_channels_mid()
         print vehicle.PIT_curve(vehicle.channels_mid[2])
-    # vehicle.GCS()
-    # vehicle.set_gear(3)
-    # vehicle.yaw_left_brake()
+    vehicle.GCS()
+    vehicle.set_channels_mid()
+    #vehicle.set_gear(2)
+    #vehicle.yaw_left_brake()
     # time.sleep(3)
-    # vehicle.yaw_right_brake()
+    #vehicle.yaw_right_brake()
     # vehicle.roll_left_brake()
     # time.sleep(2)
     # vehicle.roll_right_brake()
-    # vehicle.forward_brake()
+    #vehicle.forward_brake()
     # time.sleep(2)
     # vehicle.backward_brake()
     # vehicle.up_brake()
@@ -555,16 +558,16 @@ if __name__=="__main__":
     #vehicle.yaw_right()
     #vehicle.forward(5)
    
-    #vehicle.condition_yaw(30)
-    #vehicle.condition_yaw(270)
+    vehicle.condition_yaw(30)
+    vehicle.condition_yaw(270)
     #
-    #vehicle.set_target(40,0)
+    #vehicle.set_target(20,0)
     #assert vehilce.get_location!=None,['GPS is unhealthy!!!']
     # while True:
     #     raw_input('Next')
     #     print 'heading',vehicle.get_heading()
     #     print "heading_target",angle_heading_target(vehicle.get_location(),vehicle.get_target(),vehicle.get_heading())
-    # vehicle.Guided()
+    #vehicle.Guided()
     vehicle.radio()
     
 

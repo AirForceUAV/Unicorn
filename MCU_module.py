@@ -50,7 +50,8 @@ class MCU(object):
         while times<5:
             times+=1
             self.ser.write(msg)            
-            time.sleep(0.05)
+            time.sleep(.05)
+        print '{} completed'.format(msg)
 
     def send_mid_msg(self):
         # Send 'M'

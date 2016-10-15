@@ -60,18 +60,20 @@ class GPS(object):
 gps=GPS()
 
 if __name__=="__main__":
-    origin=gps.get_location()
-    print 'origin:{}'.format(origin)
-    assert origin!=None
-    target=get_location_metres(origin,0,-20)
-    distance=get_distance_metres(origin,target)
-    print 'Distance:{}'.format(distance)
+    #origin=gps.get_location()
+    #print 'origin:{}'.format(origin)
+    #assert origin!=None
+    #target=get_location_metres(origin,0,-20)
+    #distance=get_distance_metres(origin,target)
+    #print 'Distance:{}'.format(distance)
     while True:
-      raw_input('Next')
-      loc=gps.get_location()     
-      distance=get_distance_metres(loc,target)
-      print 'Distance to Target {}'.format(distance)
-      if distance<2:
-        print 'reached'
-        break
+      #raw_input('Next')
+      loc=gps.get_location()   
+      print loc
+      time.sleep(.1)
+      #distance=get_distance_metres(loc,target)
+      #print 'Distance to Target {}'.format(distance)
+      #if distance<2:
+      #  print 'reached'
+      #  break
     gps.close()
