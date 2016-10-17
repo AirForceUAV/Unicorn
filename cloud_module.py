@@ -60,7 +60,7 @@ def eval_wrapper(command):
     """
     Execute Command from cloud
     """
-    # print command
+    print command
     eval(command)
 
 def Listener():
