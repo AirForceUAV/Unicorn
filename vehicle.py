@@ -78,12 +78,29 @@ class Vehicle(object):
 
     def json_all_wp(self):
         if self.wp == []:
-            return None
-        
+            return None        
         result=[]
         for point in self.wp:
             result.append('{}+{}'.format(point[0],point[1]))
         return ','.join(result)
+    def json_location(self):
+        loc=self.get_location()
+        if loc==None:
+            return None
+        else:
+            return "{},{},{}".format(loc[0],loc[1],loc[2])
+    def json_home(self):
+        home=self.home_location
+        if home==None:
+            return None
+        else:
+            return "{},{},{}".format(home[0],home[1],loc[2])
+    def json_target(self):
+        target=self.get_target()
+        if target==None:
+            return None
+        else:
+            return "{},{}".format(target[0],target[1])
 
     def init_channels(self):
         channels=[0,0,0,0,0,0,0,0]
@@ -461,14 +478,14 @@ class Vehicle(object):
         log["id"]=time.time()
         log["Flag"]=1     
         if config.get_GPS()[0] > 0:
-            log["HomeLocation"]=self.get_home()           # [lat,lon]     
-            log["LocationGlobal"]=self.get_location()     # [lat,lon]
+            log["HomeLocation"]=self.json_home()           # lat,lon,alt     
+            log["LocationGlobal"]=self.json_location()     # lat,lon,alt
             log["DistanceFromHome"]=self.distance_from_home() # distance
             log["DistanceToTarget"]=self.distance_to_target() # distance
             log["GPS"]=gps.info()                          #[state,stars]
-            log['Target']=self.get_target()                #[lat,lon]
+            log['Target']=self.json_target()                #lat,lon
         else:
-            log["HomeLocation"]="{},{},{}".format(36.01234,116.12375,0.0)
+            log["HomeLocation"]="{},{},{}".format(36.11111,116.22222,0.0)
             log["LocationGlobal"]="{},{},{}".format(36.01234,116.12375,0.0)  
             log["DistanceFromHome"]=0.0
             log["DistanceToTarget"]=0.0
