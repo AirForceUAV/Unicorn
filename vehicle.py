@@ -404,7 +404,7 @@ class Vehicle(object):
             return -1
         self.mode_name='AUTO'
         watcher=CancelWatcher()
-        for point in wp:
+        for point in self.wp:
             if watcher.IsCancel():
                 break
             self.cur_wp+=1

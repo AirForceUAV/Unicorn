@@ -1,6 +1,8 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
+#import logging
+#logging.basicConfig()
 import time,threading
 from config import config
 from vehicle import vehicle
