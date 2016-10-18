@@ -352,6 +352,7 @@ class Vehicle(object):
             return 0
 
         current_heading=self.get_heading()
+        
         watcher=CancelWatcher()
         # Relative angle to heading
         if relative:

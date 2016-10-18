@@ -17,13 +17,14 @@ class Compass(object):
         return '{}'.format(self.state)
 
     def get_heading(self):
-        command='6804000307'   
-        package=self.compass_info(command,83,8)
-        if package==None:
-            return None
-        else:
-            heading=self.decode_BCD(package[8:14])
-            return int(heading%360)
+        command='6804000307'  
+        while True: 
+            package=self.compass_info(command,83,8)
+            if package==None:
+                continue
+            else:
+                heading=self.decode_BCD(package[8:14])
+                return int(heading%360)
     def get_pitch(self):
         command='6804000105'   
         package=self.compass_info(command,81,8)
@@ -52,23 +53,12 @@ class Compass(object):
             return [pitch,yaw,roll]
     def compass_info(self,command,ack,size=8):  
         command=command.decode("hex")
-        times=0
-        while True:
-            times+=1
-            self.ser.write(command)
-            try:
-                res=self.ser.readline()
-                package=encode_hex(res)
-                index=package.find('68')
-                if index==-1 or len(package)<index+size*2:
-                    continue
-                package=package[index:index+size*2]
-                # self._log(package)
-                if package[6:8]==str(ack):
-                    return package
-            except Exception:pass
-        self._log('Compass Timeout(100 times)')
-        return None
+        self.ser.write(command)
+        res=self.ser.readline()
+        package=encode_hex(res)
+        package=package[index:index+size*2]
+        return package
+
     def checksum(self,package):
         pass
     def decode_BCD(self,package):
