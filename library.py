@@ -9,7 +9,7 @@ def open_serial(portname,baudrate,timeout=0.5):
     while True:
         if com is None:
           try:
-            _log("Connecting to port:{0},baudrate:{1}".format(portname,baudrate))
+            print "Connecting to port:{0},baudrate:{1}".format(portname,baudrate)
             com = serial.Serial(portname,baudrate, timeout=timeout)
             return com
           except serial.SerialException:
