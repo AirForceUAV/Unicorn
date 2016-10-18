@@ -53,19 +53,21 @@ class Compass(object):
     def compass_info(self,command,ack,size=8):  
         command=command.decode("hex")
         times=0
-        while times<config.get_compass()[3]:
+        while True:
             times+=1
             self.ser.write(command)
-            res=self.ser.readline()
-            package=encode_hex(res)
-            index=package.find('68')
-            if index==-1 or len(package)<index+size*2:
-                continue
-            package=package[index:index+size*2]
-            # self._log(package)
-            if package[6:8]==str(ack):
-                return package
-        self._log('Compass Timeout(5 times)')
+            try:
+                res=self.ser.readline()
+                package=encode_hex(res)
+                index=package.find('68')
+                if index==-1 or len(package)<index+size*2:
+                    continue
+                package=package[index:index+size*2]
+                # self._log(package)
+                if package[6:8]==str(ack):
+                    return package
+            except Exception:pass
+        self._log('Compass Timeout(100 times)')
         return None
     def checksum(self,package):
         pass

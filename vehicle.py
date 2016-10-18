@@ -91,7 +91,7 @@ class Vehicle(object):
         if home==None:
             return None
         else:
-            return "{},{},{}".format(home[0],home[1],loc[2])
+            return "{},{},{}".format(home[0],home[1],home[2])
     def json_target(self):
         target=self.get_target()
         if target==None:
@@ -373,7 +373,7 @@ class Vehicle(object):
         while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
             self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
             time.sleep(.1)
-        #self._log('Reached Angle {}'.format(self.get_heading()))
+        self._log('Reached Angle {}'.format(self.get_heading()))
         self.brake()
         self._log('Reached Angle {}'.format(self.get_heading()))
         return 1
@@ -504,7 +504,7 @@ class Vehicle(object):
             log['Target']="{},{},{}".format(36.01234,116.12375,0.0)
         if config.get_compass()[0] > 0:
             log["Gimbal"]= "{},{},{}".format(self.get_pitch(),self.get_heading(),self.get_roll())  # [pitch,yaw,roll]
-            log["Compass"]=compass.info()      #[state]
+            log["Compass"]=-1      #[state]
         else:
             log['Gimbal']="{},{},{}".format(0.2,-0.3,355)
             log['Compass']=-1
@@ -564,14 +564,14 @@ if __name__=="__main__":
     # vehicle.print_channels()
     # vehicle.print_channels_mid()
     
-    while True:
-        #raw_input("NEXT")
-        time.sleep(.5)
-        vehicle.set_channels_mid()
-        print vehicle.PIT_curve(vehicle.channels_mid[2])
-    vehicle.GCS()
-    vehicle.set_channels_mid()
-    #vehicle.set_gear(2)
+    #while True:
+    #    #raw_input("NEXT")
+    #    time.sleep(.5)
+    #    vehicle.set_channels_mid()
+    #    print vehicle.PIT_curve(vehicle.channels_mid[2])
+    #vehicle.GCS()
+    #vehicle.set_channels_mid()
+    ##vehicle.set_gear(2)
     #vehicle.yaw_left_brake()
     # time.sleep(3)
     #vehicle.yaw_right_brake()

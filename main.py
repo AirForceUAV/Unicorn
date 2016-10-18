@@ -31,9 +31,6 @@ def GPS_heartbeat(gps):
     else:
         gps.state=1
     
-def send_Log(sock,vehicle):
-    message=vehicle.FlightLog()
-    sock.send(message)
 
 def _log(msg):
     print msg
@@ -89,8 +86,9 @@ if __name__=='__main__':
         
         # scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
         while True:
-            send_Log(sock,vehicle)
+            message=vehicle.FlightLog()
+            sock.send(message)
             time.sleep(1)
-    scheduler.start()
+    #scheduler.start()
 
         
