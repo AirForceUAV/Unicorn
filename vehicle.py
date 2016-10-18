@@ -11,17 +11,14 @@ from waypoint import Waypoint
 global config
 
 if config.get_MCU()[0]>0:                       # instancce of MCU module object
-    # print 'Connecting to MCU'
     from MCU_module import mcu
     global mcu
 
 if config.get_compass()[0]>0:
-    # print 'Connecting to compass'
     from compass_module import compass          # instancce of compass module object
     global compass
 
 if config.get_GPS()[0]>0:
-    # print 'connecting to GPS'
     from GPS_module import gps                  # instancce of GPS module object
     global gps
     
@@ -65,7 +62,7 @@ class Vehicle(object):
 
     def download(self,index=0):
         if config.get_GPS()[0]<=0:
-            print "GPS is closed"
+            self._log("GPS is closed")
             return -1
         loc=self.get_location()
         if loc is None:
@@ -442,6 +439,19 @@ class Vehicle(object):
         self.navigation(target)
         self.mode_name="Loiter"
         self.target=None
+    def Route(self,info):
+        self._log(info)
+        if info == "":
+            return -1
+        Cancel()    # End current task
+        result=[]
+        wps=info.split(',')
+        for wp in wps:
+            loc=wp.split('+')
+            result.append( [float(loc[0]),float(loc[1])] )
+        self._log(result)
+        self.wp=result
+        self.Auto()
 
     def clear(self):
         self.wp=[]
@@ -449,6 +459,7 @@ class Vehicle(object):
 
     def GPS_ERR(self):
         return "GPS is ERROR ! num_stars:{}".format(gps.get_num_stars())
+
     def distance_from_home(self):
         location=self.get_location()
         home=self.get_home()
@@ -538,6 +549,11 @@ class Vehicle(object):
         msg['init_alt']=self.init_alt
        
         return json.dumps(msg)
+    def Cancel(self):
+        self._log("Cancel")
+        CancelWatcher.Cancel=True
+        time.sleep(1)
+        self.brake()
 
     def _log(self,msg):
         print msg
@@ -547,10 +563,7 @@ vehicle=Vehicle()
 if __name__=="__main__":
     # vehicle.print_channels()
     # vehicle.print_channels_mid()
-    # print vehicle.PIT_curve(1618)
-    # print vehicle.PIT_curve(1455)
-    # print vehicle.PIT_curve(vehicle.THR[3])
-    # print vehicle
+    
     while True:
         #raw_input("NEXT")
         time.sleep(.5)

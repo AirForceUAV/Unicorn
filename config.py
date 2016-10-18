@@ -93,8 +93,8 @@ class Config(object):
 config=Config()
 
 if __name__=="__main__":
-    print 'Vehicle type:',config._type
-    print 'FC version:',config._FC
+    print 'Vehicle type:{}'.format(config._type)
+    print 'FC version:{}'.format(config._FC)
     print 'Cloud:',config.get_cloud()
     print 'AIL:',config.get_AIL()
     print 'ELE:',config.get_ELE()

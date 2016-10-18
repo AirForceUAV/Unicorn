@@ -10,7 +10,7 @@ class GPS(object):
     __metaclass__=Singleton
     def __init__(self):
         con=config.get_GPS()
-        print "Connecting to GPS Module"
+        self._log("Connecting to GPS Module")
         self.ser = open_serial(con[1],con[2])
         self.state=1  # 1:healthy -1:not healthy
         
@@ -23,12 +23,12 @@ class GPS(object):
             times+=1
             self.ser.flushInput()
             line=self.ser.readline()
-            # print line
+            # self._log(line)
             if line.find('GNGGA')!=-1:
                 msg=pynmea2.parse(line)
                 if msg.altitude!=None:
                     return msg
-        print "GPS timeout ({} times)".format(times)
+        self._log("GPS timeout ({} times)".format(times))
         return None
 
     def get_location(self):    
@@ -55,6 +55,8 @@ class GPS(object):
     def close(self):
         if self.ser.is_open is True:
             self.ser.close()
+    def _log(self,msg):
+        print msg
 
 # Global gps
 gps=GPS()

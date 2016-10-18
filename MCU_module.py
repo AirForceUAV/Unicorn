@@ -24,7 +24,7 @@ class MCU(object):
         return msg
        
     def send_pwm(self,channels):
-        print "send pwm:",channels       
+        self._log("send pwm:{}".format(channels))     
         msg=self.code_pwm(channels)
         msg=msg.decode("hex")
         times=0
@@ -33,50 +33,50 @@ class MCU(object):
             self.ser.write(GCS_package())
             self.ser.write(msg)
             ack=self.ser.read(40)
-            # print ack
+            # print(ack)
             if ack.find('S')>=0:
-                print "Send successfully"
+                self._log("Send successfully")
                 return 1
             else:
                 time.sleep(0.05)
                 continue
-        print "Send package Timout ({} times)!".format(times)
+        self._log("Send package Timout ({} times)!".format(times))
         return -1
 
     def send_msg(self,msg):
         # Send 'R' or 'G'
-        print "send msg:",msg
+        self._log("send msg:{}".format(msg))
         times=0
         while times<5:
             times+=1
             self.ser.write(msg)            
             time.sleep(.05)
-        print '{} completed'.format(msg)
+        self._log('{} completed'.format(msg))
 
     def send_mid_msg(self):
         # Send 'M'
-        print 'send msg',Mid_package()
+        self._log('send msg:{}'.format(Mid_package()))
         times=0
         while times<config.get_MCU()[3]:
             times+=1
             self.ser.write(Mid_package())
             ack=self.ser.read(42)
             ack=msg=encode_hex(ack)
-            # print ack
+            # print(ack)
             if ack.find('aabb')!=-1:
                 return 1
             else:
                 time.sleep(0.05)
                 continue
 
-        print 'Switch to M. Timeout ({} times)'.format(times)
+        self._log('Switch to M. Timeout ({} times)'.format(times))
 
     def read_mid(self,size=74): 
         '''Sizeof package is (4+4*8+2=38)'''   
         while True:
             msg=self.ser.read(size)
             msg=encode_hex(msg)
-            # print "Read channels:",msg
+            # self._log("Read channels:{}".format(msg))
             n=msg.find('aabb')
             if n!=-1 and len(msg)>=n+38:                
                 return msg[n:n+38]
@@ -86,12 +86,12 @@ class MCU(object):
         self.send_mid_msg()
         channels=[0,0,0,0,0,0,0,0]
         package=self.read_mid()
-        # print package
+        # self._log(package)
         num   = 0
         index = 4
         while num<ch_count:
             channels[num]=int(package[index:index+4],16)
-            # print channels[num]
+            # self._log(channels[num])
             num+=1
             index+=4           
         return channels

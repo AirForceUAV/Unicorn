@@ -49,13 +49,15 @@ class Waypoint(object):
         return float(point[index].text)
     def write_xml(self, out_path):  
         
-        self._root.write(out_path, encoding="utf-8",xml_declaration=True)  
+        self._root.write(out_path, encoding="utf-8",xml_declaration=True)
+    def _log(self,msg):
+        print msg
                              
 if __name__ == "__main__": 
     wp=Waypoint([39.25555,116.33333])
     print wp.get_points()
     wp.add_number()
     print wp.get_points()
-    print wp.get_all_wp()
+    print wp.get_all_wp() 
     print wp.get_currentwp()
       

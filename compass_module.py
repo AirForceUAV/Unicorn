@@ -9,7 +9,7 @@ from library import Singleton
 class Compass(object):
     __metaclass__=Singleton
     def __init__(self):
-        print "Connecting to Compass Module"
+        self._log("Connecting to Compass Module")
         con=config.get_compass()       
         self.ser = open_serial(con[1],con[2])
         self.state=1    # 1:healthy -1:not healthy
@@ -62,10 +62,10 @@ class Compass(object):
             if index==-1 or len(package)<index+size*2:
                 continue
             package=package[index:index+size*2]
-            # print package
+            # self._log(package)
             if package[6:8]==str(ack):
                 return package
-        print 'Compass Timeout(5 times)'
+        self._log('Compass Timeout(5 times)')
         return None
     def checksum(self,package):
         pass
@@ -79,6 +79,8 @@ class Compass(object):
     def close(self):
         if self.ser.is_open is True:
             self.ser.close()
+    def _log(self,msg):
+        print msg
 # Global compass
 compass=Compass()
 

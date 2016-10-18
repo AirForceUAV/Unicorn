@@ -72,7 +72,7 @@ class Lidar(object):
         while not watcher.IsCancel():
             current_location =vehicle.get_location()
             if current_location == None:
-                print "GPS is ERROR!"
+                self._log("GPS is ERROR!")
                 vehicle.brake()
                 break
             distance=round(get_distance_metres(current_location,target),2)
@@ -110,7 +110,7 @@ class Lidar(object):
             angle-=10
         return angle
     def _log(self,msg):
-        vehicle._log(msg)
+        print msg
 
 
 pid = os.fork()

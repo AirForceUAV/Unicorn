@@ -3,7 +3,7 @@
 
 #import logging
 #logging.basicConfig()
-import time,threading
+import time,threading,Queue
 from config import config
 from vehicle import vehicle
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -35,9 +35,6 @@ def send_Log(sock,vehicle):
     message=vehicle.FlightLog()
     sock.send(message)
 
-def test(msg):
-    print msg
-
 def _log(msg):
     print msg
 
@@ -47,7 +44,7 @@ if __name__=='__main__':
     if config.get_lidar()[0]>0:
         from lidar_module import lidar
 
-    timer_interval=6
+    timer_interval=1
     
     scheduler = BackgroundScheduler()
     # scheduler.add_job(test,'interval',args=('test',),seconds=2)
@@ -72,13 +69,28 @@ if __name__=='__main__':
 
     if config.get_cloud()[0]>0:
         _log('Connecting to Cloud')
-        from cloud_module import sock,Listener
+        from cloud_module import open_sock,Receiver,Executor
+
         Watcher()
-        print 'Start Listener Thread'
-        t=threading.Thread(target=Listener)
-        # t.setDaemon(True)
-        t.start()
-        scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
+        sock=open_sock()
+        work_queue=Queue.Queue()
+
+        _log('Start Receiver Thread')
+        receiver=Receiver(work_queue,sock)
+        receiver.daemon=True
+        receiver.start()
+
+        _log('Start Executor Thread')
+        executor=Executor(work_queue)
+        executor.daemon=True
+        executor.start()
+
+        # work_queue.join()
+        
+        # scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
+        while True:
+            send_Log(sock,vehicle)
+            time.sleep(1)
     scheduler.start()
 
         
