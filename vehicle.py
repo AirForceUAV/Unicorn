@@ -443,7 +443,7 @@ class Vehicle(object):
         self._log(info)
         if info == "":
             return -1
-        Cancel()    # End current task
+        self.Cancel()    # End current task
         result=[]
         wps=info.split(',')
         for wp in wps:
