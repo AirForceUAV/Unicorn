@@ -99,9 +99,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1"  unit="seconds">Gear 'L' Duration </param>
-            <param index="2" value="2"  unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="3"  unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1"  unit="seconds">Movement Duration </param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -111,9 +109,6 @@
         </entry>
         <entry index="15" name="Decision Duration">
             <description>Decision Duration.</description>
-            <param index="1" value="1"  unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="1"  unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1"  unit="seconds">Gear 'H' Duration.</param>
             <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
         </entry>
@@ -231,9 +226,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1" unit="seconds">Movement Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -243,9 +236,6 @@
         </entry>
         <entry index="15" name="Decision Duration">
             <description>Decision Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
             <param index="4" value="3" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
         </entry>]
@@ -262,8 +252,6 @@
             <param index="2" value="10"   unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
-
-
 
     <vehicle index="2" type='HEX4' FlightController='pixhawk'>
         <entry index="0" name="Cloud">
@@ -364,9 +352,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1" unit="seconds">Movement Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -376,9 +362,6 @@
         </entry>
         <entry index="15" name="Decision Duration">
             <description>Decision Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
             <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
         </entry>]
