@@ -2,16 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import socket,time,os,sys
-from vehicle import vehicle
 from config import config
 from library import CancelWatcher,Watcher
 import threading,Queue
-
-global vehicle
-global config
-if config.get_lidar()[0] > 0:
-    from lidar_module import lidar
-    global lidar
 
 def open_sock():
     server_address = os.path.expanduser('~') + '/.UDS'+ '_fc'
@@ -24,20 +17,20 @@ def open_sock():
         sys.exit(1)
     
 class Receiver(threading.Thread):
-    def __init__(self,work_queue,sock):
+    def __init__(self,work_queue,sock,vehicle):
         threading.Thread.__init__(self,name="Receiver")
         self.work_queue=work_queue
         self.sock=sock
+        self.vehicle=vehicle
 
-    def run(self):
-        
+    def run(self):       
         buffer_size=4096
         try:
             #use this to receive command
             while True:
                 data = self.sock.recv(buffer_size)       
                 if data!='':
-                    vehicle.Cancel()
+                    self.vehicle.Cancel()
                     self.work_queue.put(data)            
         finally:
             print "sock is closed"
@@ -47,36 +40,27 @@ class Receiver(threading.Thread):
         print msg
 
 class Executor(threading.Thread):
-    def __init__(self,work_queue):
+    def __init__(self,work_queue,vehicle,lidar=None):
         threading.Thread.__init__(self,name="Executor")
         self.work_queue=work_queue
+        self.vehicle=vehicle
 
-    def run(self):
-        
+    def run(self):        
         while True:
             command=self.work_queue.get()
             if command.find('Cancel')!=-1:
                 self._log("Cancel")
-                vehicle.Cancel()
+                self.vehicle.Cancel()
             elif command.find('Route')!=-1:
                 self._log('Route')
                 info=command[7:-2]
-                vehicle.Route(info)           
-            else:
+                self.vehicle.Route(info)           
+            else:               
+                command="self."+command
                 self._log(command)
                 eval(command)
     def _log(self,msg):
         print msg
 
 if __name__=="__main__":
-    sock=open_sock()
-    work_queue=Queue.Queue()
-    receiver=Receiver(work_queue,sock)
-    # receiver.daemon=True
-    receiver.start()
-
-    executor=Executor(work_queue)
-    # executor.daemon=True
-    executor.start()
-
-    # work_queue.join()
+    pass

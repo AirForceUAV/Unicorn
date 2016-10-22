@@ -103,10 +103,8 @@ class MCU(object):
         print msg
         pass
 
-# Global mcu
-mcu=MCU()
-
 if __name__=="__main__":
+    mcu=MCU()
     # channels=[1500,1500,1500,1500,1000,0,0,1500]
     # mcu.send_pwm(channels)
     # mcu.send_msg('G')

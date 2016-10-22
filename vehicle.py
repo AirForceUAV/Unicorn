@@ -7,30 +7,23 @@ from library import CancelWatcher,radio_package,GCS_package,list_assign
 from library import get_location_metres,get_distance_metres,get_bearing,angle_heading_target
 from library import Singleton,isNum,_angle
 from waypoint import Waypoint
+from library import Watcher
 
-global config
-
+hasMCU=False
 if config.get_MCU()[0]>0:                       # instancce of MCU module object
-    from MCU_module import mcu
-    global mcu
-
-if config.get_compass()[0]>0:
-    from compass_module import compass          # instancce of compass module object
-    global compass
-
-if config.get_GPS()[0]>0:
-    from GPS_module import gps                  # instancce of GPS module object
-    global gps
-    
+    hasMCU=True
 
 class Vehicle(object):
     __metaclass__=Singleton
-    def __init__(self):
-        global config
+    
+    def __init__(self,mcu=None,compass=None,GPS=None):        
         self._log('Vehicle Type:{}'.format(config.get_type()))
         self._log('Flight Controller:{}'.format(config.get_FC()))
+        self.mcu=mcu
+        self.compass=compass
+        self.gps=GPS
         self.target= None                  # target location -- [lat,lon,alt]
-        self.AIL   = config.get_AIL()      # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
+        self.AIL   = config.get_AIL()     # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
         self.ELE   = config.get_ELE()      # Elevator:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
         self.THR   = config.get_THR()      # Throttle:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
         self.RUD   = config.get_RUD()      # Rudder  :[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
@@ -52,10 +45,11 @@ class Vehicle(object):
             self._log('Waiting for home location')
             while True:
                 home=self.get_location()
-                stars=gps.get_num_stars()
-                if home != None and stars>9:
+                stars=self.gps.get_num_stars()
+                if home[2] != None:
                     self.home_location=home
                     break
+
             self._log('Home location :{}'.format(self.home_location))
             self.init_alt=home[2]                # set init altitude
             self._log('init altitude:{}'.format(self.init_alt))
@@ -72,7 +66,6 @@ class Vehicle(object):
         self.wp=Waypoint(loc,index).get_all_wp()
         self.AUTO()
         
-
     def json_all_wp(self):
         if self.wp == []:
             return None        
@@ -80,24 +73,6 @@ class Vehicle(object):
         for point in self.wp:
             result.append('{}+{}'.format(point[0],point[1]))
         return ','.join(result)
-    def json_location(self):
-        loc=self.get_location()
-        if loc==None:
-            return None
-        else:
-            return "{},{},{}".format(loc[0],loc[1],loc[2])
-    def json_home(self):
-        home=self.home_location
-        if home==None:
-            return None
-        else:
-            return "{},{},{}".format(home[0],home[1],home[2])
-    def json_target(self):
-        target=self.get_target()
-        if target==None:
-            return None
-        else:
-            return "{},{}".format(target[0],target[1])
 
     def init_channels(self):
         channels=[0,0,0,0,0,0,0,0]
@@ -128,7 +103,7 @@ class Vehicle(object):
 
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
-        mid=mcu.read_channels()
+        mid=self.mcu.read_channels()
         self._log('Channels Mid:{}'.format(mid))
         list_assign(self.channels,mid)
         list_assign(self.channels_mid,mid)
@@ -141,14 +116,16 @@ class Vehicle(object):
     def GCS(self):
         self._log('Switch to GCS')
         self.mode_name='LOITER'
-        msg=GCS_package()
-        mcu.send_msg(msg)
+        if hasMCU:
+            msg=GCS_package()
+            self.mcu.send_msg(msg)
 
     def radio(self):
         self._log('Switch to Radio')
         self.mode_name='Radio'
-        msg=radio_package()
-        mcu.send_msg(msg)
+        if hasMCU:
+            msg=radio_package()
+            self.mcu.send_msg(msg)
 
     def print_channels(self):
         self._log("Current PWM :{}".format(self.channels))
@@ -207,28 +184,17 @@ class Vehicle(object):
             alt=origin[2]
         self.target=get_location_metres(origin,dNorth,dEast)
 
-    def set_target2(self,lat,lon,alt=None):
-        if not isNum(lat) or not isNum(lon):
-            self._log('lat , lon are unvalid')
-            return -1
-        if alt==None:
-            alt=self.get_alt()
-        self.target=[lat,lon]
-
     def get_target(self):
         return self.target
     def get_heading(self):
-        return compass.get_heading()
+        return self.compass.get_heading()
     def get_pitch(self):
-        return compass.get_pitch()
+        return self.compass.get_pitch()
     def get_roll(self):
-        return compass.get_roll()
-    def get_alt(self,relative=1):
-        alt=gps.get_alt()
-        if relative>0:
-            return alt-self.init_alt
-        else:
-            return alt
+        return self.compass.get_roll()
+    def get_attitude(self):
+        return self.compass.get_attitude()
+
     def get_mode(self):
         return self.mode_name
 
@@ -245,94 +211,105 @@ class Vehicle(object):
         return self.channels[att[0]]
 
     def yaw_left(self):
-        self._log('Turn Left')
-        self.movement2(self.RUD,-1)
-        self.send_pwm()
+        self._log('Turn Left...')
+        if hasMCU:
+            self.movement2(self.RUD,-1)
+            self.send_pwm()
     def yaw_right(self):
-        self._log('Turn Right')
-        self.movement2(self.RUD)
-        self.send_pwm()
+        self._log('Turn Right...')
+        if hasMCU:
+            self.movement2(self.RUD)
+            self.send_pwm()
     def forward(self,duration=None):
-        self._log('Forward....')
-        self.movement(self.ELE)
-        self.send_pwm()
-        if duration!=None:
-            time.sleep(duration)
-            self.brake()
+        self._log('Forward...')
+        if hasMCU:
+            self.movement(self.ELE)
+            self.send_pwm()
+            if duration!=None:
+                time.sleep(duration)
+                self.brake()
     def brake(self):
         self._log('brake')
-        duration=self.BD[self.get_gear()]
-        list_assign(self.channels,self.channels_mid)       
-        self.send_pwm()
-        time.sleep(duration)
+        if hasMCU:
+            duration=self.BD[self.get_gear()]
+            list_assign(self.channels,self.channels_mid)       
+            self.send_pwm()
+            time.sleep(duration)
 
     def yaw_left_brake(self):
         duration=self.mDuration()
         self._log('Yaw Left')
-        self.movement2(self.RUD,-1)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement2(self.RUD,-1)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def yaw_right_brake(self):
         duration=self.mDuration()
         self._log('Yaw Right')
-        self.movement2(self.RUD)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement2(self.RUD)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def forward_brake(self):
         duration=self.mDuration()
         self._log('Forward')
-        self.movement(self.ELE)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement(self.ELE)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def backward_brake(self):
         duration=self.mDuration()
         self._log('Backward')
-        self.movement(self.ELE,-1)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement(self.ELE,-1)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def roll_left_brake(self):
         duration=self.mDuration()
         self._log('Roll Left')
-        self.movement(self.AIL,-1)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement(self.AIL,-1)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def roll_right_brake(self):
         duration=self.mDuration()
         self._log('Roll Right')
-        self.movement(self.AIL)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            self.movement(self.AIL)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
 
     def up_brake(self):
         duration=self.mDuration()
         self._log('Throttle Up')
-        pwm=self.movement(self.THR)
-        if self.PIT[1]>0:
-            self.channels[self.PIT[0]]=self.PIT_curve(pwm)
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            pwm=self.movement(self.THR)
+            if self.PIT[1]>0:
+                self.channels[self.PIT[0]]=self.PIT_curve(pwm)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def down_brake(self):
         duration=self.mDuration()
         self._log('Throttle Down')
-        pwm=self.movement(self.THR,-1)
-        if self.PIT[1]>0:
-            self.channels[self.PIT[0]]=self.PIT_curve(pwm)    
-        self.send_pwm()
-        time.sleep(duration)
-        self.brake()
+        if hasMCU:
+            pwm=self.movement(self.THR,-1)
+            if self.PIT[1]>0:
+                self.channels[self.PIT[0]]=self.PIT_curve(pwm)
+            self.send_pwm()
+            time.sleep(duration)
+            self.brake()
     def mDuration(self):
-        return self.MD[self.get_gear()]
+        return self.MD[0]
     
-
     def send_pwm(self):
-        mcu.send_pwm(self.channels)
+        self.mcu.send_pwm(self.channels)
 
     def diff_angle(self,origin,target,sign):
         diff=(360+sign*(target-origin))%360
@@ -352,7 +329,6 @@ class Vehicle(object):
             return 0
 
         current_heading=self.get_heading()
-        
         watcher=CancelWatcher()
         # Relative angle to heading
         if relative:
@@ -374,14 +350,14 @@ class Vehicle(object):
         while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
             self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
             time.sleep(.1)
-        self._log('Reached Angle {}'.format(self.get_heading()))
+        #self._log('Reached Angle {}'.format(self.get_heading()))
         self.brake()
         self._log('Reached Angle {}'.format(self.get_heading()))
         return 1
 
     def navigation(self,target):
         deviation=config.get_degree()[0]
-        checktime=config.get_DD()[4]
+        checktime=config.get_DD()[0]
         watcher=CancelWatcher()
         while not watcher.IsCancel():
             current_location =self.get_location()
@@ -401,7 +377,7 @@ class Vehicle(object):
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(checktime)
-        return 0
+
     def RTL(self):
         target=self.get_home()
         if target is None:                
@@ -415,7 +391,7 @@ class Vehicle(object):
 
     def Auto(self):
         if self.wp == []:
-            self._log('Waypoint is none')
+            self._log('Waypoint is None')
             return -1
         self.mode_name='AUTO'
         watcher=CancelWatcher()
@@ -423,7 +399,6 @@ class Vehicle(object):
             if watcher.IsCancel():
                 break
             self.cur_wp+=1
-            self._log("Target is None!")
             self.navigation(point)
         
         self.mode_name="Loiter"
@@ -440,6 +415,7 @@ class Vehicle(object):
         self.navigation(target)
         self.mode_name="Loiter"
         self.target=None
+
     def Route(self,info):
         self._log(info)
         if info == "":
@@ -459,7 +435,7 @@ class Vehicle(object):
         self.cur_wp=0
 
     def GPS_ERR(self):
-        return "GPS is ERROR ! num_stars:{}".format(gps.get_num_stars())
+        return "GPS is ERROR ! num_stars:{}".format(self.gps.get_num_stars())
 
     def distance_from_home(self):
         location=self.get_location()
@@ -467,6 +443,7 @@ class Vehicle(object):
         if location is None or home is None:
             return -1
         return get_distance_metres(location,home)
+
     def distance_to_target(self):
         location=self.get_location()
         target=self.get_target()
@@ -481,21 +458,20 @@ class Vehicle(object):
         return self.home_location
 
     def get_location(self):
-        loc=gps.get_location()
-        if loc is None:
-            self._log("GPS is not healthy.num_stars is {}".format(gps.get_num_stars()))
+        loc=self.gps.get_location()
         return loc
+
     def FlightLog(self):
         log={}
         log["id"]=time.time()
         log["Flag"]=1     
         if config.get_GPS()[0] > 0:
-            log["HomeLocation"]=self.json_home()           # lat,lon,alt     
-            log["LocationGlobal"]=self.json_location()     # lat,lon,alt
+            log["HomeLocation"]=self.str_list(self.get_home())           # lat,lon,alt     
+            log["LocationGlobal"]=self.str_list(self.get_location())    # lat,lon,alt
             log["DistanceFromHome"]=self.distance_from_home() # distance
             log["DistanceToTarget"]=self.distance_to_target() # distance
-            log["GPS"]=gps.info()                          #[state,stars]
-            log['Target']=self.json_target()                #lat,lon
+            log["GPS"]=self.gps.info()                          #[state,stars]
+            log['Target']=self.str_list(self.get_target())              #lat,lon
         else:
             log["HomeLocation"]="{},{},{}".format(36.11111,116.22222,0.0)
             log["LocationGlobal"]="{},{},{}".format(36.01234,116.12375,0.0)  
@@ -504,8 +480,8 @@ class Vehicle(object):
             log["GPS"]=-1
             log['Target']="{},{},{}".format(36.01234,116.12375,0.0)
         if config.get_compass()[0] > 0:
-            log["Gimbal"]= "{},{},{}".format(self.get_pitch(),self.get_heading(),self.get_roll())  # [pitch,yaw,roll]
-            log["Compass"]=-1      #[state]
+            log["Gimbal"]= self.str_list(self.get_attitude())  # [pitch,yaw,roll]
+            log["Compass"]=self.compass.info()      #[state]
         else:
             log['Gimbal']="{},{},{}".format(0.2,-0.3,355)
             log['Compass']=-1
@@ -516,22 +492,24 @@ class Vehicle(object):
         log["Airspeed"]=3.0     # speed
         log["Mode"]=self.get_mode()  # mode
         log["IMU"]=-1
-        # log["ServoIntput"]=None    # [ch1~ch8]
-        # log["ServoInput"]=None   # [ch1~ch8]
         log["TimeStamp"]=int(time.time())
         log['Gear']=self.get_gear()  # Gear
-        log['CurrentChannels']=','.join(self.str_channels(self.channels))    # ch1~ch8
-        log['LoiterChannels']=','.join(self.str_channels(self.channels_mid)) # ch1~ch8
+        log['CurrentChannels']=self.str_list(self.channels)   # ch1~ch8
+        log['LoiterChannels']=self.str_list(self.channels_mid) # ch1~ch8
         log['CurrentWpNumber']=self.cur_wp
         log['AllWp']=self.json_all_wp()
         log['RPM']=1600    # RPM
         
         return json.dumps(log)
-    def str_channels(self,channels):
+
+    def str_list(self,arrs):
         result=[]
-        for ch in channels:
-            result.append(str(ch))
-        return result
+        if arrs!=None:
+            for arr in arrs:
+                result.append(str(arr))
+            return ','.join(result)
+        else:
+            return None
 
     def __str__(self):
         msg={}
@@ -559,20 +537,45 @@ class Vehicle(object):
     def _log(self,msg):
         print msg
 
-vehicle=Vehicle()
-
 if __name__=="__main__":
+    Watcher()
+    mcu=None
+    gps=None
+    compass=None
+    if config.get_MCU()[0]>0:                       # instancce of MCU module object
+        from MCU_module import MCU
+        mcu=MCU()
+
+    if config.get_compass()[0]>0:
+        from compass_module import Compass          # instancce of compass module object
+        compass=Compass()
+
+        compass.start()
+        while compass.get_attitude()==None:
+            # print compass.get_heading()
+            time.sleep(.5)
+
+    if config.get_GPS()[0]>0:
+        from GPS_module import GPS                 # instancce of GPS module object
+        gps=GPS()
+
+        gps.start()
+        while gps.msg==None:
+            # print gps.get_num_stars()
+            time.sleep(.5)
+                    
+    vehicle=Vehicle(mcu,compass,gps)
     # vehicle.print_channels()
     # vehicle.print_channels_mid()
     
-    #while True:
-    #    #raw_input("NEXT")
-    #    time.sleep(.5)
-    #    vehicle.set_channels_mid()
-    #    print vehicle.PIT_curve(vehicle.channels_mid[2])
-    #vehicle.GCS()
-    #vehicle.set_channels_mid()
-    ##vehicle.set_gear(2)
+    # while True:
+    #     #raw_input("NEXT")
+    #     time.sleep(.5)
+    #     vehicle.set_channels_mid()
+    #     print vehicle.PIT_curve(vehicle.channels_mid[2])
+    # vehicle.GCS()
+    # vehicle.set_channels_mid()
+    #vehicle.set_gear(2)
     #vehicle.yaw_left_brake()
     # time.sleep(3)
     #vehicle.yaw_right_brake()
@@ -589,17 +592,15 @@ if __name__=="__main__":
     #vehicle.yaw_right()
     #vehicle.forward(5)
    
-    vehicle.condition_yaw(30)
-    vehicle.condition_yaw(270)
-    #
-    #vehicle.set_target(20,0)
-    #assert vehilce.get_location!=None,['GPS is unhealthy!!!']
-    # while True:
-    #     raw_input('Next')
-    #     print 'heading',vehicle.get_heading()
-    #     print "heading_target",angle_heading_target(vehicle.get_location(),vehicle.get_target(),vehicle.get_heading())
+    # vehicle.condition_yaw(30)
+    # vehicle.condition_yaw(270)
+    
+    vehicle.set_target(20,0)
+    while True:
+        raw_input('Next')
+        print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
     #vehicle.Guided()
-    vehicle.radio()
+    # vehicle.radio()
     
 
 

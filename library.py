@@ -14,7 +14,7 @@ def open_serial(portname,baudrate,timeout=0.5):
             return com
           except serial.SerialException:
             info=sys.exc_info()
-            _log("{}:{}".format(info[0],info[1]))
+            print "{}:{}".format(info[0],info[1])
             time.sleep(1.0)
             continue
 def root(file_name):
