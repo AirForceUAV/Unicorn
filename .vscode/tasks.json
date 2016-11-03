@@ -4,6 +4,6 @@
     "version": "0.1.0",
     "command": "python",
     "isShellCommand": true,
-    "args": ["config.py"],
+    "args": ["${file}"],
     "showOutput": "always"
 }
