@@ -58,7 +58,12 @@ class Executor(threading.Thread):
             else:               
                 command="self."+command
                 self._log(command)
-                eval(command)
+                try:
+                    eval(command)
+                except Exception,msg:
+                    print "eval() Error"
+                    pass
+
     def _log(self,msg):
         print msg
 
