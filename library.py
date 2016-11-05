@@ -206,5 +206,4 @@ class Watcher(object):
 
 if __name__=='__main__':
     open_serial('/dev/ttyUSB0',9600)
-   
-
+    

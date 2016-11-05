@@ -573,8 +573,8 @@ if __name__=="__main__":
     #     time.sleep(.5)
     #     vehicle.set_channels_mid()
     #     print vehicle.PIT_curve(vehicle.channels_mid[2])
-    # vehicle.GCS()
-    # vehicle.set_channels_mid()
+    vehicle.GCS()
+    vehicle.set_channels_mid()
     #vehicle.set_gear(2)
     #vehicle.yaw_left_brake()
     # time.sleep(3)
@@ -592,13 +592,13 @@ if __name__=="__main__":
     #vehicle.yaw_right()
     #vehicle.forward(5)
    
-    # vehicle.condition_yaw(30)
-    # vehicle.condition_yaw(270)
+    vehicle.condition_yaw(30)
+    vehicle.condition_yaw(270)
     
-    vehicle.set_target(20,0)
-    while True:
-        raw_input('Next')
-        print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
+    #vehicle.set_target(20,0)
+    # while True:
+    #     raw_input('Next')
+    #     print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
     #vehicle.Guided()
     # vehicle.radio()
     
