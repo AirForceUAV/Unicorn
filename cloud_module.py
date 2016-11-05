@@ -60,7 +60,7 @@ class Executor(threading.Thread):
                 self._log(command)
                 try:
                     eval(command)
-                except Exception,msg:
+                except Exception:
                     print "eval() Error"
                     pass
 
