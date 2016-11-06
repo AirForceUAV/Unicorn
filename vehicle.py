@@ -350,9 +350,9 @@ class Vehicle(object):
         while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
             self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
             time.sleep(.1)
-        #self._log('Reached Angle {}'.format(self.get_heading()))
+        self._log('pre Angle {}'.format(self.get_heading()))
         self.brake()
-        self._log('Reached Angle {}'.format(self.get_heading()))
+        self._log('after Angle {}'.format(self.get_heading()))
         return 1
 
     def navigation(self,target):
@@ -600,7 +600,7 @@ if __name__=="__main__":
     #     raw_input('Next')
     #     print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
     #vehicle.Guided()
-    # vehicle.radio()
+    vehicle.radio()
     
 
 
