@@ -30,7 +30,8 @@ class Receiver(threading.Thread):
             while True:
                 data = self.sock.recv(buffer_size)       
                 if data!='':
-                    self.vehicle.Cancel()
+                    # self.vehicle.Cancel()
+                    CancelWatcher.Cancel=True
                     self.work_queue.put(data)            
         finally:
             print "sock is closed"
