@@ -62,7 +62,8 @@ class Executor(threading.Thread):
                 try:
                     eval(command)
                 except Exception:
-                    print "eval() Error"
+                    info=sys.exc_info()
+                    print "{}:{}".format(info[0],info[1])
                     pass
 
     def _log(self,msg):
