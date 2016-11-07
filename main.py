@@ -32,6 +32,7 @@ def GPS_heartbeat(gps):
     
 def send_Log(sock,vehicle):
     message=vehicle.FlightLog()
+    message="Test"
     sock.send(message)
 
 def _log(msg):
@@ -60,7 +61,7 @@ if __name__=='__main__':
     if config.get_GPS()[0]>0:
         from GPS_module import GPS                 # instancce of GPS module object
         gps=GPS()
-        print 222
+        
         gps.start()
         while gps.msg==None:
             # print gps.get_num_stars()
@@ -73,11 +74,11 @@ if __name__=='__main__':
         from lidar_module import Lidar
         lidar=Lidar(vehicle)
     
-    if config.get_cloud()[0]>0:
+    if config.get_cloud()[0] > 0:
         _log('Connecting to Cloud')
         from cloud_module import open_sock,Receiver,Executor
 
-        sock=open_sock()
+        sock = open_sock()
         work_queue=Queue.Queue()
 
         _log('Start Receiver Thread')
@@ -90,11 +91,11 @@ if __name__=='__main__':
         executor.daemon=True
         executor.start()
         
-        # scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
-        while True:
-            message=vehicle.FlightLog()
-            sock.send(message)
-            time.sleep(1)   
+        scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
+        # while True:
+        #     message=vehicle.FlightLog()
+        #     sock.send(message)
+        #     time.sleep(1)   
     scheduler.start()
     receiver.join()
     executor.join()

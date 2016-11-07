@@ -341,8 +341,6 @@ if __name__=="__main__":
             time.sleep(.5)
 
     vehicle=Vehicle(mcu,compass,gps)
-    # vehicle.print_channels()
-    # vehicle.print_channels_mid()
 
     # while True:
     #     #raw_input("NEXT")
@@ -369,9 +367,9 @@ if __name__=="__main__":
     #vehicle.forward(5)
 
     vehicle.condition_yaw(30)
-    vehicle.condition_yaw(270)
+    vehicle.condition_yaw(300)
 
-    # vehicle.set_target(20,0)
+    # vehicle.set_target(15,0)
     # while True:
     #     raw_input('Next')
     #     print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
