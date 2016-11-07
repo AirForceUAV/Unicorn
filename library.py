@@ -17,7 +17,7 @@ def open_serial(portname,baudrate,timeout=0.5):
             print "{}:{}".format(info[0],info[1])
             time.sleep(1.0)
             continue
-def root(file_name):
+def element(file_name,index):
         try: 
             import xml.etree.cElementTree as ET
         except ImportError: 
@@ -28,7 +28,7 @@ def root(file_name):
         except Exception , e: 
             _log("Error:cannot parse file:{}".format(file_name))
             sys.exit(1)
-        return _root
+        return _root[index]
 
 def get_bearing(aLocation1, aLocation2):
     """
@@ -78,6 +78,7 @@ def angle_heading_target(origin,target,heading):
     target_north=get_bearing(origin,target)
     heading_target=(360+target_north-heading)%360
     return int(heading_target)
+
 def _angle(angle):
     if angle>180:
         return 360-angle
@@ -101,8 +102,8 @@ def isNum(s):
 
 
 '''
-decode(解码)的作用是将其他编码的字符串转换成unicode编码, str.decode('hex')  >> hex->unicode
-encode(编码)的作用是将unicode编码转换成其他编码的字符串  str.encode('hex')  >> unicode->hex
+str.decode('hex')  >> hex->unicode
+str.encode('hex')  >> unicode->hex
 hex(int10) hex(1024) >> 0x400
 int('ff',16)  >> 255
 chr(0x30) >> '0'    chr(48) >> '0'
@@ -206,4 +207,5 @@ class Watcher(object):
 
 if __name__=='__main__':
     open_serial('/dev/ttyUSB0',9600)
-    
+   
+

@@ -1,75 +1,55 @@
 <?xml version='1.0'?>
 <Waypoints>
-    <Waypoint index='0' trail="Rectangle">
-         <point index='0' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+    <Waypoint index='0' Trail="Rectangle">
+         <point index='0'>
             <north>0</north>
             <east>-50</east>
             <alt>-1</alt>
         </point>
-        <point index='1' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+        <point index='1'>
             <north>100</north>
             <east>0</east>
             <alt>-1</alt>
         </point>
-         <point index='2' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='2'>
             <north>0</north>
             <east>100</east>
             <alt>-1</alt>
         </point>
-         <point index='3' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='3'>
             <north>-100</north>
             <east>0</east>
             <alt>-1</alt>
         </point>
-         <point index='4' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='4'>
             <north>0</north>
             <east>-50</east>
             <alt>-1</alt>
         </point>
     </Waypoint>
     
-    <Waypoint index='1' trail="Diamond">
-         <point index='0' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+    <Waypoint index='1' Trail="Diamond">
+         <point index='0'>
             <north>50</north>
             <east>--50</east>
             <alt>-1</alt>
         </point>
-        <point index='1' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+        <point index='1'>
             <north>50</north>
             <east>-50</east>
             <alt>-1</alt>
         </point>
-         <point index='2' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='2'>
             <north>-50</north>
             <east>50</east>
             <alt>-1</alt>
         </point>
-         <point index='3' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='3'>
             <north>-50</north>
             <east>-50</east>
             <alt>-1</alt>
         </point>
-         <point index='4' type="1">
-            <lat>-1</lat>
-            <lon>-1</lon>
+         <point index='4'>
             <north>0</north>
             <east>-50</east>
             <alt>-1</alt>

@@ -34,9 +34,6 @@ def send_Log(sock,vehicle):
     message=vehicle.FlightLog()
     sock.send(message)
 
-def test(msg):
-    print msg
-
 def _log(msg):
     print msg
 
@@ -63,7 +60,7 @@ if __name__=='__main__':
     if config.get_GPS()[0]>0:
         from GPS_module import GPS                 # instancce of GPS module object
         gps=GPS()
-
+        print 222
         gps.start()
         while gps.msg==None:
             # print gps.get_num_stars()
@@ -93,11 +90,11 @@ if __name__=='__main__':
         executor.daemon=True
         executor.start()
         
-        scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
-        # while True:
-        #     message=vehicle.FlightLog()
-        #     sock.send(message)
-        #     time.sleep(1)   
+        # scheduler.add_job(send_Log, 'interval', args=(sock,vehicle),seconds=1)
+        while True:
+            message=vehicle.FlightLog()
+            sock.send(message)
+            time.sleep(1)   
     scheduler.start()
     receiver.join()
     executor.join()

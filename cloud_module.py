@@ -18,7 +18,7 @@ def open_sock():
     
 class Receiver(threading.Thread):
     def __init__(self,work_queue,sock,vehicle):
-        threading.Thread.__init__(self,name="Receiver")
+        super(Receiver,self).__init__(name="Receiver")
         self.work_queue=work_queue
         self.sock=sock
         self.vehicle=vehicle
@@ -30,8 +30,7 @@ class Receiver(threading.Thread):
             while True:
                 data = self.sock.recv(buffer_size)       
                 if data!='':
-                    # self.vehicle.Cancel()
-                    CancelWatcher.Cancel=True
+                    self.vehicle.Cancel()
                     self.work_queue.put(data)            
         finally:
             print "sock is closed"
@@ -42,7 +41,7 @@ class Receiver(threading.Thread):
 
 class Executor(threading.Thread):
     def __init__(self,work_queue,vehicle,lidar=None):
-        threading.Thread.__init__(self,name="Executor")
+        super(Executor,self).__init__(name="Executor")
         self.work_queue=work_queue
         self.vehicle=vehicle
 
@@ -59,13 +58,7 @@ class Executor(threading.Thread):
             else:               
                 command="self."+command
                 self._log(command)
-                try:
-                    eval(command)
-                except Exception:
-                    info=sys.exc_info()
-                    print "{}:{}".format(info[0],info[1])
-                    pass
-
+                eval(command)
     def _log(self,msg):
         print msg
 
