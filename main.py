@@ -3,7 +3,7 @@
 
 #import logging
 #logging.basicConfig()
-import time,threading,Queue
+import time,Queue
 from config import config
 from apscheduler.schedulers.background import BackgroundScheduler
 from library import Watcher
@@ -61,7 +61,7 @@ if __name__=='__main__':
     if config.get_GPS()[0]>0:
         from GPS_module import GPS                 # instancce of GPS module object
         gps=GPS()
-        
+
         gps.start()
         while gps.msg==None:
             # print gps.get_num_stars()

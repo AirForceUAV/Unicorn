@@ -1,8 +1,8 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import math,time,json
-from config import config
+import time,json
+from  config import config
 from library import CancelWatcher,radio_package,GCS_package,list_assign
 from library import get_distance_metres,angle_heading_target
 from library import Singleton,_angle,Watcher

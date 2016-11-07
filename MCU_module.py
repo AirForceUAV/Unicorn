@@ -1,10 +1,10 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import serial,time
+import time
 from config import config
 from library import open_serial,encode_hex,encode_10h
-from library import radio_package,GCS_package,Mid_package
+from library import GCS_package,Mid_package
 from library import Singleton
 
 class MCU(object):
@@ -61,7 +61,7 @@ class MCU(object):
             times+=1
             self.ser.write(Mid_package())
             ack=self.ser.read(42)
-            ack=msg=encode_hex(ack)
+            ack=encode_hex(ack)
             # print(ack)
             if ack.find('aabb')!=-1:
                 return 1
