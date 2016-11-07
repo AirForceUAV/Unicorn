@@ -1,7 +1,6 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-import sys
 from library import Singleton, element
 
 

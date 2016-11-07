@@ -26,7 +26,7 @@ def element(file_name,index):
             tree = ET.parse(file_name)
             _root = tree.getroot()
         except Exception , e: 
-            _log("Error:cannot parse file:{}".format(file_name))
+            print "Error:cannot parse file:{}".format(file_name)
             sys.exit(1)
         return _root[index]
 

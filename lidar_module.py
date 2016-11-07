@@ -16,7 +16,6 @@ class Lidar(object):
     def __init__(self):
         replyPipe="./Reply"
         requestPipe="./Request"
-        con=config.get_lidar()
 
         if self.__class__._pipeSet.has_key((replyPipe,requestPipe)) is False:
             self.__class__._pipeSet[(replyPipe,requestPipe)] = {}
@@ -113,10 +112,11 @@ class Lidar(object):
         print msg
 
 
+con=config.get_lidar()
 pid = os.fork()
-    if pid == 0:
-        os.execl("./ultra_simple","ultra_simple",con[1],str(con[2]),str(con[3]),"")
-        exit(0)
+if pid == 0:
+    os.execl("./ultra_simple","ultra_simple",con[1],str(con[2]),str(con[3]),"")
+    exit(0)
 # Global lidar       
 lidar=Lidar()
 
