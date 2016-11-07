@@ -76,7 +76,7 @@ class MCU(object):
         while True:
             msg=self.ser.read(size)
             msg=encode_hex(msg)
-            # self._log("Read channels:{}".format(msg))
+            #self._log("Read channels:{}".format(msg))
             n=msg.find('aabb')
             if n!=-1 and len(msg)>=n+38:                
                 return msg[n:n+38]

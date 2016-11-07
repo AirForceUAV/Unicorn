@@ -1,7 +1,6 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-import serial
 import time
 import threading
 from library import open_serial, encode_hex, Watcher
@@ -22,7 +21,6 @@ class Compass(threading.Thread):
 
     def run(self):
         print "Initializing Compass Module"
-        pre = None
         while True:
             self.attitude = self._attitude()
 

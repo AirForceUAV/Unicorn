@@ -1,9 +1,9 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import serial,pynmea2,time
+import pynmea2,time
 from config import config
-from library import open_serial,get_distance_metres,get_location_metres
+from library import open_serial
 from library import Singleton,Watcher
 import threading
 
