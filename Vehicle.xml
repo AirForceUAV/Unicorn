@@ -163,7 +163,7 @@
             <param index="2" value="1004"  unit="PWM">LOW THR PWM </param>
             <param index="3" value="1384"  unit="PWM">MID THR PWM </param>
             <param index="4" value="1758" unit="PWM">HIG THR PWM </param>
-            <param index="5" value="1"    unit='bool'>Positive(1) or Reverse(-1).</param>
+            <param index="5" value="-1"    unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10"   unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="RUD">
@@ -196,7 +196,7 @@
         </entry>
         <entry index="8" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="0"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="1" value="1"    unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
             <param index="2" value="/dev/GPS" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="1000"  unit="times">ARQ times. </param>

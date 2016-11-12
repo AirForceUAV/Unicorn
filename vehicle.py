@@ -187,7 +187,7 @@ class Vehicle(Attribute):
 
     def diff_angle(self,origin,target,sign):
         diff=(360+sign*(target-origin))%360
-        if diff<180 and diff>2:
+        if diff<180 and diff>5:
             return True
         else:
             return False
@@ -220,13 +220,13 @@ class Vehicle(Attribute):
             is_cw=-1
             self._log('Turn left {}'.format(360-direction))
             self.yaw_left()
-
+        print "Target",target_angle
         while not watcher.IsCancel() and self.diff_angle(self.get_heading(),target_angle,is_cw):
-            self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
-            time.sleep(.1)
-        #self._log('Reached Angle {}'.format(self.get_heading()))
+            #self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
+            time.sleep(.02)
+        self._log('pre Angle {}'.format(self.get_heading()))
         self.brake()
-        self._log('Reached Angle {}'.format(self.get_heading()))
+        self._log('after Angle {}'.format(self.get_heading()))
         return 1
 
     def navigation(self,target):
@@ -342,38 +342,38 @@ if __name__=="__main__":
 
     vehicle=Vehicle(mcu,compass,gps)
 
-    while True:
-        #raw_input("NEXT")
-        time.sleep(.5)
-        vehicle.set_channels_mid()
-        print vehicle.PIT_curve(vehicle.channels_mid[2])    
+    #while True:
+    #    raw_input("NEXT")
+    #    time.sleep(.5)
+    #    vehicle.set_channels_mid()
+    ##    print vehicle.PIT_curve(vehicle.channels_mid[2])    
     vehicle.set_channels_mid()
     vehicle.GCS()
     #vehicle.set_gear(2)
     #vehicle.yaw_left_brake()
     # time.sleep(3)
     #vehicle.yaw_right_brake()
-    # vehicle.roll_left_brake()
+    #vehicle.roll_left_brake()
     # time.sleep(2)
-    # vehicle.roll_right_brake()
+    #vehicle.roll_right_brake()
     #vehicle.forward_brake()
     # time.sleep(2)
-    # vehicle.backward_brake()
-    # vehicle.up_brake()
-    # time.sleep(2)
+    #vehicle.backward_brake()
+    #vehicle.up_brake()
+    #time.sleep(2)
     #vehicle.down_brake()
     #vehicle.yaw_left()
     #vehicle.yaw_right()
     #vehicle.forward(5)
 
-    vehicle.condition_yaw(30)
-    vehicle.condition_yaw(300)
+    #vehicle.condition_yaw(30)
+    #vehicle.condition_yaw(300)
 
-    # vehicle.set_target(15,0)
+    vehicle.set_target(0,15)
     # while True:
     #     raw_input('Next')
     #     print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
-    #vehicle.Guided()
+    vehicle.Guided()
     vehicle.radio()
 
 

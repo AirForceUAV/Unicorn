@@ -31,7 +31,7 @@ class Attribute(object):
 
         self.home_location=None
         self.init_alt=None
-        if config.get_GPS()[0] > 0:
+        if config.get_GPS()[0] > 0 and GPS is not None:
             self._log('Waiting for home location')
             while True:
                 home=self.get_location()
