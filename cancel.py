@@ -333,37 +333,4 @@ if __name__ == "__main__":
         mcu = MCU()
 
     vehicle = Vehicle(mcu, compass, gps)
-
-    # while True:
-    #     # raw_input("NEXT")
-    #     time.sleep(.5)
-    #     vehicle.set_channels_mid()
-    #     print vehicle.PIT_curve(vehicle.channels_mid[2])
-    # vehicle.set_channels_mid()
-    # vehicle.GCS()
-    # vehicle.set_gear(2)
-    # vehicle.yaw_left_brake()
-    # time.sleep(3)
-    # vehicle.yaw_right_brake()
-    # vehicle.roll_left_brake()
-    # time.sleep(2)
-    # vehicle.roll_right_brake()
-    #vehicle.forward_brake()
-    #time.sleep(2)
-    # vehicle.backward_brake()
-    #vehicle.up_brake()
-    #time.sleep(2)
-    # vehicle.down_brake()
-    # vehicle.yaw_left()
-    # vehicle.yaw_right()
-    # vehicle.forward(5)
-
-    # vehicle.condition_yaw(30)
-    # vehicle.condition_yaw(300)
-
-    # vehicle.set_target(15,0)
-    # while True:
-    #     raw_input('Next')
-    #     print get_distance_metres(vehicle.get_location(),vehicle.target),vehicle.gps.get_num_stars()
-    # vehicle.Guided()
     vehicle.radio()
