@@ -1,0 +1,260 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Attribute	attribute.py	/^class Attribute(object):$/;"	kind:class	line:9
+Auto	cancel.py	/^    def Auto(self):$/;"	kind:member	line:275
+Auto	vehicle.py	/^    def Auto(self):$/;"	kind:member	line:266
+Auto_Avoid	lidar_module.py	/^    def Auto_Avoid(self):$/;"	kind:member	line:50
+Avoid	lidar_module.py	/^    def Avoid(self,target,way=1):$/;"	kind:member	line:66
+Cancel	cancel.py	/^    def Cancel(self):$/;"	kind:member	line:319
+Cancel	library.py	/^    Cancel=False$/;"	kind:variable	line:145
+Cancel	vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:310
+CancelWatcher	library.py	/^class CancelWatcher(object):$/;"	kind:class	line:144
+Compass	compass_module.py	/^class Compass(threading.Thread):$/;"	kind:class	line:11
+Compass_heartbeat	main.py	/^def Compass_heartbeat(compass):$/;"	kind:function	line:18
+Config	config.py	/^class Config(object):$/;"	kind:class	line:7
+Decision	lidar_module.py	/^    def Decision(self,targetDirection):$/;"	kind:member	line:28
+Executor	cloud_module.py	/^class Executor(threading.Thread):$/;"	kind:class	line:42
+FlightLog	attribute.py	/^    def FlightLog(self):$/;"	kind:member	line:178
+GCS	cancel.py	/^    def GCS(self):$/;"	kind:member	line:26
+GCS	vehicle.py	/^    def GCS(self):$/;"	kind:member	line:22
+GCS_package	library.py	/^def GCS_package():$/;"	kind:function	line:139
+GPS	GPS_module.py	/^class GPS(threading.Thread):$/;"	kind:class	line:10
+GPS_heartbeat	main.py	/^def GPS_heartbeat(gps):$/;"	kind:function	line:26
+GPS_module.py	GPS_module.py	1;"	kind:file	line:1
+Guided	cancel.py	/^    def Guided(self):$/;"	kind:member	line:290
+Guided	vehicle.py	/^    def Guided(self):$/;"	kind:member	line:281
+Guided_Avoid	lidar_module.py	/^    def Guided_Avoid(self):        $/;"	kind:member	line:37
+IsCancel	library.py	/^    def IsCancel(self):$/;"	kind:member	line:151
+Lidar	lidar_module.py	/^class Lidar(object):$/;"	kind:class	line:13
+MCU	MCU_module.py	/^class MCU(object):$/;"	kind:class	line:10
+MCU_heartbeat	main.py	/^def MCU_heartbeat(mcu):$/;"	kind:function	line:13
+MCU_module.py	MCU_module.py	1;"	kind:file	line:1
+Mid_package	library.py	/^def Mid_package():$/;"	kind:function	line:141
+PIT_curve	attribute.py	/^    def PIT_curve(self,pwm):$/;"	kind:member	line:92
+RTL	cancel.py	/^    def RTL(self):$/;"	kind:member	line:264
+RTL	vehicle.py	/^    def RTL(self):$/;"	kind:member	line:255
+RTL_Avoid	lidar_module.py	/^    def RTL_Avoid(self):$/;"	kind:member	line:92
+Receiver	cloud_module.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:19
+Route	attribute.py	/^    def Route(self,info):       $/;"	kind:member	line:58
+Route	waypoint.py	/^    def Route(self,info):$/;"	kind:member	line:24
+Singleton	library.py	/^class Singleton(type):  $/;"	kind:class	line:158
+Vehicle	cancel.py	/^class Vehicle(Attribute):$/;"	kind:class	line:20
+Vehicle	vehicle.py	/^class Vehicle(Attribute):$/;"	kind:class	line:16
+Watcher	library.py	/^class Watcher(object):  $/;"	kind:class	line:167
+Waypoint	waypoint.py	/^class Waypoint(object):$/;"	kind:class	line:6
+__call__	library.py	/^    def __call__(cls, *args, **kw):  $/;"	kind:member	line:162
+__del__	library.py	/^    def __del__(self):$/;"	kind:member	line:153
+__init__	GPS_module.py	/^    def __init__(self):$/;"	kind:member	line:12
+__init__	MCU_module.py	/^    def __init__(self):$/;"	kind:member	line:12
+__init__	attribute.py	/^    def __init__(self,mcu,compass,GPS):$/;"	kind:member	line:10
+__init__	cancel.py	/^    def __init__(self, mcu=None, compass=None, GPS=None):$/;"	kind:member	line:23
+__init__	cloud_module.py	/^    def __init__(self,work_queue,sock,vehicle):$/;"	kind:member	line:20
+__init__	cloud_module.py	/^    def __init__(self,work_queue,vehicle,lidar=None):$/;"	kind:member	line:43
+__init__	compass_module.py	/^    def __init__(self):$/;"	kind:member	line:14
+__init__	config.py	/^    def __init__(self, index=1):$/;"	kind:member	line:10
+__init__	library.py	/^    def __init__(cls, name, bases, dict):  $/;"	kind:member	line:159
+__init__	library.py	/^    def __init__(self):  $/;"	kind:member	line:183
+__init__	library.py	/^    def __init__(self):$/;"	kind:member	line:147
+__init__	lidar_module.py	/^    def __init__(self):$/;"	kind:member	line:16
+__init__	vehicle.py	/^    def __init__(self,mcu=None,compass=None,GPS=None):$/;"	kind:member	line:19
+__init__	waypoint.py	/^    def __init__(self):     $/;"	kind:member	line:7
+__metaclass__	GPS_module.py	/^    __metaclass__=Singleton$/;"	kind:variable	line:11
+__metaclass__	MCU_module.py	/^    __metaclass__=Singleton$/;"	kind:variable	line:11
+__metaclass__	cancel.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:21
+__metaclass__	compass_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:12
+__metaclass__	config.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:8
+__metaclass__	lidar_module.py	/^    __metaclass__=Singleton$/;"	kind:variable	line:15
+__metaclass__	vehicle.py	/^    __metaclass__=Singleton$/;"	kind:variable	line:17
+__str__	cancel.py	/^    def __str__(self):$/;"	kind:member	line:302
+__str__	vehicle.py	/^    def __str__(self):$/;"	kind:member	line:293
+_angle	library.py	/^def _angle(angle):$/;"	kind:function	line:82
+_attitude	compass_module.py	/^    def _attitude(self):$/;"	kind:member	line:30
+_log	GPS_module.py	/^    def _log(self,msg):$/;"	kind:member	line:59
+_log	MCU_module.py	/^    def _log(self,msg):$/;"	kind:member	line:102
+_log	attribute.py	/^    def _log(self,msg):$/;"	kind:member	line:228
+_log	cloud_module.py	/^    def _log(self,msg):$/;"	kind:member	line:39
+_log	cloud_module.py	/^    def _log(self,msg):$/;"	kind:member	line:66
+_log	compass_module.py	/^    def _log(self, msg):$/;"	kind:member	line:86
+_log	lidar_module.py	/^    def _log(self,msg):$/;"	kind:member	line:111
+_log	main.py	/^def _log(msg):$/;"	kind:function	line:38
+_log	waypoint.py	/^    def _log(self,msg):$/;"	kind:member	line:63
+_pipeSet	lidar_module.py	/^    _pipeSet = {}$/;"	kind:variable	line:14
+add_number	waypoint.py	/^    def add_number(self):$/;"	kind:member	line:44
+all_wp	waypoint.py	/^    def all_wp(self):$/;"	kind:member	line:38
+angle_heading_target	library.py	/^def angle_heading_target(origin,target,heading):$/;"	kind:function	line:77
+arm	cancel.py	/^    def arm(self, duration=3):$/;"	kind:member	line:40
+arm	vehicle.py	/^    def arm(self,duration=3):$/;"	kind:member	line:36
+attribute.py	attribute.py	1;"	kind:file	line:1
+backward_brake	cancel.py	/^    def backward_brake(self):$/;"	kind:member	line:137
+backward_brake	vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:133
+brake	cancel.py	/^    def brake(self):$/;"	kind:member	line:102
+brake	vehicle.py	/^    def brake(self):$/;"	kind:member	line:98
+cancel.py	cancel.py	1;"	kind:file	line:1
+ch	config.py	/^    def ch(self, index):$/;"	kind:member	line:46
+checksum	compass_module.py	/^    def checksum(self, package):$/;"	kind:member	line:72
+child	waypoint.py	/^    def child(self,point,index):$/;"	kind:member	line:53
+clear	waypoint.py	/^    def clear(self):$/;"	kind:member	line:59
+close	GPS_module.py	/^    def close(self):$/;"	kind:member	line:55
+close	MCU_module.py	/^    def close(self):$/;"	kind:member	line:99
+close	compass_module.py	/^    def close(self):$/;"	kind:member	line:82
+cloud_module.py	cloud_module.py	1;"	kind:file	line:1
+code_pwm	MCU_module.py	/^    def code_pwm(self,channels):$/;"	kind:member	line:19
+compass	cancel.py	/^    compass = None$/;"	kind:variable	line:329
+compass	compass_module.py	/^    compass = Compass()$/;"	kind:variable	line:90
+compass	vehicle.py	/^    compass=None$/;"	kind:variable	line:320
+compass_info	compass_module.py	/^    def compass_info(self, command, ack, size=8):$/;"	kind:member	line:53
+compass_module.py	compass_module.py	1;"	kind:file	line:1
+con	lidar_module.py	/^con=config.get_lidar()$/;"	kind:variable	line:115
+condition_yaw	cancel.py	/^    def condition_yaw(self, heading=0, relative=True):$/;"	kind:member	line:199
+condition_yaw	vehicle.py	/^    def condition_yaw(self,heading=0,relative=True):$/;"	kind:member	line:195
+config	config.py	/^config = Config(0)$/;"	kind:variable	line:126
+config.py	config.py	1;"	kind:file	line:1
+count	library.py	/^    count=0$/;"	kind:variable	line:146
+current_wp	waypoint.py	/^    def current_wp(self):$/;"	kind:member	line:41
+decode_BCD	compass_module.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:75
+diff_angle	cancel.py	/^    def diff_angle(self, origin, target, sign):$/;"	kind:member	line:192
+diff_angle	vehicle.py	/^    def diff_angle(self,origin,target,sign):$/;"	kind:member	line:188
+disarm	cancel.py	/^    def disarm(self, duration=3):$/;"	kind:member	line:50
+disarm	vehicle.py	/^    def disarm(self,duration=3):$/;"	kind:member	line:46
+distance_from_home	attribute.py	/^    def distance_from_home(self):$/;"	kind:member	line:154
+distance_to_target	attribute.py	/^    def distance_to_target(self):$/;"	kind:member	line:161
+down_brake	cancel.py	/^    def down_brake(self):$/;"	kind:member	line:175
+down_brake	vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:171
+download	attribute.py	/^    def download(self,index=0):$/;"	kind:member	line:47
+download	waypoint.py	/^    def download(self,origin,index):$/;"	kind:member	line:11
+element	library.py	/^def element(file_name,index):$/;"	kind:function	line:20
+encode_10h	library.py	/^def encode_10h(int_10,length=4):$/;"	kind:function	line:124
+encode_hex	library.py	/^def encode_hex(argv): $/;"	kind:function	line:112
+forward	cancel.py	/^    def forward(self, duration=None):$/;"	kind:member	line:93
+forward	vehicle.py	/^    def forward(self,duration=None):$/;"	kind:member	line:89
+forward_brake	cancel.py	/^    def forward_brake(self):$/;"	kind:member	line:128
+forward_brake	vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:124
+get_AIL	config.py	/^    def get_AIL(self):$/;"	kind:member	line:78
+get_BD	config.py	/^    def get_BD(self):$/;"	kind:member	line:117
+get_Baro	config.py	/^    def get_Baro(self):$/;"	kind:member	line:105
+get_DD	config.py	/^    def get_DD(self):$/;"	kind:member	line:120
+get_ELE	config.py	/^    def get_ELE(self):$/;"	kind:member	line:81
+get_FC	config.py	/^    def get_FC(self):$/;"	kind:member	line:72
+get_GPS	config.py	/^    def get_GPS(self):$/;"	kind:member	line:99
+get_MCU	config.py	/^    def get_MCU(self):$/;"	kind:member	line:96
+get_MD	config.py	/^    def get_MD(self):$/;"	kind:member	line:114
+get_PIT	config.py	/^    def get_PIT(self):$/;"	kind:member	line:93
+get_RUD	config.py	/^    def get_RUD(self):$/;"	kind:member	line:87
+get_THR	config.py	/^    def get_THR(self):$/;"	kind:member	line:84
+get_attitude	attribute.py	/^    def get_attitude(self):$/;"	kind:member	line:148
+get_attitude	compass_module.py	/^    def get_attitude(self):$/;"	kind:member	line:41
+get_bearing	library.py	/^def get_bearing(aLocation1, aLocation2):$/;"	kind:function	line:33
+get_cloud	config.py	/^    def get_cloud(self):$/;"	kind:member	line:75
+get_compass	config.py	/^    def get_compass(self):$/;"	kind:member	line:102
+get_degree	config.py	/^    def get_degree(self):$/;"	kind:member	line:123
+get_distance_metres	library.py	/^def get_distance_metres(aLocation1, aLocation2):  $/;"	kind:function	line:69
+get_gear	attribute.py	/^    def get_gear(self):$/;"	kind:member	line:114
+get_gear	config.py	/^    def get_gear(self):$/;"	kind:member	line:111
+get_heading	attribute.py	/^    def get_heading(self):$/;"	kind:member	line:142
+get_heading	compass_module.py	/^    def get_heading(self):$/;"	kind:member	line:50
+get_home	attribute.py	/^    def get_home(self):$/;"	kind:member	line:171
+get_lidar	config.py	/^    def get_lidar(self):$/;"	kind:member	line:108
+get_location	GPS_module.py	/^    def get_location(self):    $/;"	kind:member	line:41
+get_location	attribute.py	/^    def get_location(self):$/;"	kind:member	line:174
+get_location_metres	library.py	/^def get_location_metres(original_location, dNorth, dEast):$/;"	kind:function	line:47
+get_mode	attribute.py	/^    def get_mode(self):$/;"	kind:member	line:151
+get_mode	config.py	/^    def get_mode(self):$/;"	kind:member	line:90
+get_node	config.py	/^    def get_node(self, param1, param2):$/;"	kind:member	line:62
+get_num_stars	GPS_module.py	/^    def get_num_stars(self):$/;"	kind:member	line:48
+get_pitch	attribute.py	/^    def get_pitch(self):$/;"	kind:member	line:144
+get_pitch	compass_module.py	/^    def get_pitch(self):$/;"	kind:member	line:44
+get_roll	attribute.py	/^    def get_roll(self):$/;"	kind:member	line:146
+get_roll	compass_module.py	/^    def get_roll(self):$/;"	kind:member	line:47
+get_target	attribute.py	/^    def get_target(self):$/;"	kind:member	line:140
+get_type	config.py	/^    def get_type(self):$/;"	kind:member	line:69
+gps	GPS_module.py	/^    gps=GPS()$/;"	kind:variable	line:63
+gps	cancel.py	/^    gps = None$/;"	kind:variable	line:328
+gps	vehicle.py	/^    gps=None$/;"	kind:variable	line:319
+hasMCU	cancel.py	/^    hasMCU = True$/;"	kind:variable	line:17
+hasMCU	cancel.py	/^hasMCU = False$/;"	kind:variable	line:14
+hasMCU	vehicle.py	/^    hasMCU=True$/;"	kind:variable	line:14
+hasMCU	vehicle.py	/^hasMCU=False$/;"	kind:variable	line:12
+info	GPS_module.py	/^    def info(self):$/;"	kind:member	line:25
+info	compass_module.py	/^    def info(self):$/;"	kind:member	line:27
+info	waypoint.py	/^    info="36.11111+116.22222,36.11111+116.22222,36.11111+116.22222,36.11111+116.22222,36.11111+116.22222"$/;"	kind:variable	line:71
+init_channels	attribute.py	/^    def init_channels(self):$/;"	kind:member	line:70
+init_channels_mid	attribute.py	/^    def init_channels_mid(self):$/;"	kind:member	line:81
+isInt	config.py	/^    def isInt(self, x):$/;"	kind:member	line:56
+isNum	library.py	/^def isNum(s):$/;"	kind:function	line:87
+json_all_wp	attribute.py	/^    def json_all_wp(self):$/;"	kind:member	line:62
+kill	library.py	/^    def kill(self):  $/;"	kind:member	line:203
+library.py	library.py	1;"	kind:file	line:1
+lidar	lidar_module.py	/^lidar=Lidar()$/;"	kind:variable	line:121
+lidar_module.py	lidar_module.py	1;"	kind:file	line:1
+list_assign	library.py	/^def list_assign(list1,list2):$/;"	kind:function	line:134
+mDuration	cancel.py	/^    def mDuration(self):$/;"	kind:member	line:186
+mDuration	vehicle.py	/^    def mDuration(self):$/;"	kind:member	line:182
+main.py	main.py	1;"	kind:file	line:1
+mcu	MCU_module.py	/^    mcu=MCU()$/;"	kind:variable	line:107
+mcu	cancel.py	/^    mcu = None$/;"	kind:variable	line:327
+mcu	vehicle.py	/^    mcu=None$/;"	kind:variable	line:318
+minus_number	waypoint.py	/^    def minus_number(self):$/;"	kind:member	line:47
+more_angle	lidar_module.py	/^    def more_angle(self,angle):$/;"	kind:member	line:105
+movement	cancel.py	/^    def movement(self, att, sign=1):$/;"	kind:member	line:69
+movement	vehicle.py	/^    def movement(self,att,sign=1):$/;"	kind:member	line:65
+movement2	cancel.py	/^    def movement2(self, att, sign=1):$/;"	kind:member	line:75
+movement2	vehicle.py	/^    def movement2(self,att,sign=1):$/;"	kind:member	line:71
+navigation	cancel.py	/^    def navigation(self, target):$/;"	kind:member	line:240
+navigation	vehicle.py	/^    def navigation(self,target):$/;"	kind:member	line:232
+open_serial	library.py	/^def open_serial(portname,baudrate,timeout=0.5):$/;"	kind:function	line:7
+open_sock	cloud_module.py	/^def open_sock():$/;"	kind:function	line:9
+origin	waypoint.py	/^    origin=[36.111111,116.222222]$/;"	kind:variable	line:68
+parseGPS	GPS_module.py	/^    def parseGPS(self):$/;"	kind:member	line:28
+pid	lidar_module.py	/^pid = os.fork()$/;"	kind:variable	line:116
+radio	cancel.py	/^    def radio(self):$/;"	kind:member	line:33
+radio	vehicle.py	/^    def radio(self):$/;"	kind:member	line:29
+radio_package	library.py	/^def radio_package():$/;"	kind:function	line:137
+read_channels	MCU_module.py	/^    def read_channels(self,ch_count=8):$/;"	kind:member	line:84
+read_mid	MCU_module.py	/^    def read_mid(self,size=74): $/;"	kind:member	line:74
+remain_wp	waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:35
+roll_left_brake	cancel.py	/^    def roll_left_brake(self):$/;"	kind:member	line:146
+roll_left_brake	vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:142
+roll_right_brake	cancel.py	/^    def roll_right_brake(self):$/;"	kind:member	line:155
+roll_right_brake	vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:151
+run	GPS_module.py	/^    def run(self):$/;"	kind:member	line:20
+run	cloud_module.py	/^    def run(self):        $/;"	kind:member	line:48
+run	cloud_module.py	/^    def run(self):       $/;"	kind:member	line:26
+run	compass_module.py	/^    def run(self):$/;"	kind:member	line:22
+send_Log	main.py	/^def send_Log(sock,vehicle):$/;"	kind:function	line:33
+send_mid_msg	MCU_module.py	/^    def send_mid_msg(self):$/;"	kind:member	line:56
+send_msg	MCU_module.py	/^    def send_msg(self,msg):$/;"	kind:member	line:46
+send_pwm	MCU_module.py	/^    def send_pwm(self,channels):$/;"	kind:member	line:26
+send_pwm	cancel.py	/^    def send_pwm(self):$/;"	kind:member	line:189
+send_pwm	vehicle.py	/^    def send_pwm(self):$/;"	kind:member	line:185
+set_channels_mid	attribute.py	/^    def set_channels_mid(self):$/;"	kind:member	line:97
+set_gear	attribute.py	/^    def set_gear(self,gear):$/;"	kind:member	line:108
+set_home	attribute.py	/^    def set_home(self):$/;"	kind:member	line:168
+set_target	attribute.py	/^    def set_target(self,dNorth,dEast,alt=None):$/;"	kind:member	line:127
+stall	attribute.py	/^    def stall(self):$/;"	kind:member	line:117
+stall	cancel.py	/^    def stall(self):$/;"	kind:member	line:59
+stall	vehicle.py	/^    def stall(self):$/;"	kind:member	line:55
+str_list	attribute.py	/^    def str_list(self,arrs):$/;"	kind:member	line:219
+takeoff	attribute.py	/^    def takeoff(self,alt=5):$/;"	kind:member	line:124
+takeoff	cancel.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:66
+takeoff	vehicle.py	/^    def takeoff(self,alt=5):$/;"	kind:member	line:62
+up_brake	cancel.py	/^    def up_brake(self):$/;"	kind:member	line:164
+up_brake	vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:160
+vehicle	cancel.py	/^    vehicle = Vehicle(mcu, compass, gps)$/;"	kind:variable	line:335
+vehicle	vehicle.py	/^    vehicle=Vehicle(mcu,compass,gps)$/;"	kind:variable	line:343
+vehicle.py	vehicle.py	1;"	kind:file	line:1
+watch	library.py	/^    def watch(self):  $/;"	kind:member	line:194
+waypoint.py	waypoint.py	1;"	kind:file	line:1
+wp	waypoint.py	/^    wp=Waypoint()$/;"	kind:variable	line:67
+write_xml	waypoint.py	/^    def write_xml(self, out_path):$/;"	kind:member	line:56
+yaw_left	cancel.py	/^    def yaw_left(self):$/;"	kind:member	line:81
+yaw_left	vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:77
+yaw_left_brake	cancel.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:110
+yaw_left_brake	vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:106
+yaw_right	cancel.py	/^    def yaw_right(self):$/;"	kind:member	line:87
+yaw_right	vehicle.py	/^    def yaw_right(self):$/;"	kind:member	line:83
+yaw_right_brake	cancel.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:119
+yaw_right_brake	vehicle.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:115

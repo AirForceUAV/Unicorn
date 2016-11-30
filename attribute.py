@@ -1,5 +1,5 @@
 #!/usr/bin/evn python
-#coding:utf-8
+# coding:utf-8
 
 from config import config
 import time,json
@@ -10,15 +10,15 @@ class Attribute(object):
     def __init__(self,mcu,compass,GPS):
         self._log('Vehicle Type:{}'.format(config.get_type()))
         self._log('Flight Controller:{}'.format(config.get_FC()))
-        self.mcu=mcu
-        self.compass=compass
+        self.mcu= mcu
+        self.compass = compass
         self.gps=GPS
         self.target= None                  # target location -- [lat,lon,alt]
-        self.AIL   = config.get_AIL()      # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
-        self.ELE   = config.get_ELE()      # Elevator:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
-        self.THR   = config.get_THR()      # Throttle:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
-        self.RUD   = config.get_RUD()      # Rudder  :[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
-        self.mode  = config.get_mode()     # Mode    :[ch number,Loiter PWM]
+        self.AIL = config.get_AIL()      # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
+        self.ELE = config.get_ELE()      # Elevator:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.THR = config.get_THR()      # Throttle:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.RUD = config.get_RUD()      # Rudder  :[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
+        self.mode= config.get_mode()     # Mode    :[ch number,Loiter PWM]
         self.PIT   = config.get_PIT()      # Pitch   :[chnumber, exit?]
         self.gear  = config.get_gear()
         self.MD    = config.get_MD()
@@ -37,7 +37,7 @@ class Attribute(object):
                 home=self.get_location()
                 stars=self.gps.get_num_stars()
                 if home[2] != None:
-                    self.home_location=home
+                    self.home_location = home
                     break
 
             self._log('Home location :{}'.format(self.home_location))
@@ -55,13 +55,12 @@ class Attribute(object):
         # loc=[39.11111,116.33333]
         self.wp.download(location,index)
 
-    def Route(self,info):       
-
+    def Route(self, info):
         self.wp.Route(info)
-        
+
     def json_all_wp(self):
         if self.wp.all_wp() == []:
-            return None        
+            return None
         result=[]
         for point in self.wp.all_wp():
             result.append('{}+{}'.format(point[0],point[1]))
