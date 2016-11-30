@@ -2,28 +2,18 @@
 <Waypoints>
     <Waypoint index='0' Trail="Rectangle">
          <point index='0'>
-            <north>0</north>
-            <east>-50</east>
+            <north>10</north>
+            <east>-10</east>
             <alt>-1</alt>
         </point>
         <point index='1'>
-            <north>100</north>
-            <east>0</east>
+            <north>0</north>
+            <east>20</east>
             <alt>-1</alt>
         </point>
          <point index='2'>
-            <north>0</north>
-            <east>100</east>
-            <alt>-1</alt>
-        </point>
-         <point index='3'>
-            <north>-100</north>
+            <north>-10</north>
             <east>0</east>
-            <alt>-1</alt>
-        </point>
-         <point index='4'>
-            <north>0</north>
-            <east>-50</east>
             <alt>-1</alt>
         </point>
     </Waypoint>

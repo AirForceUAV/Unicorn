@@ -123,7 +123,7 @@ class Config(object):
     def get_degree(self):
         return self._degree
 # Global config
-config = Config()
+config = Config(0)
 
 if __name__ == "__main__":
     print 'Vehicle type:{}'.format(config._type)
