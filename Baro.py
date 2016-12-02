@@ -8,7 +8,7 @@ import math
 from smbus import SMBus
 
 
-class Compass(threading.Thread):
+class Baro(object):
     __metaclass__ = Singleton
 
     def __init__(self, bus=1, i2c=0x77, elevation=0):
@@ -170,5 +170,5 @@ if __name__ == "__main__":
     baro = Baro(1)
     # baro.setElevationFt(1420)
     while True:
-        baro.getAlt()
+        print baro.getAlt()
         time.sleep(1)
