@@ -34,7 +34,7 @@ class MCU(object):
     def send_msg(self, msg):
         # Send 'R' , 'G' , 'M'
         self._log("send msg:{}".format(msg))
-        self.ser.write(msg * 10)
+        self.ser.write(msg * 100)
 
     def send_mid_msg(self):
         # Send 'M'

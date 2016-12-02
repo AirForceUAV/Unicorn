@@ -42,7 +42,7 @@ class Attribute(object):
                     break
 
             self._log('Home location :{}'.format(self.home_location))
-        if congfig.get_Baro()[0] > 0 and self.baro is not None:
+        if config.get_Baro()[0] > 0 and self.baro is not None:
             self.init_alt = self.baro.getAlt()
             print 'init_alt is ',self.init_alt
 
@@ -97,7 +97,7 @@ class Attribute(object):
 
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
-        self.mcu.send_msg('M')
+        #self.mcu.send_msg('M')
         mid=self.mcu.read_channels()
         self._log('Channels Mid:{}'.format(mid))
         list_assign(self.channels,mid)

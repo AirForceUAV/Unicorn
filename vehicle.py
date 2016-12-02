@@ -38,13 +38,15 @@ class Vehicle(Attribute):
             self.mcu.send_msg(msg)
 
     def arm(self):
-        self.home_location=self.get_location()
+        print "arm..."
+        if config.get_GPS()[0]>1:
+            self.home_location=self.get_location()
         self.channels[self.THR[0]]=self.THR[1]
         self.channels[self.AIL[0]]=self.AIL[1]
         self.channels[self.RUD[0]]=self.RUD[3]
         self.channels[self.ELE[0]]=self.ELE[1]
         self.send_pwm()
-        time.sleep(2)
+        time.sleep(3)
         self.disarm()
         pass
 
@@ -343,14 +345,15 @@ if __name__=="__main__":
 
     vehicle=Vehicle(mcu,compass,gps)
 
-    #while True:
-    #    raw_input("NEXT")
-    #    time.sleep(.5)
-    #    vehicle.set_channels_mid()
+    while True:
+        raw_input("NEXT")
+        time.sleep(.5)
+        vehicle.set_channels_mid()
     #    print vehicle.PIT_curve(vehicle.channels_mid[2])    
     vehicle.set_channels_mid()
     vehicle.GCS()
     #vehicle.set_gear(2)
+    vehicle.arm()
     vehicle.yaw_left_brake()
     time.sleep(2)
     vehicle.yaw_right_brake()
