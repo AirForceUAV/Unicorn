@@ -1,17 +1,18 @@
 #!/usr/bin/evn python
 #coding:utf-8
 
-import time,json
-from  config import config
+import time
+import json
+from config import config
 from library import CancelWatcher,radio_package,GCS_package,list_assign
 from library import get_distance_metres,angle_heading_target
 from library import Singleton,_angle,Watcher
 from waypoint import Waypoint
 from attribute import Attribute
 
-hasMCU=False
-if config.get_MCU()[0]>0:                       # instancce of MCU module object
-    hasMCU=True
+hasMCU = False
+if config.get_MCU()[0] > 0:                       # instancce of MCU module object
+    hasMCU = True
 
 class Vehicle(Attribute):
     __metaclass__=Singleton
@@ -21,48 +22,47 @@ class Vehicle(Attribute):
 
     def GCS(self):
         self._log('Switch to GCS')
-        self.mode_name='LOITER'
+        self.mode_name='Loiter'
+        # self.set_channels_mid()
         if hasMCU:
             msg=GCS_package()
             self.mcu.send_msg(msg)
 
     def radio(self):
         self._log('Switch to Radio')
+        self.Cancel()
         self.mode_name='Radio'
         if hasMCU:
             msg=radio_package()
             self.mcu.send_msg(msg)
 
-    def arm(self,duration=3):
+    def arm(self):
         # self.home_location=self.get_location()
         # self.channels[self.THR[0]]=self.THR[1]
+        # self.channels[self.AIL[0]]=self.AIL[1]
         # self.channels[self.RUD[0]]=self.RUD[3]
+        # self.channels[self.ELE[0]]=self.ELE[1]
         # self.send_pwm()
-        # time.sleep(duration)
-        # self.channels[self.RUD[0]]=self.RUD[2]
-        # self.send_pwm()
+        # time.sleep(2)
+        # self.disarm()
         pass
 
-    def disarm(self,duration=3):
+    def disarm(self):
         # self.channels[self.THR[0]]=self.THR[1]
-        # self.channels[self.RUD[0]]=self.RUD[1]
-        # self.send_pwm()
-        # time.sleep(duration)
+        # self.channels[self.AIL[0]]=self.AIL[2]
         # self.channels[self.RUD[0]]=self.RUD[2]
+        # self.channels[self.ELE[0]]=self.ELE[2]
         # self.send_pwm()
         pass
 
     def stall(self):
         self._log("stall")
-        self.channels[self.THR[0]]=self.THR[1]
-        if self.PIT[1]>0:
-            self.channels[self.PIT[0]]=self.PIT_curve(self.THR[1])
-        self.send_pwm()
+        pass
 
     def takeoff(self,alt=5):
         pass
 
-    def movement(self,att,sign=1):
+    def movement(self, att,sign=1):
         rate=self.gear[self.get_gear()]/100.0
         variation=int(att[5]*att[4]*rate)
         self.channels[att[0]]=att[2]+sign*variation
@@ -77,7 +77,7 @@ class Vehicle(Attribute):
     def yaw_left(self):
         self._log('Turn Left...')
         if hasMCU:
-            self.movement2(self.RUD,-1)
+            self.movement2(self.RUD, -1)
             self.send_pwm()
 
     def yaw_right(self):

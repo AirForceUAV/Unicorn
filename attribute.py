@@ -119,9 +119,6 @@ class Attribute(object):
         if self.PIT[1]>0:
             self.channels[self.PIT[0]]=self.PIT_curve(self.THR[1])
         self.send_pwm()
-
-    def takeoff(self,alt=5):
-        pass
          
     def set_target(self,dNorth,dEast,alt=None):
         origin=self.get_location()
