@@ -161,7 +161,7 @@ class Vehicle(Attribute):
         duration=self.mDuration()
         self._log('Throttle Up')
         if hasMCU:
-            pwm=self.movement(self.THR)
+            pwm=self.movement2(self.THR)
             if self.PIT[1]>0:
                 self.channels[self.PIT[0]]=self.PIT_curve(pwm)
             self.send_pwm()
@@ -172,7 +172,7 @@ class Vehicle(Attribute):
         duration=self.mDuration()
         self._log('Throttle Down')
         if hasMCU:
-            pwm=self.movement(self.THR,-1)
+            pwm=self.movement2(self.THR,-1)
             if self.PIT[1]>0:
                 self.channels[self.PIT[0]]=self.PIT_curve(pwm)
             self.send_pwm()
@@ -354,7 +354,7 @@ if __name__=="__main__":
     time.sleep(2)
     vehicle.yaw_right_brake()
     #vehicle.roll_left_brake()
-    time.sleep(2)
+    #time.sleep(2)
     #vehicle.roll_right_brake()
     #vehicle.forward_brake()
     #time.sleep(2)
@@ -369,7 +369,7 @@ if __name__=="__main__":
     #vehicle.condition_yaw(30)
     #vehicle.condition_yaw(300)
 
-    #vehicle.set_target(10,10)
+    #vehicle.set_target(0,10)
     #vehicle.download()
     #print vehicle.wp._wp
     #vehicle.Auto()

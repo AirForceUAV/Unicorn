@@ -11,7 +11,7 @@
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
             <param index="2" value="1018" unit="PWM">LOW AIL PWM </param>
-            <param index="3" value="1412" unit="PWM">MID AIL PWM </param>
+            <param index="3" value="1400" unit="PWM">MID AIL PWM </param>
             <param index="4" value="1800" unit="PWM">HIG AIL PWM </param>
             <param index="5" value="-1"   unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10"   unit="%">Variation Rate.</param>
@@ -20,7 +20,7 @@
             <description>Elevator PWM.</description>
             <param index="1" value="2"    unit="No.">Elevator Channel Number</param>
             <param index="2" value="1022" unit="PWM">LOW ELE PWM </param>
-            <param index="3" value="1414" unit="PWM">MID ELE PWM </param>
+            <param index="3" value="1412" unit="PWM">MID ELE PWM </param>
             <param index="4" value="1802" unit="PWM">HIG ELE PWM </param>
             <param index="5" value="-1"   unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10"   unit="%">Variation Rate.</param>
@@ -29,19 +29,19 @@
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
             <param index="2" value="990"  unit="PWM">LOW THR PWM </param>
-            <param index="3" value="1398" unit="PWM">MID THR PWM </param>
+            <param index="3" value="1403" unit="PWM">MID THR PWM </param>
             <param index="4" value="1806" unit="PWM">HIG THR PWM </param>
             <param index="5" value="1"    unit="bool">Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10"   unit="%">Variation Rate.</param>
+            <param index="6" value="20"   unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="RUD">
             <description>Rudder PWM.</description>
             <param index="1" value="4"    unit="No.">Rudder Channel Number</param>
             <param index="2" value="882"  unit="PWM">LOW RUD PWM </param>
-            <param index="3" value="1259" unit="PWM">MID RUD PWM </param>
+            <param index="3" value="1346" unit="PWM">MID RUD PWM </param>
             <param index="4" value="1644" unit="PWM">HIG RUD PWM </param>
             <param index="5" value="-1"   unit="bool">Positive(1) or Reverse(-1).</param>
-            <param index="6" value="5"   unit="%">Variation Rate.</param>
+            <param index="6" value="8"   unit="%">Variation Rate.</param>
         </entry>
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
@@ -53,7 +53,7 @@
         <entry index="6" name="Mode">
             <description>Flight Mode.</description>
             <param index="1" value="6"    unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="1417" unit="PWM">Loiter mode PWM.</param>
+            <param index="2" value="1722" unit="PWM">Loiter mode PWM.</param>
         </entry>
         <entry index="7" name="MCU">
             <description>MCU module.</description>
