@@ -32,13 +32,9 @@ class MCU(object):
         self.ser.write(msg * 10)
 
     def send_msg(self, msg):
-        # Send 'R' or 'G'
+        # Send 'R' , 'G' , 'M'
         self._log("send msg:{}".format(msg))
-        times = 0
-        while times < 5:
-            times += 1
-            self.ser.write(msg)
-            time.sleep(.05)
+        self.ser.write(msg * 10)
 
     def send_mid_msg(self):
         # Send 'M'
@@ -57,8 +53,8 @@ class MCU(object):
 
         self._log('Switch to M. Timeout ({} times)'.format(times))
 
-    def read_mid(self, size=74):
-        '''Sizeof package is (4+4*8+2=38)'''
+    def read_mid(self, size=100):
+
         while True:
             msg = self.ser.read(size)
             msg = encode_hex(msg)
@@ -69,7 +65,7 @@ class MCU(object):
 
     def read_channels(self, ch_count=8):
         self.ser.flushInput()
-        self.send_mid_msg()
+        self.send_msg('M')
         channels = [0, 0, 0, 0, 0, 0, 0, 0]
         package = self.read_mid()
         # self._log(package)

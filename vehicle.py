@@ -17,11 +17,12 @@ if config.get_MCU()[0] > 0:                       # instancce of MCU module obje
 class Vehicle(Attribute):
     __metaclass__=Singleton
 
-    def __init__(self,mcu=None,compass=None,GPS=None):
-        super(Vehicle,self).__init__(mcu,compass,GPS)
+    def __init__(self,mcu=None,compass=None,GPS=None,baro=None):
+        super(Vehicle,self).__init__(mcu,compass,GPS,baro)
 
     def GCS(self):
         self._log('Switch to GCS')
+        CancelWatcher.Cancel=True
         self.mode_name='Loiter'
         # self.set_channels_mid()
         if hasMCU:
@@ -30,29 +31,29 @@ class Vehicle(Attribute):
 
     def radio(self):
         self._log('Switch to Radio')
-        self.Cancel()
+        CancelWatcher.Cancel=True
         self.mode_name='Radio'
         if hasMCU:
             msg=radio_package()
             self.mcu.send_msg(msg)
 
     def arm(self):
-        # self.home_location=self.get_location()
-        # self.channels[self.THR[0]]=self.THR[1]
-        # self.channels[self.AIL[0]]=self.AIL[1]
-        # self.channels[self.RUD[0]]=self.RUD[3]
-        # self.channels[self.ELE[0]]=self.ELE[1]
-        # self.send_pwm()
-        # time.sleep(2)
-        # self.disarm()
+        self.home_location=self.get_location()
+        self.channels[self.THR[0]]=self.THR[1]
+        self.channels[self.AIL[0]]=self.AIL[1]
+        self.channels[self.RUD[0]]=self.RUD[3]
+        self.channels[self.ELE[0]]=self.ELE[1]
+        self.send_pwm()
+        time.sleep(2)
+        self.disarm()
         pass
 
     def disarm(self):
-        # self.channels[self.THR[0]]=self.THR[1]
-        # self.channels[self.AIL[0]]=self.AIL[2]
-        # self.channels[self.RUD[0]]=self.RUD[2]
-        # self.channels[self.ELE[0]]=self.ELE[2]
-        # self.send_pwm()
+        self.channels[self.THR[0]]=self.THR[1]
+        self.channels[self.AIL[0]]=self.AIL[2]
+        self.channels[self.RUD[0]]=self.RUD[2]
+        self.channels[self.ELE[0]]=self.ELE[2]
+        self.send_pwm()
         pass
 
     def stall(self):

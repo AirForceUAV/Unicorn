@@ -7,12 +7,13 @@ from library import list_assign,get_location_metres,get_distance_metres,isNum
 from waypoint import Waypoint
 
 class Attribute(object):
-    def __init__(self,mcu,compass,GPS):
+    def __init__(self,mcu=None,compass=None,GPS=None,baro=None):
         self._log('Vehicle Type:{}'.format(config.get_type()))
         self._log('Flight Controller:{}'.format(config.get_FC()))
         self.mcu= mcu
         self.compass = compass
         self.gps=GPS
+        self.baro=baro
         self.target= None                  # target location -- [lat,lon,alt]
         self.AIL = config.get_AIL()      # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation PWM,dir,rate]
         self.ELE = config.get_ELE()      # Elevator:[ch number,low PWM ,mid PWM,high PWM ,var,dir,rate]
@@ -31,7 +32,7 @@ class Attribute(object):
 
         self.home_location=None
         self.init_alt=None
-        if config.get_GPS()[0] > 0 and GPS is not None:
+        if config.get_GPS()[0] > 0 and self.gps is not None:
             self._log('Waiting for home location')
             while True:
                 home=self.get_location()
@@ -41,11 +42,12 @@ class Attribute(object):
                     break
 
             self._log('Home location :{}'.format(self.home_location))
-            self.init_alt=home[2]                # set init altitude
-            self._log('init altitude:{}'.format(self.init_alt))
+        if congfig.get_Baro()[0] > 0 and self.baro is not None:
+            self.init_alt = self.baro.getAlt()
+            print 'init_alt is ',self.init_alt
 
-    def download(self,index=0):
-        if config.get_GPS()[0]<=0:
+    def download(self, index=0):
+        if config.get_GPS()[0] <= 0:
             self._log("GPS is closed")
             return -1
         location=self.get_location()
@@ -95,6 +97,7 @@ class Attribute(object):
 
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
+        self.mcu.send_msg('M')
         mid=self.mcu.read_channels()
         self._log('Channels Mid:{}'.format(mid))
         list_assign(self.channels,mid)
@@ -170,6 +173,11 @@ class Attribute(object):
     def get_location(self):
         loc=self.gps.get_location()
         return loc
+    def get_alt(self):
+        if self.init_alt is None:
+            return None
+        else:
+            return self.baro.getAlt()-self.init_alt
 
     def FlightLog(self):
         log={}

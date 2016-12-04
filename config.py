@@ -19,7 +19,7 @@ class Config(object):
         self._THR = self.ch(3)
         self._RUD = self.ch(4)
         self._PIT = [self.get_node(
-            5, 1) - 1, self.get_node(5, 2), self.get_node(5, 3), self.get_node(5, 4)]
+            5, 1) - 1, self.get_node(5, 2)]
         # [ch No.,mode pwm]
         self._mode = [self.get_node(6, 1) - 1, self.get_node(6, 2)]
         self._MCU = [self.get_node(7, 1), self.get_node(7, 2), self.get_node(
@@ -123,7 +123,7 @@ class Config(object):
     def get_degree(self):
         return self._degree
 # Global config
-config = Config(0)
+config = Config(1)
 
 if __name__ == "__main__":
     print 'Vehicle type:{}'.format(config._type)
