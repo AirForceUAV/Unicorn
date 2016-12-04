@@ -72,7 +72,10 @@ class Attribute(object):
         channels=[0,0,0,0,0,0,0,0]
         channels[self.AIL[0]]=self.AIL[2]
         channels[self.ELE[0]]=self.ELE[2]
-        channels[self.THR[0]]=self.THR[1]
+        if self.THR[0]>0:
+            channels[self.THR[0]]=self.THR[1]
+        else:
+            channels[self.THR[0]]=self.THR[3]
         channels[self.RUD[0]]=self.RUD[2]
         channels[self.mode[0]]=self.mode[1]
         if self.PIT[1]>0:
@@ -86,7 +89,7 @@ class Attribute(object):
         channels[self.THR[0]]=self.THR[2]
         channels[self.RUD[0]]=self.RUD[2]
         channels[self.mode[0]]=self.mode[1]
-        if self.PIT[1]>0:
+        if self.PIT[1] > 0:
             channels[self.PIT[0]]=self.PIT_curve(self.THR[2])
         return channels
 
