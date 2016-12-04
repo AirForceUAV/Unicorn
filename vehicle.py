@@ -40,21 +40,21 @@ class Vehicle(Attribute):
     def arm(self):
         print "arm..."
         if config.get_GPS()[0]>1:
-            self.home_location=self.get_location()
-        self.channels[self.THR[0]]=self.THR[3]
+            self.home_location=self.get_location()        
         self.channels[self.AIL[0]]=self.AIL[1]
-        self.channels[self.RUD[0]]=self.RUD[3]
         self.channels[self.ELE[0]]=self.ELE[3]
+        self.channels[self.THR[0]]=self.THR[3]
+        self.channels[self.RUD[0]]=self.RUD[3]
         self.send_pwm()
         time.sleep(3)
         self.disarm()
         pass
 
-    def disarm(self):
-        self.channels[self.THR[0]]=self.THR[3]
+    def disarm(self):       
         self.channels[self.AIL[0]]=self.AIL[2]
-        self.channels[self.RUD[0]]=self.RUD[2]
         self.channels[self.ELE[0]]=self.ELE[2]
+        self.channels[self.THR[0]]=self.THR[3]
+        self.channels[self.RUD[0]]=self.RUD[2]
         self.send_pwm()
         pass
 
