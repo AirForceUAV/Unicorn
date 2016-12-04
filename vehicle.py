@@ -63,6 +63,28 @@ class Vehicle(Attribute):
         pass
 
     def takeoff(self,alt=5):
+        self.arm()
+        print 'Takeoff to ',alt,'m'
+        if config.get_Baro()[0]<0:
+            print 'Baro is closed'
+            return 0
+        if self.THR[5]<0:
+            self.channels[self.THR[0]]=int(self.THR[3]-self.THR[4]*0.6)
+        else:
+            self.channels[self.THR[0]]=int(self.THR[1]+self.THR[4]*0.6)
+        self.send_pwm()
+        while True:
+            currentAlt=self.get_alt()
+            print 'Current Altitude',currentAlt
+            if currentAlt is None:
+                self.brake()
+                return -1
+                
+            if currentAlt>alt*0.9:
+                print 'Reached Altitude'
+                break
+
+        self.brake()
         pass
 
     def movement(self, att,sign=1):
@@ -95,17 +117,6 @@ class Vehicle(Attribute):
             self.movement(self.ELE)
             self.send_pwm()
             if duration!=None:
-                time.sleep(duration)
-                self.brake()
-
-    def up_brake(self,duration=None):
-        self._log('Throttle Up')
-        if hasMCU:
-            pwm=self.movement2(self.THR)
-            if self.PIT[1]>0:
-                self.channels[self.PIT[0]]=self.PIT_curve(pwm)
-            self.send_pwm()
-            if duration is not None:
                 time.sleep(duration)
                 self.brake()
 
@@ -364,10 +375,12 @@ if __name__=="__main__":
     # vehicle.set_channels_mid()
     vehicle.GCS()
     #vehicle.set_gear(2)
-    vehicle.arm()
-    vehicle.yaw_left_brake()
-    time.sleep(2)
-    vehicle.yaw_right_brake()
+    vehicle.takeoff(1)
+    vehicle.brake()
+    #time.sleep(2)
+    #vehicle.yaw_left_brake()
+    #time.sleep(2)
+    #vehicle.yaw_right_brake()
     #vehicle.roll_left_brake()
     #time.sleep(2)
     #vehicle.roll_right_brake()
