@@ -98,6 +98,17 @@ class Vehicle(Attribute):
                 time.sleep(duration)
                 self.brake()
 
+    def up_brake(self,duration=None):
+        self._log('Throttle Up')
+        if hasMCU:
+            pwm=self.movement2(self.THR)
+            if self.PIT[1]>0:
+                self.channels[self.PIT[0]]=self.PIT_curve(pwm)
+            self.send_pwm()
+            if duration is not None
+                time.sleep(duration)
+                self.brake()
+
     def brake(self):
         self._log('brake')
         if hasMCU:
@@ -345,10 +356,10 @@ if __name__=="__main__":
 
     vehicle=Vehicle(mcu,compass,gps)
 
-    while True:
-        raw_input("NEXT")
-        time.sleep(.5)
-        vehicle.set_channels_mid()
+    # while True:
+    #     raw_input("NEXT")
+    #     time.sleep(.5)
+    #     vehicle.set_channels_mid()
     #    print vehicle.PIT_curve(vehicle.channels_mid[2])    
     vehicle.set_channels_mid()
     vehicle.GCS()
