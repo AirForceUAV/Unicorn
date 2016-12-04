@@ -105,7 +105,7 @@ class Vehicle(Attribute):
             if self.PIT[1]>0:
                 self.channels[self.PIT[0]]=self.PIT_curve(pwm)
             self.send_pwm()
-            if duration is not None
+            if duration is not None:
                 time.sleep(duration)
                 self.brake()
 
