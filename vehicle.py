@@ -364,8 +364,10 @@ if __name__=="__main__":
         while gps.msg==None:
             # print gps.get_num_stars()
             time.sleep(.5)
+    if config.get_Baro()[0] > 0:
+        from Baro import baro
 
-    vehicle=Vehicle(mcu,compass,gps)
+    vehicle=Vehicle(mcu,compass,gps,baro)
 
     # while True:
     #     raw_input("NEXT")
@@ -375,7 +377,7 @@ if __name__=="__main__":
     # vehicle.set_channels_mid()
     vehicle.GCS()
     #vehicle.set_gear(2)
-    vehicle.takeoff(1)
+    vehicle.takeoff(0.3)
     vehicle.brake()
     #time.sleep(2)
     #vehicle.yaw_left_brake()

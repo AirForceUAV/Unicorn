@@ -165,9 +165,9 @@ class Baro(object):
         hpa = self.getPressureAdj()
         return self.convert2m(hpa)
 
+baro = Baro(config.get_Baro()[1], config.get_Baro()[2])
 
 if __name__ == "__main__":
-    baro = Baro(1)
     # baro.setElevationFt(1420)
     while True:
         print baro.getAlt()
