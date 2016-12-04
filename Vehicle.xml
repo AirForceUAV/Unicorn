@@ -47,8 +47,6 @@
             <description>Pitch PWM.</description>
             <param index="1" value="5" unit="No.">Pitch Channel Number</param>
             <param index="2" value="1" unit="bool">Whether is pitch used?. 0:not used 1:used</param>
-            <param index="3" value="1015" unit="pwm">Whether is pitch used?. 0:not used 1:used</param>
-            <param index="4" value="1504" unit="bool">Whether is pitch used?. 0:not used 1:used</param>
         </entry>
         <entry index="6" name="Mode">
             <description>Flight Mode.</description>
