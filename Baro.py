@@ -15,7 +15,7 @@ class Baro(object):
         """Initialize the Driver.
         Default bus is 1.  If you have a Rev 1 RPi then you will need to use bus 0.
         A bus object can also be passed in if you are sharing it among other modules
-        
+
         Arguments (All optional):
         bus -- 0, 1, or a bus object
         i2c -- I2C address
@@ -38,7 +38,7 @@ class Baro(object):
         self.i2c = i2c
 
     def read(self):
-        ## Get raw pressure
+        # Get raw pressure
         self.bus.write_byte(self.i2c, 0x48)
         time.sleep(0.05)
 
@@ -46,14 +46,14 @@ class Baro(object):
         D1 = D1[0] * 65536 + D1[1] * 256.0 + D1[2]
         time.sleep(0.05)
 
-        ## Get raw temperature
+        # Get raw temperature
         self.bus.write_byte(self.i2c, 0x58)
         time.sleep(0.05)
         D2 = self.bus.read_i2c_block_data(self.i2c, 0x00)
         D2 = D2[0] * 65536 + D2[1] * 256.0 + D2[2]
         time.sleep(0.05)
 
-        ## Read Constants from Sensor
+        # Read Constants from Sensor
         if hasattr(self, 'C1'):
             C1 = self.C1
         else:
@@ -108,22 +108,22 @@ class Baro(object):
             self.C6 = C6
             time.sleep(0.05)
 
-        ## These are the calculations provided in the datasheet for the sensor.
+        # These are the calculations provided in the datasheet for the sensor.
         dT = D2 - C5 * 2**8
         TEMP = 2000 + dT * C6 / 2**23
 
-        ## Set Values to class to be used elsewhere
+        # Set Values to class to be used elsewhere
         self.tempC = TEMP / 100.0
         self.tempF = TEMP / 100.0 * 9.0 / 5 + 32
         self.tempK = TEMP / 100.0 + 273.15
 
-        ## These calculations are all used to produce the final pressure value
+        # These calculations are all used to produce the final pressure value
         OFF = C2 * 2**16 + (C4 * dT) / 2**7
         SENS = C1 * 2**15 + (C3 * dT) / 2**8
         P = (D1 * SENS / 2**21 - OFF) / 2**15
         self.pressure = P / 100.0
 
-        ## Calculate an offset for the pressure.  This is required so that the readings are correct.
+        # Calculate an offset for the pressure.  This is required so that the readings are correct.
         # Equation can be found here:
         # http://en.wikipedia.org/wiki/Barometric_formula
         altOffset = math.exp(
@@ -165,7 +165,7 @@ class Baro(object):
         hpa = self.getPressureAdj()
         return self.convert2m(hpa)
 
-baro = Baro(config.get_Baro()[1], config.get_Baro()[2])
+baro = Baro()
 
 if __name__ == "__main__":
     # baro.setElevationFt(1420)
