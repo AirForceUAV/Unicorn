@@ -170,5 +170,6 @@ baro = Baro()
 if __name__ == "__main__":
     # baro.setElevationFt(1420)
     while True:
-        print baro.getAlt()
+        baro.read()
+        print baro.printResults()
         time.sleep(1)
