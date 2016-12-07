@@ -3,6 +3,7 @@
 
 from sense_hat import SenseHat
 from library import Singleton
+import time
 
 """
 The Sense HAT has the following features:
@@ -22,8 +23,9 @@ class AstroPi(object):
         self.sense.set_imu_config(True, True, True)
 
     def get_pressure(self):
-        pressure = sense.get_pressure()
+        pressure = self.sense.get_pressure()
         if pressure is 0:
+            time.sleep(.5)
             return self.get_pressure()
         else:
             return pressure
@@ -34,7 +36,7 @@ class AstroPi(object):
 
     def get_heading(self):
         north = self.sense.get_compass()
-        offset = 120
+        offset =0
         return int((north + offset) % 360)
 
     def get_radians(self):
@@ -70,9 +72,12 @@ class AstroPi(object):
         print "Orientation", self.get_orientation()
         print "compass", self.get_compass_raw()
         print "gyroscope", self.get_gyroscope()
-        print "acceler", self.get_acceleromete()
+        print "acceler", self.get_accelerometer()
 
 sense = AstroPi()
 
-if __name__ == "__main_:
-    sense.printInfo()
+if __name__ == "__main__":
+    while True:
+        sense.sense.clear()
+        sense.printInfo()
+        raw_input("Next")
