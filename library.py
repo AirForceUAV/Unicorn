@@ -5,7 +5,6 @@ import time
 import serial
 import math
 import signal
-import traceback
 import os
 import sys
 
@@ -154,18 +153,6 @@ def encode_10h(int_10, length=4):
 def list_assign(list1, list2):
     for i in xrange(len(list2)):
         list1[i] = list2[i]
-
-
-def radio_package():
-    return 'R'
-
-
-def GCS_package():
-    return 'G'
-
-
-def Mid_package():
-    return 'M'
 
 
 class CancelWatcher(object):

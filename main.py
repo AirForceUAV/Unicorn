@@ -4,18 +4,20 @@
 import time
 import Queue
 from config import config
-from apscheduler.schedulers.background import BackgroundScheduler
 from vehicle import Vehicle
 
 
-def _log(msg):
-    print msg
+def send_Log(sock, vehicle):
+    message = vehicle.FlightLog()
+    sock.send(message)
 
 if __name__ == '__main__':
+    from apscheduler.schedulers.background import BackgroundScheduler
     scheduler = BackgroundScheduler()
 
     from uORB import uORB
     from library import Watcher
+    mcu = None
     Watcher()
     ORB = uORB()
     # instancce of MCU module object
@@ -58,28 +60,28 @@ if __name__ == '__main__':
         lidar = Lidar(vehicle)
 
     if config.get_cloud()[0] > 0:
-        _log('Connecting to Cloud')
+        print('Connecting to Cloud')
         from cloud_module import open_sock, Receiver, Executor
 
         sock = open_sock()
         work_queue = Queue.Queue()
 
-        _log('Start Receiver Thread')
+        print('Start Receiver Thread')
         receiver = Receiver(work_queue, sock, vehicle)
         receiver.daemon = True
         receiver.start()
 
-        _log('Start Executor Thread')
+        print('Start Executor Thread')
         executor = Executor(work_queue, vehicle)
         executor.daemon = True
         executor.start()
 
-        scheduler.add_job(send_Log, 'interval',
-                          args=(sock, vehicle), seconds=1)
-        # while True:
-        #     message=vehicle.FlightLog()
-        #     sock.send(message)
-        #     time.sleep(1)
+        # scheduler.add_job(send_Log, 'interval',
+        #                   args=(sock, vehicle), seconds=1)
+        while True:
+            message = vehicle.FlightLog()
+            sock.send(message)
+            time.sleep(1)
     scheduler.start()
     receiver.join()
     executor.join()

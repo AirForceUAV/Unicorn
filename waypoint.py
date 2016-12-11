@@ -7,10 +7,10 @@ from library import element, get_location_metres
 class Waypoint(object):
 
     def __init__(self):
-        self._wp = []
-        self._number = 0
+        self._wp = None
+        self._number = -1
 
-    def download(self, origin, index):
+    def download(self, origin, index=0):
         file_path = 'waypoint.xml'
         _root = element(file_path)[index]
         result = [origin]
@@ -23,6 +23,7 @@ class Waypoint(object):
                 result[number], self.child(point, 0), self.child(point, 1)))
             number += 1
         self._wp = result[1:]
+        self._number = 0
 
     def Route(self, info):
         if info == "":
@@ -34,7 +35,7 @@ class Waypoint(object):
             loc = wp.split('+')
             result.append([float(loc[0]), float(loc[1])])
         self._wp = result
-        return 1
+        self._number = 0
 
     def remain_wp(self):
         return self._wp[self._number:]
@@ -49,10 +50,10 @@ class Waypoint(object):
         self._number += 1
 
     def minus_number(self):
-        if self._number >= 1:
-            self._number -= 1
+        if self._number < 0:
+            self._number = -1
         else:
-            self._number = 0
+            self._number -= 0
 
     def child(self, point, index):
         return float(point[index].text)
@@ -61,11 +62,11 @@ class Waypoint(object):
         self._root.write(out_path, encoding="utf-8", xml_declaration=True)
 
     def clear(self):
-        self._wp = []
-        self._number = 0
+        self._wp = None
+        self._number = -1
 
     def isNull(self):
-        if self._wp is []:
+        if self._wp is None:
             return True
         else:
             return False

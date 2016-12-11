@@ -67,14 +67,12 @@ class Attribute(object):
             self._log("GPS is closed")
             return -1
         location = self.get_location()
+        # loc=[39.11111,116.33333]
         if location is None:
             self._log('GPS is not health')
             return -1
-        # loc=[39.11111,116.33333]
-        self.wp.download(location, index)
 
-    def Route(self, info):
-        self.wp.Route(info)
+        self.wp.download(location, index)
 
     def json_all_wp(self):
         if self.wp.all_wp() == []:
@@ -95,7 +93,7 @@ class Attribute(object):
         channels[self.RUD[0]] = self.RUD[2]
         channels[self.mode[0]] = self.mode[1]
         if self._frame is 'HELI':
-            channels[self.PIT[0]] = self.PIT_curve(self.THR[1])
+            channels[self.PIT[0]] = self.PIT_curve(channels[self.THR[0]])
         return channels
 
     def init_channels_mid(self):
@@ -105,9 +103,13 @@ class Attribute(object):
         channels[self.THR[0]] = self.THR[2]
         channels[self.RUD[0]] = self.RUD[2]
         channels[self.mode[0]] = self.mode[1]
-        if self.PIT[1] > 0:
-            channels[self.PIT[0]] = self.PIT_curve(self.THR[2])
+        if self._frame is 'HELI':
+            channels[self.PIT[0]] = self.PIT_curve(channels[self.THR[0]])
         return channels
+
+    def update_PIT(self, THR_PWM):
+        if self._frame is "HELI":
+            self.channels[self.PIT[0]] = self.PIT_curve(THR_PWM)
 
     def PIT_curve(self, pwm):
         per = 100 * (pwm - self.THR[1]) / (self.THR[3] - self.THR[1])
@@ -117,10 +119,10 @@ class Attribute(object):
 
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
-        if not self.config.get_MCU()[0] > 0:
+        if not self.config.get_MCU()[0] > 0 or self.mcu is None:
             return 0
         mid = self.mcu.read_channels()
-        if mid is -1:
+        if mid is None:
             self._log('Co-MCU is dead')
             return -1
         self._log('Channels Mid:{}'.format(mid))
@@ -260,22 +262,13 @@ class Attribute(object):
                 self.get_location())    # lat,lon,alt
             log["DistanceFromHome"] = self.distance_from_home()  # distance
             log["DistanceToTarget"] = self.distance_to_target()  # distance
-            log["GPS"] = self.gps.info()  # [state,stars]
             log['Target'] = self.list2str(self.get_target())  # lat,lon
         else:
             log["HomeLocation"] = "{},{},{}".format(36.11111, 116.22222, 0.0)
             log["LocationGlobal"] = "{},{},{}".format(36.01234, 116.12375, 0.0)
             log["DistanceFromHome"] = 0.0
             log["DistanceToTarget"] = 0.0
-            log["GPS"] = -1
             log['Target'] = "{},{},{}".format(36.01234, 116.12375, 0.0)
-        if config.get_compass()[0] > 0:
-            log["Gimbal"] = self.list2str(
-                self.get_attitude())  # [pitch,yaw,roll]
-            log["Compass"] = self.compass.info()  # [state]
-        else:
-            log['Gimbal'] = "{},{},{}".format(0.2, -0.3, 355)
-            log['Compass'] = -1
         log["Battery"] = '{},{},{}'.format(
             12, 2.5, 100)       # [Voltage,Current,Capacity]
         log["Velocity"] = "{},{},{}".format(0.2, 0.1, 0.5)      # [x,y,z]
@@ -288,7 +281,7 @@ class Attribute(object):
         log['Gear'] = self.get_gear()  # Gear
         log['CurrentChannels'] = self.list2str(self.channels)   # ch1~ch8
         log['LoiterChannels'] = self.list2str(self.channels_mid)  # ch1~ch8
-        log['CurrentWpNumber'] = self.cur_wp
+        log['CurrentWpNumber'] = self.wp._number
         log['AllWp'] = self.json_all_wp()
         log['RPM'] = 1600    # RPM
 

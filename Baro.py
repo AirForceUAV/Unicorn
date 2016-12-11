@@ -186,6 +186,11 @@ class Baro(threading.Thread):
         return pressure * 0.0295301
 
 
+def convert2Alt(hpa):
+    mbar = hpa / 1013.25
+    return round((1 - mbar**0.190284) * 145366.45 * 0.3048, 2)
+
+
 if __name__ == "__main__":
     from library import Watcher
     from uORB import uORB
@@ -197,5 +202,6 @@ if __name__ == "__main__":
     while ORB.subscribe('Baro_State') is -1:
         time.sleep(.5)
     while True:
-        print ORB.subscribe('pressure')
-        time.sleep(.3)
+        pressure = ORB.subscribe('pressure')
+        print pressure, convert2Alt(pressure)
+        raw_input('Next')

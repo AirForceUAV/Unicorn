@@ -7,7 +7,6 @@ from config import config
 from library import CancelWatcher, list_assign
 from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
-from waypoint import Waypoint
 from attribute import Attribute
 
 
@@ -18,13 +17,15 @@ class Vehicle(Attribute):
         super(Vehicle, self).__init__(mcu, ORB)
 
     def arm(self):
+        if self._frame is 'HELI':
+            return 0
         print "arm..."
         self.channels[self.AIL[0]] = self.AIL[1]
         self.channels[self.ELE[0]] = self.ELE[3]
         self.channels[self.THR[0]] = self.THR[3]
         self.channels[self.RUD[0]] = self.RUD[3]
         self.send_pwm()
-        time.sleep(3)
+        time.sleep(2)
         self.disarm()
         pass
 
@@ -44,8 +45,7 @@ class Vehicle(Attribute):
     #     self.send_pwm()
 
     def takeoff(self, alt=5):
-        self.arm()
-        if config.get_Baro()[0] < 0 or config.get_compass()[0] < 0:
+        if config.get_Baro()[0] <= 0:
             print 'Baro is closed'
             return 0
         print 'Takeoff to ', alt, 'm'
@@ -54,23 +54,60 @@ class Vehicle(Attribute):
             self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.6)
         else:
             self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.6)
+        self.update_PIT(self.channels[self.THR[0]])
         self.send_pwm()
-        watcher = CancelWatcher()
-        while not watcher.IsCancel():
-            currentAlt = self.get_alt()
-            print 'Current Altitude', currentAlt
-            if currentAlt is None:
-                self.brake()
-                return -1
-            if currentAlt > alt * 0.9:
-                print 'Reached Altitude'
-                break
+        time.sleep(3)
+        # watcher = CancelWatcher()
+        # while not watcher.IsCancel():
+        #     currentAlt = self.get_alt()
+        #     print 'Current Altitude', currentAlt
+        #     if currentAlt is None:
+        #         self.brake()
+        #         return -1
+        #     if currentAlt > alt * 0.9:
+        #         print 'Reached Altitude'
+        #         break
 
         self.brake()
         pass
 
     def land(self):
-        pass
+        if config.get_Baro()[0] <= 0:
+            print 'Baro is closed'
+            return 0
+        print 'Landing... '
+
+        if self.THR[5] < 0:
+            self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.4)
+        else:
+            self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.4)
+        self.update_PIT(self.channels[self.THR[0]])
+        self.send_pwm()
+        Watcher = CancelWatcher()
+        time.sleep(3)
+        # preAlt = self.get_alt()
+        # times = 0
+        # while not watcher.IsCancel():
+        #     currentAlt = self.get_alt()
+        #     print 'Current Altitude', currentAlt
+        #     if currentAlt is None:
+        #         self.brake()
+        #         return -1
+
+        #     if abs(currentAlt - preAlt) < 0.2:
+        #         times += 1
+        #     else:
+        #         times = 0
+        #     if times >= 5:
+        #         break
+        #     if currentAlt > alt * 0.9:
+        #         print 'Reached Altitude'
+        #         break
+        if not watcher.IsCancel():
+            self.disarm()
+
+    def THR_MID(self):
+        list_assign(self.channels, self.channels_mid)
 
     def movement(self, att, sign=1):
         rate = self.gear[self.get_gear()] / 100.0
@@ -87,21 +124,21 @@ class Vehicle(Attribute):
     def yaw_left(self):
         self._log('Turn Left...')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement2(self.RUD, -1)
             self.send_pwm()
 
     def yaw_right(self):
         self._log('Turn Right...')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement2(self.RUD)
             self.send_pwm()
 
     def forward(self, duration=None):
         self._log('Forward...')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement(self.ELE)
             self.send_pwm()
             if duration is not None:
@@ -120,7 +157,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Yaw Left')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement2(self.RUD, -1)
             self.send_pwm()
             time.sleep(duration)
@@ -130,7 +167,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Yaw Right')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement2(self.RUD)
             self.send_pwm()
             time.sleep(duration)
@@ -140,7 +177,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Forward')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement(self.ELE)
             self.send_pwm()
             time.sleep(duration)
@@ -150,7 +187,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Backward')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement(self.ELE, -1)
             self.send_pwm()
             time.sleep(duration)
@@ -160,7 +197,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Roll Left')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement(self.AIL, -1)
             self.send_pwm()
             time.sleep(duration)
@@ -170,7 +207,7 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Roll Right')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             self.movement(self.AIL)
             self.send_pwm()
             time.sleep(duration)
@@ -180,10 +217,9 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Throttle Up')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             pwm = self.movement2(self.THR)
-            if self._frame is 'HELI':
-                self.channels[self.PIT[0]] = self.PIT_curve(pwm)
+            self.update_PIT(pwm)
             self.send_pwm()
             time.sleep(duration)
             self.brake()
@@ -192,10 +228,9 @@ class Vehicle(Attribute):
         duration = self.mDuration()
         self._log('Throttle Down')
         if config.get_MCU()[0] > 0:
-            self.channels[self.THR[0]] = self.THR[2]
+            self.THR_MID()
             pwm = self.movement2(self.THR, -1)
-            if self._frame is 'HELI':
-                self.channels[self.PIT[0]] = self.PIT_curve(pwm)
+            self.update_PIT(pwm)
             self.send_pwm()
             time.sleep(duration)
             self.brake()
@@ -204,6 +239,8 @@ class Vehicle(Attribute):
         return self.MD[0]
 
     def send_pwm(self):
+        if not config.get_MCU()[0] > 0 or self.mcu is None:
+            return 0
         self.mcu.send_pwm(self.channels)
 
     def diff_angle(self, origin, target, sign):
@@ -244,7 +281,8 @@ class Vehicle(Attribute):
         print "Target", target_angle
         while not watcher.IsCancel() and self.diff_angle(
                 self.get_heading(), target_angle, is_cw):
-            # self._log('Cur angle:{},Target angle:{}'.format(self.get_heading(),target_angle))
+            # self._log('Cur angle:{},Target
+            # angle:{}'.format(self.get_heading(),target_angle))
             time.sleep(.02)
         self._log('pre Angle {}'.format(self.get_heading()))
         self.brake()
@@ -287,6 +325,11 @@ class Vehicle(Attribute):
         self.navigation(target)
         self.mode_name = "Loiter"
 
+    def Route(self, info):
+        self.wp.Route(info)
+        # print self.wp._wp
+        # self.Auto()
+
     def Auto(self):
         if self.wp.isNull():
             self._log('Waypoint is None')
@@ -295,7 +338,8 @@ class Vehicle(Attribute):
         watcher = CancelWatcher()
         for point in self.wp.remain_wp():
             if watcher.IsCancel():
-                break
+                self.mode_name = "Loiter"
+                return 0
             self.navigation(point)
             self.wp.add_number()
 
@@ -340,6 +384,7 @@ class Vehicle(Attribute):
 if __name__ == "__main__":
     from uORB import uORB
     from library import Watcher
+    mcu = None
     Watcher()
     ORB = uORB()
     # instancce of MCU module object
@@ -377,9 +422,9 @@ if __name__ == "__main__":
 
     vehicle = Vehicle(mcu, ORB)
 
-    # vehicle.set_channels_mid()
+    vehicle.set_channels_mid()
     # vehicle.set_gear(2)
-    vehicle.takeoff(3)
+    # vehicle.takeoff(3)
 
     # vehicle.yaw_left_brake()
     # time.sleep(2)

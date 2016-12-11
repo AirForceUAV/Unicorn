@@ -6,7 +6,7 @@ import time
 import os
 import sys
 from config import config
-from library import CancelWatcher, Watcher
+from library import CancelWatcher
 import threading
 import Queue
 
@@ -24,7 +24,7 @@ def open_sock():
 
 class Receiver(threading.Thread):
 
-    def __init__(self, work_queue, sock, vehicle):
+    def __init__(self, work_queue, sock, vehicle=None):
         super(Receiver, self).__init__(name="Receiver")
         self.work_queue = work_queue
         self.sock = sock
@@ -32,16 +32,19 @@ class Receiver(threading.Thread):
 
     def run(self):
         buffer_size = 4096
-        try:
+        while True:
             # use this to receive command
-            while True:
-                data = self.sock.recv(buffer_size)
-                if data != '':
-                    self.vehicle.Cancel()
-                    self.work_queue.put(data)
-        finally:
-            print "sock is closed"
-            self.sock.close()
+            data = self.sock.recv(buffer_size)
+            if data is '':
+                continue
+            else:
+                print 'Recevie command', data
+            if data.find('Cancel') != -1:
+                print 'Execute command vehicle.cancel()'
+                CancelWatcher.Cancel = True
+            else:
+                # CancelWatcher.Cancel = True
+                self.work_queue.put(data)
 
     def _log(self, msg):
         print msg
@@ -49,7 +52,7 @@ class Receiver(threading.Thread):
 
 class Executor(threading.Thread):
 
-    def __init__(self, work_queue, vehicle, lidar=None):
+    def __init__(self, work_queue, vehicle=None, lidar=None):
         super(Executor, self).__init__(name="Executor")
         self.work_queue = work_queue
         self.vehicle = vehicle
@@ -57,24 +60,45 @@ class Executor(threading.Thread):
     def run(self):
         while True:
             command = self.work_queue.get()
-            if command.find('Cancel') != -1:
-                self._log("Cancel")
-                self.vehicle.Cancel()
-            elif command.find('Route') != -1:
-                self._log('Route')
-                info = command[7:-2]
-                self.vehicle.Route(info)
-            else:
-                command = "self." + command
-                self._log(command)
-                try:
-                    eval(command)
-                except Exception:
-                    info = sys.exc_info()
-                    print "{}:{}".format(info[0], info[1])
+            command = "self." + command
+            self._log('Execute command {}'.format(command))
+            try:
+                eval(command)
+                pass
+            except Exception:
+                info = sys.exc_info()
+                print "{}:{}".format(info[0], info[1])
 
     def _log(self, msg):
         print msg
 
+
+def test_send(sock):
+    sock.send('Test')
+
 if __name__ == "__main__":
-    pass
+    from vehicle import Vehicle
+    from cloud_module import open_sock, Receiver, Executor
+    from apscheduler.schedulers.background import BackgroundScheduler
+    from library import Watcher
+    vehicle = Vehicle()
+    scheduler = BackgroundScheduler()
+    Watcher()
+    sock = open_sock()
+    work_queue = Queue.Queue()
+
+    print 'Start Receiver Thread'
+    receiver = Receiver(work_queue, sock)
+    receiver.daemon = True
+    receiver.start()
+
+    print 'Start Executor Thread'
+    executor = Executor(work_queue, vehicle)
+    executor.daemon = True
+    executor.start()
+
+    scheduler.add_job(test_send, 'interval', args=(sock,), seconds=1)
+    scheduler.start()
+    receiver.join()
+    executor.join()
+    work_queue.join()

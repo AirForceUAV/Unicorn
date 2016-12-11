@@ -3,7 +3,7 @@
 
 import time
 import threading
-from library import open_serial, encode_hex, Watcher
+from library import open_serial, encode_hex
 from config import config
 from library import Singleton
 

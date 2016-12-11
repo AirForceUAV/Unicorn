@@ -165,4 +165,4 @@ if __name__ == "__main__":
     print 'Movement Duration', config.get_MD()
     print 'Brake Duration', config.get_BD()
     print 'Decision Duration', config.get_DD()
-    print 'Degree', config.get_degree()
+    print 'Ignore Degree', config.get_degree()

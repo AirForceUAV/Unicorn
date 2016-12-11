@@ -5,7 +5,7 @@ import pynmea2
 import time
 from config import config
 from library import open_serial
-from library import Singleton, Watcher
+from library import Singleton
 import threading
 
 

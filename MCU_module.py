@@ -32,25 +32,25 @@ class MCU(object):
     def read_mid(self, size=38):
         times = 0
         self.ser.flushInput()
-        while times < 100:
+        while times < 2:
             times += 1
-            if not self.ser.in_waiting() > size * 5:
-                continue
             msg = self.ser.read(size * 5)
+            if msg is '':
+                continue
             msg = encode_hex(msg)
             # self._log("Read channels:{}".format(msg))
             n = msg.find('aabb')
             if n != -1 and len(msg) >= n + size:
                 return msg[n:n + size]
-        return -1
+        return None
 
     def read_channels(self, ch_count=8):
 
         channels = [0, 0, 0, 0, 0, 0, 0, 0]
         package = self.read_mid()
         # self._log(package)
-        if package is -1:
-            return -1
+        if package is None:
+            return None
         num = 0
         index = 4
         while num < ch_count:
@@ -73,5 +73,4 @@ if __name__ == "__main__":
     while True:
         ch = mcu.read_channels()
         print ch
-        mcu.send_pwm(ch)
         raw_input('Next')
