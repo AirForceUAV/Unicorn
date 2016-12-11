@@ -6,12 +6,13 @@ from config import config
 from library import Singleton
 import math
 from smbus import SMBus
+import threading
 
 
-class Baro(object):
+class Baro(threading.Thread):
     __metaclass__ = Singleton
 
-    def __init__(self, bus=1, i2c=0x77, elevation=0):
+    def __init__(self, ORB, bus=1, i2c=0x77, elevation=0):
         """Initialize the Driver.
         Default bus is 1.  If you have a Rev 1 RPi then you will need to use bus 0.
         A bus object can also be passed in if you are sharing it among other modules
@@ -20,6 +21,8 @@ class Baro(object):
         bus -- 0, 1, or a bus object
         i2c -- I2C address
         elevation -- Elevation in meters"""
+        super(Baro, self).__init__(name='Baro')
+        self.ORB = ORB
 
         if(bus == 0 or bus == 1):
             self.bus = SMBus(bus)
@@ -27,6 +30,32 @@ class Baro(object):
             self.bus = bus
         self.i2c = i2c
         self.elevation = elevation
+        self.init()
+
+    def run(self):
+        print 'Initializing Baro Module'
+
+        while True:
+            times = 0
+            while times < 10:
+                times += 1
+                self.read()
+                hpa = self.getPressureAdj()
+                if hpa is not None:
+                    break
+            if hpa is None:
+                dic = {'Baro_State': -1, 'Pressure': None}
+            else:
+                dic = {'Baro_State': 1, 'Pressure': hpa}
+            self.update(dic)
+
+    def init(self):
+        dic = {'Baro_State': -1, 'Pressure': None}
+        self.update(dic)
+
+    def update(self, dictories):
+        for (k, v) in dictories.items():
+            self.ORB.publish(k, v)
 
     def setElevation(self, elevation):
         self.elevation = elevation
@@ -156,21 +185,17 @@ class Baro(object):
     def convert2In(self, pressure):
         return pressure * 0.0295301
 
-    def convert2m(self, hpa):
-        mbar = hpa / 1013.25
-        return round((1 - mbar**0.190284) * 145366.45 * 0.3048, 2)
-
-    def getAlt(self):
-        self.read()
-        hpa = self.getPressureAdj()
-        return self.convert2m(hpa)
-
-baro = Baro()
 
 if __name__ == "__main__":
-    # baro.setElevationFt(1420)
+    from library import Watcher
+    from uORB import uORB
+    ORB = uORB()
+    baro = Baro(ORB)
+    print ORB
+    Watcher()
+    baro.start()
+    while ORB.subscribe('Baro_State') is -1:
+        time.sleep(.5)
     while True:
-        baro.read()
-        print baro.printResults()
-        print baro.getAlt()
-        time.sleep(1)
+        print ORB.subscribe('pressure')
+        time.sleep(.3)

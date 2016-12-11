@@ -11,26 +11,38 @@ from library import Singleton
 class Compass(threading.Thread):
     __metaclass__ = Singleton
 
-    def __init__(self):
-        threading.Thread.__init__(self)
+    def __init__(self, ORB):
+        super(Compass, self).__init__(name="Compass")
         self._log("Connecting to Compass Module")
+        self.ORB = ORB
         con = config.get_compass()
         self.ser = open_serial(con[1], con[2])
-        self.state = 1    # 1:healthy -1:not healthy
-        self.attitude = None
+        self.init()
 
     def run(self):
         print "Initializing Compass Module"
-        while True:
-            self.attitude = self._attitude()
 
-    def info(self):
-        return '{}'.format(self.state)
+        while True:
+            attitude = self._attitude()
+
+            if attitude is None:
+                dic = {'Compass_State': -1, 'Attitude': None}
+            else:
+                dic = {'Compass_State': 1, 'Attitude': attitude}
+            self.update(dic)
+
+    def init(self):
+        dic = {'Compass_State': -1, 'Attitude': None}
+        self.update(dic)
+
+    def update(self, dictories):
+        for (k, v) in dictories.items():
+            self.ORB.publish(k, v)
 
     def _attitude(self):
         command = '6804000408'
         package = self.compass_info(command, 84, 14)
-        if package == None:
+        if package is None:
             return None
         else:
             pitch = self.decode_BCD(package[8:14])
@@ -38,22 +50,10 @@ class Compass(threading.Thread):
             heading = int(self.decode_BCD(package[20:26]))
             return [pitch, roll, heading]
 
-    def get_attitude(self):
-        return self.attitude
-
-    def get_pitch(self):
-        return self.attitude[0]
-
-    def get_roll(self):
-        return self.attitude[1]
-
-    def get_heading(self):
-        return self.attitude[2]
-
     def compass_info(self, command, ack, size=8):
         command = command.decode("hex")
         times = 0
-        while times < config.get_compass()[3]:
+        while times < 100:
             times += 1
             self.ser.write(command)
             res = self.ser.readline()
@@ -87,12 +87,14 @@ class Compass(threading.Thread):
         print msg
 
 if __name__ == '__main__':
-    compass = Compass()
-
+    from library import Watcher
+    from uORB import uORB
+    ORB = uORB()
+    compass = Compass(ORB)
     Watcher()
     compass.start()
-    while compass.attitude == None:
+    while ORB.subscribe('Compass_State') is -1:
         time.sleep(.5)
     while True:
-        print compass.get_attitude()
-        time.sleep(.1)
+        print ORB.subscribe('Attitude')[2]
+        time.sleep(.3)

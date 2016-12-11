@@ -4,7 +4,6 @@
 import time
 from config import config
 from library import open_serial, encode_hex, encode_10h
-from library import GCS_package, Mid_package
 from library import Singleton
 
 
@@ -12,7 +11,6 @@ class MCU(object):
     __metaclass__ = Singleton
 
     def __init__(self):
-        global config
         con = config.get_MCU()
         self._log("Connecting to MCU")
         self.ser = open_serial(con[1], con[2])
@@ -31,44 +29,28 @@ class MCU(object):
         msg = msg.decode("hex")
         self.ser.write(msg * 10)
 
-    def send_msg(self, msg):
-        # Send 'R' , 'G' , 'M'
-        self._log("send msg:{}".format(msg))
-        self.ser.write(msg * 100)
-
-    def send_mid_msg(self):
-        # Send 'M'
-        self._log('send msg:{}'.format(Mid_package()))
+    def read_mid(self, size=38):
         times = 0
-        while times < config.get_MCU()[3]:
+        self.ser.flushInput()
+        while times < 100:
             times += 1
-            self.ser.write(Mid_package())
-            ack = self.ser.read(42)
-            ack = encode_hex(ack)
-            # print(ack)
-            if ack.find('aabb') != -1:
-                return 1
-            else:
-                time.sleep(0.05)
-
-        self._log('Switch to M. Timeout ({} times)'.format(times))
-
-    def read_mid(self, size=100):
-
-        while True:
-            msg = self.ser.read(size)
+            if not self.ser.in_waiting() > size * 5:
+                continue
+            msg = self.ser.read(size * 5)
             msg = encode_hex(msg)
-            #self._log("Read channels:{}".format(msg))
+            # self._log("Read channels:{}".format(msg))
             n = msg.find('aabb')
-            if n != -1 and len(msg) >= n + 38:
-                return msg[n:n + 38]
+            if n != -1 and len(msg) >= n + size:
+                return msg[n:n + size]
+        return -1
 
     def read_channels(self, ch_count=8):
-        self.ser.flushInput()
-        self.send_msg('M')
+
         channels = [0, 0, 0, 0, 0, 0, 0, 0]
         package = self.read_mid()
         # self._log(package)
+        if package is -1:
+            return -1
         num = 0
         index = 4
         while num < ch_count:
@@ -88,7 +70,8 @@ class MCU(object):
 
 if __name__ == "__main__":
     mcu = MCU()
-    # channels=[1500,1500,1500,1500,1000,0,0,1500]
-    # mcu.send_pwm(channels)
-    # mcu.send_msg('G')
-    print mcu.read_channels()
+    while True:
+        ch = mcu.read_channels()
+        print ch
+        mcu.send_pwm(ch)
+        raw_input('Next')

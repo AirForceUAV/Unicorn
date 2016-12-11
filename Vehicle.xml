@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
-<vehicles>
-    <vehicle index="0" type='Coptor-550' FlightController='ACE_ONE'>
+<vehicles ID="1">
+    <vehicle index="0" frame='HELI' FlightController='ACE_ONE' vehicle="copter-550">
         <entry index="0" name="Cloud">
             <description>Cloud param.</description>
             <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
@@ -97,9 +97,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration </param>
-            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="3" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1" unit="seconds">Movement Duration </param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -128,7 +126,7 @@
             <param index="2" value="10" unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
-    <vehicle index="1" type='HEX6' FlightController='NAZA-m v2'>
+    <vehicle index="1" frame='MUL' FlightController='NAZA-m v2' vehicle="HEX6">
         <entry index="0" name="Cloud">
             <description>Cloud param.</description>
             <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
@@ -197,7 +195,7 @@
         </entry>
         <entry index="9" name="compass">
             <description>Compass_module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
+            <param index="1" value="1" unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
             <param index="2" value="/dev/compass" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="100" unit="times">ARQ times. </param>
@@ -225,9 +223,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1" unit="seconds">Movement Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -242,7 +238,7 @@
             <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
             <param index="4" value="3" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
-        </entry>]                                                                                
+        </entry>]                                                                                                                                                        
         <entry index="16" name="LandingGear">
             <description>LandingGear.</description>
             <param index="1" value="0" unit="bool">Whether is LandingGear open? 0:close 1:open </param>
@@ -256,7 +252,7 @@
             <param index="2" value="10" unit="degree">Avoidance.</param>
         </entry>
     </vehicle>
-    <vehicle index="2" type='HEX4' FlightController='pixhawk'>
+    <vehicle index="2" frame='MUL' FlightController='pixhawk' vehicle="HEX4">
         <entry index="0" name="Cloud">
             <description>Cloud param.</description>
             <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
@@ -353,9 +349,7 @@
         </entry>
         <entry index="13" name="Movement Duration">
             <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
+            <param index="1" value="1" unit="seconds">Movement Duration.</param>
         </entry>
         <entry index="14" name="Brake Duration">
             <description>Brake Duration.</description>
@@ -370,7 +364,7 @@
             <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
             <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
             <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
-        </entry>]                                                                                
+        </entry>]                                                                                                                                                        
         <entry index="16" name="LandingGear">
             <description>LandingGear.</description>
             <param index="1" value="0" unit="bool">Whether is LandingGear open? 0:close 1:open </param>

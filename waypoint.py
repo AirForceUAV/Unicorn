@@ -12,7 +12,7 @@ class Waypoint(object):
 
     def download(self, origin, index):
         file_path = 'waypoint.xml'
-        _root = element(file_path, index)
+        _root = element(file_path)[index]
         result = [origin]
         points = _root.getchildren()
         if points is None:
@@ -34,6 +34,7 @@ class Waypoint(object):
             loc = wp.split('+')
             result.append([float(loc[0]), float(loc[1])])
         self._wp = result
+        return 1
 
     def remain_wp(self):
         return self._wp[self._number:]
@@ -62,6 +63,12 @@ class Waypoint(object):
     def clear(self):
         self._wp = []
         self._number = 0
+
+    def isNull(self):
+        if self._wp is []:
+            return True
+        else:
+            return False
 
     def _log(self, msg):
         print msg

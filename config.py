@@ -7,10 +7,14 @@ from library import Singleton, element
 class Config(object):
     __metaclass__ = Singleton
 
-    def __init__(self, index=1):
+    def __init__(self):
         file_name = 'Vehicle.xml'
-        self._root = element(file_name, index)
-        self._type = self._root.get('type')                 # vehicle type
+        root_node = element(file_name)
+        ID = int(root_node.get('ID'))
+        self._root = root_node[ID]
+        self._vehicle = self._root.get(
+            'vehicle')                 # vehicle type
+        self._frame = self._root.get('frame')
         self._FC = self._root.get('FlightController')     # FC  version
         self._cloud = [self.get_node(0, 1), self.get_node(
             0, 2), self.get_node(0, 3)]  # [open?,ip,port]
@@ -28,12 +32,24 @@ class Config(object):
             8, 3), self.get_node(8, 4)]  # [open?,port,baudrate]
         self._Comp = [self.get_node(9, 1), self.get_node(9, 2), self.get_node(
             9, 3), self.get_node(9, 4)]  # [open?,port,baudrate]
-        self._Baro = [self.get_node(10, 1), self.get_node(10, 2), self.get_node(
-            10, 3), self.get_node(10, 4)]  # [open?,port,baudrate]
-        self._lidar = [self.get_node(11, 1), self.get_node(11, 2), self.get_node(
-            11, 3), self.get_node(11, 4)]  # [open?,port,safety distance,detected distance]
-        self._gear = [self.get_node(12, 1), self.get_node(12, 2), self.get_node(
-            12, 3), self.get_node(12, 4)]  # [Current Gear,Low Gear,Mid Gear,High Gear]
+        self._Baro = [
+            self.get_node(
+                10, 1), self.get_node(
+                10, 2), self.get_node(
+                10, 3), self.get_node(
+                    10, 4)]  # [open?,port,baudrate]
+        self._lidar = [
+            self.get_node(
+                11, 1), self.get_node(
+                11, 2), self.get_node(
+                11, 3), self.get_node(
+                    11, 4)]  # [open?,port,safety distance,detected distance]
+        self._gear = [
+            self.get_node(
+                12, 1), self.get_node(
+                12, 2), self.get_node(
+                12, 3), self.get_node(
+                    12, 4)]  # [Current Gear,Low Gear,Mid Gear,High Gear]
         self._MD = [self.get_node(13, 1)]
         self._BD = [1, self.get_node(14, 1), self.get_node(
             14, 2), self.get_node(14, 3)]
@@ -66,8 +82,11 @@ class Config(object):
         else:
             return value
 
-    def get_type(self):
-        return self._type
+    def get_vehicle(self):
+        return self._vehicle
+
+    def get_frame(self):
+        return self._frame
 
     def get_FC(self):
         return self._FC
@@ -122,12 +141,14 @@ class Config(object):
 
     def get_degree(self):
         return self._degree
+
 # Global config
-config = Config(1)
+config = Config()
 
 if __name__ == "__main__":
-    print 'Vehicle type:{}'.format(config._type)
-    print 'FC version:{}'.format(config._FC)
+    print 'Vehicle frame:{}'.format(config.get_frame())
+    print 'Vehicle type:{}'.format(config.get_vehicle())
+    print 'FC firmware:{}'.format(config._FC)
     print 'Cloud:', config.get_cloud()
     print 'AIL:', config.get_AIL()
     print 'ELE:', config.get_ELE()

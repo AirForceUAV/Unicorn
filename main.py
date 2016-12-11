@@ -1,44 +1,11 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-#import logging
-# logging.basicConfig()
 import time
 import Queue
 from config import config
 from apscheduler.schedulers.background import BackgroundScheduler
-from library import Watcher
-
-global conifg
-
-
-def MCU_heartbeat(mcu):
-    # mcu.state=-1
-    # _log('Warning:MCU is not heartbeat')
-    pass
-
-
-def Compass_heartbeat(compass):
-    heading = compass.get_heading()
-    if heading == None:
-        compass.state = -1
-        _log('Warning:Compass has no heartbeats')
-    else:
-        compass.state = 1
-
-
-def GPS_heartbeat(gps):
-    if gps.get_location()[2] is None:
-        gps.state = -1
-        _log('Warning:GPS has no heartbeats')
-    else:
-        gps.state = 1
-
-
-def send_Log(sock, vehicle):
-    message = vehicle.FlightLog()
-    message = "Test"
-    sock.send(message)
+from vehicle import Vehicle
 
 
 def _log(msg):
@@ -47,35 +14,44 @@ def _log(msg):
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
 
+    from uORB import uORB
+    from library import Watcher
     Watcher()
-    mcu = None
-    gps = None
-    compass = None
-    if config.get_MCU()[0] > 0:                      # instancce of MCU module object
+    ORB = uORB()
+    # instancce of MCU module object
+    if config.get_MCU()[0] > 0:
         from MCU_module import MCU
         mcu = MCU()
 
     if config.get_compass()[0] > 0:
         # instancce of compass module object
         from compass_module import Compass
-        compass = Compass()
+        compass = Compass(ORB)
 
         compass.start()
-        while compass.get_attitude() == None:
+        while ORB.subscribe('Compass_State') is -1:
             # print compass.get_heading()
             time.sleep(.5)
 
     if config.get_GPS()[0] > 0:
         from GPS_module import GPS                 # instancce of GPS module object
-        gps = GPS()
+        gps = GPS(ORB)
 
         gps.start()
-        while gps.msg == None:
+        while ORB.subscribe('GPS_State') is -1:
             # print gps.get_num_stars()
             time.sleep(.5)
 
-    from vehicle import Vehicle
-    vehicle = Vehicle(mcu, compass, gps)
+    if config.get_Baro()[0] > 0:
+        from Baro import Baro
+        baro = Baro(ORB)
+
+        baro.start()
+        while ORB.subscribe('Baro_State') is -1:
+            # print gps.get_num_stars()
+            time.sleep(.5)
+
+    vehicle = Vehicle(mcu, ORB)
 
     if config.get_lidar()[0] > 0:
         from lidar_module import Lidar
