@@ -3,7 +3,7 @@
 
 import time
 from config import config
-from library import open_serial, encode_hex, encode_10h
+from library import open_serial, ascii2hex, dec2hex
 from library import Singleton
 
 
@@ -19,7 +19,7 @@ class MCU(object):
     def code_pwm(self, channels):
         msg = "AABB"
         for channel in channels:
-            msg += encode_10h(channel)
+            msg += dec2hex(channel)
         msg += "CC"
         return msg
 
@@ -37,7 +37,7 @@ class MCU(object):
             msg = self.ser.read(size * 5)
             if msg is '':
                 continue
-            msg = encode_hex(msg)
+            msg = ascii2hex(msg)
             # self._log("Read channels:{}".format(msg))
             n = msg.find('aabb')
             if n != -1 and len(msg) >= n + size:

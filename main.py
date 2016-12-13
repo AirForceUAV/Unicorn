@@ -7,8 +7,8 @@ from config import config
 from vehicle import Vehicle
 
 
-def send_Log(sock, vehicle):
-    message = vehicle.FlightLog()
+def send_Log(sock, ORB):
+    message = ORB.dataflash()
     sock.send(message)
 
 if __name__ == '__main__':
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         work_queue = Queue.Queue()
 
         print('Start Receiver Thread')
-        receiver = Receiver(work_queue, sock, vehicle)
+        receiver = Receiver(work_queue, sock)
         receiver.daemon = True
         receiver.start()
 
@@ -76,12 +76,12 @@ if __name__ == '__main__':
         executor.daemon = True
         executor.start()
 
-        # scheduler.add_job(send_Log, 'interval',
-        #                   args=(sock, vehicle), seconds=1)
-        while True:
-            message = vehicle.FlightLog()
-            sock.send(message)
-            time.sleep(1)
+        scheduler.add_job(send_Log, 'interval',
+                          args=(sock, ORB), seconds=1)
+        # while True:
+        #     message = ORB.dataflash()
+        #     sock.send(message)
+        #     time.sleep(1)
     scheduler.start()
     receiver.join()
     executor.join()

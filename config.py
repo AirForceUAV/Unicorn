@@ -22,8 +22,7 @@ class Config(object):
         self._ELE = self.ch(2)
         self._THR = self.ch(3)
         self._RUD = self.ch(4)
-        self._PIT = [self.get_node(
-            5, 1) - 1, self.get_node(5, 2)]
+        self._PIT = [self.get_node(5, 1) - 1]
         # [ch No.,mode pwm]
         self._mode = [self.get_node(6, 1) - 1, self.get_node(6, 2)]
         self._MCU = [self.get_node(7, 1), self.get_node(7, 2), self.get_node(
@@ -50,7 +49,7 @@ class Config(object):
                 12, 2), self.get_node(
                 12, 3), self.get_node(
                     12, 4)]  # [Current Gear,Low Gear,Mid Gear,High Gear]
-        self._MD = [self.get_node(13, 1)]
+        self._MD = self.get_node(13, 1)
         self._BD = [1, self.get_node(14, 1), self.get_node(
             14, 2), self.get_node(14, 3)]
         self._DD = [self.get_node(15, 1), self.get_node(15, 2)]

@@ -3,7 +3,7 @@
 
 import time
 import threading
-from library import open_serial, encode_hex
+from library import open_serial, ascii2hex
 from config import config
 from library import Singleton
 
@@ -17,13 +17,12 @@ class Compass(threading.Thread):
         self.ORB = ORB
         con = config.get_compass()
         self.ser = open_serial(con[1], con[2])
-        self.init()
 
     def run(self):
         print "Initializing Compass Module"
 
         while True:
-            attitude = self._attitude()
+            attitude = self.get_attitude()
 
             if attitude is None:
                 dic = {'Compass_State': -1, 'Attitude': None}
@@ -31,15 +30,11 @@ class Compass(threading.Thread):
                 dic = {'Compass_State': 1, 'Attitude': attitude}
             self.update(dic)
 
-    def init(self):
-        dic = {'Compass_State': -1, 'Attitude': None}
-        self.update(dic)
-
     def update(self, dictories):
         for (k, v) in dictories.items():
             self.ORB.publish(k, v)
 
-    def _attitude(self):
+    def get_attitude(self):
         command = '6804000408'
         package = self.compass_info(command, 84, 14)
         if package is None:
@@ -53,20 +48,20 @@ class Compass(threading.Thread):
     def compass_info(self, command, ack, size=8):
         command = command.decode("hex")
         times = 0
+        self.ser.flushInput()
         while times < 100:
             times += 1
             self.ser.write(command)
             res = self.ser.readline()
-            package = encode_hex(res)
+            package = ascii2hex(res)
             index = package.find('68')
             if index == -1 or len(package) < index + size * 2:
-
                 continue
             package = package[index:index + size * 2]
             # self._log(package)
-            if package[6:8] == str(ack):
+            if package[6:8] == str(ack) and self.checksum(package):
                 return package
-        self._log('Compass Timeout(5 times)')
+        self._log('Compass Timeout')
         return None
 
     def checksum(self, package):
@@ -96,5 +91,5 @@ if __name__ == '__main__':
     while ORB.subscribe('Compass_State') is -1:
         time.sleep(.5)
     while True:
-        print ORB.subscribe('Attitude')[2]
+        print ORB.subscribe('Attitude')
         time.sleep(.3)

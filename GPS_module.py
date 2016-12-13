@@ -18,7 +18,6 @@ class GPS(threading.Thread):
         self._log("Connecting to Compass Module")
         con = config.get_GPS()
         self.ser = open_serial(con[1], con[2])
-        self.init()
 
     def run(self):
         print "Initializing GPS Module"
@@ -32,16 +31,13 @@ class GPS(threading.Thread):
                        'Num_stars': 0}
             self.update(dic)
 
-    def init(self):
-        dic = {'GPS_State': -1, 'Location': None, 'Num_stars': 0}
-        self.update(dic)
-
     def update(self, dictories):
         for (k, v) in dictories.items():
             self.ORB.publish(k, v)
 
     def parseGPS(self):
         times = 0
+        self.ser.flushInput()
         while times < 200:
             times += 1
             line = self.ser.readline()

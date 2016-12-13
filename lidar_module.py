@@ -7,6 +7,7 @@ import sys
 import time
 from config import config
 from library import CancelWatcher, get_distance_metres, Singleton
+from library import angle_heading_target
 from vehicle import Vehicle
 from library import Singleton
 
@@ -20,6 +21,12 @@ class Lidar(object):
     def __init__(self, vehicle=None):
         replyPipe = "./Reply"
         requestPipe = "./Request"
+        con = config.get_lidar()
+        pid = os.fork()
+        if pid == 0:
+            os.execl("./ultra_simple", "ultra_simple",
+                     con[1], str(con[2]), str(con[3]), "")
+            exit(0)
 
         if ((replyPipe, requestPipe) in self.__class__._pipeSet) is False:
             self.__class__._pipeSet[(replyPipe, requestPipe)] = {}
@@ -42,41 +49,39 @@ class Lidar(object):
         angle = (360 - angle) % 360
         return angle
 
-    def Guided_Avoid(self):
+    def Guided(self):
         if self.vehicle is None:
             return 0
         target = self.vehicle.get_target()
         if target is None:
             self._log("Target is None!")
             return -1
-        self.vehicle.mode_name = 'Guided_Avoid'
-        self.vehicle._log(
-            'Guided with Avoidance to Location {}'.format(target))
+        self.publish('Mode', 'GUIDED_AVOID')
+        self.vehicle._log('Guided  to Location {}'.format(target))
 
         self.vehicle.Avoid(target)
-        self.vehicle.target = None
-        self.vehicle.mode_name = 'Loiter'
-        return 0
+        self.publish('Target', None)
+        self.publish('Mode', 'Loiter')
+        return 1
 
-    def Auto_Avoid(self):
+    def Auto(self):
         if self.vehicle is None:
             return 0
         if self.vehicle.wp.isNull():
             self._log('Waypoint is none')
             return -1
-        self.vehicle.mode_name = 'AUTO_Avoid'
+        self.publish('Mode', 'AUTO_AVOID')
         watcher = CancelWatcher()
-        for point in wp:
+        waypoints = self.subscribe('Waypoint')
+        for point in waypoints:
             if watcher.IsCancel():
                 break
-            self.vehicle.cur_wp += 1
-            self._log("Target is None!")
             self.Avoid(point)
+            self.wp.add_number()
+        self.publish('Mode', 'Loiter')
+        self.vehicle.wp.clear()
 
-        self.vehicle.mode_name = "Loiter"
-        self.vehicle.clear()
-
-    def Avoid(self, target, way=1):
+    def Avoid(self, target):
         checktime = 1
         deviation = config.get_degree()[1]
 
@@ -84,16 +89,15 @@ class Lidar(object):
         while not watcher.IsCancel():
             current_location = self.vehicle.get_location()
             if current_location is None:
-                self._log("GPS is ERROR!")
-                self.vehicle.brake()
+                self._log("GPS is not health!")
                 break
             distance = round(get_distance_metres(current_location, target), 2)
             self._log("Distance to Target {}m".format(distance))
             if distance < 3:
                 self._log("Reached Target Waypoint!")
-                self.vehicle.brake()
                 break
-            angle = self.vehicle.angle_heading_target(current_location, target)
+            angle = angle_heading_target(
+                current_location, target, self.vehicle.get_heading())
             angle_avoid = self.Decision(angle)
             if self.vehicle._angle(angle_avoid) > deviation:
                 self.vehicle.brake()
@@ -101,18 +105,19 @@ class Lidar(object):
                 self.vehicle.condition_yaw(angle_avoid)
             self.vehicle.forward()
             time.sleep(checktime)
+        self.vehicle.brake()
 
-    def RTL_Avoid(self):
-        target = self.vehicle.get_home()
+    def RTL(self):
+        target = self.subscribe('HomeLocation')
         if target is None:
             self._log("Home is None!")
             return -1
 
-        self.vehicle.mode_name = 'RTL_Avoid'
+        self.publish('Mode', 'RTL_AVOID')
         self._log('RTL with Avoid! Home is {}'.format(target))
         self.Avoid(target)
 
-        self.vehicle.mode_name = 'Loiter'
+        self.publish('Mode', 'RTL_AVOID')
         return 0
 
     def more_angle(self, angle):
@@ -122,16 +127,14 @@ class Lidar(object):
             angle -= 10
         return angle
 
+    def publish(self, topic, value):
+        self.vehicle.ORB.publish(topic, value)
+
+    def subscribe(self, topic):
+        return self.vehicle.ORB.subscribe(topic)
+
     def _log(self, msg):
         print msg
-
-
-con = config.get_lidar()
-pid = os.fork()
-if pid == 0:
-    os.execl("./ultra_simple", "ultra_simple",
-             con[1], str(con[2]), str(con[3]), "")
-    exit(0)
 
 if __name__ == "__main__":
     lidar = Lidar()

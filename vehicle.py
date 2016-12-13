@@ -19,7 +19,7 @@ class Vehicle(Attribute):
     def arm(self):
         if self._frame is 'HELI':
             return 0
-        print "arm..."
+        print "Waiting for arming..."
         self.channels[self.AIL[0]] = self.AIL[1]
         self.channels[self.ELE[0]] = self.ELE[3]
         self.channels[self.THR[0]] = self.THR[3]
@@ -56,7 +56,7 @@ class Vehicle(Attribute):
             self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.6)
         self.update_PIT(self.channels[self.THR[0]])
         self.send_pwm()
-        time.sleep(3)
+        time.sleep(2)
         # watcher = CancelWatcher()
         # while not watcher.IsCancel():
         #     currentAlt = self.get_alt()
@@ -236,14 +236,14 @@ class Vehicle(Attribute):
             self.brake()
 
     def mDuration(self):
-        return self.MD[0]
+        return self.MD
 
     def send_pwm(self):
         if not config.get_MCU()[0] > 0 or self.mcu is None:
             return 0
         self.mcu.send_pwm(self.channels)
 
-    def diff_angle(self, origin, target, sign):
+    def isStop(self, origin, target, sign):
         diff = (360 + sign * (target - origin)) % 360
         if diff < 180 and diff > 5:
             return True
@@ -279,14 +279,14 @@ class Vehicle(Attribute):
             self._log('Turn left {}'.format(360 - direction))
             self.yaw_left()
         print "Target", target_angle
-        while not watcher.IsCancel() and self.diff_angle(
+        while not watcher.IsCancel() and self.isStop(
                 self.get_heading(), target_angle, is_cw):
             # self._log('Cur angle:{},Target
             # angle:{}'.format(self.get_heading(),target_angle))
-            time.sleep(.02)
-        self._log('pre Angle {}'.format(self.get_heading()))
+            time.sleep(.01)
+        self._log('Before Angle {}'.format(self.get_heading()))
         self.brake()
-        self._log('after Angle {}'.format(self.get_heading()))
+        self._log('After  Angle {}'.format(self.get_heading()))
         return 1
 
     def navigation(self, target):
@@ -296,14 +296,13 @@ class Vehicle(Attribute):
         while not watcher.IsCancel():
             current_location = self.get_location()
             if current_location is None:
-                self._log("GPS is Error")
                 self.brake()
                 return -1
             distance = round(get_distance_metres(current_location, target), 2)
             self._log("Distance to Target {}m".format(distance))
             if distance < 3:
                 self._log("Reached Target Waypoint!")
-                self.brake()
+                break
                 return 1
             angle = angle_heading_target(
                 current_location, target, self.get_heading())
@@ -312,6 +311,7 @@ class Vehicle(Attribute):
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(checktime)
+        self.brake()
         return 0
 
     def RTL(self):
@@ -320,30 +320,30 @@ class Vehicle(Attribute):
             self._log("Home is None!")
             self.brake()
             return -1
-        self.mode_name = 'RTL'
+        self.publish('Mode', 'RTL')
 
         self.navigation(target)
-        self.mode_name = "Loiter"
+        # self.land()
+        self.publish('Mode', 'Loiter')
 
     def Route(self, info):
         self.wp.Route(info)
-        # print self.wp._wp
         # self.Auto()
 
     def Auto(self):
         if self.wp.isNull():
             self._log('Waypoint is None')
             return -1
-        self.mode_name = 'AUTO'
+        self.publish('Mode', 'Auto')
         watcher = CancelWatcher()
         for point in self.wp.remain_wp():
             if watcher.IsCancel():
-                self.mode_name = "Loiter"
+                self.publish('Mode', 'Loiter')
                 return 0
             self.navigation(point)
             self.wp.add_number()
 
-        self.mode_name = "Loiter"
+        self.publish('Mode', 'Loiter')
         self.wp.clear()
 
     def Guided(self):
@@ -352,28 +352,11 @@ class Vehicle(Attribute):
             self._log("Target is None!")
             self.brake()
             return -1
-        self.mode_name = "GUIDED"
+        self.publish('Mode', 'GUIDED')
 
         self.navigation(target)
-        self.mode_name = "Loiter"
-        self.target = None
-
-    def __str__(self):
-        msg = {}
-        msg['AIL'] = self.AIL
-        msg['ELE'] = self.ELE
-        msg['THR'] = self.THR
-        msg['RUD'] = self.RUD
-        msg['PIT'] = self.PIT
-        msg['Mode'] = self.mode
-        msg['Gear'] = self.gear
-        msg['Target'] = self.target
-        msg['Home'] = self.home_location
-        msg['Mode_name'] = self.mode_name
-        msg['Current_channels'] = self.channels
-        msg['Loiter_channels'] = self.channels_mid
-        msg['init_alt'] = self.init_alt
-        return json.dumps(msg)
+        self.publish('Mode', 'Loiter')
+        self.publish('Target', None)
 
     def Cancel(self):
         self._log("Cancel")
@@ -423,21 +406,26 @@ if __name__ == "__main__":
     vehicle = Vehicle(mcu, ORB)
 
     vehicle.set_channels_mid()
+    # vehicle.disarm()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
 
     # vehicle.yaw_left_brake()
     # time.sleep(2)
     # vehicle.yaw_right_brake()
+    # time.sleep(2)
     # vehicle.roll_left_brake()
     # time.sleep(2)
     # vehicle.roll_right_brake()
+    # time.sleep(2)
     # vehicle.forward_brake()
     # time.sleep(2)
     # vehicle.backward_brake()
+    # time.sleep(2)
     # vehicle.up_brake()
     # time.sleep(2)
     # vehicle.down_brake()
+    # time.sleep(2)
     # vehicle.yaw_left()
     # vehicle.yaw_right()
     # vehicle.forward(5)
@@ -447,6 +435,6 @@ if __name__ == "__main__":
 
     # vehicle.set_target(0,10)
     # vehicle.download()
-    # print vehicle.wp._wp
+    # print ORB.subscribe('Waypoint')
     # vehicle.Auto()
     # vehicle.Guided()

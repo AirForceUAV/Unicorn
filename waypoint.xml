@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <Waypoints ID='0'>
-    <Waypoint index='0' Trail="Rectangle">
+    <Waypoint index='0' Trail="Triangle">
         <point index='0'>
             <north>10</north>
             <east>-10</east>
@@ -13,34 +13,56 @@
         </point>
         <point index='2'>
             <north>-10</north>
-            <east>0</east>
+            <east>-10</east>
             <alt>-1</alt>
         </point>
     </Waypoint>
     <Waypoint index='1' Trail="Diamond">
         <point index='0'>
-            <north>50</north>
-            <east>--50</east>
+            <north>10</north>
+            <east>-10</east>
             <alt>-1</alt>
         </point>
         <point index='1'>
-            <north>50</north>
-            <east>-50</east>
+            <north>10</north>
+            <east>10</east>
             <alt>-1</alt>
         </point>
         <point index='2'>
-            <north>-50</north>
-            <east>50</east>
+            <north>-10</north>
+            <east>10</east>
             <alt>-1</alt>
         </point>
         <point index='3'>
-            <north>-50</north>
-            <east>-50</east>
+            <north>-10</north>
+            <east>-10</east>
+            <alt>-1</alt>
+        </point>
+    </Waypoint>
+    <Waypoint index='1' Trail="rectangle">
+        <point index='0'>
+            <north>0</north>
+            <east>-10</east>
+            <alt>-1</alt>
+        </point>
+        <point index='1'>
+            <north>10</north>
+            <east>0</east>
+            <alt>-1</alt>
+        </point>
+        <point index='2'>
+            <north>0</north>
+            <east>20</east>
+            <alt>-1</alt>
+        </point>
+        <point index='3'>
+            <north>-10</north>
+            <east>0</east>
             <alt>-1</alt>
         </point>
         <point index='4'>
             <north>0</north>
-            <east>-50</east>
+            <east>-10</east>
             <alt>-1</alt>
         </point>
     </Waypoint>

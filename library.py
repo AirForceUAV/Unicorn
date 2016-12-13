@@ -126,7 +126,7 @@ ord('0')  >> 48    '%02x'%ord('0')  >> '30'
 '''
 
 
-def encode_hex(argv):
+def ascii2hex(argv):
     """
     Transform ascii to 16h
     """
@@ -139,7 +139,7 @@ def encode_hex(argv):
     return result
 
 
-def encode_10h(int_10, length=4):
+def dec2hex(int_10, length=4):
     """
     Transform  10h to 16h(sizeof 2B)
     """
@@ -153,6 +153,16 @@ def encode_10h(int_10, length=4):
 def list_assign(list1, list2):
     for i in xrange(len(list2)):
         list1[i] = list2[i]
+
+
+def cos(angle):
+    rad = math.radians(angle)
+    return round(math.cos(rad), 2)
+
+
+def sin(angle):
+    rad = math.radians(angle)
+    return round(math.sin(rad), 2)
 
 
 class CancelWatcher(object):
@@ -228,4 +238,7 @@ class Watcher(object):
             pass
 
 if __name__ == '__main__':
-    open_serial('/dev/ttyUSB0', 9600)
+    # open_serial('/dev/compass', 9600)
+    loc = [36.1111, 116.2222]
+    print get_location_metres(loc, 20, 0)
+    print get_location_metres(loc, 0, 60)

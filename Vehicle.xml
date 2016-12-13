@@ -46,7 +46,6 @@
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
             <param index="1" value="5" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="1" unit="bool">Whether is pitch used?. 0:not used 1:used</param>
         </entry>
         <entry index="6" name="Mode">
             <description>Flight Mode.</description>
@@ -169,7 +168,6 @@
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
             <param index="1" value="6" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="0" unit="bool">Whether is pitch used?. 0:not used 1:used</param>
         </entry>
         <entry index="6" name="Mode">
             <description>Flight Mode.</description>
@@ -178,7 +176,7 @@
         </entry>
         <entry index="7" name="MCU">
             <description>MCU module.</description>
-            <param index="1" value="0" unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
+            <param index="1" value="1" unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
             <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
             <param index="4" value="10" unit="times">ARQ times. </param>
@@ -292,7 +290,6 @@
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
             <param index="1" value="5" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="0" unit="bool">Whether is pitch used?. 0:not used 1:used</param>
         </entry>
         <entry index="6" name="Mode">
             <description>Flight Mode.</description>

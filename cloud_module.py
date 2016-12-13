@@ -40,8 +40,9 @@ class Receiver(threading.Thread):
             else:
                 print 'Recevie command', data
             if data.find('Cancel') != -1:
-                print 'Execute command vehicle.cancel()'
+                print 'Execute Cancel'
                 CancelWatcher.Cancel = True
+                # self.work_queue.put('vehicle.brake()')
             else:
                 # CancelWatcher.Cancel = True
                 self.work_queue.put(data)

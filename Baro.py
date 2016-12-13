@@ -30,28 +30,15 @@ class Baro(threading.Thread):
             self.bus = bus
         self.i2c = i2c
         self.elevation = elevation
-        self.init()
 
     def run(self):
         print 'Initializing Baro Module'
 
         while True:
-            times = 0
-            while times < 10:
-                times += 1
-                self.read()
-                hpa = self.getPressureAdj()
-                if hpa is not None:
-                    break
-            if hpa is None:
-                dic = {'Baro_State': -1, 'Pressure': None}
-            else:
-                dic = {'Baro_State': 1, 'Pressure': hpa}
+            self.read()
+            hpa = self.getPressureAdj()
+            dic = {'Baro_State': 1, 'Pressure': hpa}
             self.update(dic)
-
-    def init(self):
-        dic = {'Baro_State': -1, 'Pressure': None}
-        self.update(dic)
 
     def update(self, dictories):
         for (k, v) in dictories.items():
@@ -187,8 +174,9 @@ class Baro(threading.Thread):
 
 
 def convert2Alt(hpa):
-    mbar = hpa / 1013.25
-    return round((1 - mbar**0.190284) * 145366.45 * 0.3048, 2)
+    # mba===hpa
+    tmp = hpa / 1013.25
+    return round((1 - tmp**0.190284) * 145366.45 * 0.3048, 2)
 
 
 if __name__ == "__main__":
@@ -202,6 +190,6 @@ if __name__ == "__main__":
     while ORB.subscribe('Baro_State') is -1:
         time.sleep(.5)
     while True:
-        pressure = ORB.subscribe('pressure')
+        pressure = ORB.subscribe('Pressure')
         print pressure, convert2Alt(pressure)
         raw_input('Next')
