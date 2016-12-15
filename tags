@@ -5,9 +5,9 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 Attribute	attribute.py	/^class Attribute(object):$/;"	kind:class	line:12
+Auto	lidar_module.py	/^    def Auto(self):$/;"	kind:member	line:67
 Auto	vehicle.py	/^    def Auto(self):$/;"	kind:member	line:333
-Auto_Avoid	lidar_module.py	/^    def Auto_Avoid(self):$/;"	kind:member	line:61
-Avoid	lidar_module.py	/^    def Avoid(self, target, way=1):$/;"	kind:member	line:79
+Avoid	lidar_module.py	/^    def Avoid(self, target):$/;"	kind:member	line:84
 Baro	Baro.py	/^class Baro(threading.Thread):$/;"	kind:class	line:12
 Baro.py	Baro.py	1;"	kind:file	line:1
 Cancel	library.py	/^    Cancel = False$/;"	kind:variable	line:169
@@ -15,26 +15,26 @@ Cancel	vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:361
 CancelWatcher	library.py	/^class CancelWatcher(object):$/;"	kind:class	line:168
 Compass	compass_module.py	/^class Compass(threading.Thread):$/;"	kind:class	line:11
 Config	config.py	/^class Config(object):$/;"	kind:class	line:7
-Decision	lidar_module.py	/^    def Decision(self, targetDirection):$/;"	kind:member	line:35
+Decision	lidar_module.py	/^    def Decision(self, targetDirection):$/;"	kind:member	line:42
 Executor	cloud_module.py	/^class Executor(threading.Thread):$/;"	kind:class	line:54
 GPS	GPS_module.py	/^class GPS(threading.Thread):$/;"	kind:class	line:12
 GPS_module.py	GPS_module.py	1;"	kind:file	line:1
+Guided	lidar_module.py	/^    def Guided(self):$/;"	kind:member	line:52
 Guided	vehicle.py	/^    def Guided(self):$/;"	kind:member	line:349
-Guided_Avoid	lidar_module.py	/^    def Guided_Avoid(self):$/;"	kind:member	line:45
 IsCancel	library.py	/^    def IsCancel(self):$/;"	kind:member	line:177
-Lidar	lidar_module.py	/^class Lidar(object):$/;"	kind:class	line:16
+Lidar	lidar_module.py	/^class Lidar(object):$/;"	kind:class	line:17
 MCU	MCU_module.py	/^class MCU(object):$/;"	kind:class	line:10
 MCU_module.py	MCU_module.py	1;"	kind:file	line:1
 ORB	Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:185
 ORB	GPS_module.py	/^    ORB = uORB()$/;"	kind:variable	line:68
 ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:87
 ORB	main.py	/^    ORB = uORB()$/;"	kind:variable	line:22
-ORB	uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:75
+ORB	uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:104
 ORB	vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:372
 ORB	waypoint.py	/^    ORB = uORB()$/;"	kind:variable	line:83
-PIT_curve	attribute.py	/^    def PIT_curve(self, pwm):$/;"	kind:member	line:106
+PIT_curve	attribute.py	/^    def PIT_curve(self, pwm):$/;"	kind:member	line:105
+RTL	lidar_module.py	/^    def RTL(self):$/;"	kind:member	line:110
 RTL	vehicle.py	/^    def RTL(self):$/;"	kind:member	line:317
-RTL_Avoid	lidar_module.py	/^    def RTL_Avoid(self):$/;"	kind:member	line:105
 Receiver	cloud_module.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:25
 Route	vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:329
 Route	waypoint.py	/^    def Route(self, info):$/;"	kind:member	line:28
@@ -56,8 +56,8 @@ __init__	config.py	/^    def __init__(self):$/;"	kind:member	line:10
 __init__	library.py	/^    def __init__(cls, name, bases, dict):$/;"	kind:member	line:188
 __init__	library.py	/^    def __init__(self):$/;"	kind:member	line:172
 __init__	library.py	/^    def __init__(self):$/;"	kind:member	line:214
-__init__	lidar_module.py	/^    def __init__(self, vehicle=None):$/;"	kind:member	line:20
-__init__	uORB.py	/^    def __init__(self):$/;"	kind:member	line:12
+__init__	lidar_module.py	/^    def __init__(self, vehicle=None):$/;"	kind:member	line:21
+__init__	uORB.py	/^    def __init__(self):$/;"	kind:member	line:13
 __init__	vehicle.py	/^    def __init__(self, mcu=None, ORB=None):$/;"	kind:member	line:16
 __init__	waypoint.py	/^    def __init__(self, ORB):$/;"	kind:member	line:9
 __metaclass__	Baro.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:13
@@ -65,31 +65,32 @@ __metaclass__	GPS_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	li
 __metaclass__	MCU_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:11
 __metaclass__	compass_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:12
 __metaclass__	config.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:8
-__metaclass__	lidar_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:18
-__metaclass__	uORB.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:10
+__metaclass__	lidar_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:19
+__metaclass__	uORB.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:11
 __metaclass__	vehicle.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:14
-__str__	uORB.py	/^    def __str__(self):$/;"	kind:member	line:67
+__str__	uORB.py	/^    def __str__(self):$/;"	kind:member	line:91
 _angle	library.py	/^def _angle(angle):$/;"	kind:function	line:95
 _log	GPS_module.py	/^    def _log(self, msg):$/;"	kind:member	line:62
 _log	MCU_module.py	/^    def _log(self, msg):$/;"	kind:member	line:67
-_log	attribute.py	/^    def _log(self, msg):$/;"	kind:member	line:227
+_log	attribute.py	/^    def _log(self, msg):$/;"	kind:member	line:217
 _log	cloud_module.py	/^    def _log(self, msg):$/;"	kind:member	line:50
 _log	cloud_module.py	/^    def _log(self, msg):$/;"	kind:member	line:73
 _log	compass_module.py	/^    def _log(self, msg):$/;"	kind:member	line:81
-_log	lidar_module.py	/^    def _log(self, msg):$/;"	kind:member	line:131
+_log	lidar_module.py	/^    def _log(self, msg):$/;"	kind:member	line:136
 _log	waypoint.py	/^    def _log(self, msg):$/;"	kind:member	line:78
-_pipeSet	lidar_module.py	/^    _pipeSet = {}$/;"	kind:variable	line:17
+_pipeSet	lidar_module.py	/^    _pipeSet = {}$/;"	kind:variable	line:18
 add_number	waypoint.py	/^    def add_number(self):$/;"	kind:member	line:53
 all_wp	waypoint.py	/^    def all_wp(self):$/;"	kind:member	line:47
 angle_heading_target	library.py	/^def angle_heading_target(origin, target, heading):$/;"	kind:function	line:89
 args	main.py	/^                          args=(sock, ORB), seconds=1)$/;"	kind:variable	line:80
 arm	vehicle.py	/^    def arm(self):$/;"	kind:member	line:19
+ascii2hex	library.py	/^def ascii2hex(argv):$/;"	kind:function	line:129
 attribute.py	attribute.py	1;"	kind:file	line:1
 backward_brake	vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:186
 baro	Baro.py	/^    baro = Baro(ORB)$/;"	kind:variable	line:186
 baro	main.py	/^        baro = Baro(ORB)$/;"	kind:variable	line:49
 brake	vehicle.py	/^    def brake(self):$/;"	kind:member	line:148
-ch	config.py	/^    def ch(self, index):$/;"	kind:member	line:62
+ch	config.py	/^    def ch(self, index):$/;"	kind:member	line:61
 checksum	compass_module.py	/^    def checksum(self, package):$/;"	kind:member	line:67
 child	waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:56
 clear	waypoint.py	/^    def clear(self):$/;"	kind:member	line:62
@@ -102,27 +103,24 @@ compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:88
 compass	main.py	/^        compass = Compass(ORB)$/;"	kind:variable	line:31
 compass_info	compass_module.py	/^    def compass_info(self, command, ack, size=8):$/;"	kind:member	line:48
 compass_module.py	compass_module.py	1;"	kind:file	line:1
-con	lidar_module.py	/^con = config.get_lidar()$/;"	kind:variable	line:135
 condition_yaw	vehicle.py	/^    def condition_yaw(self, heading=0, relative=True):$/;"	kind:member	line:253
-config	config.py	/^config = Config()$/;"	kind:variable	line:146
+config	config.py	/^config = Config()$/;"	kind:variable	line:145
 config.py	config.py	1;"	kind:file	line:1
 convert2Alt	Baro.py	/^def convert2Alt(hpa):$/;"	kind:function	line:176
-convert2Alt	attribute.py	/^    def convert2Alt(self, hpa):$/;"	kind:member	line:217
 convert2In	Baro.py	/^    def convert2In(self, pressure):$/;"	kind:member	line:172
 cos	library.py	/^def cos(angle):$/;"	kind:function	line:158
 count	library.py	/^    count = 0$/;"	kind:variable	line:170
 current_wp	waypoint.py	/^    def current_wp(self):$/;"	kind:member	line:50
-dataflash	uORB.py	/^    def dataflash(self):$/;"	kind:member	line:70
+dataflash	uORB.py	/^    def dataflash(self):$/;"	kind:member	line:94
+dec2hex	library.py	/^def dec2hex(int_10, length=4):$/;"	kind:function	line:142
 decode_BCD	compass_module.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:70
 disarm	vehicle.py	/^    def disarm(self):$/;"	kind:member	line:32
-distance_from_home	uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:41
-distance_to_target	uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:33
+distance_from_home	uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:49
+distance_to_target	uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:41
 down_brake	vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:227
-download	attribute.py	/^    def download(self, index=0):$/;"	kind:member	line:67
+download	attribute.py	/^    def download(self, index=0):$/;"	kind:member	line:66
 download	waypoint.py	/^    def download(self, origin, index=0):$/;"	kind:member	line:14
 element	library.py	/^def element(file_name):$/;"	kind:function	line:27
-encode_10h	library.py	/^def encode_10h(int_10, length=4):$/;"	kind:function	line:142
-encode_hex	library.py	/^def encode_hex(argv):$/;"	kind:function	line:129
 executor	main.py	/^        executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:75
 forward	vehicle.py	/^    def forward(self, duration=None):$/;"	kind:member	line:138
 forward_brake	vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:176
@@ -131,82 +129,86 @@ getPressure	Baro.py	/^    def getPressure(self):$/;"	kind:member	line:155
 getPressureAdj	Baro.py	/^    def getPressureAdj(self):$/;"	kind:member	line:158
 getTempC	Baro.py	/^    def getTempC(self):$/;"	kind:member	line:149
 getTempF	Baro.py	/^    def getTempF(self):$/;"	kind:member	line:152
-get_AIL	config.py	/^    def get_AIL(self):$/;"	kind:member	line:97
-get_BD	config.py	/^    def get_BD(self):$/;"	kind:member	line:136
-get_Baro	config.py	/^    def get_Baro(self):$/;"	kind:member	line:124
-get_DD	config.py	/^    def get_DD(self):$/;"	kind:member	line:139
-get_ELE	config.py	/^    def get_ELE(self):$/;"	kind:member	line:100
-get_FC	config.py	/^    def get_FC(self):$/;"	kind:member	line:91
-get_GPS	config.py	/^    def get_GPS(self):$/;"	kind:member	line:118
-get_MCU	config.py	/^    def get_MCU(self):$/;"	kind:member	line:115
-get_MD	config.py	/^    def get_MD(self):$/;"	kind:member	line:133
-get_PIT	config.py	/^    def get_PIT(self):$/;"	kind:member	line:112
-get_RUD	config.py	/^    def get_RUD(self):$/;"	kind:member	line:106
-get_THR	config.py	/^    def get_THR(self):$/;"	kind:member	line:103
-get_alt	attribute.py	/^    def get_alt(self):$/;"	kind:member	line:209
-get_attitude	attribute.py	/^    def get_attitude(self):$/;"	kind:member	line:190
+get_AIL	config.py	/^    def get_AIL(self):$/;"	kind:member	line:96
+get_BD	config.py	/^    def get_BD(self):$/;"	kind:member	line:135
+get_Baro	config.py	/^    def get_Baro(self):$/;"	kind:member	line:123
+get_DD	config.py	/^    def get_DD(self):$/;"	kind:member	line:138
+get_ELE	config.py	/^    def get_ELE(self):$/;"	kind:member	line:99
+get_FC	config.py	/^    def get_FC(self):$/;"	kind:member	line:90
+get_GPS	config.py	/^    def get_GPS(self):$/;"	kind:member	line:117
+get_MCU	config.py	/^    def get_MCU(self):$/;"	kind:member	line:114
+get_MD	config.py	/^    def get_MD(self):$/;"	kind:member	line:132
+get_PIT	config.py	/^    def get_PIT(self):$/;"	kind:member	line:111
+get_RUD	config.py	/^    def get_RUD(self):$/;"	kind:member	line:105
+get_THR	config.py	/^    def get_THR(self):$/;"	kind:member	line:102
+get_alt	attribute.py	/^    def get_alt(self):$/;"	kind:member	line:208
+get_altitude	uORB.py	/^    def get_altitude(self):$/;"	kind:member	line:73
+get_attitude	attribute.py	/^    def get_attitude(self):$/;"	kind:member	line:189
 get_attitude	compass_module.py	/^    def get_attitude(self):$/;"	kind:member	line:37
 get_bearing	library.py	/^def get_bearing(aLocation1, aLocation2):$/;"	kind:function	line:41
-get_cloud	config.py	/^    def get_cloud(self):$/;"	kind:member	line:94
-get_compass	config.py	/^    def get_compass(self):$/;"	kind:member	line:121
-get_degree	config.py	/^    def get_degree(self):$/;"	kind:member	line:142
+get_cloud	config.py	/^    def get_cloud(self):$/;"	kind:member	line:93
+get_compass	config.py	/^    def get_compass(self):$/;"	kind:member	line:120
+get_degree	config.py	/^    def get_degree(self):$/;"	kind:member	line:141
 get_distance_metres	library.py	/^def get_distance_metres(aLocation1, aLocation2):$/;"	kind:function	line:80
-get_frame	config.py	/^    def get_frame(self):$/;"	kind:member	line:88
-get_gear	attribute.py	/^    def get_gear(self):$/;"	kind:member	line:134
-get_gear	config.py	/^    def get_gear(self):$/;"	kind:member	line:130
-get_heading	attribute.py	/^    def get_heading(self):$/;"	kind:member	line:163
-get_home	attribute.py	/^    def get_home(self):$/;"	kind:member	line:199
-get_lidar	config.py	/^    def get_lidar(self):$/;"	kind:member	line:127
+get_frame	config.py	/^    def get_frame(self):$/;"	kind:member	line:87
+get_gear	attribute.py	/^    def get_gear(self):$/;"	kind:member	line:133
+get_gear	config.py	/^    def get_gear(self):$/;"	kind:member	line:129
+get_heading	attribute.py	/^    def get_heading(self):$/;"	kind:member	line:162
+get_home	attribute.py	/^    def get_home(self):$/;"	kind:member	line:198
+get_lidar	config.py	/^    def get_lidar(self):$/;"	kind:member	line:126
 get_location	GPS_module.py	/^    def get_location(self, loc):$/;"	kind:member	line:52
-get_location	attribute.py	/^    def get_location(self):$/;"	kind:member	line:202
+get_location	attribute.py	/^    def get_location(self):$/;"	kind:member	line:201
 get_location_metres	library.py	/^def get_location_metres(original_location, dNorth, dEast):$/;"	kind:function	line:56
-get_mode	config.py	/^    def get_mode(self):$/;"	kind:member	line:109
-get_node	config.py	/^    def get_node(self, param1, param2):$/;"	kind:member	line:78
+get_mode	config.py	/^    def get_mode(self):$/;"	kind:member	line:108
+get_node	config.py	/^    def get_node(self, param1, param2):$/;"	kind:member	line:77
 get_num_stars	GPS_module.py	/^    def get_num_stars(self, loc):$/;"	kind:member	line:55
-get_pitch	attribute.py	/^    def get_pitch(self):$/;"	kind:member	line:172
-get_roll	attribute.py	/^    def get_roll(self):$/;"	kind:member	line:181
-get_stars	attribute.py	/^    def get_stars(self):$/;"	kind:member	line:61
-get_target	attribute.py	/^    def get_target(self):$/;"	kind:member	line:160
-get_vehicle	config.py	/^    def get_vehicle(self):$/;"	kind:member	line:85
+get_pitch	attribute.py	/^    def get_pitch(self):$/;"	kind:member	line:171
+get_roll	attribute.py	/^    def get_roll(self):$/;"	kind:member	line:180
+get_stars	attribute.py	/^    def get_stars(self):$/;"	kind:member	line:60
+get_target	attribute.py	/^    def get_target(self):$/;"	kind:member	line:159
+get_vehicle	config.py	/^    def get_vehicle(self):$/;"	kind:member	line:84
 gps	GPS_module.py	/^    gps = GPS(ORB)$/;"	kind:variable	line:69
 gps	main.py	/^        gps = GPS(ORB)$/;"	kind:variable	line:40
-has_sensor	uORB.py	/^    def has_sensor(self, sensor):$/;"	kind:member	line:27
+has_module	uORB.py	/^    def has_module(self, module):$/;"	kind:member	line:35
 info	waypoint.py	/^    info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"$/;"	kind:variable	line:88
-init_channels	attribute.py	/^    def init_channels(self):$/;"	kind:member	line:79
-init_channels_mid	attribute.py	/^    def init_channels_mid(self):$/;"	kind:member	line:92
-isInt	config.py	/^    def isInt(self, x):$/;"	kind:member	line:72
+init_channels	attribute.py	/^    def init_channels(self):$/;"	kind:member	line:78
+init_channels_mid	attribute.py	/^    def init_channels_mid(self):$/;"	kind:member	line:91
+init_pressure	attribute.py	/^    def init_pressure(self):$/;"	kind:member	line:54
+isInt	config.py	/^    def isInt(self, x):$/;"	kind:member	line:71
 isNull	waypoint.py	/^    def isNull(self):$/;"	kind:member	line:66
 isNum	library.py	/^def isNum(s):$/;"	kind:function	line:102
 isStop	vehicle.py	/^    def isStop(self, origin, target, sign):$/;"	kind:member	line:246
-json_all_wp	uORB.py	/^    def json_all_wp(self):$/;"	kind:member	line:49
+json_all_wp	uORB.py	/^    def json_all_wp(self):$/;"	kind:member	line:57
 kill	library.py	/^    def kill(self):$/;"	kind:member	line:234
 land	vehicle.py	/^    def land(self):$/;"	kind:member	line:74
 library.py	library.py	1;"	kind:file	line:1
-lidar	lidar_module.py	/^    lidar = Lidar()$/;"	kind:variable	line:143
+lidar	lidar_module.py	/^    lidar = Lidar()$/;"	kind:variable	line:140
 lidar	main.py	/^        lidar = Lidar(vehicle)$/;"	kind:variable	line:60
 lidar_module.py	lidar_module.py	1;"	kind:file	line:1
-list2str	uORB.py	/^    def list2str(self, arrs):$/;"	kind:member	line:58
+list2str	uORB.py	/^    def list2str(self, arrs):$/;"	kind:member	line:82
 list_assign	library.py	/^def list_assign(list1, list2):$/;"	kind:function	line:153
+loc	library.py	/^    loc = [36.1111, 116.2222]$/;"	kind:variable	line:242
 mDuration	vehicle.py	/^    def mDuration(self):$/;"	kind:member	line:238
 main.py	main.py	1;"	kind:file	line:1
 mcu	MCU_module.py	/^    mcu = MCU()$/;"	kind:variable	line:72
 mcu	main.py	/^        mcu = MCU()$/;"	kind:variable	line:26
 mcu	main.py	/^    mcu = None$/;"	kind:variable	line:20
 mcu	vehicle.py	/^    mcu = None$/;"	kind:variable	line:370
-more_angle	lidar_module.py	/^    def more_angle(self, angle):$/;"	kind:member	line:118
+more_angle	lidar_module.py	/^    def more_angle(self, angle):$/;"	kind:member	line:123
 movement	vehicle.py	/^    def movement(self, att, sign=1):$/;"	kind:member	line:112
 movement2	vehicle.py	/^    def movement2(self, att, sign=1):$/;"	kind:member	line:118
 navigation	vehicle.py	/^    def navigation(self, target):$/;"	kind:member	line:292
 open_serial	library.py	/^def open_serial(portname, baudrate, timeout=0.5):$/;"	kind:function	line:12
 open_sock	cloud_module.py	/^def open_sock():$/;"	kind:function	line:14
+origin	uORB.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:116
 origin	waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:85
 parseGPS	GPS_module.py	/^    def parseGPS(self):$/;"	kind:member	line:38
-pid	lidar_module.py	/^pid = os.fork()$/;"	kind:variable	line:136
 pressure	Baro.py	/^        pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:193
+pressure2Alt	uORB.py	/^    def pressure2Alt(self, hpa):$/;"	kind:member	line:66
 printResults	Baro.py	/^    def printResults(self):$/;"	kind:member	line:164
-publish	attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:221
-publish	lidar_module.py	/^    def publish(self, topic, value):$/;"	kind:member	line:125
-publish	uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:21
+publish	attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:211
+publish	lidar_module.py	/^    def publish(self, topic, value):$/;"	kind:member	line:130
+publish	uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:29
 publish	waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:72
 read	Baro.py	/^    def read(self):$/;"	kind:member	line:56
 read_channels	MCU_module.py	/^    def read_channels(self, ch_count=8):$/;"	kind:member	line:47
@@ -227,33 +229,33 @@ send_pwm	vehicle.py	/^    def send_pwm(self):$/;"	kind:member	line:241
 setElevation	Baro.py	/^    def setElevation(self, elevation):$/;"	kind:member	line:47
 setElevationFt	Baro.py	/^    def setElevationFt(self, elevation):$/;"	kind:member	line:50
 setI2c	Baro.py	/^    def setI2c(self, i2c):$/;"	kind:member	line:53
-set_channels_mid	attribute.py	/^    def set_channels_mid(self):$/;"	kind:member	line:112
-set_gear	attribute.py	/^    def set_gear(self, gear):$/;"	kind:member	line:128
-set_target	attribute.py	/^    def set_target(self, dNorth, dEast, alt=None):$/;"	kind:member	line:137
-set_target_angle	attribute.py	/^    def set_target_angle(self, distance, angle, alt=None):$/;"	kind:member	line:151
+set_channels_mid	attribute.py	/^    def set_channels_mid(self):$/;"	kind:member	line:111
+set_gear	attribute.py	/^    def set_gear(self, gear):$/;"	kind:member	line:127
+set_target	attribute.py	/^    def set_target(self, dNorth, dEast, alt=None):$/;"	kind:member	line:136
+set_target_angle	attribute.py	/^    def set_target_angle(self, distance, angle, alt=None):$/;"	kind:member	line:150
 sin	library.py	/^def sin(angle):$/;"	kind:function	line:163
 sock	main.py	/^        sock = open_sock()$/;"	kind:variable	line:66
-subscribe	attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:224
-subscribe	lidar_module.py	/^    def subscribe(self, topic):$/;"	kind:member	line:128
-subscribe	uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:24
+subscribe	attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:214
+subscribe	lidar_module.py	/^    def subscribe(self, topic):$/;"	kind:member	line:133
+subscribe	uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:32
 subscribe	waypoint.py	/^    def subscribe(self, topic):$/;"	kind:member	line:75
 takeoff	vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:47
 test_send	cloud_module.py	/^def test_send(sock):$/;"	kind:function	line:77
-uORB	uORB.py	/^class uORB(object):$/;"	kind:class	line:9
+uORB	uORB.py	/^class uORB(object):$/;"	kind:class	line:10
 uORB.py	uORB.py	1;"	kind:file	line:1
 up_brake	vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:216
 update	Baro.py	/^    def update(self, dictories):$/;"	kind:member	line:43
 update	GPS_module.py	/^    def update(self, dictories):$/;"	kind:member	line:34
 update	compass_module.py	/^    def update(self, dictories):$/;"	kind:member	line:33
-update_PIT	attribute.py	/^    def update_PIT(self, THR_PWM):$/;"	kind:member	line:102
+update_PIT	attribute.py	/^    def update_PIT(self, THR_PWM):$/;"	kind:member	line:101
 update_home	attribute.py	/^    def update_home(self):$/;"	kind:member	line:42
-update_init_alt	attribute.py	/^    def update_init_alt(self):$/;"	kind:member	line:54
 vehicle	main.py	/^    vehicle = Vehicle(mcu, ORB)$/;"	kind:variable	line:56
 vehicle	vehicle.py	/^    vehicle = Vehicle(mcu, ORB)$/;"	kind:variable	line:406
 vehicle.py	vehicle.py	1;"	kind:file	line:1
 watch	library.py	/^    def watch(self):$/;"	kind:member	line:225
 waypoint.py	waypoint.py	1;"	kind:file	line:1
 work_queue	main.py	/^        work_queue = Queue.Queue()$/;"	kind:variable	line:67
+wp	uORB.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:115
 wp	waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:84
 write_xml	waypoint.py	/^    def write_xml(self, out_path):$/;"	kind:member	line:59
 yaw_left	vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:124

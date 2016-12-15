@@ -17,6 +17,7 @@ class Attribute(object):
         self.mcu = mcu
         self.ORB = ORB
         self._frame = config.get_frame()
+        self._log('Copter Frame:{}'.format(self._frame))
         # Aileron :[ch number,low PWM ,mid PWM,high PWM ,variation
         # PWM,dir,rate]
         self.AIL = config.get_AIL()
@@ -85,7 +86,7 @@ class Attribute(object):
             channels[self.THR[0]] = self.THR[3]
         channels[self.RUD[0]] = self.RUD[2]
         channels[self.mode[0]] = self.mode[1]
-        self.update_PIT(channels[self.THR[0]])
+        channels[self.PIT[0]] = self.update_PIT(channels[self.THR[0]])
         return channels
 
     def init_channels_mid(self):
@@ -95,17 +96,17 @@ class Attribute(object):
         channels[self.THR[0]] = self.THR[2]
         channels[self.RUD[0]] = self.RUD[2]
         channels[self.mode[0]] = self.mode[1]
-        self.update_PIT(self.THR[2])
+        channels[self.PIT[0]] = self.update_PIT(self.THR[2])
         return channels
 
     def update_PIT(self, THR_PWM):
-        if self._frame is "HELI":
-            self.channels[self.PIT[0]] = self.PIT_curve(THR_PWM)
+        if self._frame == "HELI":
+            return self.PIT_curve(THR_PWM)
 
     def PIT_curve(self, pwm):
         per = 100 * (pwm - self.THR[1]) / self.THR[4]
         PIT_PWM = int(((0.0022 * per * per - 0.85 * per + 63) / 63.0)
-                      * (self.PIT[3] - self.PIT[2])) + self.PIT[2]
+                      * (self.PIT[3] - self.PIT[1])) + self.PIT[1]
         return PIT_PWM
 
     def set_channels_mid(self):

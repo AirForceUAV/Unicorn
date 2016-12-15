@@ -54,7 +54,8 @@ class Vehicle(Attribute):
             self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.6)
         else:
             self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.6)
-        self.update_PIT(self.channels[self.THR[0]])
+        self.channels[self.PIT[0]] = self.update_PIT(
+            self.channels[self.THR[0]])
         self.send_pwm()
         time.sleep(2)
         # watcher = CancelWatcher()
@@ -81,7 +82,8 @@ class Vehicle(Attribute):
             self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.4)
         else:
             self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.4)
-        self.update_PIT(self.channels[self.THR[0]])
+        self.channels[self.PIT[0]] = self.update_PIT(
+            self.channels[self.THR[0]])
         self.send_pwm()
         Watcher = CancelWatcher()
         time.sleep(3)
@@ -219,7 +221,7 @@ class Vehicle(Attribute):
         if config.get_MCU()[0] > 0:
             self.THR_MID()
             pwm = self.movement2(self.THR)
-            self.update_PIT(pwm)
+            self.channels[self.PIT[0]] = self.update_PIT(pwm)
             self.send_pwm()
             time.sleep(duration)
             self.brake()
@@ -230,7 +232,7 @@ class Vehicle(Attribute):
         if config.get_MCU()[0] > 0:
             self.THR_MID()
             pwm = self.movement2(self.THR, -1)
-            self.update_PIT(pwm)
+            self.channels[self.PIT[0]] = self.update_PIT(pwm)
             self.send_pwm()
             time.sleep(duration)
             self.brake()
@@ -386,7 +388,7 @@ if __name__ == "__main__":
             time.sleep(.5)
 
     if config.get_GPS()[0] > 0:
-        from GPS_module import GPS                 # instancce of GPS module object
+        from GPS_module import GPS      # instancce of GPS module object
         gps = GPS(ORB)
 
         gps.start()
@@ -404,28 +406,27 @@ if __name__ == "__main__":
             time.sleep(.5)
 
     vehicle = Vehicle(mcu, ORB)
-
-    vehicle.set_channels_mid()
+    # vehicle.arm()
+    # vehicle.set_channels_mid()
     # vehicle.disarm()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
-
-    # vehicle.yaw_left_brake()
-    # time.sleep(2)
-    # vehicle.yaw_right_brake()
-    # time.sleep(2)
-    # vehicle.roll_left_brake()
-    # time.sleep(2)
-    # vehicle.roll_right_brake()
-    # time.sleep(2)
-    # vehicle.forward_brake()
-    # time.sleep(2)
-    # vehicle.backward_brake()
-    # time.sleep(2)
-    # vehicle.up_brake()
-    # time.sleep(2)
-    # vehicle.down_brake()
-    # time.sleep(2)
+    vehicle.yaw_left_brake()
+    time.sleep(1)
+    vehicle.yaw_right_brake()
+    time.sleep(1)
+    vehicle.roll_left_brake()
+    time.sleep(1)
+    vehicle.roll_right_brake()
+    time.sleep(1)
+    vehicle.forward_brake()
+    time.sleep(1)
+    vehicle.backward_brake()
+    time.sleep(1)
+    vehicle.up_brake()
+    time.sleep(1)
+    vehicle.down_brake()
+    time.sleep(1)
     # vehicle.yaw_left()
     # vehicle.yaw_right()
     # vehicle.forward(5)
@@ -433,8 +434,9 @@ if __name__ == "__main__":
     # vehicle.condition_yaw(30)
     # vehicle.condition_yaw(300)
 
-    # vehicle.set_target(0,10)
+    # vehicle.set_target(0, 10)
     # vehicle.download()
     # print ORB.subscribe('Waypoint')
-    # vehicle.Auto()
+    # # vehicle.Auto()
     # vehicle.Guided()
+    # vehicle.disarm()

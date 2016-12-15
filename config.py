@@ -22,7 +22,8 @@ class Config(object):
         self._ELE = self.ch(2)
         self._THR = self.ch(3)
         self._RUD = self.ch(4)
-        self._PIT = [self.get_node(5, 1) - 1]
+        self._PIT = [self.get_node(
+            5, 1) - 1, self.get_node(5, 2), self.get_node(5, 3), self.get_node(5, 4)]
         # [ch No.,mode pwm]
         self._mode = [self.get_node(6, 1) - 1, self.get_node(6, 2)]
         self._MCU = [self.get_node(7, 1), self.get_node(7, 2), self.get_node(
