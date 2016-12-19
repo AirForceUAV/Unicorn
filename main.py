@@ -31,7 +31,7 @@ if __name__ == '__main__':
         compass = Compass(ORB)
 
         compass.start()
-        while ORB.subscribe('Compass_State') is -1:
+        while not ORB.subscribe('Compass_State'):
             # print compass.get_heading()
             time.sleep(.5)
 
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         gps = GPS(ORB)
 
         gps.start()
-        while ORB.subscribe('GPS_State') is -1:
+        while not ORB.subscribe('GPS_State'):
             # print gps.get_num_stars()
             time.sleep(.5)
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         baro = Baro(ORB)
 
         baro.start()
-        while ORB.subscribe('Baro_State') is -1:
+        while not ORB.subscribe('Baro_State'):
             # print gps.get_num_stars()
             time.sleep(.5)
 

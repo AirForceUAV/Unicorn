@@ -24,11 +24,11 @@ class GPS(threading.Thread):
         while True:
             location = self.parseGPS()
             if location is not None:
-                dic = {'GPS_State': 1, 'Location': self.get_location(
-                    location), 'Num_stars': self.get_num_stars(location)}
+                dic = {'GPS_State': True, 'Location': self.get_location(
+                    location), 'NumStars': self.get_num_stars(location)}
             else:
-                dic = {'GPS_State': -1, 'Location': None,
-                       'Num_stars': 0}
+                dic = {'GPS_State': False, 'Location': None,
+                       'NumStars': 0}
             self.update(dic)
 
     def update(self, dictories):
@@ -41,7 +41,6 @@ class GPS(threading.Thread):
         while times < 200:
             times += 1
             line = self.ser.readline()
-
             if line.find('GNGGA') != -1:
                 msg = pynmea2.parse(line)
                 # return msg
@@ -69,7 +68,7 @@ if __name__ == "__main__":
     gps = GPS(ORB)
     Watcher()
     gps.start()
-    while ORB.subscribe('GPS_State') is -1:
+    while not ORB.subscribe('GPS_State'):
         time.sleep(.5)
     while True:
         print ORB.subscribe('Location')

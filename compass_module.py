@@ -25,9 +25,9 @@ class Compass(threading.Thread):
             attitude = self.get_attitude()
 
             if attitude is None:
-                dic = {'Compass_State': -1, 'Attitude': None}
+                dic = {'Compass_State': False, 'Attitude': None}
             else:
-                dic = {'Compass_State': 1, 'Attitude': attitude}
+                dic = {'Compass_State': True, 'Attitude': attitude}
             self.update(dic)
 
     def update(self, dictories):
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     compass = Compass(ORB)
     Watcher()
     compass.start()
-    while ORB.subscribe('Compass_State') is -1:
+    while not ORB.subscribe('Compass_State'):
         time.sleep(.5)
     while True:
         print ORB.subscribe('Attitude')

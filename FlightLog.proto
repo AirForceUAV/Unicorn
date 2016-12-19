@@ -1,0 +1,61 @@
+// [START declaration]
+syntax = "proto3";
+package buffers;
+// [END declaration]
+
+// [START messages]
+message sensors {
+  message Location{
+    float latitude = 1 ;
+    float longitude = 2 ;
+    float altitude = 3 ;
+  }
+
+  message Attitude{
+    float pitch = 1 ;
+    float roll = 2 ;
+    float yaw = 3 ;
+  }
+
+  message Coordinate{
+    float x = 1 ;
+    float y = 2 ;
+    float z = 3 ;
+  }
+
+  message GPS {
+    bool state = 1 ;
+    int32 num_stars = 2 ;
+    Location location = 3 ;
+  }
+
+  message Compass {
+    bool state = 1 ;
+    Attitude attitude = 2 ;
+  }
+
+  message Barometre {
+    bool state = 1;
+    float Pressure = 2 ;
+    float Temperature = 3 ;
+    float Altitude = 4;
+  }
+
+  message Waypoint {
+    int32 ID = 1;
+    repeated Location point = 2;
+  }
+
+  GPS gps = 1 ;
+  Compass compass = 2 ;
+  Barometre baro = 3 ;
+  Waypoint waypoint = 4 ;
+  Location target = 5 ;
+  Location home = 6 ;
+  float init_alt = 7 ;
+  float DistanceToTarget = 8 ;
+  float DistanceFromHome = 9 ;
+
+}
+
+// [END messages]

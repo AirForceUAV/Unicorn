@@ -37,7 +37,8 @@ class Baro(threading.Thread):
         while True:
             self.read()
             hpa = self.getPressureAdj()
-            dic = {'Baro_State': 1, 'Pressure': hpa}
+            dic = {'Baro_State': True, 'Pressure': hpa,
+                   'Temperature': round(self.tempC, 2)}
             self.update(dic)
 
     def update(self, dictories):
@@ -187,7 +188,7 @@ if __name__ == "__main__":
     print ORB
     Watcher()
     baro.start()
-    while ORB.subscribe('Baro_State') is -1:
+    while not ORB.subscribe('Baro_State'):
         time.sleep(.5)
     while True:
         pressure = ORB.subscribe('Pressure')
