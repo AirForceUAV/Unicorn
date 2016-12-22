@@ -4,58 +4,77 @@ package buffers;
 // [END declaration]
 
 // [START messages]
+
+message Location{
+  float latitude = 1 ;
+  float longitude = 2 ;
+  float altitude = 3 ;
+}
+message Point{
+  int32 ID = 1 ;
+  Location location = 2 ;
+}
+
+message Attitude{
+  float pitch = 1 ;
+  float roll = 2 ;
+  float yaw = 3 ;
+}
+
+message Coordinate{
+  float x = 1 ;
+  float y = 2 ;
+  float z = 3 ;
+}
+
+message GPS {
+  bool state = 1 ;
+  int32 num_stars = 2 ;
+  Location location = 3 ;
+}
+
+message Compass {
+  bool state = 1 ;
+  Attitude attitude = 2 ;
+}
+
+message Barometre {
+  bool state = 1;
+  float Pressure = 2 ;
+  float Temperature = 3 ;
+  float Altitude = 4;
+}
+
+message Waypoint {
+  sint32 index = 1 ;
+  repeated Point point = 2 ;
+}
+
+message Channels{
+  int32 ch1 = 1 ;
+  int32 ch2 = 2 ;
+  int32 ch3 = 3 ;
+  int32 ch4 = 4 ;
+  int32 ch5 = 5 ;
+  int32 ch6 = 6 ;
+  int32 ch7 = 7 ;
+  int32 ch8 = 8 ;
+}
 message sensors {
-  message Location{
-    float latitude = 1 ;
-    float longitude = 2 ;
-    float altitude = 3 ;
-  }
-
-  message Attitude{
-    float pitch = 1 ;
-    float roll = 2 ;
-    float yaw = 3 ;
-  }
-
-  message Coordinate{
-    float x = 1 ;
-    float y = 2 ;
-    float z = 3 ;
-  }
-
-  message GPS {
-    bool state = 1 ;
-    int32 num_stars = 2 ;
-    Location location = 3 ;
-  }
-
-  message Compass {
-    bool state = 1 ;
-    Attitude attitude = 2 ;
-  }
-
-  message Barometre {
-    bool state = 1;
-    float Pressure = 2 ;
-    float Temperature = 3 ;
-    float Altitude = 4;
-  }
-
-  message Waypoint {
-    int32 ID = 1;
-    repeated Location point = 2;
-  }
-
-  GPS gps = 1 ;
-  Compass compass = 2 ;
-  Barometre baro = 3 ;
-  Waypoint waypoint = 4 ;
-  Location target = 5 ;
-  Location home = 6 ;
-  float init_alt = 7 ;
-  float DistanceToTarget = 8 ;
-  float DistanceFromHome = 9 ;
-
+  float timestamp = 1 ;
+  GPS gps = 2 ;
+  Compass compass = 3 ;
+  Barometre baro = 4 ;
+  Waypoint waypoint = 5 ;
+  Location target = 6 ;
+  Location home = 7 ;
+  float init_alt = 8 ;
+  float DistanceToTarget = 9 ;
+  float DistanceFromHome = 10 ;
+  Channels ChannelsInput = 11 ;
+  Channels ChannelsOutput = 12 ;
+  Channels LoiterPWM = 13 ;
+  float Altitude = 14 ;
 }
 
 // [END messages]

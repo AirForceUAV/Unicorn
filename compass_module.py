@@ -25,7 +25,7 @@ class Compass(threading.Thread):
             attitude = self.get_attitude()
 
             if attitude is None:
-                dic = {'Compass_State': False, 'Attitude': None}
+                dic = {'Compass_State': False}
             else:
                 dic = {'Compass_State': True, 'Attitude': attitude}
             self.update(dic)

@@ -11,12 +11,22 @@ class Waypoint(object):
         self._root = element(file_path)
         self.ORB = ORB
 
+    @property
+    def points(self):
+        return self.subscribe('Waypoint')
+
+    @property
+    def ID(self):
+        return self.subscribe('WaypointID')
+
     def download(self, origin, index=0):
+        count = len(self._root.getchildren())
+        if index > count - 1:
+            print 'Error:index out of range when download'
+            return
         _root = self._root[index]
         result = [origin]
         points = _root.getchildren()
-        if points is None:
-            return 0
         number = 0
         for point in points:
             result.append(get_location_metres(
@@ -28,7 +38,7 @@ class Waypoint(object):
     def Route(self, info):
         if info == "":
             print "Route is None"
-            return -1
+            return
         result = []
         wps = info.split(',')
         for wp in wps:
@@ -38,36 +48,22 @@ class Waypoint(object):
         self.ORB.publish('WaypointID', 0)
 
     def remain_wp(self):
-        ID = self.ORB.subscribe('WaypointID')
-        Waypoint = self.ORB.subscribe('Waypoint')
-        if Waypoint is [] or ID >= len(Waypoint):
-            return []
-        return Waypoint[ID:]
-
-    def all_wp(self):
-        return self.ORB.subscribe('Waypoint')
-
-    def current_wp(self):
-        return self._wp[self._number]
+        return self.points[self.ID:] if self.ID is not -1 else []
 
     def add_number(self):
-        self.ORB._HAL['WaypointID'] += 1
+        a = len(self.points) - 1
+        b = self.ID + 1
+        self.publish('WaypointID', min(a, b))
 
     def child(self, point, index):
         return float(point[index].text)
-
-    def write_xml(self, out_path):
-        self._root.write(out_path, encoding="utf-8", xml_declaration=True)
 
     def clear(self):
         self.ORB.publish('Waypoint', [])
         self.ORB.publish('WaypointID', -1)
 
     def isNull(self):
-        if self.ORB.subscribe('Waypoint') is []:
-            return True
-        else:
-            return False
+        return True if self.ORB.subscribe('WaypointID') < 0 else False
 
     def publish(self, topic, value):
         self.ORB.publish(topic, value)
@@ -83,10 +79,10 @@ if __name__ == "__main__":
     ORB = uORB()
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
-    wp.download(origin, 0)
-    print wp.subscribe('Waypoint'), wp.subscribe('WaypointID')
+    wp.download(origin, 3)
+    print wp.points, wp.ID
     info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"
     wp.Route(info)
-    print wp.ORB.subscribe('Waypoint'), wp.ORB.subscribe('WaypointID')
+    print wp.points, wp.ID
     wp.add_number()
-    print wp.remain_wp(), wp.ORB.subscribe('WaypointID')
+    print wp.points, wp.ID

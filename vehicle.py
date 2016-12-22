@@ -4,7 +4,7 @@
 import time
 import json
 from config import config
-from library import CancelWatcher, list_assign
+from library import CancelWatcher, list2list
 from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
@@ -16,77 +16,65 @@ class Vehicle(Attribute):
     def __init__(self, mcu=None, ORB=None):
         super(Vehicle, self).__init__(mcu, ORB)
 
-    def arm(self):
-        if self._frame is 'HELI':
-            return 0
-        print "Waiting for arming..."
-        self.channels[self.AIL[0]] = self.AIL[1]
-        self.channels[self.ELE[0]] = self.ELE[3]
-        self.channels[self.THR[0]] = self.THR[3]
-        self.channels[self.RUD[0]] = self.RUD[3]
+    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0):
+        self.channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
+        self.channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
+        self.channels[self.THR[0]] = self.THR[2 + THR * self.THR[5]]
+        self.channels[self.RUD[0]] = self.RUD[2 + RUD * self.RUD[5]]
+        if self._frame == 'HELI':
+            self.channels[self.PIT[0]] = self.THR2PIT(
+                self.channels[self.THR[0]])
         self.send_pwm()
+
+    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0):
+        self.movement(self.ELE, ELE)
+        self.movement(self.AIL, AIL)
+        self.movement(self.THR, THR)
+        self.movement2(self.RUD, RUD)
+        if self._frame == 'HELI':
+            self.channels[self.PIT[0]] = self.THR2PIT(
+                self.channels[self.THR[0]])
+        self.send_pwm()
+
+    def arm(self):
+        print "Waiting for arming..."
+        self.control_stick(1, -1, -1, -1)
         time.sleep(2)
-        self.disarm()
-        pass
 
     def disarm(self):
-        self.channels[self.AIL[0]] = self.AIL[2]
-        self.channels[self.ELE[0]] = self.ELE[2]
-        self.channels[self.THR[0]] = self.THR[3]
-        self.channels[self.RUD[0]] = self.RUD[2]
-        self.send_pwm()
-        pass
-
-    # def stall(self):
-    #     self._log("stall")
-    #     self.channels[self.THR[0]]=self.THR[1]
-    #     if self._frame is 'HELI':
-    #         self.channels[self.PIT[0]]=self.PIT_curve(self.THR[1])
-    #     self.send_pwm()
+        self.control_stick(THR=-1)
 
     def takeoff(self, alt=5):
-        if config.get_Baro()[0] <= 0:
+        if not self.has_module('Baro'):
             print 'Baro is closed'
             return 0
         print 'Takeoff to ', alt, 'm'
 
-        if self.THR[5] < 0:
-            self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.6)
-        else:
-            self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.6)
-        self.channels[self.PIT[0]] = self.update_PIT(
-            self.channels[self.THR[0]])
-        self.send_pwm()
-        time.sleep(2)
-        # watcher = CancelWatcher()
-        # while not watcher.IsCancel():
-        #     currentAlt = self.get_alt()
-        #     print 'Current Altitude', currentAlt
-        #     if currentAlt is None:
-        #         self.brake()
-        #         return -1
-        #     if currentAlt > alt * 0.9:
-        #         print 'Reached Altitude'
-        #         break
+        self.control_FRU(THR=1)
+
+        # time.sleep(2)
+        watcher = CancelWatcher()
+        while not watcher.IsCancel():
+            currentAlt = self.get_alt()
+            print 'Current Altitude', currentAlt
+            if currentAlt is None:
+                break
+            if currentAlt > alt * 0.9:
+                print 'Reached Altitude'
+                break
 
         self.brake()
         pass
 
     def land(self):
-        if config.get_Baro()[0] <= 0:
+        if not self.has_module('Baro'):
             print 'Baro is closed'
-            return 0
+            return
         print 'Landing... '
 
-        if self.THR[5] < 0:
-            self.channels[self.THR[0]] = int(self.THR[3] - self.THR[4] * 0.4)
-        else:
-            self.channels[self.THR[0]] = int(self.THR[1] + self.THR[4] * 0.4)
-        self.channels[self.PIT[0]] = self.update_PIT(
-            self.channels[self.THR[0]])
-        self.send_pwm()
-        Watcher = CancelWatcher()
-        time.sleep(3)
+        # self.control_FRU(0, 0, -1)
+        # watcher = CancelWatcher()
+        # time.sleep(3)
         # preAlt = self.get_alt()
         # times = 0
         # while not watcher.IsCancel():
@@ -105,11 +93,11 @@ class Vehicle(Attribute):
         #     if currentAlt > alt * 0.9:
         #         print 'Reached Altitude'
         #         break
-        if not watcher.IsCancel():
-            self.disarm()
+        # if not watcher.IsCancel():
+        #     self.disarm()
 
-    def THR_MID(self):
-        list_assign(self.channels, self.channels_mid)
+    def LoiterPWM(self):
+        list2list(self.channels, self.channels_mid)
 
     def movement(self, att, sign=1):
         rate = self.gear[self.get_gear()] / 100.0
@@ -125,151 +113,117 @@ class Vehicle(Attribute):
 
     def yaw_left(self):
         self._log('Turn Left...')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement2(self.RUD, -1)
-            self.send_pwm()
+        self.control_FRU(RUD=-1)
 
     def yaw_right(self):
         self._log('Turn Right...')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement2(self.RUD)
-            self.send_pwm()
+        self.control_FRU(RUD=1)
 
-    def forward(self, duration=None):
+    def forward(self):
         self._log('Forward...')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement(self.ELE)
-            self.send_pwm()
-            if duration is not None:
-                time.sleep(duration)
-                self.brake()
+        self.control_FRU(ELE=1)
 
     def brake(self):
         self._log('brake')
-        if config.get_MCU()[0] > 0:
-            duration = self.BD[self.get_gear()]
-            list_assign(self.channels, self.channels_mid)
-            self.send_pwm()
-            time.sleep(duration)
+        self.LoiterPWM()
+        self.send_pwm()
+        time.sleep(1)
 
     def yaw_left_brake(self):
-        duration = self.mDuration()
         self._log('Yaw Left')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement2(self.RUD, -1)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(RUD=-1)
+        time.sleep(moveTime)
+        self.brake()
 
     def yaw_right_brake(self):
-        duration = self.mDuration()
         self._log('Yaw Right')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement2(self.RUD)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(RUD=1)
+        time.sleep(moveTime)
+        self.brake()
 
     def forward_brake(self):
-        duration = self.mDuration()
         self._log('Forward')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement(self.ELE)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(ELE=1)
+        time.sleep(moveTime)
+        self.brake()
 
     def backward_brake(self):
-        duration = self.mDuration()
         self._log('Backward')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement(self.ELE, -1)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(ELE=-1)
+        time.sleep(moveTime)
+        self.brake()
 
     def roll_left_brake(self):
-        duration = self.mDuration()
         self._log('Roll Left')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement(self.AIL, -1)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(AIL=-1)
+        time.sleep(moveTime)
+        self.brake()
 
     def roll_right_brake(self):
-        duration = self.mDuration()
         self._log('Roll Right')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            self.movement(self.AIL)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(AIL=1)
+        time.sleep(moveTime)
+        self.brake()
 
     def up_brake(self):
-        duration = self.mDuration()
         self._log('Throttle Up')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            pwm = self.movement2(self.THR)
-            self.channels[self.PIT[0]] = self.update_PIT(pwm)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(THR=1)
+        time.sleep(moveTime)
+        self.brake()
 
     def down_brake(self):
-        duration = self.mDuration()
+        duration = self.MoveTime()
         self._log('Throttle Down')
-        if config.get_MCU()[0] > 0:
-            self.THR_MID()
-            pwm = self.movement2(self.THR, -1)
-            self.channels[self.PIT[0]] = self.update_PIT(pwm)
-            self.send_pwm()
-            time.sleep(duration)
-            self.brake()
+        moveTime = self.MoveTime()
+        self.control_FRU(THR=-1)
+        time.sleep(moveTime)
+        self.brake()
 
-    def mDuration(self):
+    def MoveTime(self):
         return self.MD
 
     def send_pwm(self):
-        if not config.get_MCU()[0] > 0 or self.mcu is None:
-            return 0
+        # print self.channels
+        print self.analysis_channels()
+        self.publish('ChannelsOutput', self.channels)
+        if not self.has_module('MCU'):
+            return
         self.mcu.send_pwm(self.channels)
 
-    def isStop(self, origin, target, sign):
-        diff = (360 + sign * (target - origin)) % 360
-        if diff < 180 and diff > 5:
+    def analysis_channels(self):
+        a = [x - y for x, y in zip(self.channels, self.channels_mid)]
+        return [x * y for x, y in zip(a, self.Phase())]
+
+    def isStop(self, begin, end, sign):
+        if begin is None:
             return True
-        else:
-            return False
+        diff = (360 + sign * (end - begin)) % 360
+        return False if diff < 180 and diff > 5 else True
 
     def condition_yaw(self, heading=0, relative=True):
         """
         0<=heading<360
         """
         if heading < 0 or heading >= 360:
-            self._log('0<=heading<360')
+            self._log('Warning:not 0<=heading<360')
             return -1
         if relative and heading == 0:
-            return 0
+            return
 
-        current_heading = self.get_heading()
         watcher = CancelWatcher()
+        current_heading = self.get_heading()
+        if current_heading is None:
+            return
         # Relative angle to heading
-        if relative:
-            target_angle = (current_heading + heading) % 360
-        else:
-            # Absolute angle
-            target_angle = heading
+        target_angle = (current_heading +
+                        heading) % 360 if relative else heading
 
         direction = (360 + target_angle - current_heading) % 360
         if direction > 0 and direction < 180:
@@ -281,7 +235,7 @@ class Vehicle(Attribute):
             self._log('Turn left {}'.format(360 - direction))
             self.yaw_left()
         print "Target", target_angle
-        while not watcher.IsCancel() and self.isStop(
+        while not watcher.IsCancel() and not self.isStop(
                 self.get_heading(), target_angle, is_cw):
             # self._log('Cur angle:{},Target
             # angle:{}'.format(self.get_heading(),target_angle))
@@ -292,36 +246,36 @@ class Vehicle(Attribute):
         return 1
 
     def navigation(self, target):
-        deviation = config.get_degree()[0]
+        IgnoreDegree = config.get_degree()[0]
         checktime = config.get_DD()[0]
         watcher = CancelWatcher()
         while not watcher.IsCancel():
             current_location = self.get_location()
             if current_location is None:
-                self.brake()
-                return -1
-            distance = round(get_distance_metres(current_location, target), 2)
-            self._log("Distance to Target {}m".format(distance))
+                break
+            remain_distance = round(
+                get_distance_metres(current_location, target), 2)
+            self._log("Distance to Target {}m".format(remain_distance))
             if distance < 3:
                 self._log("Reached Target Waypoint!")
                 break
-                return 1
+            current_yaw = self.get_heading()
+            if current_yaw is None:
+                break
             angle = angle_heading_target(
-                current_location, target, self.get_heading())
-            if _angle(angle) > deviation:
+                current_location, target, current_yaw)
+            if _angle(angle) > IgnoreDegree:
                 self.brake()
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(checktime)
         self.brake()
-        return 0
 
     def RTL(self):
         target = self.get_home()
         if target is None:
             self._log("Home is None!")
-            self.brake()
-            return -1
+            return
         self.publish('Mode', 'RTL')
 
         self.navigation(target)
@@ -352,7 +306,6 @@ class Vehicle(Attribute):
         target = self.get_target()
         if target is None:
             self._log("Target is None!")
-            self.brake()
             return -1
         self.publish('Mode', 'GUIDED')
 
@@ -363,7 +316,7 @@ class Vehicle(Attribute):
     def Cancel(self):
         self._log("Cancel")
         CancelWatcher.Cancel = True
-        time.sleep(1)
+        time.sleep(.1)
         self.brake()
 
 if __name__ == "__main__":
@@ -372,12 +325,13 @@ if __name__ == "__main__":
     mcu = None
     Watcher()
     ORB = uORB()
+    # ORB.open('Compass')
     # instancce of MCU module object
-    if config.get_MCU()[0] > 0:
+    if ORB.has_module('MCU'):
         from MCU_module import MCU
         mcu = MCU()
 
-    if config.get_compass()[0] > 0:
+    if ORB.has_module('Compass'):
         # instancce of compass module object
         from compass_module import Compass
         compass = Compass(ORB)
@@ -387,7 +341,7 @@ if __name__ == "__main__":
             # print compass.get_heading()
             time.sleep(.5)
 
-    if config.get_GPS()[0] > 0:
+    if ORB.has_module('GPS'):
         from GPS_module import GPS      # instancce of GPS module object
         gps = GPS(ORB)
 
@@ -396,7 +350,7 @@ if __name__ == "__main__":
             # print gps.get_num_stars()
             time.sleep(.5)
 
-    if config.get_Baro()[0] > 0:
+    if ORB.has_module('Baro'):
         from Baro import Baro
         baro = Baro(ORB)
 
@@ -411,32 +365,27 @@ if __name__ == "__main__":
     # vehicle.disarm()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
-    vehicle.yaw_left_brake()
-    time.sleep(1)
-    vehicle.yaw_right_brake()
-    time.sleep(1)
-    vehicle.roll_left_brake()
-    time.sleep(1)
-    vehicle.roll_right_brake()
-    time.sleep(1)
-    vehicle.forward_brake()
-    time.sleep(1)
-    vehicle.backward_brake()
-    time.sleep(1)
-    vehicle.up_brake()
-    time.sleep(1)
-    vehicle.down_brake()
-    time.sleep(1)
+    # vehicle.yaw_left_brake()
+    # vehicle.yaw_right_brake()
+    # vehicle.roll_left_brake()
+    # vehicle.roll_right_brake()
+    # vehicle.forward_brake()
+    # vehicle.backward_brake()
+    # vehicle.up_brake()
+    # vehicle.down_brake()
     # vehicle.yaw_left()
     # vehicle.yaw_right()
-    # vehicle.forward(5)
-
+    # vehicle.forward()
+    vehicle.control_FRU(1, 1, 1)
+    time.sleep(1)
+    vehicle.brake()
     # vehicle.condition_yaw(30)
     # vehicle.condition_yaw(300)
 
     # vehicle.set_target(0, 10)
     # vehicle.download()
     # print ORB.subscribe('Waypoint')
-    # # vehicle.Auto()
+    # vehicle.Auto()
     # vehicle.Guided()
     # vehicle.disarm()
+    # print vehicle.Phase()

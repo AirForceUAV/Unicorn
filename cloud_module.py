@@ -5,10 +5,8 @@ import socket
 import time
 import os
 import sys
-from config import config
 from library import CancelWatcher
 import threading
-import Queue
 
 
 def open_sock():
@@ -68,7 +66,7 @@ class Executor(threading.Thread):
                 pass
             except Exception:
                 info = sys.exc_info()
-                print "{}:{}".format(info[0], info[1])
+                print "{0}:{1}".format(*info)
 
     def _log(self, msg):
         print msg
@@ -82,6 +80,7 @@ if __name__ == "__main__":
     from cloud_module import open_sock, Receiver, Executor
     from apscheduler.schedulers.background import BackgroundScheduler
     from library import Watcher
+    import Queue
     vehicle = Vehicle()
     scheduler = BackgroundScheduler()
     Watcher()

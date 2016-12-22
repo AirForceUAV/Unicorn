@@ -27,8 +27,7 @@ class GPS(threading.Thread):
                 dic = {'GPS_State': True, 'Location': self.get_location(
                     location), 'NumStars': self.get_num_stars(location)}
             else:
-                dic = {'GPS_State': False, 'Location': None,
-                       'NumStars': 0}
+                dic = {'GPS_State': False, 'NumStars': 0}
             self.update(dic)
 
     def update(self, dictories):
@@ -72,5 +71,5 @@ if __name__ == "__main__":
         time.sleep(.5)
     while True:
         print ORB.subscribe('Location')
-        print ORB.subscribe('Num_stars')
+        print ORB.subscribe('NumStars')
         time.sleep(.1)

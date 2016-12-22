@@ -2,6 +2,7 @@
 # coding:utf-8
 
 from library import Singleton, element
+import json
 
 
 class Config(object):
@@ -12,53 +13,43 @@ class Config(object):
         root_node = element(file_name)
         ID = int(root_node.get('ID'))
         self._root = root_node[ID]
-        self._vehicle = self._root.get(
-            'vehicle')                 # vehicle type
-        self._frame = self._root.get('frame')
-        self._FC = self._root.get('FlightController')     # FC  version
-        self._cloud = [self.get_node(0, 1), self.get_node(
-            0, 2), self.get_node(0, 3)]  # [open?,ip,port]
-        self._AIL = self.ch(1)
-        self._ELE = self.ch(2)
-        self._THR = self.ch(3)
-        self._RUD = self.ch(4)
-        self._PIT = [self.get_node(
-            5, 1) - 1, self.get_node(5, 2), self.get_node(5, 3), self.get_node(5, 4)]
-        # [ch No.,mode pwm]
-        self._mode = [self.get_node(6, 1) - 1, self.get_node(6, 2)]
-        self._MCU = [self.get_node(7, 1), self.get_node(7, 2), self.get_node(
-            7, 3), self.get_node(7, 4)]  # [open?,port,baudrate]
-        self._GPS = [self.get_node(8, 1), self.get_node(8, 2), self.get_node(
-            8, 3), self.get_node(8, 4)]  # [open?,port,baudrate]
-        self._Comp = [self.get_node(9, 1), self.get_node(9, 2), self.get_node(
-            9, 3), self.get_node(9, 4)]  # [open?,port,baudrate]
-        self._Baro = [
-            self.get_node(
-                10, 1), self.get_node(
-                10, 2), self.get_node(
-                10, 3), self.get_node(
-                    10, 4)]  # [open?,port,baudrate]
-        self._lidar = [
-            self.get_node(
-                11, 1), self.get_node(
-                11, 2), self.get_node(
-                11, 3), self.get_node(
-                    11, 4)]  # [open?,port,safety distance,detected distance]
-        self._gear = [
-            self.get_node(
-                12, 1), self.get_node(
-                12, 2), self.get_node(
-                12, 3), self.get_node(
-                    12, 4)]  # [Current Gear,Low Gear,Mid Gear,High Gear]
-        self._MD = self.get_node(13, 1)
-        self._BD = [1, self.get_node(14, 1), self.get_node(
-            14, 2), self.get_node(14, 3)]
-        self._DD = [self.get_node(15, 1), self.get_node(15, 2)]
-        self._LG = [self.get_node(16, 1), self.get_node(
-            16, 2), self.get_node(16, 3)]
-        self._degree = [self.get_node(17, 1), self.get_node(17, 2)]
+        self._config = {}
+        self._config['vehicle'] = self._root.get('vehicle')
+        self._config['frame'] = self._root.get('frame')
+        self._config['FC'] = self._root.get('FlightController')
+        self._config['cloud'] = self.loadXML(0, 3)  # [open?,ip,port]
+        self._config['AIL'] = self.ch(1)
+        self._config['ELE'] = self.ch(2)
+        self._config['THR'] = self.ch(3)
+        self._config['RUD'] = self.ch(4)
+        self._config['PIT'] = self.loadPIT()
+        self._config['mode'] = [self.get_node(6, 1) - 1, self.get_node(6, 2)]
+        self._config['MCU'] = self.loadXML(7, 4)  # [open?,port,baudrate]
+        self._config['GPS'] = self.loadXML(8, 4)  # [open?,port,baudrate]
+        self._config['compass'] = self.loadXML(9, 4)  # [open?,port,baudrate]
+        self._config['Baro'] = self.loadXML(10, 4)  # [open?,port,baudrate]
+        # [open?,port,safety distance,detected distance]
+        self._config['lidar'] = self.loadXML(11, 4)
+        # [Current Gear,Low Gear,Mid Gear,High Gear]
+        self._config['gear'] = self.loadXML(12, 4)
+        self._config['MoveTime'] = self.get_node(13, 1)
+        self._config['BrakeTime'] = [-1] + self.loadXML(14, 3)
+        self._config['DecideTime'] = self.loadXML(15, 2)
+        self._config['LandingGear'] = self.loadXML(16, 3)
+        self._config['IgnoreDegree'] = self.loadXML(17, 2)
 
-    # [ch No.,low PWM,mid PWM,high PWM,variation,sign]
+    def loadXML(self, index, end, start=1):
+        return [self.get_node(index, x) for x in range(start, end + 1)]
+
+    def loadPIT(self):
+        index = 5
+        num = self.get_node(index, 1) - 1
+        low = self.get_node(index, 2)
+        mid = self.get_node(index, 3)
+        hig = self.get_node(index, 4)
+        var = hig - low
+        return [num, low, mid, hig, var]
+
     def ch(self, index):
         num = self.get_node(index, 1) - 1
         low = self.get_node(index, 2)
@@ -83,86 +74,70 @@ class Config(object):
             return value
 
     def get_vehicle(self):
-        return self._vehicle
+        return self._config['vehicle']
 
     def get_frame(self):
-        return self._frame
+        return self._config['frame']
 
     def get_FC(self):
-        return self._FC
+        return self._config['FC']
 
     def get_cloud(self):
-        return self._cloud
+        return self._config['cloud']
 
     def get_AIL(self):
-        return self._AIL
+        return self._config['AIL']
 
     def get_ELE(self):
-        return self._ELE
+        return self._config['ELE']
 
     def get_THR(self):
-        return self._THR
+        return self._config['THR']
 
     def get_RUD(self):
-        return self._RUD
+        return self._config['RUD']
 
     def get_mode(self):
-        return self._mode
+        return self._config['mode']
 
     def get_PIT(self):
-        return self._PIT
+        return self._config['PIT']
 
     def get_MCU(self):
-        return self._MCU
+        return self._config['MCU']
 
     def get_GPS(self):
-        return self._GPS
+        return self._config['GPS']
 
     def get_compass(self):
-        return self._Comp
+        return self._config['compass']
 
     def get_Baro(self):
-        return self._Baro
+        return self._config['Baro']
 
     def get_lidar(self):
-        return self._lidar
+        return self._config['lidar']
 
     def get_gear(self):
-        return self._gear
+        return self._config['gear']
 
     def get_MD(self):
-        return self._MD
+        return self._config['MoveTime']
 
     def get_BD(self):
-        return self._BD
+        return self._config['BrakeTime']
 
     def get_DD(self):
-        return self._DD
+        return self._config['DecideTime']
 
     def get_degree(self):
-        return self._degree
+        return self._config['IgnoreDegree']
+
+    def __str__(self):
+        return json.dumps(self._config)
 
 # Global config
 config = Config()
 
 if __name__ == "__main__":
-    print 'Vehicle frame:{}'.format(config.get_frame())
-    print 'Vehicle type:{}'.format(config.get_vehicle())
-    print 'FC firmware:{}'.format(config._FC)
-    print 'Cloud:', config.get_cloud()
-    print 'AIL:', config.get_AIL()
-    print 'ELE:', config.get_ELE()
-    print 'THR:', config.get_THR()
-    print 'RUD:', config.get_RUD()
-    print 'PIT:', config.get_PIT()
-    print 'Mode:', config.get_mode()
-    print 'MCU:', config.get_MCU()
-    print 'GPS:', config.get_GPS()
-    print 'Compass:', config.get_compass()
-    print 'Barometre:', config.get_Baro()
-    print 'Lidar:', config.get_lidar()
-    print 'Gear:', config.get_gear()
-    print 'Movement Duration', config.get_MD()
-    print 'Brake Duration', config.get_BD()
-    print 'Decision Duration', config.get_DD()
-    print 'Ignore Degree', config.get_degree()
+    print config

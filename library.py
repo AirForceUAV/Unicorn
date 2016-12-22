@@ -10,18 +10,16 @@ import sys
 
 
 def open_serial(portname, baudrate, timeout=0.5):
-    com = None
     while True:
-        if com is None:
-            try:
-                print "Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
-                com = serial.Serial(portname, baudrate, timeout=timeout)
-                return com
-            except serial.SerialException:
-                info = sys.exc_info()
-                print "{}:{}".format(info[0], info[1])
-                time.sleep(1.0)
-                continue
+        try:
+            print "Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
+            com = serial.Serial(portname, baudrate, timeout=timeout)
+            return com
+        except serial.SerialException:
+            info = sys.exc_info()
+            print "{0}:{1}".format(*info)
+            time.sleep(1.0)
+            continue
 
 
 def element(file_name):
@@ -33,9 +31,21 @@ def element(file_name):
         tree = ET.parse(file_name)
         _root = tree.getroot()
     except Exception as e:
-        print "Error:cannot parse file:{}".format(file_name)
+        print "Error:cannot parse file:{0}".format(file_name)
         sys.exit(1)
     return _root
+
+
+def pressure2Alt(hpa):
+    # mba===hpa
+    tmp = hpa / 1013.25
+    return round((1 - tmp**0.190284) * 145366.45 * 0.3048, 2)
+
+
+def ParseFrame(package, length=2):
+    frame = [int(package[x:x + length], 16)
+             for x in xrange(len(package)) if x%length == 0]
+    return frame
 
 
 def get_bearing(aLocation1, aLocation2):
@@ -93,10 +103,7 @@ def angle_heading_target(origin, target, heading):
 
 
 def _angle(angle):
-    if angle > 180:
-        return 360 - angle
-    else:
-        return angle
+    return angle if angle < 180 else 360 - angle
 
 
 def isNum(s):
@@ -128,7 +135,7 @@ ord('0')  >> 48    '%02x'%ord('0')  >> '30'
 
 def ascii2hex(argv):
     """
-    Transform ascii to 16h
+    Convert ascii to 16h
     """
     result = ''
     hLen = len(argv)
@@ -139,20 +146,18 @@ def ascii2hex(argv):
     return result
 
 
-def dec2hex(int_10, length=4):
+def dec2hex(int_10):
     """
-    Transform  10h to 16h(sizeof 2B)
+    Convert  10h to 16h(sizeof 2B)
     """
-    int_16 = hex(int_10)[2:]
-    num = len(int_16)
-    if num < length:
-        int_16 = '0' * (length - num) + int_16
+    int_16 = format(hex(int_10)[2:], '0>4')
     return int_16
 
 
-def list_assign(list1, list2):
-    for i in xrange(len(list2)):
-        list1[i] = list2[i]
+def list2list(list1, list2):
+    if len(list1) == len(list2):
+        for i in xrange(len(list2)):
+            list1[i] = list2[i]
 
 
 def cos(angle):

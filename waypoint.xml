@@ -39,7 +39,7 @@
             <alt>-1</alt>
         </point>
     </Waypoint>
-    <Waypoint index='1' Trail="rectangle">
+    <Waypoint index='2' Trail="rectangle">
         <point index='0'>
             <north>0</north>
             <east>-10</east>
