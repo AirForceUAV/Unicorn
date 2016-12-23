@@ -6,7 +6,7 @@ import array
 import time
 import sys
 from library import CancelWatcher
-from library import ParseFrame
+from library import CutFrame
 
 
 class SBUSReceiver:
@@ -69,7 +69,7 @@ class SBUSReceiver:
 
     def sbusFrame(self):
         package = self.RawFrame()
-        self.sbusFrame = ParseFrame(package,4)
+        self.sbusFrame = CutFrame(package, 4)
 
     def sendFrame(self, frame):
         self.sbus.write(frame)
@@ -90,8 +90,6 @@ class SBUSReceiver:
         Used to retrieve the last SBUS channels values reading
         :return:  an array of 18 unsigned short elements containing 16 standard channel values + 2 digitals (ch 17 and 18)
         """
-        self.get_sbusFrame()
-        self.decode_frame()
         return self.sbusChannels
 
     def get_rx_channel(self, num_ch):
@@ -173,5 +171,7 @@ if __name__ == '__main__':
 
     sbus = SBUSReceiver()
     while True:
+        self.get_sbusFrame()
+        self.decode_frame()
         print 'channels', sbus.get_rx_channels()
         raw_input('next')

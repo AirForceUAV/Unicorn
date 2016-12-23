@@ -1,7 +1,6 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-from config import config
 import time
 from library import get_location_metres, isNum
 from library import sin, cos, pressure2Alt
@@ -10,31 +9,27 @@ from waypoint import Waypoint
 
 class Attribute(object):
 
-    def __init__(self, mcu=None, ORB=None):
-        self._frame = config.get_frame()
-        self._log('Copter Frame:{}'.format(self._frame))
-        self._log('Vehicle Type:{}'.format(config.get_vehicle()))
-        self._log('Flight Controller:{}'.format(config.get_FC()))
+    def __init__(self, mcu, ORB):
         self.mcu = mcu
         self.ORB = ORB
+        self._model = ORB._model['Model']
+        self._log('Drone :{}'.format(ORB._model['UAV']))
+        self._log('Drone model:{}'.format(ORB._model['Model']))
+        self._log('MainController:{}'.format(ORB._model['MainController']))
         # Aileron :[No.ch, low ,mid, high ,var, sign, rate]
-        self.AIL = config.get_AIL()
+        self.AIL = ORB.channel('AIL')
         # Elevator:[No.ch, low ,mid, high ,var, sign, rate]
-        self.ELE = config.get_ELE()
+        self.ELE = ORB.channel('ELE')
         # Throttle:[No.ch, low ,mid, high ,var, sign, rate]
-        self.THR = config.get_THR()
+        self.THR = ORB.channel('THR')
         # Rudder  :[No.ch, low ,mid, high ,var, sign, rate]
-        self.RUD = config.get_RUD()
-        self.mode = config.get_mode()
-        self.PIT = config.get_PIT()
-        self.gear = config.get_gear()
-        self.MD = config.get_MD()
-        self.BD = config.get_BD()
-        self.DD = config.get_DD()
+        self.RUD = ORB.channel('RUD')
+
+        self.mode = ORB.channel('Mode')
+        if ORB._model['Model'] == 'HELI':
+            self.PIT = ORB.channel('PIT')
+
         # 8 channels PWM:[CH1~CH8]
-        self.channels = self.init_channels()
-        self.channels_mid = self.init_channels_mid()
-        self.publish('LoiterPWM', self.channels_mid)
         self.wp = Waypoint(ORB)
         self.update_home()
         self.init_altitude()
@@ -64,30 +59,8 @@ class Attribute(object):
         # location=[39.11111,116.33333]
         self.wp.download(location, index)
 
-    def init_channels(self):
-        channels = [0, 0, 0, 0, 0, 0, 0, 0]
-        channels[self.AIL[0]] = self.AIL[2]
-        channels[self.ELE[0]] = self.ELE[2]
-        channels[self.THR[0]] = self.THR[1] if self.THR[5] > 0 else self.THR[3]
-        channels[self.RUD[0]] = self.RUD[2]
-        channels[self.mode[0]] = self.mode[1]
-        if self._frame == 'HELI':
-            channels[self.PIT[0]] = self.THR2PIT(channels[self.THR[0]])
-        return channels
-
-    def init_channels_mid(self):
-        channels = [0, 0, 0, 0, 0, 0, 0, 0]
-        channels[self.AIL[0]] = self.AIL[2]
-        channels[self.ELE[0]] = self.ELE[2]
-        channels[self.THR[0]] = self.THR[2]
-        channels[self.RUD[0]] = self.RUD[2]
-        channels[self.mode[0]] = self.mode[1]
-        if self._frame == 'HELI':
-            channels[self.PIT[0]] = self.THR2PIT(self.THR[2])
-        return channels
-
     def Phase(self):
-        phase = [0] * 8
+        phase = [1] * 8
         phase[self.AIL[0]] = self.AIL[5]
         phase[self.ELE[0]] = self.ELE[5]
         phase[self.THR[0]] = self.THR[5]
@@ -101,7 +74,7 @@ class Attribute(object):
         return PIT_PWM
 
     def set_channels_mid(self):
-        self._log('Catching Loiter PWM...')
+        self._log('>>> Catching Loiter PWM...')
         if not self.ORB.has_module('MCU'):
             print 'Warning:MCU is closed'
             return
@@ -110,22 +83,18 @@ class Attribute(object):
             self._log('Error:Co-MCU is not health')
             return
         self._log('Channels Mid:{}'.format(mid))
-        self.channels = mid
-        self.channels_mid = mid
         self.publish('LoiterPWM', mid)
         self.AIL[2] = mid[self.AIL[0]]
         self.ELE[2] = mid[self.ELE[0]]
         self.THR[2] = mid[self.THR[0]]
         self.RUD[2] = mid[self.RUD[0]]
+        self.mode[2] = mid[self.mode[0]]
+        if self._model == 'HELI':
+            self.PIT[2] = mid[self.PIT[0]]
 
     def set_gear(self, gear):
         if int(gear) in [1, 2, 3]:
-            self.gear[0] = int(gear)
-        else:
-            self._log('Waring:Gear is unvalid')
-
-    def get_gear(self):
-        return int(self.gear[0])
+            self.publish('Gear', int(gear))
 
     def set_target(self, dNorth, dEast, alt=-1):
         origin = self.get_location()

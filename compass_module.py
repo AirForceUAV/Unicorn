@@ -4,7 +4,6 @@
 import time
 import threading
 from library import open_serial, ascii2hex
-from config import config
 from library import Singleton
 
 
@@ -13,13 +12,12 @@ class Compass(threading.Thread):
 
     def __init__(self, ORB):
         super(Compass, self).__init__(name="Compass")
-        self._log("Connecting to Compass Module")
+        self._log(">>> Connecting to Compass ...")
         self.ORB = ORB
-        con = config.get_compass()
-        self.ser = open_serial(con[1], con[2])
+        self.ser = open_serial('/dev/compass', 9600)
 
     def run(self):
-        print "Initializing Compass Module"
+        print ">>> Initializing Compass ..."
 
         while True:
             attitude = self.get_attitude()
@@ -36,16 +34,16 @@ class Compass(threading.Thread):
 
     def get_attitude(self):
         command = '6804000408'
-        package = self.compass_info(command, 84, 14)
+        package = self.RawFrame(command, '84', 14)
         if package is None:
             return None
         else:
             pitch = self.decode_BCD(package[8:14])
             roll = self.decode_BCD(package[14:20])
-            heading = int(self.decode_BCD(package[20:26]))
-            return [pitch, roll, heading]
+            yaw = self.decode_BCD(package[20:26])
+            return [pitch, roll, int(yaw)]
 
-    def compass_info(self, command, ack, size=8):
+    def RawFrame(self, command, ack, size=8):
         command = command.decode("hex")
         times = 0
         self.ser.flushInput()
@@ -59,9 +57,8 @@ class Compass(threading.Thread):
                 continue
             package = package[index:index + size * 2]
             # self._log(package)
-            if package[6:8] == str(ack) and self.checksum(package):
+            if package[6:8] == ack and self.checksum(package):
                 return package
-        self._log('Compass Timeout')
         return None
 
     def checksum(self, package):

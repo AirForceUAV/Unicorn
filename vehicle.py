@@ -3,8 +3,7 @@
 
 import time
 import json
-from config import config
-from library import CancelWatcher, list2list
+from library import CancelWatcher
 from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
@@ -15,26 +14,32 @@ class Vehicle(Attribute):
 
     def __init__(self, mcu=None, ORB=None):
         super(Vehicle, self).__init__(mcu, ORB)
+        self.moveTime = 2
+        self.brakeTime = 1
 
     def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0):
-        self.channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
-        self.channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
-        self.channels[self.THR[0]] = self.THR[2 + THR * self.THR[5]]
-        self.channels[self.RUD[0]] = self.RUD[2 + RUD * self.RUD[5]]
-        if self._frame == 'HELI':
-            self.channels[self.PIT[0]] = self.THR2PIT(
-                self.channels[self.THR[0]])
-        self.send_pwm()
+        channels = [0] * 8
+        channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
+        channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
+        channels[self.THR[0]] = self.THR[2 + THR * self.THR[5]]
+        channels[self.RUD[0]] = self.RUD[2 + RUD * self.RUD[5]]
+        channels[self.mode[0]] = self.mode[2]
+        if self._model == 'HELI':
+            channels[self.PIT[0]] = self.THR2PIT(
+                channels[self.THR[0]])
+        self.send_pwm(channels)
 
     def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0):
-        self.movement(self.ELE, ELE)
-        self.movement(self.AIL, AIL)
-        self.movement(self.THR, THR)
-        self.movement2(self.RUD, RUD)
-        if self._frame == 'HELI':
-            self.channels[self.PIT[0]] = self.THR2PIT(
-                self.channels[self.THR[0]])
-        self.send_pwm()
+        channels = [0] * 8
+        channels[self.AIL[0]] = self.movement(self.AIL, AIL)
+        channels[self.ELE[0]] = self.movement(self.ELE, ELE)
+        channels[self.THR[0]] = self.movement(self.THR, THR)
+        channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
+        channels[self.mode[0]] = self.mode[2]
+        if self._model == 'HELI':
+            channels[self.PIT[0]] = self.THR2PIT(
+                channels[self.THR[0]])
+        self.send_pwm(channels)
 
     def arm(self):
         print "Waiting for arming..."
@@ -51,7 +56,6 @@ class Vehicle(Attribute):
         print 'Takeoff to ', alt, 'm'
 
         self.control_FRU(THR=1)
-
         # time.sleep(2)
         watcher = CancelWatcher()
         while not watcher.IsCancel():
@@ -96,20 +100,15 @@ class Vehicle(Attribute):
         # if not watcher.IsCancel():
         #     self.disarm()
 
-    def LoiterPWM(self):
-        list2list(self.channels, self.channels_mid)
+    def movement(self, channel, sign=1):
+        rate = self.ORB._Gear[self.subscribe('Gear') - 1] * 0.01
+        variation = int(channel[5] * channel[4] * rate)
+        return channel[2] + sign * variation
 
-    def movement(self, att, sign=1):
-        rate = self.gear[self.get_gear()] / 100.0
-        variation = int(att[5] * att[4] * rate)
-        self.channels[att[0]] = att[2] + sign * variation
-        return self.channels[att[0]]
-
-    def movement2(self, att, sign=1):
-        rate = att[6] / 100.0
-        variation = int(att[5] * att[4] * rate)
-        self.channels[att[0]] = att[2] + sign * variation
-        return self.channels[att[0]]
+    def movement2(self, channel, sign=1):
+        rate = channel[6] * 0.01
+        variation = int(channel[5] * channel[4] * rate)
+        return channel[2] + sign * variation
 
     def yaw_left(self):
         self._log('Turn Left...')
@@ -125,80 +124,67 @@ class Vehicle(Attribute):
 
     def brake(self):
         self._log('brake')
-        self.LoiterPWM()
-        self.send_pwm()
-        time.sleep(1)
+        self.send_pwm(self.subscribe('LoiterPWM'))
+        time.sleep(self.brakeTime)
 
     def yaw_left_brake(self):
         self._log('Yaw Left')
-        moveTime = self.MoveTime()
         self.control_FRU(RUD=-1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def yaw_right_brake(self):
         self._log('Yaw Right')
-        moveTime = self.MoveTime()
         self.control_FRU(RUD=1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def forward_brake(self):
         self._log('Forward')
-        moveTime = self.MoveTime()
         self.control_FRU(ELE=1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def backward_brake(self):
         self._log('Backward')
-        moveTime = self.MoveTime()
         self.control_FRU(ELE=-1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def roll_left_brake(self):
         self._log('Roll Left')
-        moveTime = self.MoveTime()
         self.control_FRU(AIL=-1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def roll_right_brake(self):
         self._log('Roll Right')
-        moveTime = self.MoveTime()
         self.control_FRU(AIL=1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def up_brake(self):
         self._log('Throttle Up')
-        moveTime = self.MoveTime()
         self.control_FRU(THR=1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
     def down_brake(self):
-        duration = self.MoveTime()
         self._log('Throttle Down')
-        moveTime = self.MoveTime()
         self.control_FRU(THR=-1)
-        time.sleep(moveTime)
+        time.sleep(self.moveTime)
         self.brake()
 
-    def MoveTime(self):
-        return self.MD
-
-    def send_pwm(self):
-        # print self.channels
-        print self.analysis_channels()
-        self.publish('ChannelsOutput', self.channels)
+    def send_pwm(self, channels):
+        print channels
+        print self.analysis_channels(channels)
+        self.publish('ChannelsOutput', channels)
         if not self.has_module('MCU'):
             return
-        self.mcu.send_pwm(self.channels)
+        self.mcu.send_pwm(channels)
 
-    def analysis_channels(self):
-        a = [x - y for x, y in zip(self.channels, self.channels_mid)]
+    def analysis_channels(self, channels):
+        a = [x - y for x, y in zip(channels, self.subscribe('LoiterPWM'))]
         return [x * y for x, y in zip(a, self.Phase())]
 
     def isStop(self, begin, end, sign):
@@ -246,8 +232,8 @@ class Vehicle(Attribute):
         return 1
 
     def navigation(self, target):
-        IgnoreDegree = config.get_degree()[0]
-        checktime = config.get_DD()[0]
+        IgnoreDegree = 10
+        checktime = 5
         watcher = CancelWatcher()
         while not watcher.IsCancel():
             current_location = self.get_location()
@@ -325,7 +311,7 @@ if __name__ == "__main__":
     mcu = None
     Watcher()
     ORB = uORB()
-    # ORB.open('Compass')
+    # ORB.open('MCU')
     # instancce of MCU module object
     if ORB.has_module('MCU'):
         from MCU_module import MCU
@@ -356,7 +342,14 @@ if __name__ == "__main__":
 
         baro.start()
         while not ORB.subscribe('Baro_State'):
-            # print gps.get_num_stars()
+            time.sleep(.5)
+
+    if ORB.has_module('IMU'):
+        from IMU import IMU
+        imu = IMU(ORB)
+
+        imu.start()
+        while not ORB.subscribe('IMU_State'):
             time.sleep(.5)
 
     vehicle = Vehicle(mcu, ORB)
@@ -371,14 +364,14 @@ if __name__ == "__main__":
     # vehicle.roll_right_brake()
     # vehicle.forward_brake()
     # vehicle.backward_brake()
-    # vehicle.up_brake()
-    # vehicle.down_brake()
+    vehicle.up_brake()
+    vehicle.down_brake()
     # vehicle.yaw_left()
     # vehicle.yaw_right()
     # vehicle.forward()
-    vehicle.control_FRU(1, 1, 1)
-    time.sleep(1)
-    vehicle.brake()
+    # vehicle.control_FRU(1, 1, 1)
+    # time.sleep(1)
+    # vehicle.brake()
     # vehicle.condition_yaw(30)
     # vehicle.condition_yaw(300)
 

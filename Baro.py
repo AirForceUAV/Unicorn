@@ -2,7 +2,6 @@
 # coding:utf-8
 
 import time
-from config import config
 from library import Singleton
 import math
 from smbus import SMBus
@@ -32,7 +31,7 @@ class Baro(threading.Thread):
         self.elevation = elevation
 
     def run(self):
-        print 'Initializing Baro Module'
+        print '>>> Initializing Barometre'
 
         while True:
             self.read()

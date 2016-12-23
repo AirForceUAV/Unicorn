@@ -87,12 +87,12 @@ if __name__ == "__main__":
     sock = open_sock()
     work_queue = Queue.Queue()
 
-    print 'Start Receiver Thread'
+    print '>>> Start Receiver Thread'
     receiver = Receiver(work_queue, sock)
     receiver.daemon = True
     receiver.start()
 
-    print 'Start Executor Thread'
+    print '>>> Start Executor Thread'
     executor = Executor(work_queue, vehicle)
     executor.daemon = True
     executor.start()

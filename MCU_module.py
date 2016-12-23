@@ -2,23 +2,22 @@
 # coding:utf-8
 
 import time
-from config import config
 from library import open_serial, ascii2hex, dec2hex
 from library import Singleton
-from library import ParseFrame
+from library import CutFrame
 
 
 class MCU(object):
     __metaclass__ = Singleton
 
     def __init__(self):
-        con = config.get_MCU()
-        self._log("Connecting to MCU")
-        self.ser = open_serial(con[1], con[2])
+        print '>>> Connecting to MCU ...'
+        self._mcu = open_serial('/dev/ttyAMA0', 57600)
         self.FRAME_HEAD = 'AABB'
         self.FRAME_TAIL = 'CC'
+        self.FRAME_LEN = 19
 
-    def code_pwm(self, channels):
+    def EncodeChannels(self, channels):
         msg = reduce(lambda x, y: x + dec2hex(y),
                      [self.FRAME_HEAD] + channels) + self.FRAME_TAIL
         # msg = "AABB"
@@ -28,16 +27,16 @@ class MCU(object):
         return msg
 
     def send_pwm(self, channels):
-        msg = self.code_pwm(channels)
-        msg = msg.decode("hex")
-        self.ser.write(msg * 10)
+        msg = self.EncodeChannels(channels).decode('hex')
+        self._mcu.write(msg * 10)
 
-    def get_frame(self, size=38):
+    def RawFrame(self):
         times = 0
-        self.ser.flushInput()
+        size = self.FRAME_LEN * 2
+        self._mcu.flushInput()
         while times < 10:
             times += 1
-            msg = self.ser.read(size * 5)
+            msg = self._mcu.read(size * 5)
             if msg is '':
                 continue
             msg = ascii2hex(msg)
@@ -50,23 +49,16 @@ class MCU(object):
         return None
 
     def read_channels(self):
-        package = self.get_frame()
+        package = self.RawFrame()
         # self._log(package)
-        return None if package is None else ParseFrame(package[4:36], 4)
+        return None if package is None else CutFrame(package[4:36], 4)
 
-    def close(self):
-        if self.ser.is_open is True:
-            self.ser.close()
-
-    def _log(self, msg):
-        print msg
-        pass
 
 if __name__ == "__main__":
     mcu = MCU()
     a = [1000] * 8
-    print mcu.code_pwm(a)
-    # while True:
-    #     ch = mcu.read_channels()
-    #     print ch
-    #     raw_input('Next')
+    print mcu.EncodeChannels(a)
+    while True:
+        ch = mcu.read_channels()
+        print ch
+        raw_input('Next')

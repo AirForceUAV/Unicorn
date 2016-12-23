@@ -3,12 +3,9 @@
 
 import os
 import struct
-import sys
 import time
-from config import config
 from library import CancelWatcher, get_distance_metres, Singleton
 from library import angle_heading_target
-from vehicle import Vehicle
 from library import Singleton
 
 
@@ -19,11 +16,10 @@ class Lidar(object):
     def __init__(self, vehicle=None):
         replyPipe = "./Reply"
         requestPipe = "./Request"
-        con = config.get_lidar()
         pid = os.fork()
         if pid == 0:
             os.execl("./ultra_simple", "ultra_simple",
-                     con[1], str(con[2]), str(con[3]), "")
+                     '/dev/ttyUSB0', 1500, 3000, "")
             exit(0)
 
         if ((replyPipe, requestPipe) in self.__class__._pipeSet) is False:
@@ -65,7 +61,7 @@ class Lidar(object):
         if self.vehicle is None:
             return
         if self.vehicle.wp.isNull():
-            self._log('Waypoint is none')
+            self._log('Warning:Waypoint is none')
             return
         self.publish('Mode', 'AUTO_AVOID')
         watcher = CancelWatcher()
@@ -80,7 +76,7 @@ class Lidar(object):
 
     def Avoid(self, target):
         checktime = 1
-        IgnoreTime = config.get_degree()[1]
+        IgnoreDegree = 10
 
         watcher = CancelWatcher()
         while not watcher.IsCancel():
@@ -98,7 +94,7 @@ class Lidar(object):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
             angle_avoid = self.Decision(angle)
-            if self.vehicle._angle(angle_avoid) > IgnoreTime:
+            if self.vehicle._angle(angle_avoid) > IgnoreDegree:
                 self.vehicle.brake()
                 angle_avoid = self.more_angle(angle_avoid)
                 self.vehicle.condition_yaw(angle_avoid)
@@ -109,11 +105,11 @@ class Lidar(object):
     def RTL(self):
         target = self.subscribe('HomeLocation')
         if target is None:
-            self._log("Home is None!")
+            self._log("Warning:Home is None!")
             return
 
         self.publish('Mode', 'RTL_AVOID')
-        self._log('RTL with Avoid! Home is {}'.format(target))
+        self._log('RTL with Avoidance! Home is {}'.format(target))
         self.Avoid(target)
 
         self.publish('Mode', 'Loiter')

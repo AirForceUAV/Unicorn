@@ -5,6 +5,7 @@ from library import Singleton, open_serial
 import threading
 import time
 
+
 class IMU(threading.Thread):
     __metaclass__ = Singleton
 
@@ -30,15 +31,21 @@ class IMU(threading.Thread):
         self.QUA_LEN = 17
         self.PRE_LEN = 5
 
+        self.ACC_UNIT = 0.000244  # G
+        self.GYR_UNIT = 0.061035  # °/s
+        self.MAG_UNIT = 6         # Gauss
+        self.EUL_UNIT = 0.01      # °
+
         self.ORB = ORB
-        self._imu = open_serial('/dev/ttyUSB0', 115200)
+        self._imu = open_serial('/dev/IMU', 115200)
 
     def run(self):
         print 'Initializing IMU....'
         while True:
             frame = self.RawFrame()
-            Acc, Gyr, Mag, Eul, Qua=self.ParseIMU(frame)
-            dic={'IMU_State':True,'ACC':Acc,'GYR':Gyr,'MAG':Mag,'EUL':Eul,'QUA':Qua}
+            Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)
+            dic = {'IMU_State': True, 'ACC': Acc, 'GYR': Gyr,
+                   'MAG': Mag, 'EUL': Eul, 'QUA': Qua}
             self.update(dic)
 
     def update(self, dictories):
@@ -64,10 +71,10 @@ class IMU(threading.Thread):
         position = sign * 2**exponent * mantissa
         return position
 
-    def convert_complement(self,hex_val):
-        dec_val=int(hex_val,16)
-        if dec_val>=2**15:
-            dec_val=-(2**16 - dec_val)
+    def convert_complement(self, hex_val):
+        dec_val = int(hex_val, 16)
+        if dec_val >= 2**15:
+            dec_val = -(2**16 - dec_val)
         return dec_val
 
     def RawFrame(self):
@@ -79,44 +86,48 @@ class IMU(threading.Thread):
 
     def ParseIMU(self, package):
         a = package.find(self.ACC_HEAD)
-        g = a+self.ACC_LEN*2
-        m = g+self.GYR_LEN*2
-        e = m+self.MAG_LEN*2
-        q = e+self.EUL_LEN*2
-        p = q+self.QUA_LEN*2
-     
-        RawAcc = package[a+2:a + self.ACC_LEN*2]
-        RawGyr = package[g+2:g + self.GYR_LEN*2]
-        RawMag = package[m+2:m + self.MAG_LEN*2]
-        RawEul = package[e+2:e + self.EUL_LEN*2]
-        RawQua = package[q+2:q + self.QUA_LEN*2]
-        RawPre = package[p+2:p + self.PRE_LEN*2]
-        # print 'ACC:{},Gyr:{},MAG:{},EUL:{},QUA:{},Pre:{}'.format(RawAcc, RawGyr, RawMag, RawEul, RawQua,RawPre)
-        
-        Acc = map(lambda x:round(x*0.000244,4),self.ParseFrag(RawAcc))
-        Gyr = map(lambda x:round(x*0.061035,4),self.ParseFrag(RawGyr))
-        Mag = map(lambda x:x*6,self.ParseFrag(RawMag))
-        Eul = map(lambda x:x/100.0,self.ParseFrag(RawEul))
-        Qua = map(lambda x:round(x,4),self.ParseQua(RawQua))
-        return Acc,Gyr, Mag, Eul, Qua
-        
-    def CutFrame(self,package, length=2):
-        frame = [package[x:x + length] for x in xrange(len(package)) if x%length == 0]
-        return frame
+        g = a + self.ACC_LEN * 2
+        m = g + self.GYR_LEN * 2
+        e = m + self.MAG_LEN * 2
+        q = e + self.EUL_LEN * 2
+        p = q + self.QUA_LEN * 2
 
-    def MergeFrame(self,package):
-        return reduce(lambda x,y:x+y,package)
+        RawAcc = package[a + 2:a + self.ACC_LEN * 2]
+        RawGyr = package[g + 2:g + self.GYR_LEN * 2]
+        RawMag = package[m + 2:m + self.MAG_LEN * 2]
+        RawEul = package[e + 2:e + self.EUL_LEN * 2]
+        RawQua = package[q + 2:q + self.QUA_LEN * 2]
+        RawPre = package[p + 2:p + self.PRE_LEN * 2]
+        # print 'ACC:{},Gyr:{},MAG:{},EUL:{},QUA:{},Pre:{}'.format(RawAcc,
+        # RawGyr, RawMag, RawEul, RawQua,RawPre)
 
-    def ReverseFrame(self,frame,length):
-        return map(lambda x:self.MergeFrame(self.CutFrame(x)[::-1]), self.CutFrame(frame,length))
+        Acc = map(lambda x: round(x * self.ACC_UNIT, 4),
+                  self.ParseFrag(RawAcc))
+        Gyr = map(lambda x: round(x * self.GYR_UNIT, 4),
+                  self.ParseFrag(RawGyr))
+        Mag = map(lambda x: x * self.MAG_UNIT, self.ParseFrag(RawMag))
+        Eul = map(lambda x: x * self.EUL_UNIT, self.ParseFrag(RawEul))
+        Qua = map(lambda x: round(x, 4), self.ParseQua(RawQua))
+        return Acc, Gyr, Mag, Eul, Qua
 
-    def ParseQua(self,Qua):
-        a = self.ReverseFrame(Qua,8)
-        return map(self.convert_ieee754,a)
+    def CutFrame(self, package, length=2):
+        FrameArray = [package[x:x + length]
+                      for x in xrange(len(package)) if x % length == 0]
+        return FrameArray
 
-    def ParseFrag(self,Frag):
-        a = self.ReverseFrame(Frag,4)
-        return map(self.convert_complement,a)
+    def MergeFrame(self, package):
+        return reduce(lambda x, y: x + y, package)
+
+    def ReverseFrame(self, frame, length):
+        return map(lambda x: self.MergeFrame(self.CutFrame(x)[::-1]), self.CutFrame(frame, length))
+
+    def ParseQua(self, Qua):
+        a = self.ReverseFrame(Qua, 8)
+        return map(self.convert_ieee754, a)
+
+    def ParseFrag(self, Frag):
+        a = self.ReverseFrame(Frag, 4)
+        return map(self.convert_complement, a)
 
 
 if __name__ == "__main__":
@@ -140,11 +151,11 @@ if __name__ == "__main__":
     while not ORB.subscribe('IMU_State'):
         time.sleep(.5)
     while True:
-        Acc= ORB.subscribe('ACC')
-        Gyr= ORB.subscribe('GYR')
-        Mag= ORB.subscribe('MAG')
-        Eul= ORB.subscribe('EUL')
-        Qua= ORB.subscribe('QUA')
+        Acc = ORB.subscribe('ACC')
+        Gyr = ORB.subscribe('GYR')
+        Mag = ORB.subscribe('MAG')
+        Eul = ORB.subscribe('EUL')
+        Qua = ORB.subscribe('QUA')
         print 'ACC:{},GYR:{},MAG:{},EUL:{},QUA:{}'.format(Acc, Gyr, Mag, Eul, Qua)
         raw_input('Next')
     imu.join()

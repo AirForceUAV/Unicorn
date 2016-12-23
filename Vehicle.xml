@@ -1,13 +1,7 @@
 <?xml version='1.0'?>
 <vehicles ID="0">
-    <vehicle index="0" frame='HELI' FlightController='ACE_ONE' vehicle="copter-550">
-        <entry index="0" name="Cloud">
-            <description>Cloud param.</description>
-            <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
-            <param index="2" value="queue.airforceuav.com" unit="Domain/IP">MQTT IP Address</param>
-            <param index="3" value="1883" unit="No.">MQTT Port Number </param>
-        </entry>
-        <entry index="1" name="AIL">
+    <vehicle index="0" UAV="copter-550" Model='HELI' MainController='ACE_ONE'>
+        <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
             <param index="2" value="1018" unit="PWM">LOW AIL PWM </param>
@@ -16,7 +10,7 @@
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="2" name="ELE">
+        <entry index="1" name="ELE">
             <description>Elevator PWM.</description>
             <param index="1" value="2" unit="No.">Elevator Channel Number</param>
             <param index="2" value="1022" unit="PWM">LOW ELE PWM </param>
@@ -25,7 +19,7 @@
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="3" name="THR">
+        <entry index="2" name="THR">
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
             <param index="2" value="990" unit="PWM">LOW THR PWM </param>
@@ -34,7 +28,7 @@
             <param index="5" value="1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="20" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="4" name="RUD">
+        <entry index="3" name="RUD">
             <description>Rudder PWM.</description>
             <param index="1" value="4" unit="No.">Rudder Channel Number</param>
             <param index="2" value="882" unit="PWM">LOW RUD PWM </param>
@@ -43,6 +37,11 @@
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="15" unit="%">Variation Rate.</param>
         </entry>
+        <entry index="4" name="Mode">
+            <description>Flight Mode.</description>
+            <param index="1" value="6" unit="No.">Flight Mode Channel Number.</param>
+            <param index="2" value="1722" unit="PWM">Loiter mode PWM.</param>
+        </entry>
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
             <param index="1" value="5" unit="No.">Pitch Channel Number</param>
@@ -50,89 +49,59 @@
             <param index="3" value="1216" unit="PWM">MID</param>
             <param index="4" value="1504" unit="PWM">HIG</param>
         </entry>
-        <entry index="6" name="Mode">
-            <description>Flight Mode.</description>
-            <param index="1" value="6" unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="1722" unit="PWM">Loiter mode PWM.</param>
-        </entry>
-        <entry index="7" name="MCU">
+        <entry index="6" name="MCU">
             <description>MCU module.</description>
-            <param index="1" value="0" unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
+            <param index="1" value="-1" unit='bool'>MCU is open? 0:close 1:open  </param>
             <param index="2" value="/dev/ttyAMA0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="10" unit="times">ARQ times. </param>
         </entry>
-        <entry index="8" name="GPS">
+        <entry index="7" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="0" unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="1" value="-1" unit='bool'>GPS is open? 0:close 1:open </param>
             <param index="2" value="/dev/GPS" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="1000" unit="times">ARQ times. </param>
         </entry>
-        <entry index="9" name="compass">
+        <entry index="8" name="compass">
             <description>Compass_module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
+            <param index="1" value="-1" unit='bool'>Compass is open? 0:close 1:open </param>
             <param index="2" value="/dev/compass" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit="bool">Baudrate. </param>
-            <param index="4" value="100" unit="times">ARQ times. </param>
         </entry>
-        <entry index="10" name="Barometer">
+        <entry index="9" name="Barometer">
             <description>Barometer module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Barometer_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
-            <param index="3" value="9600" unit="bool">Baudrate. </param>
-            <param index="4" value="10" unit="times">ARQ times. </param>
+            <param index="1" value="-1" unit='bool'>Barometer is  open? 0:close 1:open </param>
+            <param index="2" value="1" unit="Device">bus</param>
+            <param index="3" value="0x77" unit="bool">i2c Address </param>
+        </entry>
+        <entry index="10" name="IMU">
+            <description>IMU Sensor.</description>
+            <param index="1" value="-1" unit="bool">IMU is open? 0:close 1:open </param>
+            <param index="2" value="/dev/IMU" unit="Device">Serial port name</param>
+            <param index="3" value="115200" unit="bool">Baudrate. </param>
         </entry>
         <entry index="11" name="Lidar">
             <description>Lidar module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Lidar module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB2" unit="Device">Serial port name</param>
+            <param index="1" value="-1" unit='bool'>Whether is Lidar module open? 0:close 1:open </param>
+            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
             <param index="3" value="1500" unit="mm">Vehicle Size. </param>
             <param index="4" value="3000" unit="mm">Safety Distance. </param>
         </entry>
-        <entry index="12" name="Gears">
+        <entry index="12" name="Cloud">
+            <description>Cloud param.</description>
+            <param index="1" value="1" unit='bool'>Cloud is open? 0:close 1:open</param>
+            <param index="2" value="queue.airforceuav.com" unit="Domain/IP">MQTT IP Address</param>
+            <param index="3" value="1883" unit="No.">MQTT Port Number </param>
+        </entry>
+        <entry index="13" name="Gears">
             <description>Vehicle Gears.</description>
-            <param index="1" value="1" unit="Gear"> 1:'L' 2:'M' 3:'H'</param>
-            <param index="2" value="15" unit="%">Gear 'L' rate. </param>
-            <param index="3" value="15" unit="%">Gear 'M' rate. </param>
-            <param index="4" value="20" unit="%">Gear 'H' rate. </param>
-        </entry>
-        <entry index="13" name="Movement Duration">
-            <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Movement Duration </param>
-        </entry>
-        <entry index="14" name="Brake Duration">
-            <description>Brake Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration.</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
-        </entry>
-        <entry index="15" name="Decision Duration">
-            <description>Decision Duration.</description>
-            <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
-            <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
-        </entry>
-        <entry index="16" name="LandingGear">
-            <description>LandingGear.</description>
-            <param index="1" value="0" unit="bool">Whether is LandingGear open? 0:close 1:open </param>
-            <param index="1" value="8" unit="No.">LandingGear Channel Number</param>
-            <param index="2" value="1000" unit="pwm">Deploy</param>
-            <param index="3" value="1900" unit="pwm">Retract.</param>
-        </entry>
-        <entry index="17" name="Degree">
-            <description>Ignore Degree.</description>
-            <param index="1" value="10" unit="degree">Guided.</param>
-            <param index="2" value="10" unit="degree">Avoidance.</param>
+            <param index="1" value="1" unit="index"> 1:'L' 2:'M' 3:'H'</param>
+            <param index="2" value="15" unit="%">Gear 'L' :PWM rate. </param>
+            <param index="3" value="15" unit="%">Gear 'M' :PWM rate. </param>
+            <param index="4" value="20" unit="%">Gear 'H' :PWM rate. </param>
         </entry>
     </vehicle>
-    <vehicle index="1" frame='MUL' FlightController='NAZA-m v2' vehicle="HEX6">
-        <entry index="0" name="Cloud">
-            <description>Cloud param.</description>
-            <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
-            <param index="2" value="queue.airforceuav.com" unit="Domain/IP">MQTT IP Adress</param>
-            <param index="3" value="1883" unit="No.">MATT Port Number </param>
-        </entry>
-        <entry index="1" name="AIL">
+    <vehicle index="1" UAV="HEX6" Model='Multi' MainController='NAZA-m v2'>
+        <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
             <param index="2" value="1004" unit="PWM">LOW AIL PWM </param>
@@ -141,7 +110,7 @@
             <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="2" name="ELE">
+        <entry index="1" name="ELE">
             <description>Elevator PWM.</description>
             <param index="1" value="2" unit="No.">Elevator Channel Number</param>
             <param index="2" value="1015" unit="PWM">LOW ELE PWM </param>
@@ -150,7 +119,7 @@
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="3" name="THR">
+        <entry index="2" name="THR">
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
             <param index="2" value="1015" unit="PWM">LOW THR PWM </param>
@@ -159,220 +128,76 @@
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="4" name="RUD">
+        <entry index="3" name="RUD">
             <description>Rudder PWM.</description>
             <param index="1" value="4" unit="No.">Rudder Channel Number</param>
             <param index="2" value="1015" unit="PWM">LOW RUD PWM </param>
             <param index="3" value="1405" unit="PWM">MID RUD PWM </param>
             <param index="4" value="1791" unit="PWM">HIG RUD PWM </param>
             <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="30" unit="%">Variation Rate.</param>
+            <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
-        <entry index="5" name="PIT">
-            <description>Pitch PWM.</description>
-            <param index="1" value="6" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="1015" unit="PWM">Low</param>
-            <param index="3" value="1216" unit="PWM">MID</param>
-            <param index="4" value="1504" unit="PWM">HIG</param>
-        </entry>
-        <entry index="6" name="Mode">
+        <entry index="4" name="Mode">
             <description>Flight Mode.</description>
             <param index="1" value="5" unit="No.">Flight Mode Channel Number.</param>
             <param index="2" value="1708" unit="PWM">Loiter mode PWM.</param>
         </entry>
-        <entry index="7" name="MCU">
-            <description>MCU module.</description>
-            <param index="1" value="1" unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
-            <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="10" unit="times">ARQ times. </param>
-        </entry>
-        <entry index="8" name="GPS">
-            <description>GPS_module.</description>
-            <param index="1" value="0" unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/GPS" unit="Device">Serial port name</param>
-            <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="1000" unit="times">ARQ times. </param>
-        </entry>
-        <entry index="9" name="compass">
-            <description>Compass_module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
-            <param index="2" value="/dev/compass" unit="Device">Serial port name</param>
-            <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="100" unit="times">ARQ times. </param>
-        </entry>
-        <entry index="10" name="Barometer">
-            <description>Barometer module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Barometer_module open? 0:close 1:open </param>
-            <param index="2" value="1" unit="bus">Serial port name</param>
-            <param index="3" value="0x77" unit='i2c'>Baudrate. </param>
-            <param index="4" value="100" unit="times">ARQ times. </param>
-        </entry>
-        <entry index="11" name="Lidar">
-            <description>Lidar module.</description>
-            <param index="1" value="0" unit="bool">Whether is Lidar module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB2" unit="Device">Serial port name</param>
-            <param index="3" value="2000" unit="mm">Vehicle Size. </param>
-            <param index="4" value="3000" unit="mm">Safety Distance. </param>
-        </entry>
-        <entry index="12" name="Gears">
-            <description>Vehicle Gears.</description>
-            <param index="1" value="1" unit="Gear"> 1:'L', 2:'M', 3:'H'</param>
-            <param index="2" value="15" unit="%">Gear 'L' rate</param>
-            <param index="3" value="20" unit="%">Gear 'M' rate. </param>
-            <param index="4" value="25" unit="%">Gear 'H' rate. </param>
-        </entry>
-        <entry index="13" name="Movement Duration">
-            <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Movement Duration.</param>
-        </entry>
-        <entry index="14" name="Brake Duration">
-            <description>Brake Duration.</description>
-            <param index="1" value="2" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="2" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="2" unit="seconds">Gear 'H' Duration.</param>
-        </entry>
-        <entry index="15" name="Decision Duration">
-            <description>Decision Duration.</description>
-            <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
-            <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
-        </entry>]                                                                                                                                                                                                                                                                
-        <entry index="16" name="LandingGear">
-            <description>LandingGear.</description>
-            <param index="1" value="0" unit="bool">Whether is LandingGear open? 0:close 1:open </param>
-            <param index="1" value="7" unit="No.">LandingGear Channel Number</param>
-            <param index="2" value="1000" unit="pwm">Deploy</param>
-            <param index="3" value="1900" unit="pwm">Retract.</param>
-        </entry>
-        <entry index="17" name="Degree">
-            <description>Ignore Degree.</description>
-            <param index="1" value="10" unit="degree">Guided.</param>
-            <param index="2" value="10" unit="degree">Avoidance.</param>
-        </entry>
-    </vehicle>
-    <vehicle index="2" frame='MUL' FlightController='pixhawk' vehicle="HEX4">
-        <entry index="0" name="Cloud">
-            <description>Cloud param.</description>
-            <param index="1" value="1" unit='bool'>Whether is cloud module? 0:close 1:open</param>
-            <param index="2" value="queue.airforceuav.com" unit="Domain/IP">MQTT IP Adress</param>
-            <param index="3" value="1883" unit="No.">MATT Port Number </param>
-        </entry>
-        <entry index="1" name="AIL">
-            <description>Aileron PWM.</description>
-            <param index="1" value="1" unit="No.">Aileron Channel Number</param>
-            <param index="2" value="723" unit="PWM">LOW AIL PWM </param>
-            <param index="3" value="956" unit="PWM">MID AIL PWM </param>
-            <param index="4" value="1183" unit="PWM">HIG AIL PWM </param>
-            <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10" unit="%">Variation Rate.</param>
-        </entry>
-        <entry index="2" name="ELE">
-            <description>Elevator PWM.</description>
-            <param index="1" value="2" unit="No.">Elevator Channel Number</param>
-            <param index="2" value="723" unit="PWM">LOW ELE PWM </param>
-            <param index="3" value="956" unit="PWM">MID ELE PWM </param>
-            <param index="4" value="1183" unit="PWM">HIG ELE PWM </param>
-            <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10" unit="%">Variation Rate.</param>
-        </entry>
-        <entry index="3" name="THR">
-            <description>Throttle PWM.</description>
-            <param index="1" value="3" unit="No.">Throttle Channel Number</param>
-            <param index="2" value="723" unit="PWM">LOW THR PWM </param>
-            <param index="3" value="956" unit="PWM">MID THR PWM </param>
-            <param index="4" value="1183" unit="PWM">HIG THR PWM </param>
-            <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10" unit="%">Variation Rate.</param>
-        </entry>
-        <entry index="4" name="RUD">
-            <description>Rudder PWM.</description>
-            <param index="1" value="4" unit="No.">Rudder Channel Number</param>
-            <param index="2" value="723" unit="PWM">LOW RUD PWM </param>
-            <param index="3" value="956" unit="PWM">MID RUD PWM </param>
-            <param index="4" value="1183" unit="PWM">HIG RUD PWM </param>
-            <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10" unit="%">Variation Rate.</param>
-        </entry>
         <entry index="5" name="PIT">
             <description>Pitch PWM.</description>
-            <param index="1" value="5" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="1015" unit="PWM">Low</param>
-            <param index="3" value="1216" unit="PWM">MID</param>
-            <param index="4" value="1504" unit="PWM">HIG</param>
+            <param index="1" value="6" unit="No.">Pitch Channel Number</param>
+            <param index="2" value="1015" unit="PWM">Low PWM</param>
+            <param index="3" value="1216" unit="PWM">MID PWM</param>
+            <param index="4" value="1504" unit="PWM">HIG PWM</param>
         </entry>
-        <entry index="6" name="Mode">
-            <description>Flight Mode.</description>
-            <param index="1" value="5" unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="954" unit="PWM">Loiter mode PWM.</param>
-        </entry>
-        <entry index="7" name="MCU">
+        <entry index="6" name="MCU">
             <description>MCU module.</description>
-            <param index="1" value="0" unit='bool'>Whether is MCU_module open? 0:close 1:open  </param>
+            <param index="1" value="-1" unit='bool'>MCU is open? 0:close 1:open  </param>
             <param index="2" value="/dev/ttyAMA0" unit="Device">Serial port name</param>
             <param index="3" value="57600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="10" unit="times">ARQ times. </param>
         </entry>
-        <entry index="8" name="GPS">
+        <entry index="7" name="GPS">
             <description>GPS_module.</description>
-            <param index="1" value="1" unit='bool'>Whether is GPS_module open? 0:close 1:open </param>
+            <param index="1" value="-1" unit='bool'>GPS is open? 0:close 1:open </param>
             <param index="2" value="/dev/GPS" unit="Device">Serial port name</param>
             <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="1000" unit="times">ARQ times. </param>
         </entry>
-        <entry index="9" name="compass">
+        <entry index="8" name="compass">
             <description>Compass_module.</description>
-            <param index="1" value="1" unit='bool'>Whether is Compass_module open? 0:close 1:open </param>
+            <param index="1" value="-1" unit='bool'>Compass is open? 0:close 1:open </param>
             <param index="2" value="/dev/compass" unit="Device">Serial port name</param>
-            <param index="3" value="9600" unit='Baudrate'>Baudrate. </param>
-            <param index="4" value="100" unit="times">ARQ times. </param>
+            <param index="3" value="9600" unit="bool">Baudrate. </param>
         </entry>
-        <entry index="10" name="Barometer">
+        <entry index="9" name="Barometer">
             <description>Barometer module.</description>
-            <param index="1" value="0" unit='bool'>Whether is Barometer_module open? 0:close 1:open </param>
-            <param index="2" value="1" unit="bus">Serial port name</param>
-            <param index="3" value="0x77" unit='i2c'>Baudrate. </param>
-            <param index="4" value="10" unit="times">ARQ times. </param>
+            <param index="1" value="-1" unit='bool'>Barometer is  open? 0:close 1:open </param>
+            <param index="2" value="1" unit="Device">bus</param>
+            <param index="3" value="0x77" unit="bool">i2c Address </param>
+        </entry>
+        <entry index="10" name="IMU">
+            <description>IMU Sensor.</description>
+            <param index="1" value="-1" unit="bool">IMU is open? 0:close 1:open </param>
+            <param index="2" value="/dev/IMU" unit="Device">Serial port name</param>
+            <param index="3" value="115200" unit="bool">Baudrate. </param>
         </entry>
         <entry index="11" name="Lidar">
             <description>Lidar module.</description>
-            <param index="1" value="0" unit="bool">Whether is Lidar module open? 0:close 1:open </param>
-            <param index="2" value="/dev/ttyUSB0" unit="Device">Serial port name</param>
-            <param index="3" value="2000" unit="mm">Vehicle Size. </param>
+            <param index="1" value="-1" unit='bool'>Whether is Lidar module open? 0:close 1:open </param>
+            <param index="2" value="/dev/ttyUSB2" unit="Device">Serial port name</param>
+            <param index="3" value="1500" unit="mm">Vehicle Size. </param>
             <param index="4" value="3000" unit="mm">Safety Distance. </param>
         </entry>
-        <entry index="12" name="Gears">
+        <entry index="12" name="Cloud">
+            <description>Cloud param.</description>
+            <param index="1" value="1" unit='bool'>Cloud is open? 0:close 1:open</param>
+            <param index="2" value="queue.airforceuav.com" unit="Domain/IP">MQTT IP Address</param>
+            <param index="3" value="1883" unit="No.">MQTT Port Number </param>
+        </entry>
+        <entry index="13" name="Gears">
             <description>Vehicle Gears.</description>
-            <param index="1" value="1" unit="Gear"> 1:'L', 2:'M', 3:'H'</param>
-            <param index="2" value="10" unit="%">Gear 'L' rate</param>
-            <param index="3" value="15" unit="%">Gear 'M' rate. </param>
-            <param index="4" value="20" unit="%">Gear 'H' rate. </param>
-        </entry>
-        <entry index="13" name="Movement Duration">
-            <description>Movement Duration.</description>
-            <param index="1" value="1" unit="seconds">Movement Duration.</param>
-        </entry>
-        <entry index="14" name="Brake Duration">
-            <description>Brake Duration.</description>
-            <param index="1" value="1" unit="seconds">Gear 'L' Duration</param>
-            <param index="2" value="1" unit="seconds">Gear 'M' Duration.</param>
-            <param index="3" value="1" unit="seconds">Gear 'H' Duration.</param>
-        </entry>
-        <entry index="15" name="Decision Duration">
-            <description>Decision Duration.</description>
-            <param index="4" value="5" unit="seconds">Checktime in Navigation .</param>
-            <param index="5" value="1" unit="seconds">Checktime in Avoidance  .</param>
-        </entry>]                                                                                                                                                                                                                                                                
-        <entry index="16" name="LandingGear">
-            <description>LandingGear.</description>
-            <param index="1" value="0" unit="bool">Whether is LandingGear open? 0:close 1:open </param>
-            <param index="1" value="7" unit="No.">LandingGear Channel Number</param>
-            <param index="2" value="1000" unit="pwm">Deploy</param>
-            <param index="3" value="1900" unit="pwm">Retract.</param>
-        </entry>
-        <entry index="17" name="Degree">
-            <description>Ignore Degree.</description>
-            <param index="1" value="10" unit="degree">Guided.</param>
-            <param index="2" value="10" unit="degree">Avoidance.</param>
+            <param index="1" value="1" unit="index"> 1:'L' 2:'M' 3:'H'</param>
+            <param index="2" value="15" unit="%">Gear 'L' :PWM rate. </param>
+            <param index="3" value="15" unit="%">Gear 'M' :PWM rate. </param>
+            <param index="4" value="20" unit="%">Gear 'H' :PWM rate. </param>
         </entry>
     </vehicle>
 </vehicles>

@@ -12,14 +12,13 @@ import sys
 def open_serial(portname, baudrate, timeout=0.5):
     while True:
         try:
-            print "Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
+            print ">>> Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
             com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
         except serial.SerialException:
             info = sys.exc_info()
             print "{0}:{1}".format(*info)
             time.sleep(1.0)
-            continue
 
 
 def element(file_name):
@@ -42,10 +41,10 @@ def pressure2Alt(hpa):
     return round((1 - tmp**0.190284) * 145366.45 * 0.3048, 2)
 
 
-def ParseFrame(package, length=2):
-    frame = [int(package[x:x + length], 16)
-             for x in xrange(len(package)) if x%length == 0]
-    return frame
+def CutFrame(package, length=2):
+    FrameArray = [int(package[x:x + length], 16)
+                  for x in xrange(len(package)) if x % length == 0]
+    return FrameArray
 
 
 def get_bearing(aLocation1, aLocation2):
@@ -152,12 +151,6 @@ def dec2hex(int_10):
     """
     int_16 = format(hex(int_10)[2:], '0>4')
     return int_16
-
-
-def list2list(list1, list2):
-    if len(list1) == len(list2):
-        for i in xrange(len(list2)):
-            list1[i] = list2[i]
 
 
 def cos(angle):

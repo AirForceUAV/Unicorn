@@ -7,8 +7,8 @@ from vehicle import Vehicle
 
 
 def send_Log(sock, ORB):
-    message = ORB.log_proto()
-    sock.send(message.SerializeToString())
+    message = ORB.dataflash()
+    sock.send(message)
     # message = ORB.log_json()
     # sock.send(message)
 
@@ -21,6 +21,8 @@ if __name__ == '__main__':
     mcu = None
     Watcher()
     ORB = uORB()
+    print ORB._module
+
     # instancce of MCU module object
     if ORB.has_module('MCU'):
         from MCU_module import MCU
@@ -51,6 +53,14 @@ if __name__ == '__main__':
         while not ORB.subscribe('Baro_State'):
             time.sleep(.5)
 
+    if ORB.has_module('IMU'):
+        from IMU import IMU
+        imu = IMU(ORB)
+
+        imu.start()
+        while not ORB.subscribe('IMU_State'):
+            time.sleep(.5)
+
     vehicle = Vehicle(mcu, ORB)
 
     if ORB.has_module('Lidar'):
@@ -58,18 +68,18 @@ if __name__ == '__main__':
         lidar = Lidar(vehicle)
 
     if ORB.has_module('Cloud'):
-        print('Connecting to Cloud')
+        print('>>> Connecting to Cloud')
         from cloud_module import open_sock, Receiver, Executor
 
         sock = open_sock()
         work_queue = Queue.Queue()
 
-        print('Start Receiver Thread')
+        print('>>> Start Receiver Thread')
         receiver = Receiver(work_queue, sock)
         receiver.daemon = True
         receiver.start()
 
-        print('Start Executor Thread')
+        print('>>> Start Executor Thread')
         executor = Executor(work_queue, vehicle)
         executor.daemon = True
         executor.start()
@@ -80,7 +90,8 @@ if __name__ == '__main__':
         #     message = ORB.dataflash()
         #     sock.send(message)
         #     time.sleep(1)
-    scheduler.start()
-    receiver.join()
-    executor.join()
-    work_queue.join()
+        scheduler.start()
+        receiver.join()
+        executor.join()
+        work_queue.join()
+    print '>>> completed'

@@ -16,27 +16,38 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-        self._module = {'Compass': config.get_compass()[0],
-                        'GPS': config.get_GPS()[0],
-                        'Baro': config.get_Baro()[0],
-                        'MCU': config.get_MCU()[0],
-                        'Lidar': config.get_lidar()[0],
-                        'Cloud': config.get_cloud()[0],
-                        'UAV': config.get_vehicle(),
-                        'Type': config.get_frame(),
-                        'FC': config.get_FC()
-                        }
+
+        model = ['UAV', 'Model', 'MainController']
+        self._model = {}
+        for m in model:
+            self._model[m] = config._config[m]
+
+        module = ['MCU', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
+        self._module = {}
+        for m in module:
+            self._module[m] = config._config[m][0]
+
+        channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode']
+        if self._model['Model'] == 'HELI':
+            channel += ['PIT']
+        self._channel = {}
+        for c in channel:
+            self._channel[c] = config._config[c]
+
+        Gear = config._config['Gear']
+        self._Gear = Gear[1:]
+
         self._HAL = {'Compass_State': False, 'Attitude': None,
                      'Baro_State': False, 'Pressure': None,
-                     'Temperature': None,
+                     'Temperature': None, 'Gear': Gear[0],
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
                      'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
                      'RPM': 1600, 'ChannelsOutput': [0] * 8,
-                     'ChannelsInput': [0] * 8, 'LoiterPWM': [0] * 8,
-                     'InitAltitude': None,'IMU_State':False,
-                     'ACC':None,'GYR':None,'MAG':None,'EUL':None,
-                     'QUA':None}
+                     'ChannelsInput': [0] * 8, 'LoiterPWM': self.InitChannels(),
+                     'InitAltitude': None, 'IMU_State': False,
+                     'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
+                     'QUA': None}
         self._sensor = FlightLog.sensors()
 
     def run(self):
@@ -51,6 +62,9 @@ class uORB(threading.Thread):
     def state(self, module):
         return self._HAL[module + '_State']
 
+    def channel(self, channel):
+        return self._channel[channel]
+
     def has_module(self, module):
         return True if self._module[module] > 0 else False
 
@@ -60,13 +74,19 @@ class uORB(threading.Thread):
 
     def close(self, *module):
         for x in module:
-            self._module[module] = -1
+            self._module[x] = -1
+
+    def InitChannels(self):
+        channels = [0] * 8
+        for ch, ch_val in self._channel.iteritems():
+            channels[ch_val[0]] = ch_val[2]
+        return channels
 
     def distance_to_target(self):
         location = self._HAL['Location']
         target = self._HAL['Target']
         if location is None or target is None:
-            return -1
+            return
         else:
             distance = get_distance_metres(location, target)
             return round(distance, 2)
@@ -75,16 +95,16 @@ class uORB(threading.Thread):
         location = self._HAL['Location']
         target = self._HAL['HomeLocation']
         if location is None or target is None:
-            return -1
+            return
         else:
             distance = get_distance_metres(location, target)
             return round(distance, 2)
 
     def json_points(self):
-        points = self._HAL['Waypoint']
         ID = self._HAL['WaypointID']
         if ID is -1:
             return ""
+        points = self._HAL['Waypoint']
         result = ['+'.join(map(str, p)) for p in points]
         return ','.join(result)
 
@@ -99,7 +119,7 @@ class uORB(threading.Thread):
 
     def list2str(self, rawlist):
         if rawlist is None:
-            return None
+            return ""
         else:
             return ','.join(map(str, rawlist))
 
@@ -183,6 +203,7 @@ class uORB(threading.Thread):
         self.update_channelsInput()
         self.update_channelsOutput()
         self.update_loiterPWM()
+        # return self._sensor.SerializeToString()
         return self._sensor
 
     def log_json(self):
@@ -202,7 +223,7 @@ class uORB(threading.Thread):
     def save_log(self):
         file_path = self.build_log()
         # print file_path
-        with open(file_path, 'w+') as f:
+        with open(file_path, 'a+') as f:
             while True:
                 f.write(self.log_proto().SerializeToString() + '##')
                 time.sleep(.5)
@@ -221,18 +242,23 @@ if __name__ == "__main__":
     from library import Watcher
     ORB = uORB()
     # print ORB.build_log()
-    ORB.open("Compass")
+    # ORB.open("Compass")
     ORB._HAL = {'Compass_State': True, 'Attitude': [-0.32, 0.01, 66],
                 'Baro_State': True, 'Pressure': 1013.25,
-                'Temperature': 26, 'ChannelsInput': [10] * 8,
+                'Temperature': 26, 'ChannelsInput': [1000] * 8,
                 'GPS_State': True, 'Location': [36.11127966305683, 116.2222, 100],
-                'NumStars': 16, 'ChannelsOutput': [10] * 8,
-                'HomeLocation': [36.1111, 116.2222],
+                'NumStars': 16, 'ChannelsOutput': [1000] * 8,
+                'HomeLocation': [36.1111, 116.2222], 'Gear': 1,
                 'Target': [36.1111, 116.22286716842115],
+                'LoiterPWM': ORB.InitChannels(),
                 'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
-                'RPM': 1600, 'InitAltitude': -80.81,
-                'LoiterPWM': [10] * 8}
-    print json.dumps(ORB._module, indent=1)
+                'RPM': 1600, 'InitAltitude': -80.81, 'IMU_State': True,
+                'ACC': [0.1, 0.2, 0.3], 'GYR': [0.1, 0.2, 0.3],
+                'MAG': [0.1, 0.2, 0.3], 'EUL': [0.1, 0.2, 0.3], 'QUA': [0.1, 0.2, 0.3, 0.4]}
+    print ORB._model
+    print ORB._module
+    # print ORB._HAL
+    # print json.dumps(ORB._module, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
     wp.download(origin, 0)

@@ -3,7 +3,6 @@
 
 import pynmea2
 import time
-from config import config
 from library import open_serial
 from library import Singleton
 import threading
@@ -16,8 +15,7 @@ class GPS(threading.Thread):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
         self._log("Connecting to Compass Module")
-        con = config.get_GPS()
-        self.ser = open_serial(con[1], con[2])
+        self.ser = open_serial('/dev/GPS', 9600)
 
     def run(self):
         print "Initializing GPS Module"
