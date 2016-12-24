@@ -78,6 +78,7 @@ class Attribute(object):
         return PIT_PWM
 
     def set_channels_mid(self):
+        a = time.time()
         self._log('Catching Loiter PWM...')
         if not self.ORB.has_module('MCU'):
             print 'Warning:MCU is closed'
@@ -100,6 +101,8 @@ class Attribute(object):
             self.Aux1[2] = mid[self.Aux1[0]]
             self.Aux2[2] = mid[self.Aux2[0]]
         self.Switch[2] = mid[self.Switch[0]]
+        b = time.time()
+        print b - a
 
     def set_gear(self, gear):
         if int(gear) in [1, 2, 3]:
