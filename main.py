@@ -38,7 +38,7 @@ if __name__ == '__main__':
             time.sleep(.5)
 
     if ORB.has_module('GPS'):
-        from GPS_module import GPS                 # instancce of GPS module object
+        from GPS_module import GPS    # instancce of GPS module object
         gps = GPS(ORB)
 
         gps.start()

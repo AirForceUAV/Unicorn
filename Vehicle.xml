@@ -114,27 +114,27 @@
         <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
-            <param index="2" value="1004" unit="PWM">LOW AIL PWM </param>
-            <param index="3" value="1402" unit="PWM">MID AIL PWM </param>
-            <param index="4" value="1771" unit="PWM">HIG AIL PWM </param>
+            <param index="2" value="1013" unit="PWM">LOW AIL PWM </param>
+            <param index="3" value="1400" unit="PWM">MID AIL PWM </param>
+            <param index="4" value="1789" unit="PWM">HIG AIL PWM </param>
             <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="1" name="ELE">
             <description>Elevator PWM.</description>
             <param index="1" value="2" unit="No.">Elevator Channel Number</param>
-            <param index="2" value="1015" unit="PWM">LOW ELE PWM </param>
+            <param index="2" value="1013" unit="PWM">LOW ELE PWM </param>
             <param index="3" value="1414" unit="PWM">MID ELE PWM </param>
-            <param index="4" value="1792" unit="PWM">HIG ELE PWM </param>
+            <param index="4" value="1789" unit="PWM">HIG ELE PWM </param>
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="2" name="THR">
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
-            <param index="2" value="1015" unit="PWM">LOW THR PWM </param>
-            <param index="3" value="1400" unit="PWM">MID THR PWM </param>
-            <param index="4" value="1792" unit="PWM">HIG THR PWM </param>
+            <param index="2" value="1013" unit="PWM">LOW THR PWM </param>
+            <param index="3" value="1402" unit="PWM">MID THR PWM </param>
+            <param index="4" value="1788" unit="PWM">HIG THR PWM </param>
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
@@ -150,22 +150,22 @@
         <entry index="4" name="Mode">
             <description>Flight Mode.</description>
             <param index="1" value="5" unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="1708" unit="PWM">Loiter mode PWM.</param>
+            <param index="2" value="1706" unit="PWM">Loiter mode PWM.</param>
         </entry>
         <entry index="5" name="AUX1">
             <description>Pitch PWM.</description>
             <param index="1" value="6" unit="No.">AUX1</param>
-            <param index="2" value="1001" unit="PWM">AUX1</param>
+            <param index="2" value="1788" unit="PWM">AUX1</param>
         </entry>
         <entry index="6" name="AUX2">
             <description>Gyrometre Rate.</description>
             <param index="1" value="7" unit="No.">Rate Channel Number</param>
-            <param index="2" value="0" unit="PWM">Lock Tail PWM</param>
+            <param index="2" value="1788" unit="PWM">Lock Tail PWM</param>
         </entry>
         <entry index="7" name="Switch">
             <description>Switch between Radio and GCS.</description>
             <param index="1" value="8" unit="No.">Switch Channel Number</param>
-            <param index="2" value="1405" unit="PWM">GCS switch PWM</param>
+            <param index="2" value="1400" unit="PWM">GCS switch PWM</param>
         </entry>
         <entry index="8" name="MCU">
             <description>MCU module.</description>

@@ -35,9 +35,9 @@ class SBUSReceiver:
         self.sbusBuff = bytearray(1)  # single byte used for sync
         self.rawFrame = ''
         self.sbusFrame = bytearray(25)  # single SBUS Frame
-
+        # RC Channels
         self.sbusChannels = array.array(
-            'H', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])  # RC Channels
+            'H', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         self.isSync = False
         self.startByteFound = False
         self.failSafeStatus = self.SBUS_SIGNAL_FAILSAFE
@@ -46,7 +46,9 @@ class SBUSReceiver:
         while True:
             try:
                 com = serial.Serial(port=portname, baudrate=100000,
-                                    parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_TWO, bytesize=serial.EIGHTBITS, timeout=1)
+                                    parity=serial.PARITY_EVEN,
+                                    stopbits=serial.STOPBITS_TWO,
+                                    bytesize=serial.EIGHTBITS, timeout=1)
                 return com
             except serial.SerialException:
                 info = sys.exc_info()
@@ -88,13 +90,15 @@ class SBUSReceiver:
     def get_rx_channels(self):
         """
         Used to retrieve the last SBUS channels values reading
-        :return:  an array of 18 unsigned short elements containing 16 standard channel values + 2 digitals (ch 17 and 18)
+        :return:  an array of 18 unsigned short elements containing 16
+        standard channel values + 2 digitals (ch 17 and 18)
         """
         return self.sbusChannels
 
     def get_rx_channel(self, num_ch):
         """
-        Used to retrieve the last SBUS channel value reading for a specific channel
+        Used to retrieve the last SBUS channel value reading for
+        a specific channel
         :param: num_ch: the channel which to retrieve the value for
         :return:  a short value containing
         """
@@ -110,7 +114,8 @@ class SBUSReceiver:
     def get_rx_report(self):
         """
         Used to retrieve some stats about the frames decoding
-        :return:  a dictionary containg three information ('Valid Frames','Lost Frames', 'Resync Events')
+        :return:  a dictionary containg three information
+        ('Valid Frames','Lost Frames', 'Resync Events')
         """
 
         rep = {}
@@ -171,7 +176,7 @@ if __name__ == '__main__':
 
     sbus = SBUSReceiver()
     while True:
-        self.get_sbusFrame()
-        self.decode_frame()
+        sbus.get_sbusFrame()
+        sbus.decode_frame()
         print 'channels', sbus.get_rx_channels()
         raw_input('next')

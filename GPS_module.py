@@ -14,18 +14,18 @@ class GPS(threading.Thread):
     def __init__(self, ORB):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
-        print ">>> Connecting to Compass Module")
-        self.ser=open_serial('/dev/GPS', 9600)
+        print ">>> Connecting to Compass Module"
+        self.ser = open_serial('/dev/GPS', 9600)
 
     def run(self):
         print ">>> Initializing GPS Module"
         while True:
-            location=self.parseGPS()
+            location = self.parseGPS()
             if location is not None:
-                dic={'GPS_State': True, 'Location': self.get_location(
+                dic = {'GPS_State': True, 'Location': self.get_location(
                     location), 'NumStars': self.get_num_stars(location)}
             else:
-                dic={'GPS_State': False, 'NumStars': 0}
+                dic = {'GPS_State': False, 'NumStars': 0}
             self.update(dic)
 
     def update(self, dictories):
@@ -33,13 +33,13 @@ class GPS(threading.Thread):
             self.ORB.publish(k, v)
 
     def parseGPS(self):
-        times=0
+        times = 0
         self.ser.flushInput()
         while times < 200:
             times += 1
-            line=self.ser.readline()
+            line = self.ser.readline()
             if line.find('GNGGA') != -1:
-                msg=pynmea2.parse(line)
+                msg = pynmea2.parse(line)
                 # return msg
                 if msg.altitude is not None:
                     return msg
@@ -58,8 +58,8 @@ class GPS(threading.Thread):
 if __name__ == "__main__":
     from library import Watcher
     from uORB import uORB
-    ORB=uORB()
-    gps=GPS(ORB)
+    ORB = uORB()
+    gps = GPS(ORB)
     Watcher()
     gps.start()
     while not ORB.subscribe('GPS_State'):

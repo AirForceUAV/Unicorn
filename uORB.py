@@ -36,10 +36,10 @@ class uORB(threading.Thread):
         for c in channel:
             self._channel[c] = config._config[c]
 
-        ChannelSpec = [0] * 8
-        for k, v in self._channel.iteritems():
-            ChannelSpec[v[0]] = k
-        print ChannelSpec
+        # ChannelSpec = [0] * 8
+        # for k, v in self._channel.iteritems():
+        #     ChannelSpec[v[0]] = k
+        # print ChannelSpec
 
         Gear = config._config['Gear']
         self._Gear = Gear[1:]

@@ -317,7 +317,8 @@ if __name__ == "__main__":
     mcu = None
     Watcher()
     ORB = uORB()
-    ORB.open('MCU','Compass')
+    ORB.open('MCU', 'Compass', 'GPS')
+    ORB.close('GPS')
     # instancce of MCU module object
     if ORB.has_module('MCU'):
         from MCU_module import MCU
@@ -361,7 +362,7 @@ if __name__ == "__main__":
     # ORB.start()
     vehicle = Vehicle(mcu, ORB)
     vehicle.arm()
-    # vehicle.set_channels_mid()
+    vehicle.set_channels_mid()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
     vehicle.yaw_left_brake()
@@ -373,9 +374,9 @@ if __name__ == "__main__":
     vehicle.up_brake()
     vehicle.down_brake()
     # vehicle.yaw_left()
-    time.sleep(1)
+    # time.sleep(1)
     # vehicle.yaw_right()
-    time.sleep(1)
+    # time.sleep(1)
     # vehicle.forward()
     # vehicle.control_FRU(AIL=1, ELE=1)
     # time.sleep(1)
@@ -388,5 +389,5 @@ if __name__ == "__main__":
     # print ORB.subscribe('Waypoint')
     # vehicle.Auto()
     # vehicle.Guided()
-    # vehicle.disarm()
+    vehicle.disarm()
     # print vehicle.Phase()
