@@ -16,7 +16,7 @@ def open_sock():
         sock.connect(server_address)
         return sock
     except socket.error as msg:
-        print ">>{}:{}".format(sys.stderr, msg)
+        print "{}:{}".format(sys.stderr, msg)
         sys.exit(1)
 
 
@@ -45,9 +45,6 @@ class Receiver(threading.Thread):
                 # CancelWatcher.Cancel = True
                 self.work_queue.put(data)
 
-    def _log(self, msg):
-        print msg
-
 
 class Executor(threading.Thread):
 
@@ -60,16 +57,13 @@ class Executor(threading.Thread):
         while True:
             command = self.work_queue.get()
             command = "self." + command
-            self._log('Execute command {}'.format(command))
+            print 'Execute command {}'.format(command)
             try:
                 eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
-
-    def _log(self, msg):
-        print msg
 
 
 def test_send(sock):

@@ -67,6 +67,8 @@ if __name__ == '__main__':
         from lidar_module import Lidar
         lidar = Lidar(vehicle)
 
+    # ORB.start()
+
     if ORB.has_module('Cloud'):
         print('>>> Connecting to Cloud')
         from cloud_module import open_sock, Receiver, Executor
@@ -94,4 +96,5 @@ if __name__ == '__main__':
         receiver.join()
         executor.join()
         work_queue.join()
+    # ORB.join()
     print '>>> completed'

@@ -27,12 +27,19 @@ class uORB(threading.Thread):
         for m in module:
             self._module[m] = config._config[m][0]
 
-        channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode']
+        channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode', 'Switch']
         if self._model['Model'] == 'HELI':
-            channel += ['PIT']
+            channel += ['Rate', 'PIT']
+        else:
+            channel += ['Aux1', 'Aux2']
         self._channel = {}
         for c in channel:
             self._channel[c] = config._config[c]
+
+        ChannelSpec = [0] * 8
+        for k, v in self._channel.iteritems():
+            ChannelSpec[v[0]] = k
+        print ChannelSpec
 
         Gear = config._config['Gear']
         self._Gear = Gear[1:]
@@ -242,7 +249,7 @@ if __name__ == "__main__":
     from library import Watcher
     ORB = uORB()
     # print ORB.build_log()
-    # ORB.open("Compass")
+    # ORB.open("MCU")
     ORB._HAL = {'Compass_State': True, 'Attitude': [-0.32, 0.01, 66],
                 'Baro_State': True, 'Pressure': 1013.25,
                 'Temperature': 26, 'ChannelsInput': [1000] * 8,
@@ -257,13 +264,13 @@ if __name__ == "__main__":
                 'MAG': [0.1, 0.2, 0.3], 'EUL': [0.1, 0.2, 0.3], 'QUA': [0.1, 0.2, 0.3, 0.4]}
     print ORB._model
     print ORB._module
-    # print ORB._HAL
+    print ORB._HAL['LoiterPWM']
     # print json.dumps(ORB._module, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
     wp.download(origin, 0)
     # print ORB._HAL
-    print ORB.dataflash()
+    # print ORB.dataflash()
     # Watcher()
     # ORB.start()
     # ORB.join()

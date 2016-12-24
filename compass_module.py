@@ -12,7 +12,7 @@ class Compass(threading.Thread):
 
     def __init__(self, ORB):
         super(Compass, self).__init__(name="Compass")
-        self._log(">>> Connecting to Compass ...")
+        print ">>> Connecting to Compass ..."
         self.ORB = ORB
         self.ser = open_serial('/dev/compass', 9600)
 
@@ -56,7 +56,7 @@ class Compass(threading.Thread):
             if index == -1 or len(package) < index + size * 2:
                 continue
             package = package[index:index + size * 2]
-            # self._log(package)
+            # print package
             if package[6:8] == ack and self.checksum(package):
                 return package
         return None
@@ -74,9 +74,6 @@ class Compass(threading.Thread):
     def close(self):
         if self.ser.is_open is True:
             self.ser.close()
-
-    def _log(self, msg):
-        print msg
 
 if __name__ == '__main__':
     from library import Watcher

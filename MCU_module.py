@@ -40,7 +40,6 @@ class MCU(object):
             if msg is '':
                 continue
             msg = ascii2hex(msg)
-            # self._log("Read channels:{}".format(msg))
             n = msg.find('aabb')
             if len(msg) < n + size:
                 continue
@@ -50,14 +49,13 @@ class MCU(object):
 
     def read_channels(self):
         package = self.RawFrame()
-        # self._log(package)
         return None if package is None else CutFrame(package[4:36], 4)
 
 
 if __name__ == "__main__":
     mcu = MCU()
-    a = [1000] * 8
-    print mcu.EncodeChannels(a)
+    # a = [1000] * 8
+    # print mcu.EncodeChannels(a)
     while True:
         ch = mcu.read_channels()
         print ch

@@ -184,7 +184,6 @@ if __name__ == "__main__":
     from uORB import uORB
     ORB = uORB()
     baro = Baro(ORB)
-    print ORB
     Watcher()
     baro.start()
     while not ORB.subscribe('Baro_State'):

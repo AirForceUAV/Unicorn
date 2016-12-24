@@ -22,41 +22,48 @@ class Config(object):
         self._config['ELE'] = self.channel(1)
         self._config['THR'] = self.channel(2)
         self._config['RUD'] = self.channel(3)
-        self._config['Mode'] = [self.get_node(
-            4, 1) - 1, 0, self.get_node(4, 2)]
+        self._config['Mode'] = self.loadFUN(4)
         if self.model == 'HELI':
-            self._config['PIT'] = self.loadPIT(5)
-        self._config['MCU'] = self.loadXML(6, 3)  # [open?,port,baudrate]
-        self._config['GPS'] = self.loadXML(7, 3)  # [open?,port,baudrate]
-        self._config['Compass'] = self.loadXML(8, 3)  # [open?,port,baudrate]
-        self._config['Baro'] = self.loadXML(9, 3)  # [open?,bus,i2c]
-        self._config['IMU'] = self.loadXML(10, 3)  # [open?,port,baudrate]
+            self._config['Rate'] = self.loadFUN(5)
+            self._config['PIT'] = self.loadPIT(6)
+        else:
+            self._config['Aux1'] = self.loadFUN(5)
+            self._config['Aux2'] = self.loadFUN(6)
+        self._config['Switch'] = self.loadFUN(7)
+        self._config['MCU'] = self.loadHAL(8, 3)  # [open?,port,baudrate]
+        self._config['GPS'] = self.loadHAL(9, 3)  # [open?,port,baudrate]
+        self._config['Compass'] = self.loadHAL(10, 3)  # [open?,port,baudrate]
+        self._config['Baro'] = self.loadHAL(11, 3)  # [open?,bus,i2c]
+        self._config['IMU'] = self.loadHAL(12, 3)  # [open?,port,baudrate]
 
         # [open?,port,safety distance,detected distance]
-        self._config['Lidar'] = self.loadXML(11, 4)
-        self._config['Cloud'] = self.loadXML(12, 3)
+        self._config['Lidar'] = self.loadHAL(13, 4)
+        self._config['Cloud'] = self.loadHAL(14, 3)
         # [Current Gear,Low Gear,Mid Gear,High Gear]
-        self._config['Gear'] = self.loadXML(13, 4)
+        self._config['Gear'] = self.loadHAL(15, 4)
 
-    def loadXML(self, index, end, start=1):
-        return [self.get_node(index, x) for x in range(start, end + 1)]
+    def loadFUN(self, index):
+        return [self.node(index, 1) - 1, 0, self.node(index, 2)]
+
+    def loadHAL(self, index, end, start=1):
+        return [self.node(index, x) for x in range(start, end + 1)]
 
     def loadPIT(self, index):
-        num = self.get_node(index, 1) - 1
-        low = self.get_node(index, 2)
-        mid = self.get_node(index, 3)
-        hig = self.get_node(index, 4)
+        num = self.node(index, 1) - 1
+        low = self.node(index, 2)
+        mid = self.node(index, 3)
+        hig = self.node(index, 4)
         var = hig - low
         return [num, low, mid, hig, var]
 
     def channel(self, index):
-        num = self.get_node(index, 1) - 1
-        low = self.get_node(index, 2)
-        mid = self.get_node(index, 3)
-        hig = self.get_node(index, 4)
+        num = self.node(index, 1) - 1
+        low = self.node(index, 2)
+        mid = self.node(index, 3)
+        hig = self.node(index, 4)
         var = hig - low
-        sign = self.get_node(index, 5)
-        rate = self.get_node(index, 6)
+        sign = self.node(index, 5)
+        rate = self.node(index, 6)
         return [num, low, mid, hig, var, sign, rate]
 
     def isInt(self, x):
@@ -65,7 +72,7 @@ class Config(object):
         except ValueError:
             return False
 
-    def get_node(self, param1, param2):
+    def node(self, param1, param2):
         value = self._root[param1][param2].get('value')
         if self.isInt(value):
             return int(value)

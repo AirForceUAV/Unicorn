@@ -40,7 +40,7 @@ class IMU(threading.Thread):
         self._imu = open_serial('/dev/IMU', 115200)
 
     def run(self):
-        print 'Initializing IMU....'
+        print '>>> Initializing IMU....'
         while True:
             frame = self.RawFrame()
             Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)

@@ -23,10 +23,7 @@ class Vehicle(Attribute):
         channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
         channels[self.THR[0]] = self.THR[2 + THR * self.THR[5]]
         channels[self.RUD[0]] = self.RUD[2 + RUD * self.RUD[5]]
-        channels[self.mode[0]] = self.mode[2]
-        if self._model == 'HELI':
-            channels[self.PIT[0]] = self.THR2PIT(
-                channels[self.THR[0]])
+        self._construct_channel(channels)
         self.send_pwm(channels)
 
     def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0):
@@ -35,18 +32,27 @@ class Vehicle(Attribute):
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
         channels[self.THR[0]] = self.movement(self.THR, THR)
         channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
-        channels[self.mode[0]] = self.mode[2]
-        if self._model == 'HELI':
-            channels[self.PIT[0]] = self.THR2PIT(
-                channels[self.THR[0]])
+        self._construct_channel(channels)
         self.send_pwm(channels)
 
+    def _construct_channel(self, channels):
+        channels[self.mode[0]] = self.mode[2]
+        if self._model == 'HELI':
+            channels[self.Rate[0]] = self.Rate[2]
+            channels[self.PIT[0]] = self.THR2PIT(
+                channels[self.THR[0]])
+        else:
+            channels[self.Aux1[0]] = self.Aux1[2]
+            channels[self.Aux2[0]] = self.Aux2[2]
+        channels[self.Switch[0]] = self.Switch[2]
+
     def arm(self):
-        print "Waiting for arming..."
+        self._log("Arming ...")
         self.control_stick(1, -1, -1, -1)
         time.sleep(2)
 
     def disarm(self):
+        self._log('DisArmed ...')
         self.control_stick(THR=-1)
 
     def takeoff(self, alt=5):
@@ -311,7 +317,7 @@ if __name__ == "__main__":
     mcu = None
     Watcher()
     ORB = uORB()
-    # ORB.open('MCU')
+    ORB.open('MCU','Compass')
     # instancce of MCU module object
     if ORB.has_module('MCU'):
         from MCU_module import MCU
@@ -352,24 +358,26 @@ if __name__ == "__main__":
         while not ORB.subscribe('IMU_State'):
             time.sleep(.5)
 
+    # ORB.start()
     vehicle = Vehicle(mcu, ORB)
-    # vehicle.arm()
+    vehicle.arm()
     # vehicle.set_channels_mid()
-    # vehicle.disarm()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
-    # vehicle.yaw_left_brake()
-    # vehicle.yaw_right_brake()
-    # vehicle.roll_left_brake()
-    # vehicle.roll_right_brake()
-    # vehicle.forward_brake()
-    # vehicle.backward_brake()
+    vehicle.yaw_left_brake()
+    vehicle.yaw_right_brake()
+    vehicle.roll_left_brake()
+    vehicle.roll_right_brake()
+    vehicle.forward_brake()
+    vehicle.backward_brake()
     vehicle.up_brake()
     vehicle.down_brake()
     # vehicle.yaw_left()
+    time.sleep(1)
     # vehicle.yaw_right()
+    time.sleep(1)
     # vehicle.forward()
-    # vehicle.control_FRU(1, 1, 1)
+    # vehicle.control_FRU(AIL=1, ELE=1)
     # time.sleep(1)
     # vehicle.brake()
     # vehicle.condition_yaw(30)

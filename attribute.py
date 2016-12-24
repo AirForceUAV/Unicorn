@@ -27,9 +27,13 @@ class Attribute(object):
 
         self.mode = ORB.channel('Mode')
         if ORB._model['Model'] == 'HELI':
+            self.Rate = ORB.channel('Rate')
             self.PIT = ORB.channel('PIT')
-
-        # 8 channels PWM:[CH1~CH8]
+        else:
+            self.Aux1 = ORB.channel('Aux1')
+            self.Aux2 = ORB.channel('Aux2')
+            # 8 channels PWM:[CH1~CH8]
+        self.Switch = ORB.channel('Switch')
         self.wp = Waypoint(ORB)
         self.update_home()
         self.init_altitude()
@@ -74,7 +78,7 @@ class Attribute(object):
         return PIT_PWM
 
     def set_channels_mid(self):
-        self._log('>>> Catching Loiter PWM...')
+        self._log('Catching Loiter PWM...')
         if not self.ORB.has_module('MCU'):
             print 'Warning:MCU is closed'
             return
@@ -90,7 +94,12 @@ class Attribute(object):
         self.RUD[2] = mid[self.RUD[0]]
         self.mode[2] = mid[self.mode[0]]
         if self._model == 'HELI':
-            self.PIT[2] = mid[self.PIT[0]]
+            self.Rate[2] = mid[self.Rate[0]]
+            self.PIT[2] = self.THR2PIT(self.THR[2])
+        else:
+            self.Aux1[2] = mid[self.Aux1[0]]
+            self.Aux2[2] = mid[self.Aux2[0]]
+        self.Switch[2] = mid[self.Switch[0]]
 
     def set_gear(self, gear):
         if int(gear) in [1, 2, 3]:
@@ -181,4 +190,4 @@ class Attribute(object):
         return self.ORB.state(module)
 
     def _log(self, msg):
-        print msg
+        print ">>>", msg
