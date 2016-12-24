@@ -56,7 +56,7 @@ MergeFrame	IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:118
 ORB	Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:185
 ORB	GPS_module.py	/^    ORB=uORB()$/;"	kind:variable	line:61
 ORB	IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:136
-ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:84
+ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:81
 ORB	main.py	/^    ORB = uORB()$/;"	kind:variable	line:23
 ORB	uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:250
 ORB	vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:319
@@ -138,7 +138,6 @@ _b	FlightLog_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.e
 _calculte_mantissa	IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:55
 _construct_channel	vehicle.py	/^    def _construct_channel(self, channels):$/;"	kind:member	line:38
 _log	attribute.py	/^    def _log(self, msg):$/;"	kind:member	line:192
-_log	compass_module.py	/^    def _log(self, msg):$/;"	kind:member	line:78
 _log	lidar_module.py	/^    def _log(self, msg):$/;"	kind:member	line:130
 _log	waypoint.py	/^    def _log(self, msg):$/;"	kind:member	line:74
 _model	config.py	/^    _model = {}$/;"	kind:variable	line:90
@@ -147,7 +146,7 @@ _sym_db	FlightLog_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variabl
 add_number	waypoint.py	/^    def add_number(self):$/;"	kind:member	line:53
 analysis_channels	vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:192
 angle_heading_target	library.py	/^def angle_heading_target(origin, target, heading):$/;"	kind:function	line:98
-args	main.py	/^                          args=(sock, ORB), seconds=1)$/;"	kind:variable	line:88
+args	main.py	/^                          args=(sock, ORB), seconds=1)$/;"	kind:variable	line:90
 arm	vehicle.py	/^    def arm(self):$/;"	kind:member	line:49
 ascii2hex	library.py	/^def ascii2hex(argv):$/;"	kind:function	line:135
 attribute.py	attribute.py	1;"	kind:file	line:1
@@ -165,7 +164,7 @@ close	GPS_module.py	/^    def close(self):$/;"	kind:member	line:54
 close	compass_module.py	/^    def close(self):$/;"	kind:member	line:74
 close	uORB.py	/^    def close(self, *module):$/;"	kind:member	line:82
 cloud_module.py	cloud_module.py	1;"	kind:file	line:1
-compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:85
+compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:82
 compass	main.py	/^        compass = Compass(ORB)$/;"	kind:variable	line:34
 compass_module.py	compass_module.py	1;"	kind:file	line:1
 condition_yaw	vehicle.py	/^    def condition_yaw(self, heading=0, relative=True):$/;"	kind:member	line:202
@@ -210,7 +209,7 @@ enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:442
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:564
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:61
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:99
-executor	main.py	/^        executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:83
+executor	main.py	/^        executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:85
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:104
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:149
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:194
@@ -336,7 +335,7 @@ localtime	uORB.py	/^    def localtime(self):$/;"	kind:member	line:226
 log_json	uORB.py	/^    def log_json(self):$/;"	kind:member	line:216
 log_proto	uORB.py	/^    def log_proto(self):$/;"	kind:member	line:200
 main.py	main.py	1;"	kind:file	line:1
-mcu	MCU_module.py	/^    mcu = MCU()$/;"	kind:variable	line:58
+mcu	MCU_module.py	/^    mcu = MCU()$/;"	kind:variable	line:56
 mcu	main.py	/^        mcu = MCU()$/;"	kind:variable	line:29
 mcu	main.py	/^    mcu = None$/;"	kind:variable	line:21
 mcu	vehicle.py	/^    mcu = None$/;"	kind:variable	line:317
@@ -440,7 +439,7 @@ origin	waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line
 package	FlightLog_pb2.py	/^  package='buffers',$/;"	kind:variable	line:20
 parseGPS	GPS_module.py	/^    def parseGPS(self):$/;"	kind:member	line:35
 points	waypoint.py	/^    def points(self):$/;"	kind:member	line:15
-pressure	Baro.py	/^        pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:193
+pressure	Baro.py	/^        pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:192
 pressure2Alt	library.py	/^def pressure2Alt(hpa):$/;"	kind:function	line:38
 printResults	Baro.py	/^    def printResults(self):$/;"	kind:member	line:164
 publish	attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:180
@@ -449,8 +448,8 @@ publish	uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:63
 publish	waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:68
 radio	sbus_receiver.py	/^    def radio(self):$/;"	kind:member	line:77
 read	Baro.py	/^    def read(self):$/;"	kind:member	line:56
-read_channels	MCU_module.py	/^    def read_channels(self):$/;"	kind:member	line:51
-receiver	main.py	/^        receiver = Receiver(work_queue, sock)$/;"	kind:variable	line:78
+read_channels	MCU_module.py	/^    def read_channels(self):$/;"	kind:member	line:50
+receiver	main.py	/^        receiver = Receiver(work_queue, sock)$/;"	kind:variable	line:80
 remain_wp	waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:50
 roll_left_brake	vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:160
 roll_right_brake	vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:166
@@ -500,7 +499,7 @@ set_gear	attribute.py	/^    def set_gear(self, gear):$/;"	kind:member	line:104
 set_target	attribute.py	/^    def set_target(self, dNorth, dEast, alt=-1):$/;"	kind:member	line:108
 set_target_angle	attribute.py	/^    def set_target_angle(self, distance, angle, alt=-1):$/;"	kind:member	line:118
 sin	library.py	/^def sin(angle):$/;"	kind:function	line:161
-sock	main.py	/^        sock = open_sock()$/;"	kind:variable	line:74
+sock	main.py	/^        sock = open_sock()$/;"	kind:variable	line:76
 state	attribute.py	/^    def state(self, module):$/;"	kind:member	line:189
 state	uORB.py	/^    def state(self, module):$/;"	kind:member	line:69
 subscribe	attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:183
@@ -538,11 +537,11 @@ update_location	uORB.py	/^    def update_location(self, ProtoLocation, Locaiton)
 update_loiterPWM	uORB.py	/^    def update_loiterPWM(self):$/;"	kind:member	line:191
 update_waypoint	uORB.py	/^    def update_waypoint(self):$/;"	kind:member	line:169
 vehicle	main.py	/^    vehicle = Vehicle(mcu, ORB)$/;"	kind:variable	line:64
-vehicle	vehicle.py	/^    vehicle = Vehicle(mcu, ORB)$/;"	kind:variable	line:361
+vehicle	vehicle.py	/^    vehicle = Vehicle(mcu, ORB)$/;"	kind:variable	line:362
 vehicle.py	vehicle.py	1;"	kind:file	line:1
 watch	library.py	/^    def watch(self):$/;"	kind:member	line:223
 waypoint.py	waypoint.py	1;"	kind:file	line:1
-work_queue	main.py	/^        work_queue = Queue.Queue()$/;"	kind:variable	line:75
+work_queue	main.py	/^        work_queue = Queue.Queue()$/;"	kind:variable	line:77
 wp	uORB.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:269
 wp	waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:80
 yaw_left	vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:119
