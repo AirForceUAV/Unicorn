@@ -9,7 +9,7 @@ import os
 import sys
 
 
-def open_serial(portname, baudrate, timeout=0.5):
+def open_serial(portname, baudrate, timeout=1):
     while True:
         try:
             print ">>> Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
@@ -19,6 +19,39 @@ def open_serial(portname, baudrate, timeout=0.5):
             info = sys.exc_info()
             print "{0}:{1}".format(*info)
             time.sleep(1.0)
+
+
+def read_serial(_UART, size):
+    msg = ''
+    try:
+        msg = _UART.read(size)
+    except:
+        info = sys.exc_info()
+        print "{0}:{1}".format(*info)
+    finally:
+        return msg
+
+
+def write_serial(_UART, info):
+    num = -1
+    try:
+        num = _UART.read(info)
+    except:
+        info = sys.exc_info()
+        print "{0}:{1}".format(*info)
+    finally:
+        return num
+
+
+def readline_serial(_UART):
+    msg = ''
+    try:
+        msg = _UART.readline()
+    except:
+        info = sys.exc_info()
+        print "{0}:{1}".format(*info)
+    finally:
+        return msg
 
 
 def element(file_name):

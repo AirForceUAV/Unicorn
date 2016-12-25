@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<vehicles ID="1">
+<vehicles ID="0">
     <vehicle index="0" UAV="copter-550" Model='HELI' MainController='ACE_ONE'>
         <entry index="0" name="AIL">
             <description>Aileron PWM.</description>

@@ -2,9 +2,11 @@
 # coding:utf-8
 
 import time
+import sys
 from library import open_serial, ascii2hex, dec2hex
 from library import Singleton
 from library import CutFrame
+from library import read_serial, write_serial
 
 
 class MCU(object):
@@ -16,6 +18,7 @@ class MCU(object):
         self.FRAME_HEAD = 'AABB'
         self.FRAME_TAIL = 'CC'
         self.FRAME_LEN = 19
+        self.TIMEOUT = 100
 
     def EncodeChannels(self, channels):
         msg = reduce(lambda x, y: x + dec2hex(y),
@@ -28,15 +31,15 @@ class MCU(object):
 
     def send_pwm(self, channels):
         msg = self.EncodeChannels(channels).decode('hex')
-        self._mcu.write(msg * 10)
+        num = self._mcu.write(msg * 10)
 
     def RawFrame(self):
         times = 0
         size = self.FRAME_LEN * 2
         self._mcu.flushInput()
-        while times < 10:
+        while times < self.TIMEOUT:
             times += 1
-            msg = self._mcu.read(size * 5)
+            msg = read_serial(self._mcu, size * 2)
             if msg is '':
                 continue
             msg = ascii2hex(msg)
