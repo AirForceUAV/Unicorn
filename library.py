@@ -25,7 +25,7 @@ def read_serial(_UART, size):
     msg = ''
     try:
         msg = _UART.read(size)
-    except serial.SerialException:
+    except serial.IOException:
         info = sys.exc_info()
         print "{0}:{1}".format(*info)
     finally:
