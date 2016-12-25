@@ -96,7 +96,7 @@ class Attribute(object):
         self.mode[2] = mid[self.mode[0]]
         if self._model == 'HELI':
             self.Rate[2] = mid[self.Rate[0]]
-            self.PIT[2] = self.THR2PIT(self.THR[2])
+            self.PIT[2] = mid[self.PIT[0]]
         else:
             self.Aux1[2] = mid[self.Aux1[0]]
             self.Aux2[2] = mid[self.Aux2[0]]

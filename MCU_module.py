@@ -39,7 +39,7 @@ class MCU(object):
         self._mcu.flushInput()
         while times < self.TIMEOUT:
             times += 1
-            msg = read_serial(self._mcu, size * 2)
+            msg = self._mcu.read(self.FRAME_LEN * 2)
             if msg is '':
                 continue
             msg = ascii2hex(msg)

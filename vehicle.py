@@ -39,8 +39,7 @@ class Vehicle(Attribute):
         channels[self.mode[0]] = self.mode[2]
         if self._model == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
-            channels[self.PIT[0]] = self.THR2PIT(
-                channels[self.THR[0]])
+            channels[self.PIT[0]] = self.PIT[2]
         else:
             channels[self.Aux1[0]] = self.Aux1[2]
             channels[self.Aux2[0]] = self.Aux2[2]
@@ -362,7 +361,7 @@ if __name__ == "__main__":
     # ORB.start()
     vehicle = Vehicle(mcu, ORB)
     # vehicle.arm()
-    vehicle.set_channels_mid()
+    # vehicle.set_channels_mid()
     # vehicle.set_gear(2)
     # vehicle.takeoff(3)
     vehicle.yaw_left_brake()
