@@ -9,11 +9,11 @@ import os
 import sys
 
 
-def open_serial(portname, baudrate):
+def open_serial(portname, baudrate, timeout=None):
     while True:
         try:
             print ">>> Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
-            com = serial.Serial(portname, baudrate)
+            com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
         except serial.SerialException:
             info = sys.exc_info()

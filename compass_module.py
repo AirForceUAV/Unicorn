@@ -14,7 +14,7 @@ class Compass(threading.Thread):
         super(Compass, self).__init__(name="Compass")
         print ">>> Connecting to Compass ..."
         self.ORB = ORB
-        self.ser = open_serial('/dev/compass', 9600)
+        self.ser = open_serial('/dev/compass', 9600, timeout=0.5)
 
     def run(self):
         print ">>> Initializing Compass ..."
@@ -52,6 +52,7 @@ class Compass(threading.Thread):
             self.ser.write(command)
             res = self.ser.readline()
             package = ascii2hex(res)
+            # print package
             index = package.find('68')
             if index == -1 or len(package) < index + size * 2:
                 continue
