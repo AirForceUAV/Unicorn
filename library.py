@@ -25,7 +25,7 @@ def read_serial(_UART, size):
     msg = ''
     try:
         msg = _UART.read(size)
-    except:
+    except serial.SerialException:
         info = sys.exc_info()
         print "{0}:{1}".format(*info)
     finally:
@@ -36,7 +36,7 @@ def write_serial(_UART, info):
     num = -1
     try:
         num = _UART.read(info)
-    except:
+    except serial.SerialException, serial.SerialTimeoutException:
         info = sys.exc_info()
         print "{0}:{1}".format(*info)
     finally:
@@ -47,7 +47,7 @@ def readline_serial(_UART):
     msg = ''
     try:
         msg = _UART.readline()
-    except:
+    except serial.SerialException:
         info = sys.exc_info()
         print "{0}:{1}".format(*info)
     finally:
