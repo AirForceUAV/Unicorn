@@ -188,7 +188,7 @@ if __name__ == "__main__":
     baro.start()
     while not ORB.subscribe('Baro_State'):
         time.sleep(.5)
+    init_pressure = self.subscribe('Pressure')
+    self.publish('InitAltitude', convert2Alt(init_pressure))
     while True:
-        pressure = ORB.subscribe('Pressure')
-        print pressure, convert2Alt(pressure)
-        raw_input('Next')
+        print ORB.get_altitude()
