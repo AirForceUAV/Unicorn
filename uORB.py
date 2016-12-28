@@ -250,11 +250,12 @@ if __name__ == "__main__":
     from waypoint import Waypoint
     from library import Watcher
     ORB = uORB()
-    from tools import protobuf
+    from tools import protobuf, commands
     ORB._HAL = protobuf
     print ORB._model
     print ORB._module
-    print ORB._channel
+    # print ORB._channel
+    print json.dumps(commands, indent=1)
     # print json.dumps(ORB._module, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
