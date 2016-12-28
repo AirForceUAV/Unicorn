@@ -87,4 +87,4 @@ if __name__ == '__main__':
         time.sleep(.5)
     while True:
         print ORB.subscribe('Attitude')
-        time.sleep(.3)
+        # time.sleep(.1)

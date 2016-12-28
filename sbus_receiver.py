@@ -27,13 +27,14 @@ class Sbus_Receiver(threading.Thread):
             except serial.SerialException:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
-            # print package
+            # print 'package', package
             if package is '':
                 continue
-            package = self.sbus.filter(package)
-            if package is None:
+            sbusFrame = self.sbus.filter(package)
+            # print sbusFrame
+            if sbusFrame is None:
                 continue
-            self.ORB.publish('ChannelsInput', self.sbus.decode(package))
+            self.ORB.publish('ChannelsInput', self.sbus.decode(sbusFrame))
 
     def __str__(self):
         input = self.ORB.subscribe('ChannelsInput')
@@ -56,5 +57,6 @@ if __name__ == "__main__":
         # print sbus_receiver
         time.sleep(.5)
     while True:
-        print sbus_receiver
+        # print sbus_receiver
         # raw_input('Next')
+        time.sleep(1)

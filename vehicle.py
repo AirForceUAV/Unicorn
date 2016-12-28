@@ -229,10 +229,11 @@ class Vehicle(Attribute):
             if self.isStop(current_yaw, target_angle, is_cw):
                 break
             # self._log('{},{}'.format(current_yaw, target_angle))
-            time.sleep(.1)
-        self._log('Before:{}'.format(self.get_heading()))
+
+        self._log('Target:{},Result:{}'.format(
+            self.get_heading(), target_angle))
         self.brake()
-        self._log('After:{}'.format(self.get_heading()))
+        # self._log('After:{}'.format(self.get_heading()))
 
     def navigation(self, target):
         watcher = CancelWatcher()

@@ -13,7 +13,7 @@ class SBUS(object):
     def __init__(self):
         # constants
         self.START_BYTE = b'0f'
-        self.END_BYTE = [b'00', b'14', b'24', b'34']
+        self.END_BYTE = [b'04', b'14', b'24', b'34']
         self.SBUS_FRAME_LEN = 25
         self.SBUS_NUM_CHAN = 18
         self.OUT_OF_SYNC_THD = 10
@@ -51,7 +51,7 @@ class SBUS(object):
             return None
         end = begin + size
         argv = package[begin:end]
-        if package[- 2:] in self.END_BYTE and len(argv) == size:
+        if (package[- 2:] in self.END_BYTE) and len(argv) == size:
             return argv
         else:
             return None

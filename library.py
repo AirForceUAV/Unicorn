@@ -77,7 +77,7 @@ def pressure2Alt(hpa):
 
 def CutFrame(package, length=2):
     FrameArray = [int(package[x:x + length], 16)
-                  for x in xrange(len(package)) if x % length == 0]
+                  for x in range(len(package)) if x % length == 0]
     return FrameArray
 
 

@@ -39,7 +39,7 @@ commands = [
 
 def build_sbus():
     print 'Initialize SBUS ...'
-    portname = '/dev/GPS'
+    portname = '/dev/ttyUSB0'
     # portname = '/dev/ttyAMA0'
     print 'Connecting to', portname
     while True:
