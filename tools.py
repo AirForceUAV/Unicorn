@@ -39,9 +39,9 @@ commands = [
 
 def build_sbus():
     print 'Initialize SBUS ...'
-    portname = '/dev/ttyUSB0'
+    portname = '/dev/GPS'
     # portname = '/dev/ttyAMA0'
-    print 'Connectin to', portname
+    print 'Connecting to', portname
     while True:
         try:
             com = serial.Serial(port=portname,
