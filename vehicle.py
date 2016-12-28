@@ -3,6 +3,7 @@
 
 import time
 import json
+import math
 from library import CancelWatcher
 from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
@@ -12,10 +13,10 @@ from attribute import Attribute
 class Vehicle(Attribute):
     __metaclass__ = Singleton
 
-    def __init__(self, mcu=None, ORB=None):
-        super(Vehicle, self).__init__(mcu, ORB)
+    def __init__(self, sbus_sender=None, ORB=None):
+        super(Vehicle, self).__init__(sbus_sender, ORB)
         self.moveTime = 2
-        self.brakeTime = 1
+        self.brakeTime = 0.5
 
     def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0):
         channels = [0] * 8
@@ -48,7 +49,8 @@ class Vehicle(Attribute):
     def arm(self):
         self._log("Arming ...")
         self.control_stick(1, -1, -1, -1)
-        time.sleep(2)
+        time.sleep(1)
+        self.disarm()
 
     def disarm(self):
         self._log('DisArmed ...')
@@ -116,11 +118,11 @@ class Vehicle(Attribute):
         return channel[2] + sign * variation
 
     def yaw_left(self):
-        self._log('Turn Left...')
+        # self._log('Turn Left...')
         self.control_FRU(RUD=-1)
 
     def yaw_right(self):
-        self._log('Turn Right...')
+        # self._log('Turn Right...')
         self.control_FRU(RUD=1)
 
     def forward(self):
@@ -186,81 +188,138 @@ class Vehicle(Attribute):
         self.publish('ChannelsOutput', channels)
         if not self.has_module('MCU'):
             return
-        self.mcu.send_pwm(channels)
+        self.sbus_sender.send_pwm(channels)
 
     def analysis_channels(self, channels):
         a = [x - y for x, y in zip(channels, self.subscribe('LoiterPWM'))]
         return [x * y for x, y in zip(a, self.Phase())]
 
-    def isStop(self, begin, end, sign):
-        if begin is None:
-            return True
-        diff = (360 + sign * (end - begin)) % 360
-        return False if diff < 180 and diff > 5 else True
+    def isStop(self, heading, target, sign):
+        diff = (360 + sign * (heading - target)) % 360
+        return False if diff <= 180 and diff > 5 else True
 
-    def condition_yaw(self, heading=0, relative=True):
+    def condition_yaw(self, heading=0):
         """
-        0<=heading<360
+        0<=heading<360 (anti-clockwise)
         """
-        if heading < 0 or heading >= 360:
-            self._log('Warning:not 0<=heading<360')
-            return -1
-        if relative and heading == 0:
+        if heading <= 0 or heading >= 360:
             return
 
         watcher = CancelWatcher()
-        current_heading = self.get_heading()
-        if current_heading is None:
+        current_yaw = self.get_heading()
+        if current_yaw is None:
             return
         # Relative angle to heading
-        target_angle = (current_heading +
-                        heading) % 360 if relative else heading
+        target_angle = (360 + current_yaw - heading) % 360
 
-        direction = (360 + target_angle - current_heading) % 360
-        if direction > 0 and direction < 180:
+        TurnAngle = (360 + current_yaw - target_angle) % 360
+        if TurnAngle >= 0 and TurnAngle <= 180:
             is_cw = 1
-            self._log('Turn right {}'.format(direction))
-            self.yaw_right()
-        elif direction >= 180 and direction < 360:
-            is_cw = -1
-            self._log('Turn left {}'.format(360 - direction))
+            self._log('Turn left {}'.format(TurnAngle))
             self.yaw_left()
+        else:
+            is_cw = -1
+            self._log('Turn right {}'.format(360 - TurnAngle))
+            self.yaw_right()
         print "Target", target_angle
-        while not watcher.IsCancel() and not self.isStop(
-                self.get_heading(), target_angle, is_cw):
-            # self._log('Cur angle:{},Target
-            # angle:{}'.format(self.get_heading(),target_angle))
-            time.sleep(.01)
-        self._log('Before Angle {}'.format(self.get_heading()))
-        self.brake()
-        self._log('After  Angle {}'.format(self.get_heading()))
-        return 1
-
-    def navigation(self, target):
-        IgnoreDegree = 10
-        checktime = 5
-        watcher = CancelWatcher()
         while not watcher.IsCancel():
-            current_location = self.get_location()
-            if current_location is None:
-                break
-            remain_distance = round(
-                get_distance_metres(current_location, target), 2)
-            self._log("Distance to Target {}m".format(remain_distance))
-            if distance < 3:
-                self._log("Reached Target Waypoint!")
-                break
             current_yaw = self.get_heading()
             if current_yaw is None:
+                return
+            if self.isStop(current_yaw, target_angle, is_cw):
                 break
+            # self._log('{},{}'.format(current_yaw, target_angle))
+            time.sleep(.1)
+        self._log('Before:{}'.format(self.get_heading()))
+        self.brake()
+        self._log('After:{}'.format(self.get_heading()))
+
+    def navigation(self, target):
+        watcher = CancelWatcher()
+        radius = 5
+        frequency = 0.5
+        current_location = self.get_location()
+        current_yaw = self.get_heading()
+        if current_location is None or current_yaw is None or target is None:
+            return
+
+        init_angle = angle_heading_target(
+            current_location, target, current_yaw)
+        self.condition_yaw(init_angle)
+
+        while not watcher.IsCancel():
+            current_location = self.get_location()
+            current_yaw = self.get_heading()
+            if current_location is None or current_yaw is None:
+                break
+            distance = round(
+                get_distance_metres(current_location, target), 2)
             angle = angle_heading_target(
                 current_location, target, current_yaw)
-            if _angle(angle) > IgnoreDegree:
+
+            print 'Distance :', distance
+
+            if not self.InAngle(angle, 90) or angle < radius + 5:
+                self._log("Reached Target Waypoint!")
+                break
+
+            SAngle = int(math.degrees(math.asin(radius / distance))) + 20
+            if not self.InAngle(angle, SAngle):
                 self.brake()
                 self.condition_yaw(angle)
             self.forward()
-            time.sleep(checktime)
+            time.sleep(frequency)
         self.brake()
+
+    def _navigation(self, target):
+        watcher = CancelWatcher()
+        radius = 5
+        frequency = 0.5
+        current_location = self.get_location()
+        current_yaw = self.get_heading()
+        if current_location is None or current_yaw is None or target is None:
+            return
+
+        init_angle = angle_heading_target(
+            current_location, target, current_yaw)
+        self.condition_yaw(init_angle)
+
+        while not watcher.IsCancel():
+            current_location = self.get_location()
+            current_yaw = self.get_heading()
+            if current_location is None or current_yaw is None:
+                break
+            distance = round(
+                get_distance_metres(current_location, target), 2)
+            angle = angle_heading_target(
+                current_location, target, current_yaw)
+
+            print 'Distance :', distance
+
+            if not self.InAngle(angle, 90) or angle < radius + 5:
+                self._log("Reached Target Waypoint!")
+                break
+            SAngle = int(math.degrees(math.asin(radius / distance))) + 20
+
+            if self.InAngle(angle, SAngle):
+                self.forward()
+            else:
+                if angle > SAngle and angle <= 90:
+                    print 'Roll Left'
+                    self.control_FRU(AIL=-1, ELE=1)
+                elif angle >= 270 and angle < 360 - SAngle:
+                    print 'Roll Right'
+                    self.control_FRU(AIL=1, ELE=1)
+                else:
+                    self.condition_yaw(angle)
+            time.sleep(frequency)
+        self.brake()
+
+    def InAngle(self, angle, SAngle):
+        if angle < 360 - SAngle and angle > SAngle:
+            return False
+        else:
+            return True
 
     def RTL(self):
         target = self.get_home()
@@ -313,36 +372,49 @@ class Vehicle(Attribute):
 if __name__ == "__main__":
     from uORB import uORB
     from library import Watcher
-    mcu = None
-    Watcher()
+
     ORB = uORB()
-    ORB.open('MCU', 'Compass', 'GPS')
-    # ORB.close('Compass', 'GPS')
-    # instancce of MCU module object
+    Watcher()
+
+    sbus_sender = None
+
     if ORB.has_module('MCU'):
-        from MCU_module import MCU
-        mcu = MCU()
+        # Initialize SBUS
+        from sbus_receiver import Sbus_Receiver
+        from sbus_sender import Sbus_Sender
+        from tools import build_sbus
+
+        com = build_sbus()
+        sbus_receiver = Sbus_Receiver(ORB, com)
+        sbus_receiver.start()
+
+        while ORB.subscribe('ChannelsInput') is None:
+            time.sleep(.5)
+
+        sbus_sender = Sbus_Sender(ORB, com)
+        sbus_sender.start()
+        time.sleep(.5)
 
     if ORB.has_module('Compass'):
-        # instancce of compass module object
+        # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
 
         compass.start()
         while not ORB.subscribe('Compass_State'):
-            # print compass.get_heading()
             time.sleep(.5)
 
     if ORB.has_module('GPS'):
-        from GPS_module import GPS      # instancce of GPS module object
+        # Initialize GPS
+        from GPS_module import GPS
         gps = GPS(ORB)
 
         gps.start()
         while not ORB.subscribe('GPS_State'):
-            # print gps.get_num_stars()
             time.sleep(.5)
 
     if ORB.has_module('Baro'):
+        # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
 
@@ -351,6 +423,7 @@ if __name__ == "__main__":
             time.sleep(.5)
 
     if ORB.has_module('IMU'):
+        # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)
 
@@ -358,35 +431,30 @@ if __name__ == "__main__":
         while not ORB.subscribe('IMU_State'):
             time.sleep(.5)
 
+    # Save FlightLog to SD card
     # ORB.start()
-    vehicle = Vehicle(mcu, ORB)
-    # vehicle.arm()
-    vehicle.set_channels_mid()
-    # vehicle.set_gear(2)
-    # vehicle.takeoff(3)
-    vehicle.yaw_left_brake()
-    vehicle.yaw_right_brake()
-    # vehicle.roll_left_brake()
-    # vehicle.roll_right_brake()
-    # vehicle.forward_brake()
-    # vehicle.backward_brake()
-    # vehicle.up_brake()
-    # vehicle.down_brake()
-    # vehicle.yaw_left()
-    # time.sleep(1)
-    # vehicle.yaw_right()
-    # time.sleep(1)
-    # vehicle.forward()
-    # vehicle.control_FRU(AIL=1, ELE=1)
-    # time.sleep(1)
-    # vehicle.brake()
-    # vehicle.condition_yaw(30)
-    # vehicle.condition_yaw(300)
 
-    # vehicle.set_target(0, 10)
-    # vehicle.download()
-    # print ORB.subscribe('Waypoint')
-    # vehicle.Auto()
-    # vehicle.Guided()
-    # vehicle.disarm()
-    # print vehicle.Phase()
+    # Initialize UAV
+    vehicle = Vehicle(sbus_sender, ORB)
+
+    # Test
+    import sys
+    from tools import commands
+    Test = commands
+    for t in Test:
+        enter = raw_input(t + '???').strip()
+        if enter is '':
+            command = 'vehicle.' + t
+            print 'Execute command ->', command
+            try:
+                eval(command)
+            except Exception:
+                info = sys.exc_info()
+                print "{0}:{1}".format(*info)
+        elif enter == 'c':
+            CancelWatcher.Cancel = True
+            vehicle.brake()
+            break
+        else:
+            continue
+    print 'Completed'

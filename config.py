@@ -30,17 +30,8 @@ class Config(object):
             self._config['Aux1'] = self.loadFUN(5)
             self._config['Aux2'] = self.loadFUN(6)
         self._config['Switch'] = self.loadFUN(7)
-        self._config['MCU'] = self.loadHAL(8, 3)  # [open?,port,baudrate]
-        self._config['GPS'] = self.loadHAL(9, 3)  # [open?,port,baudrate]
-        self._config['Compass'] = self.loadHAL(10, 3)  # [open?,port,baudrate]
-        self._config['Baro'] = self.loadHAL(11, 3)  # [open?,bus,i2c]
-        self._config['IMU'] = self.loadHAL(12, 3)  # [open?,port,baudrate]
-
-        # [open?,port,safety distance,detected distance]
-        self._config['Lidar'] = self.loadHAL(13, 4)
-        self._config['Cloud'] = self.loadHAL(14, 3)
         # [Current Gear,Low Gear,Mid Gear,High Gear]
-        self._config['Gear'] = self.loadHAL(15, 4)
+        self._config['Gear'] = self.loadHAL(8, 4)
 
     def loadFUN(self, index):
         return [self.node(index, 1) - 1, 0, self.node(index, 2)]
@@ -86,9 +77,4 @@ class Config(object):
 config = Config()
 
 if __name__ == "__main__":
-    model = ['UAV', 'Model', 'MainController']
-    _model = {}
-    for m in model:
-        _model[m] = config._config[m]
-    print _model
     print config

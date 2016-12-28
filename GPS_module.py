@@ -15,7 +15,7 @@ class GPS(threading.Thread):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
         print ">>> Connecting to Compass Module"
-        self.ser = open_serial('/dev/GPS', 9600, 0.5)
+        self.ser = open_serial('/dev/GPS', 9600)
 
     def run(self):
         print ">>> Initializing GPS Module"

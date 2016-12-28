@@ -9,8 +9,8 @@ from waypoint import Waypoint
 
 class Attribute(object):
 
-    def __init__(self, mcu, ORB):
-        self.mcu = mcu
+    def __init__(self, sbus_sender, ORB):
+        self.sbus_sender = sbus_sender
         self.ORB = ORB
         self._model = ORB._model['Model']
         self._log('Drone :{}'.format(ORB._model['UAV']))
@@ -24,7 +24,7 @@ class Attribute(object):
         self.THR = ORB.channel('THR')
         # Rudder  :[No.ch, low ,mid, high ,var, sign, rate]
         self.RUD = ORB.channel('RUD')
-
+        # Mode :[No.ch , 0 , pwm]
         self.mode = ORB.channel('Mode')
         if ORB._model['Model'] == 'HELI':
             self.Rate = ORB.channel('Rate')
@@ -78,12 +78,11 @@ class Attribute(object):
         return PIT_PWM
 
     def set_channels_mid(self):
-        a = time.time()
         self._log('Catching Loiter PWM...')
         if not self.ORB.has_module('MCU'):
             print 'Warning:MCU is closed'
             return
-        mid = self.mcu.read_channels()
+        mid = self.sbus_sender.read_channels()
         if mid is None:
             self._log('Error:Co-MCU is not health')
             return
@@ -101,8 +100,6 @@ class Attribute(object):
             self.Aux1[2] = mid[self.Aux1[0]]
             self.Aux2[2] = mid[self.Aux2[0]]
         self.Switch[2] = mid[self.Switch[0]]
-        b = time.time()
-        print b - a
 
     def set_gear(self, gear):
         if int(gear) in [1, 2, 3]:

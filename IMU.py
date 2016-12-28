@@ -4,6 +4,7 @@
 from library import Singleton, open_serial
 import threading
 import time
+from functools import reduce
 
 
 class IMU(threading.Thread):
@@ -119,7 +120,13 @@ class IMU(threading.Thread):
         return reduce(lambda x, y: x + y, package)
 
     def ReverseFrame(self, frame, length):
-        return map(lambda x: self.MergeFrame(self.CutFrame(x)[::-1]), self.CutFrame(frame, length))
+        return map(
+            lambda x: self.MergeFrame(
+                self.CutFrame(x)[
+                    ::-1]),
+            self.CutFrame(
+                frame,
+                length))
 
     def ParseQua(self, Qua):
         a = self.ReverseFrame(Qua, 8)
@@ -149,7 +156,7 @@ if __name__ == "__main__":
     Watcher()
     imu.start()
     while not ORB.subscribe('IMU_State'):
-        time.sleep(.5)
+        time.sleep(.1)
     while True:
         Acc = ORB.subscribe('ACC')
         Gyr = ORB.subscribe('GYR')

@@ -25,7 +25,9 @@ class uORB(threading.Thread):
         module = ['MCU', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
         self._module = {}
         for m in module:
-            self._module[m] = config._config[m][0]
+            self._module[m] = False
+        from tools import open_module
+        self.open(*open_module)
 
         channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode', 'Switch']
         if self._model['Model'] == 'HELI':
@@ -50,8 +52,8 @@ class uORB(threading.Thread):
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
                      'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
-                     'RPM': 1600, 'ChannelsOutput': [0] * 8,
-                     'ChannelsInput': [0] * 8, 'LoiterPWM': self.InitChannels(),
+                     'RPM': 1600, 'ChannelsOutput': None,
+                     'ChannelsInput': None, 'LoiterPWM': self.InitChannels(),
                      'InitAltitude': None, 'IMU_State': False,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
@@ -73,15 +75,15 @@ class uORB(threading.Thread):
         return self._channel[channel]
 
     def has_module(self, module):
-        return True if self._module[module] > 0 else False
+        return self._module[module]
 
     def open(self, *module):
         for x in module:
-            self._module[x] = 1
+            self._module[x] = True
 
     def close(self, *module):
         for x in module:
-            self._module[x] = -1
+            self._module[x] = False
 
     def InitChannels(self):
         channels = [0] * 8
@@ -93,7 +95,7 @@ class uORB(threading.Thread):
         location = self._HAL['Location']
         target = self._HAL['Target']
         if location is None or target is None:
-            return
+            return -1
         else:
             distance = get_distance_metres(location, target)
             return round(distance, 2)
@@ -102,7 +104,7 @@ class uORB(threading.Thread):
         location = self._HAL['Location']
         target = self._HAL['HomeLocation']
         if location is None or target is None:
-            return
+            return -1
         else:
             distance = get_distance_metres(location, target)
             return round(distance, 2)
@@ -210,8 +212,8 @@ class uORB(threading.Thread):
         self.update_channelsInput()
         self.update_channelsOutput()
         self.update_loiterPWM()
-        # return self._sensor.SerializeToString()
-        return self._sensor
+        return self._sensor.SerializeToString()
+        # return self._sensor
 
     def log_json(self):
         log = {}
@@ -248,29 +250,19 @@ if __name__ == "__main__":
     from waypoint import Waypoint
     from library import Watcher
     ORB = uORB()
-    # print ORB.build_log()
-    # ORB.open("MCU")
-    ORB._HAL = {'Compass_State': True, 'Attitude': [-0.32, 0.01, 66],
-                'Baro_State': True, 'Pressure': 1013.25,
-                'Temperature': 26, 'ChannelsInput': [1000] * 8,
-                'GPS_State': True, 'Location': [36.11127966305683, 116.2222, 100],
-                'NumStars': 16, 'ChannelsOutput': [1000] * 8,
-                'HomeLocation': [36.1111, 116.2222], 'Gear': 1,
-                'Target': [36.1111, 116.22286716842115],
-                'LoiterPWM': ORB.InitChannels(),
-                'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
-                'RPM': 1600, 'InitAltitude': -80.81, 'IMU_State': True,
-                'ACC': [0.1, 0.2, 0.3], 'GYR': [0.1, 0.2, 0.3],
-                'MAG': [0.1, 0.2, 0.3], 'EUL': [0.1, 0.2, 0.3], 'QUA': [0.1, 0.2, 0.3, 0.4]}
+    from tools import protobuf
+    ORB._HAL = protobuf
     print ORB._model
     print ORB._module
-    print ORB._HAL['LoiterPWM']
+    print ORB._channel
     # print json.dumps(ORB._module, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
-    wp.download(origin, 0)
+    # wp.download(origin, 0)
     # print ORB._HAL
     # print ORB.dataflash()
+
+    # Save FlightLog to SB card
     # Watcher()
     # ORB.start()
     # ORB.join()

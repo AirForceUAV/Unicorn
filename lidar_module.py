@@ -16,10 +16,14 @@ class Lidar(object):
     def __init__(self, vehicle=None):
         replyPipe = "./Reply"
         requestPipe = "./Request"
+        safety_distance = 1500
+        detect_distance = 3000
+        port = '/dev/ttyUSB0'
+
         pid = os.fork()
         if pid == 0:
             os.execl("./ultra_simple", "ultra_simple",
-                     '/dev/ttyUSB0', 1500, 3000, "")
+                     port, safety_distance, 3000, "")
             exit(0)
 
         if ((replyPipe, requestPipe) in self.__class__._pipeSet) is False:

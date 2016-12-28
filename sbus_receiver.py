@@ -2,181 +2,54 @@
 # coding:utf-8
 
 import serial
-import array
-import time
-import sys
-from library import CancelWatcher
-from library import CutFrame
+from library import Singleton
+import threading
+from sbus import SBUS
 
 
-class SBUSReceiver:
+class Sbus_Receiver(threading.Thread):
+    __metaclass__ = Singleton
 
-    def __init__(self):
+    def __init__(self, ORB, com):
+        super(Sbus_Receiver, self).__init__(name='sbus_receiver')
+        self.ORB = ORB
+        self._sbus = com
+        self.sbus = SBUS()
 
-        self.sbus = self.open_serial('/dev/ttyUSB0')
-
-        # constants
-        self.START_BYTE = b'0f'
-        self.END_BYTE = b'00'
-        self.SBUS_FRAME_LEN = 25
-        self.SBUS_NUM_CHAN = 18
-        self.OUT_OF_SYNC_THD = 10
-        self.SBUS_NUM_CHANNELS = 18
-        self.SBUS_SIGNAL_OK = 0
-        self.SBUS_SIGNAL_LOST = 1
-        self.SBUS_SIGNAL_FAILSAFE = 2
-
-        # Stack Variables initialization
-        self.validSbusFrame = 0
-        self.lostSbusFrame = 0
-        self.frameIndex = 0
-        self.resyncEvent = 0
-        self.outOfSyncCounter = 0
-        self.sbusBuff = bytearray(1)  # single byte used for sync
-        self.rawFrame = ''
-        self.sbusFrame = bytearray(25)  # single SBUS Frame
-        # RC Channels
-        self.sbusChannels = array.array(
-            'H', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        self.isSync = False
-        self.startByteFound = False
-        self.failSafeStatus = self.SBUS_SIGNAL_FAILSAFE
-
-    def open_serial(self, portname):
+    def run(self):
+        print ">>> Initializing sbus_receiver ..."
+        self._sbus.flushInput()
         while True:
-            try:
-                com = serial.Serial(port=portname, baudrate=100000,
-                                    parity=serial.PARITY_EVEN,
-                                    stopbits=serial.STOPBITS_TWO,
-                                    bytesize=serial.EIGHTBITS, timeout=1)
-                return com
-            except serial.SerialException:
-                info = sys.exc_info()
-                print "{0}:{1}".format(*info)
-                time.sleep(0.5)
+            # package = self._sbus.read(30).encode('hex')
+            package = self._sbus.readline().strip()
+            # print package
+            if package is '':
+                continue
+            package = self.sbus.filter(package)
+            if package is None:
+                continue
+            self.ORB.publish('ChannelsInput', self.sbus.decode(package))
 
-    def RawFrame(self):
-        self.sbus.flushInput()
-        msg = self.sbus.read(self.SBUS_FRAME_LEN * 2).encode('hex')
-        begin = msg.find(self.START_BYTE)
-        end = begin + self.SBUS_FRAME_LEN * 2
-        if end >= self.SBUS_FRAME_LEN * 4:
-            print 'Error:Frame is unvalid', msg
-            return self.RawFrame()
-        argv = msg[begin:end]
-        if not msg[end - 2:end] in ['04', '14', '24', '34']:
-            print 'Error:Frame is unvalid', argv
-            return self.RawFrame()
-        return argv
+    def __str__(self):
+        input = self.ORB.subscribe('ChannelsInput')
+        return 'Input: {}'.format(input)
 
-    def sbusFrame(self):
-        package = self.RawFrame()
-        self.sbusFrame = CutFrame(package, 4)
 
-    def sendFrame(self, frame):
-        self.sbus.write(frame)
+if __name__ == "__main__":
+    from library import Watcher
+    from uORB import uORB
+    import time
+    from tools import build_sbus
+    Watcher()
 
-    def radio(self):
-        self.sbus.flushInput()
-        watcher = CancelWatcher()
-        while not watcher.IsCancel():
-            frame = self.sbus.read(self.SBUS_FRAME_LEN + 10)
-            # print frame.encode('hex')
-            self.sendFrame(frame)
+    com = build_sbus()
+    ORB = uORB()
+    sbus_receiver = Sbus_Receiver(ORB, com)
+    sbus_receiver.start()
 
-    def GCS(self):
-        CancelWatcher.Cancel = True
-
-    def get_rx_channels(self):
-        """
-        Used to retrieve the last SBUS channels values reading
-        :return:  an array of 18 unsigned short elements containing 16
-        standard channel values + 2 digitals (ch 17 and 18)
-        """
-        return self.sbusChannels
-
-    def get_rx_channel(self, num_ch):
-        """
-        Used to retrieve the last SBUS channel value reading for
-        a specific channel
-        :param: num_ch: the channel which to retrieve the value for
-        :return:  a short value containing
-        """
-        return self.sbusChannels[num_ch]
-
-    def get_failsafe_status(self):
-        """
-        Used to retrieve the last FAILSAFE status
-        :return:  a short value containing
-        """
-        return self.failSafeStatus
-
-    def get_rx_report(self):
-        """
-        Used to retrieve some stats about the frames decoding
-        :return:  a dictionary containg three information
-        ('Valid Frames','Lost Frames', 'Resync Events')
-        """
-
-        rep = {}
-        rep['Valid Frames'] = self.validSbusFrame
-        rep['Lost Frames'] = self.lostSbusFrame
-        rep['Resync Events'] = self.resyncEvent
-
-        return rep
-
-    def decode_frame(self):
-        # TODO: DoubleCheck if it has to be removed
-        for i in range(0, self.SBUS_NUM_CHANNELS - 2):
-            self.sbusChannels[i] = 0
-
-        # counters initialization
-        byte_in_sbus = 1
-        bit_in_sbus = 0
-        ch = 0
-        bit_in_channel = 0
-
-        for i in range(0, 175):  # TODO Generalization
-            if self.sbusFrame[byte_in_sbus] & (1 << bit_in_sbus):
-                self.sbusChannels[ch] |= (1 << bit_in_channel)
-
-            bit_in_sbus += 1
-            bit_in_channel += 1
-
-            if bit_in_sbus == 8:
-                bit_in_sbus = 0
-                byte_in_sbus += 1
-
-            if bit_in_channel == 11:
-                bit_in_channel = 0
-                ch += 1
-
-        # Decode Digitals Channels
-
-        # Digital Channel 1
-        if self.sbusFrame[self.SBUS_FRAME_LEN - 2] & (1 << 0):
-            self.sbusChannels[self.SBUS_NUM_CHAN - 2] = 1
-        else:
-            self.sbusChannels[self.SBUS_NUM_CHAN - 2] = 0
-
-        # Digital Channel 2
-        if self.sbusFrame[self.SBUS_FRAME_LEN - 2] & (1 << 1):
-            self.sbusChannels[self.SBUS_NUM_CHAN - 1] = 1
-        else:
-            self.sbusChannels[self.SBUS_NUM_CHAN - 1] = 0
-
-        # Failsafe
-        self.failSafeStatus = self.SBUS_SIGNAL_OK
-        if self.sbusFrame[self.SBUS_FRAME_LEN - 2] & (1 << 2):
-            self.failSafeStatus = self.SBUS_SIGNAL_LOST
-        if self.sbusFrame[self.SBUS_FRAME_LEN - 2] & (1 << 3):
-            self.failSafeStatus = self.SBUS_SIGNAL_FAILSAFE
-
-if __name__ == '__main__':
-
-    sbus = SBUSReceiver()
+    while ORB.subscribe('ChannelsInput') is None:
+        # print sbus_receiver
+        time.sleep(.5)
     while True:
-        sbus.get_sbusFrame()
-        sbus.decode_frame()
-        print 'channels', sbus.get_rx_channels()
-        raw_input('next')
+        print sbus_receiver
+        # raw_input('Next')

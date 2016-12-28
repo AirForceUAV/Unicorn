@@ -36,7 +36,8 @@ def write_serial(_UART, info):
     num = -1
     try:
         num = _UART.read(info)
-    except serial.SerialException, serial.SerialTimeoutException:
+    except serial.SerialException as xxx_todo_changeme:
+        serial.SerialTimeoutException = xxx_todo_changeme
         info = sys.exc_info()
         print "{0}:{1}".format(*info)
     finally:
@@ -129,8 +130,11 @@ def get_distance_metres(aLocation1, aLocation2):
 
 
 def angle_heading_target(origin, target, heading):
-    target_north = get_bearing(origin, target)
-    heading_target = (360 + target_north - heading) % 360
+    """
+    Angle from head to target (anti-clockwise)
+    """
+    Target2North = get_bearing(origin, target)
+    Heading2Target = (360 + heading - Target2North) % 360
     return int(heading_target)
 
 

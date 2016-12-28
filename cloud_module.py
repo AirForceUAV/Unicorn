@@ -20,6 +20,13 @@ def open_sock():
         sys.exit(1)
 
 
+def send_Log(sock, ORB):
+    message = ORB.dataflash()
+    sock.send(message)
+    # message = ORB.log_json()
+    # sock.send(message)
+
+
 class Receiver(threading.Thread):
 
     def __init__(self, work_queue, sock, vehicle=None):
@@ -65,17 +72,15 @@ class Executor(threading.Thread):
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
 
-
-def test_send(sock):
-    sock.send('Test')
-
 if __name__ == "__main__":
     from vehicle import Vehicle
     from cloud_module import open_sock, Receiver, Executor
     from apscheduler.schedulers.background import BackgroundScheduler
     from library import Watcher
+    from uORB import uORB
     import Queue
-    vehicle = Vehicle()
+    ORB = uORB()
+    vehicle = Vehicle(ORB=ORB)
     scheduler = BackgroundScheduler()
     Watcher()
     sock = open_sock()
@@ -90,8 +95,9 @@ if __name__ == "__main__":
     executor = Executor(work_queue, vehicle)
     executor.daemon = True
     executor.start()
-
-    scheduler.add_job(test_send, 'interval', args=(sock,), seconds=1)
+    from tools import protobuf
+    ORB._HAL = protobuf
+    scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
     scheduler.start()
     receiver.join()
     executor.join()
