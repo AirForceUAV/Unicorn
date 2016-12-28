@@ -40,7 +40,7 @@ commands = [
 def build_sbus():
     print 'Initialize SBUS ...'
     portname = '/dev/ttyUSB0'
-    portname = '/dev/ttyAMA0'
+    # portname = '/dev/ttyAMA0'
     print 'Connectin to', portname
     while True:
         try:

@@ -5,6 +5,7 @@ import serial
 from library import Singleton
 import threading
 from sbus import SBUS
+import sys
 
 
 class Sbus_Receiver(threading.Thread):
@@ -20,8 +21,12 @@ class Sbus_Receiver(threading.Thread):
         print ">>> Initializing sbus_receiver ..."
         self._sbus.flushInput()
         while True:
-            # package = self._sbus.read(30).encode('hex')
-            package = self._sbus.readline().strip()
+            try:
+                # package = self._sbus.read(30).encode('hex')
+                package = self._sbus.readline().strip()
+            except serial.SerialException:
+                info = sys.exc_info()
+                print "{0}:{1}".format(*info)
             # print package
             if package is '':
                 continue
