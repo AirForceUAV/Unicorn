@@ -453,8 +453,7 @@ if __name__ == "__main__":
                 print "{0}:{1}".format(*info)
         elif enter == 'c':
             CancelWatcher.Cancel = True
-            vehicle.brake()
+            # vehicle.brake()
             break
-        else:
-            continue
+
     print 'Completed'
