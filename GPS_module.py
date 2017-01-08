@@ -63,8 +63,8 @@ if __name__ == "__main__":
     Watcher()
     gps.start()
     while not ORB.subscribe('GPS_State'):
-        time.sleep(.5)
-    while True:
-        print ORB.subscribe('Location')
-        print ORB.subscribe('NumStars')
         time.sleep(.1)
+    print 'GPS is OK'
+    while True:
+        print ORB.subscribe('Location'), ORB.subscribe('NumStars')
+        # time.sleep(.1)

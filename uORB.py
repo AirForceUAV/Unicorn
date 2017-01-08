@@ -24,9 +24,10 @@ class uORB(threading.Thread):
             self._model[m] = config._config[m]
 
         module = ['Sbus', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
-        self._module = {}
-        for m in module:
-            self._module[m] = False
+        # self._module = {}
+        # for m in module:
+        #     self._module[m] = False
+        self._module = {x: False for x in module}
         from tools import open_module
         self.open(*open_module)
 
@@ -35,13 +36,13 @@ class uORB(threading.Thread):
             channel += ['Rate', 'PIT']
         else:
             channel += ['Aux1', 'Aux2']
-        self._channel = {}
-        for c in channel:
-            self._channel[c] = config._config[c]
-
+        # self._channel = {}
+        # for c in channel:
+        #     self._channel[c] = config._config[c]
+        self._channel = {x: config._config[x] for x in channel}
         self._volume = [0] * 8
         for k, v in self._channel.iteritems():
-            self._volume[v[0]] = (v[1], v[3])
+            self._volume[v[0]] = (v[1], v[2], v[3])
 
         Gear = config._config['Gear']
         self._Gear = Gear[1:]
@@ -51,9 +52,10 @@ class uORB(threading.Thread):
                      'Temperature': None, 'Gear': Gear[0],
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
-                     'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
+                     'Mode': 'STAB', 'Waypoint': [], 'WaypointID': -1,
                      'RPM': 1600, 'Sbus_State': False, 'ChannelsOutput': None,
-                     'ChannelsInput': self.InitChannels(), 'LoiterPWM': self.InitLoiter(),
+                     'ChannelsInput': self.InitChannels(),
+                     'LoiterPWM': self.InitLoiter(),
                      'InitAltitude': None, 'IMU_State': False,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
@@ -218,8 +220,10 @@ class uORB(threading.Thread):
 
     def update_loiterPWM(self):
         c = self._sensor.LoiterPWM
-        c.ch1, c.ch2, c.ch3, c.ch4, c.ch5, c.ch6, c.ch7, c.ch8 = self._HAL[
-            'LoiterPWM']
+        channels = self._HAL['LoiterPWM']
+        if channels is None:
+            return
+        c.ch1, c.ch2, c.ch3, c.ch4, c.ch5, c.ch6, c.ch7, c.ch8 = channels
 
     def dataflash(self):
         return self.log_proto()
@@ -239,7 +243,7 @@ class uORB(threading.Thread):
         self.update_channelsOutput()
         self.update_loiterPWM()
         self._sensor.Mode = self._HAL['Mode']
-        return self._sensor
+        # return self._sensor
         return self._sensor.SerializeToString()
 
     def log_json(self):
@@ -254,7 +258,7 @@ class uORB(threading.Thread):
 
     def localtime(self):
         x = time.localtime(time.time())
-        return time.strftime('%Y-%m-%d-%H:%M:%S', x)
+        return time.strftime('%Y-%m-%d--%H:%M:%S', x)
 
     def save_log(self):
         file_path = self.build_log()
@@ -283,18 +287,18 @@ if __name__ == "__main__":
     from tools import protobuf, commands
     ORB._HAL = protobuf
     print ORB._model
-    print ORB._module
+    print [k for k, v in ORB._module.iteritems() if v]
     # print ORB._channel
-    # print ORB._volume
-    # print json.dumps(commands, indent=1)
-    # print json.dumps(ORB._module, indent=1)
+    print ORB._volume
+    print json.dumps(commands, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
-    # wp.download(origin, 0)
-    # print ORB._HAL
-    print ORB.dataflash()
+    wp.download(origin, 0)
+    # wp.add_number()
+    # print ORB.dataflash()
     # print ORB._sensor.ParseFromString(ORB.dataflash())
+    # print ORB
 
-    # Save FlightLog to SB card
+    """Save FlightLog to SB card"""
     # Watcher()
     # ORB.start()

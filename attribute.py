@@ -46,15 +46,16 @@ class Attribute(object):
             return
         self._log('Waiting for home location')
         while not self.state('GPS'):
-            time.sleep(.5)
+            time.sleep(.1)
         home = self.get_location()
         self.publish('HomeLocation', home)
         self._log('Home location :{}'.format(home))
 
     def init_altitude(self):
-        if self.has_module('Baro'):
-            init_pressure = self.subscribe('Pressure')
-            self.publish('InitAltitude', pressure2Alt(init_pressure))
+        if not self.has_module('Baro'):
+            return
+        init_pressure = self.subscribe('Pressure')
+        self.publish('InitAltitude', pressure2Alt(init_pressure))
 
     def get_stars(self):
         return self.subscribe('NumStars')
@@ -67,11 +68,14 @@ class Attribute(object):
         self.wp.download(location, index)
 
     def Phase(self):
-        phase = [1] * 8
+        phase = [0] * 8
         phase[self.AIL[0]] = self.AIL[5]
         phase[self.ELE[0]] = self.ELE[5]
         phase[self.THR[0]] = self.THR[5]
         phase[self.RUD[0]] = self.RUD[5]
+        phase[self.mode[0]] = 1
+        if self._model == 'HELI':
+            phase[self.PIT[0]] = self.PIT[5]
         return phase
 
     def set_channels_mid(self):

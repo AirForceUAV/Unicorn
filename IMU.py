@@ -4,7 +4,7 @@
 from library import Singleton, open_serial
 import threading
 import time
-from functools import reduce
+from library import CutFrame2
 
 
 class IMU(threading.Thread):
@@ -111,22 +111,11 @@ class IMU(threading.Thread):
         Qua = map(lambda x: round(x, 4), self.ParseQua(RawQua))
         return Acc, Gyr, Mag, Eul, Qua
 
-    def CutFrame(self, package, length=2):
-        FrameArray = [package[x:x + length]
-                      for x in xrange(len(package)) if x % length == 0]
-        return FrameArray
-
     def MergeFrame(self, package):
         return reduce(lambda x, y: x + y, package)
 
     def ReverseFrame(self, frame, length):
-        return map(
-            lambda x: self.MergeFrame(
-                self.CutFrame(x)[
-                    ::-1]),
-            self.CutFrame(
-                frame,
-                length))
+        return map(lambda x: self.MergeFrame(CutFrame2(x)[::-1]), CutFrame2(frame, length))
 
     def ParseQua(self, Qua):
         a = self.ReverseFrame(Qua, 8)

@@ -7,6 +7,7 @@ import threading
 from sbus import SBUS
 import sys
 import time
+from Curve import THR2PIT
 
 
 class Sbus_Receiver(threading.Thread):
@@ -17,7 +18,7 @@ class Sbus_Receiver(threading.Thread):
         self.ORB = ORB
         self._sbus = com
         self.sbus = SBUS()
-        self.before = ORB.InitChannels()
+        # self.before = ORB.InitChannels()
 
     def run(self):
         print ">>> Initializing sbus_receiver ..."
@@ -25,7 +26,7 @@ class Sbus_Receiver(threading.Thread):
             self._sbus.flushInput()
             try:
                 package = self._sbus.read(50).encode('hex')
-                # package = self._sbus.readline().strip()
+                # package = self._sbus.readline().encode('hex').strip()
             except serial.SerialException:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
@@ -48,13 +49,18 @@ class Sbus_Receiver(threading.Thread):
             self.publish('ChannelsInput', input)
 
     def check(self, channels):
-        for x, y in zip(channels, self.before):
-            if abs(x - y) > 200:
-                self.before = channels
-                return False
-
-        self.before = channels
-        return True
+        Flag = True
+        volume = self.ORB._volume
+        for x, y in zip(channels, volume):
+            if not (x > y[0] - 10 and x < y[2] + 10):
+                Flag = False
+                break
+        # for x, y in zip(channels, self.before):
+        #     if abs(x - y) > 200:
+        #         Flag = False
+        #         break
+        # self.before = channels
+        return Flag
 
     def publish(self, topic, value):
         self.ORB.publish(topic, value)
@@ -65,7 +71,7 @@ class Sbus_Receiver(threading.Thread):
     def __str__(self):
         input = self.subscribe('ChannelsInput')
         return 'Input: {}'.format(input)
-
+        # return str(input[5] - THR2PIT(input[2]))
 
 if __name__ == "__main__":
     from library import Watcher
@@ -79,12 +85,12 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    while not ORB.state('Sbus'):
-        time.sleep(.1)
+    # while not ORB.state('Sbus'):
+    #     time.sleep(.1)
     while True:
         print sbus_receiver
         # raw_input('Next')
-        # time.sleep(1)
+        # time.sleep(.5)
 
     # sbus = SBUS()
     # with open('Curve.ML', 'a+') as f:

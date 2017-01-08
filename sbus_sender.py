@@ -17,10 +17,9 @@ class Sbus_Sender(threading.Thread):
         super(Sbus_Sender, self).__init__(name='sbus_sender')
         self.ORB = ORB
         self._sbus = com
-        self.FRAME_HEAD = b'aabb'
-        self.FRAME_TAIL = b'cc'
         self.IsRadio = True
         self.sbus = SBUS()
+        self.index = 0
 
     def run(self):
         print '>>> Initializing sbus_sender ...'
@@ -62,8 +61,10 @@ class Sbus_Sender(threading.Thread):
         #         1101 + (x - 352) * 843 / 1344), channels)
         # print channels
         # self._sbus.write(self.EncodeChannels(channels).decode('hex'))
-        package = self.sbus.encode(package)
+        FRAME_TAIL = self.sbus.END_BYTE[self.index]
+        package = self.sbus.encode(package) + FRAME_TAIL
         self._sbus.write(package.decode('hex'))
+        self.index = (self.index + 1) % 4
 
     def EncodeChannels(self, channels):
         msg = reduce(lambda x, y: x + dec2hex(y),
@@ -77,10 +78,9 @@ class Sbus_Sender(threading.Thread):
         return self.ORB.subscribe(topic)
 
     def __str__(self):
-        info = [
-            self.subscribe('ChannelsInput'),
-            self.subscribe('ChannelsOutput')]
-        return "Input: {} Output: {}".format(*info)
+        input = self.subscribe('ChannelsInput')
+        output = self.subscribe('ChannelsOutput')
+        return "Input: {} Output: {}".format(input, output)
 
 if __name__ == "__main__":
     import time
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    while not ORB.state('Sbus'):
-        time.sleep(.1)
+    # while not ORB.state('Sbus'):
+    #     time.sleep(.1)
 
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()

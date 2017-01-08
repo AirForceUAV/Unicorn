@@ -21,40 +21,6 @@ def open_serial(portname, baudrate, timeout=None):
             time.sleep(1.0)
 
 
-def read_serial(_UART, size):
-    msg = ''
-    try:
-        msg = _UART.read(size)
-    except serial.SerialException:
-        info = sys.exc_info()
-        print "{0}:{1}".format(*info)
-    finally:
-        return msg
-
-
-def write_serial(_UART, info):
-    num = -1
-    try:
-        num = _UART.read(info)
-    except serial.SerialException as xxx_todo_changeme:
-        serial.SerialTimeoutException = xxx_todo_changeme
-        info = sys.exc_info()
-        print "{0}:{1}".format(*info)
-    finally:
-        return num
-
-
-def readline_serial(_UART):
-    msg = ''
-    try:
-        msg = _UART.readline()
-    except serial.SerialException:
-        info = sys.exc_info()
-        print "{0}:{1}".format(*info)
-    finally:
-        return msg
-
-
 def element(file_name):
     try:
         import xml.etree.cElementTree as ET
@@ -76,9 +42,15 @@ def pressure2Alt(hpa):
 
 
 def CutFrame(package, length=2):
-    FrameArray = [int(package[x:x + length], 16)
-                  for x in range(len(package)) if x % length == 0]
-    return FrameArray
+    pieces = [int(package[x:x + length], 16)
+              for x in xrange(len(package)) if x % length == 0]
+    return pieces
+
+
+def CutFrame2(package, length=2):
+    pieces = [package[x:x + length]
+              for x in xrange(len(package)) if x % length == 0]
+    return pieces
 
 
 def get_bearing(aLocation1, aLocation2):

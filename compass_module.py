@@ -5,6 +5,7 @@ import time
 import threading
 from library import open_serial
 from library import Singleton
+from library import CutFrame
 
 
 class Compass(threading.Thread):
@@ -14,7 +15,7 @@ class Compass(threading.Thread):
         super(Compass, self).__init__(name="Compass")
         print ">>> Connecting to Compass ..."
         self.ORB = ORB
-        self.ser = open_serial('/dev/compass', 9600, timeout=0.5)
+        self.ser = open_serial('/dev/compass', 9600, timeout=0.01)
 
     def run(self):
         print ">>> Initializing Compass ..."
@@ -51,18 +52,18 @@ class Compass(threading.Thread):
             times += 1
             self.ser.write(command)
             package = self.ser.readline().encode('hex')
-            # print package
             index = package.find('68')
             if index == -1 or len(package) < index + size * 2:
                 continue
             package = package[index:index + size * 2]
-            # print package
             if package[6:8] == ack and self.checksum(package):
                 return package
         return None
 
     def checksum(self, package):
-        return True
+        pieces = CutFrame(package)
+        sum = reduce(lambda x, y: x + y, pieces[1:-1]) % 256
+        return sum == pieces[-1]
 
     def decode_BCD(self, package):
         sign = package[0]
@@ -75,6 +76,7 @@ class Compass(threading.Thread):
         if self.ser.is_open is True:
             self.ser.close()
 
+
 if __name__ == '__main__':
     from library import Watcher
     from uORB import uORB
@@ -83,7 +85,8 @@ if __name__ == '__main__':
     Watcher()
     compass.start()
     while not ORB.subscribe('Compass_State'):
-        time.sleep(.5)
+        time.sleep(.1)
+    print 'Compass is OK'
     while True:
         print ORB.subscribe('Attitude')
         # time.sleep(.1)

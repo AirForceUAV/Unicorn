@@ -58,14 +58,13 @@ class Vehicle(Attribute):
 
     def disarm(self):
         self._log('DisArmed ...')
-        self.control_stick(THR=-1,Mode=2)
+        self.control_stick(THR=-1, Mode=2)
 
     def takeoff(self, alt=5):
         print 'Takeoff to ', alt, 'm'
         if not self.has_module('Baro'):
             print 'Baro is closed'
             return 0
-        
 
         # self.control_FRU(THR=1)
         # # time.sleep(2)
@@ -226,13 +225,11 @@ class Vehicle(Attribute):
         while not watcher.IsCancel():
             current_yaw = self.get_heading()
             if current_yaw is None:
-                return
+                break
             if self.isStop(current_yaw, target_angle, is_cw):
                 break
             # self._log('{},{}'.format(current_yaw, target_angle))
-
-        self._log('Target:{},Result:{}'.format(
-            self.get_heading(), target_angle))
+        print "Result", self.get_heading()
         self.brake()
         # self._log('After:{}'.format(self.get_heading()))
 
@@ -261,7 +258,7 @@ class Vehicle(Attribute):
 
             print 'Distance :', distance
 
-            if not self.InAngle(angle, 90) or angle < radius + 5:
+            if not self.InAngle(angle, 90) or angle < radius:
                 self._log("Reached Target Waypoint!")
                 break
 
@@ -298,7 +295,7 @@ class Vehicle(Attribute):
 
             print 'Distance :', distance
 
-            if not self.InAngle(angle, 90) or angle < radius + 5:
+            if not self.InAngle(angle, 90) or angle < radius:
                 self._log("Reached Target Waypoint!")
                 break
             SAngle = int(math.degrees(math.asin(radius / distance))) + 20
@@ -332,7 +329,7 @@ class Vehicle(Attribute):
 
         self.navigation(target)
         # self.land()
-        self.publish('Mode', 'Loiter')
+        self.publish('Mode', 'STAB')
 
     def Route(self, info):
         self.wp.Route(info)
@@ -388,8 +385,8 @@ if __name__ == "__main__":
         sbus_receiver = Sbus_Receiver(ORB, com)
         sbus_receiver.start()
 
-        while not ORB.state('Sbus'):
-            time.sleep(.1)
+        # while not ORB.state('Sbus'):
+        #     time.sleep(.1)
 
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()

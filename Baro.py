@@ -172,23 +172,17 @@ class Baro(threading.Thread):
     def convert2In(self, pressure):
         return pressure * 0.0295301
 
-
-def convert2Alt(hpa):
-    # mba===hpa
-    tmp = hpa / 1013.25
-    return round((1 - tmp**0.190284) * 145366.45 * 0.3048, 2)
-
-
 if __name__ == "__main__":
     from library import Watcher
     from uORB import uORB
+    from library import pressure2Alt
     ORB = uORB()
     baro = Baro(ORB)
     Watcher()
     baro.start()
     while not ORB.subscribe('Baro_State'):
-        time.sleep(.5)
+        time.sleep(.1)
     init_pressure = ORB.subscribe('Pressure')
-    self.publish('InitAltitude', convert2Alt(init_pressure))
+    self.publish('InitAltitude', pressure2Alt(init_pressure))
     while True:
         print ORB.get_altitude()

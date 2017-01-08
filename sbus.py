@@ -13,7 +13,7 @@ class SBUS(object):
     def __init__(self):
         # constants
         self.START_BYTE = b'0f'
-        self.FLAGS_BYTE = b'0004'
+        self.FLAGS_BYTE = b'00'
         self.END_BYTE = [b'04', b'14', b'24', b'34']
         self.SBUS_FRAME_LEN = 25
         self.SBUS_NUM_CHAN = 18
@@ -80,7 +80,7 @@ class SBUS(object):
 
     def decode_frame(self):
         # TODO: DoubleCheck if it has to be removed
-        for i in range(0, self.SBUS_NUM_CHANNELS - 2):
+        for i in xrange(0, self.SBUS_NUM_CHANNELS - 2):
             self.sbusChannels[i] = 0
 
         # counters initialization
@@ -89,7 +89,7 @@ class SBUS(object):
         ch = 0
         bit_in_channel = 0
 
-        for i in range(0, 175):  # TODO Generalization
+        for i in xrange(0, 175):  # TODO Generalization
             if self.sbusFrame[byte_in_sbus] & (1 << bit_in_sbus):
                 self.sbusChannels[ch] |= (1 << bit_in_channel)
 
@@ -132,7 +132,7 @@ class SBUS(object):
             return None
         end = begin + size
         argv = package[begin:end]
-        if (package[- 2:] in self.END_BYTE) and len(argv) == size:
+        if argv[-2:] in self.END_BYTE and len(argv) == size:
             return argv
         else:
             return None
@@ -183,7 +183,7 @@ class SBUS(object):
         package = reduce(lambda x, y: x + y, cut_ch8)
         # bin2hex
         ch1_8 = reduce(lambda x, y: x + y, [format(int(package[x:x + 8], 2), '0>2x')
-                                            for x in range(len(package)) if x % 8 == 0])
+                                            for x in xrange(len(package)) if x % 8 == 0])
         # Pack Frame
         return self.START_BYTE + ch1_8 + ch9_16 + self.FLAGS_BYTE
 
@@ -197,4 +197,4 @@ if __name__ == '__main__':
         sbusChannels = sbus.decode(package)
         print sbusChannels
     print package
-    print sbus.encode(sbusChannels)
+    print sbus.encode(sbusChannels) + '14'
