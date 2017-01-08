@@ -182,12 +182,12 @@ def ascii2hex(argv):
     return result
 
 
-def dec2hex(int_10):
+def dec2hex(decimal, length=4):
     """
-    Convert  10h to 16h(sizeof 2B)
+    Convert  10h to 16h(default sizeof 2B)
     """
-    int_16 = format(hex(int_10)[2:], '0>4')
-    return int_16
+    hexadecimal = format(decimal, '0>' + str(length) + 'x')
+    return hexadecimal
 
 
 def cos(angle):
@@ -277,3 +277,4 @@ if __name__ == '__main__':
     loc = [36.1111, 116.2222]
     print get_location_metres(loc, 20, 0)
     print get_location_metres(loc, 0, 60)
+    print dec2hex(1024)

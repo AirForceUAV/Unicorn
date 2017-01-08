@@ -13,10 +13,9 @@ if __name__ == '__main__':
     from library import Watcher
 
     ORB = uORB()
-    sbus_sender = None
     Watcher()
 
-    if ORB.has_module('MCU'):
+    if ORB.has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -25,11 +24,12 @@ if __name__ == '__main__':
         sbus_receiver = Sbus_Receiver(ORB, com)
         sbus_receiver.start()
 
-        while ORB.subscribe('ChannelsInput') is None:
+        while not ORB.state('Sbus'):
             time.sleep(.1)
 
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()
+        print 'Sbus is OK'
 
     if ORB.has_module('Compass'):
         # Initialize Compass
@@ -37,8 +37,9 @@ if __name__ == '__main__':
         compass = Compass(ORB)
 
         compass.start()
-        while not ORB.subscribe('Compass_State'):
+        while not ORB.state('Compass'):
             time.sleep(.1)
+        print 'Compass is OK'
 
     if ORB.has_module('GPS'):
         # Initialize GPS
@@ -46,8 +47,9 @@ if __name__ == '__main__':
         gps = GPS(ORB)
 
         gps.start()
-        while not ORB.subscribe('GPS_State'):
+        while not ORB.state('GPS'):
             time.sleep(.1)
+        print 'GPS is OK'
 
     if ORB.has_module('Baro'):
         # Initialize Barometre
@@ -55,8 +57,9 @@ if __name__ == '__main__':
         baro = Baro(ORB)
 
         baro.start()
-        while not ORB.subscribe('Baro_State'):
+        while not ORB.state('Baro'):
             time.sleep(.1)
+        print 'Baro is OK'
 
     if ORB.has_module('IMU'):
         # Initialize IMU
@@ -64,11 +67,12 @@ if __name__ == '__main__':
         imu = IMU(ORB)
 
         imu.start()
-        while not ORB.subscribe('IMU_State'):
+        while not ORB.state('IMU'):
             time.sleep(.1)
+        print 'IMU is OK'
 
     # Initialize UAV
-    vehicle = Vehicle(sbus_sender, ORB)
+    vehicle = Vehicle(ORB)
 
     if ORB.has_module('Lidar'):
         # Initialize Lidar
@@ -105,9 +109,5 @@ if __name__ == '__main__':
         #     sock.send(message)
         #     time.sleep(1)
         scheduler.start()
-        receiver.join()
-        executor.join()
-        work_queue.join()
 
-    # ORB.join()
     print '>>> completed'

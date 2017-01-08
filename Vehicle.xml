@@ -4,60 +4,67 @@
         <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW AIL PWM </param>
-            <param index="3" value="1025" unit="PWM">MID AIL PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG AIL PWM </param>
+            <param index="2" value="352" unit="PWM">Min volume </param>
+            <param index="3" value="1025" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume </param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="1" name="ELE">
             <description>Elevator PWM.</description>
             <param index="1" value="2" unit="No.">Elevator Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW ELE PWM </param>
-            <param index="3" value="1046" unit="PWM">MID ELE PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG ELE PWM </param>
+            <param index="2" value="352" unit="PWM">Min volume</param>
+            <param index="3" value="1046" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume </param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="2" name="THR">
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
-            <param index="2" value="299" unit="PWM">LOW THR PWM </param>
-            <param index="3" value="1000" unit="PWM">MID THR PWM </param>
-            <param index="4" value="1709" unit="PWM">HIG THR PWM </param>
+            <param index="2" value="299" unit="PWM">Min volume </param>
+            <param index="3" value="1000" unit="PWM">Mid volume</param>
+            <param index="4" value="1709" unit="PWM">Max volume </param>
             <param index="5" value="1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="3" name="RUD">
             <description>Rudder PWM.</description>
             <param index="1" value="4" unit="No.">Rudder Channel Number</param>
-            <param index="2" value="159" unit="PWM">LOW RUD PWM </param>
-            <param index="3" value="827" unit="PWM">MID RUD PWM </param>
-            <param index="4" value="1503" unit="PWM">HIG RUD PWM </param>
+            <param index="2" value="159" unit="PWM">Min volume. </param>
+            <param index="3" value="827" unit="PWM">Mid volume. </param>
+            <param index="4" value="1503" unit="PWM">Max volume. </param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
             <param index="6" value="3" unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="Mode">
             <description>Flight Mode.</description>
-            <param index="1" value="6" unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="1581" unit="PWM">Loiter PWM.</param>
+            <param index="1" value="7" unit="No.">Flight Mode Channel Number.</param>
+            <param index="2" value="487" unit="PWM">Min volume.</param>
+            <param index="2" value="1581" unit="PWM">Mid volume.</param>
+            <param index="2" value="1581" unit="PWM">Max volume(Loiter volume).</param>
         </entry>
         <entry index="5" name="Rate">
             <description>Gyrometre Rate.</description>
-            <param index="1" value="7" unit="No.">Rate Channel Number</param>
-            <param index="2" value="1312" unit="PWM">Lock Tail PWM</param>
+            <param index="1" value="5" unit="No.">Rate Channel Number</param>
+            <param index="2" value="1312" unit="PWM">Rate</param>
+            <param index="2" value="1312" unit="PWM">Rate</param>
+            <param index="2" value="1312" unit="PWM">Rate</param>
         </entry>
         <entry index="6" name="PIT">
             <description>Pitch PWM.</description>
-            <param index="1" value="5" unit="No.">Pitch Channel Number</param>
-            <param index="2" value="327" unit="PWM">Low</param>
-            <param index="3" value="715" unit="PWM">MID</param>
-            <param index="4" value="1425" unit="PWM">HIG</param>
+            <param index="1" value="6" unit="No.">Pitch Channel Number</param>
+            <param index="2" value="327" unit="PWM">Min volume</param>
+            <param index="3" value="715" unit="PWM">Mid volume</param>
+            <param index="4" value="1066" unit="PWM">Max volume</param>
+            <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
         </entry>
         <entry index="7" name="Switch">
             <description>Switch between Radio and GCS.</description>
             <param index="1" value="8" unit="No.">Switch Channel Number</param>
+            <param index="2" value="325" unit="PWM">Min volume.</param>
             <param index="2" value="1024" unit="PWM">GCS switch PWM</param>
+            <param index="2" value="1696" unit="PWM">Max volume.</param>
         </entry>
         <entry index="8" name="Gears">
             <description>Vehicle Gears.</description>
@@ -67,62 +74,70 @@
             <param index="4" value="20" unit="%">Gear 'H' :PWM rate. </param>
         </entry>
     </vehicle>
-    <vehicle index="1" UAV="HEX6" Model='Multi' MainController='NAZA-m v2'>
+    <vehicle index="1" UAV="HEX6" Model='HEX' MainController='NAZA-m v2'>
         <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
             <param index="1" value="1" unit="No.">Aileron Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW AIL PWM </param>
-            <param index="3" value="1024" unit="PWM">MID AIL PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG AIL PWM </param>
+            <param index="2" value="352" unit="PWM">Min volume </param>
+            <param index="3" value="1024" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume </param>
             <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="1" name="ELE">
             <description>Elevator PWM.</description>
             <param index="1" value="2" unit="No.">Elevator Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW ELE PWM </param>
-            <param index="3" value="1046" unit="PWM">MID ELE PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG ELE PWM </param>
+            <param index="2" value="352" unit="PWM">Min volume </param>
+            <param index="3" value="1046" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume</param>
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="2" name="THR">
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW THR PWM </param>
-            <param index="3" value="1020" unit="PWM">MID THR PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG THR PWM </param>
+            <param index="2" value="352" unit="PWM">Mid volume </param>
+            <param index="3" value="1020" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume </param>
             <param index="5" value="-1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="3" name="RUD">
             <description>Rudder PWM.</description>
             <param index="1" value="4" unit="No.">Rudder Channel Number</param>
-            <param index="2" value="352" unit="PWM">LOW RUD PWM </param>
-            <param index="3" value="1028" unit="PWM">MID RUD PWM </param>
-            <param index="4" value="1696" unit="PWM">HIG RUD PWM </param>
+            <param index="2" value="352" unit="PWM">Min volume </param>
+            <param index="3" value="1028" unit="PWM">Mid volume </param>
+            <param index="4" value="1696" unit="PWM">Max volume </param>
             <param index="5" value="1" unit='bool'>Positive(1) or Reverse(-1).</param>
             <param index="6" value="10" unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="Mode">
             <description>Flight Mode.</description>
             <param index="1" value="5" unit="No.">Flight Mode Channel Number.</param>
-            <param index="2" value="1696" unit="PWM">Loiter mode PWM.</param>
+            <param index="2" value="352" unit="PWM">Min volume.</param>
+            <param index="3" value="1024" unit="PWM">Mid volume.</param>
+            <param index="4" value="1696" unit="PWM">Max volume(Loiter volume).</param>
         </entry>
         <entry index="5" name="AUX1">
             <description>Pitch PWM.</description>
             <param index="1" value="6" unit="No.">AUX1</param>
-            <param index="2" value="1024" unit="PWM">AUX1</param>
+            <param index="2" value="1024" unit="PWM">Aux1.</param>
+            <param index="3" value="1024" unit="PWM">AUX1</param>
+            <param index="4" value="1024" unit="PWM">Aux1</param>
         </entry>
         <entry index="6" name="AUX2">
             <description>Gyrometre Rate.</description>
             <param index="1" value="7" unit="No.">Rate Channel Number</param>
-            <param index="2" value="1554" unit="PWM">Lock Tail PWM</param>
+            <param index="2" value="1554" unit="PWM">Aux2.</param>
+            <param index="3" value="1554" unit="PWM">Aux2</param>
+            <param index="4" value="1554" unit="PWM">Aux2.</param>
         </entry>
         <entry index="7" name="Switch">
             <description>Switch between Radio and GCS.</description>
             <param index="1" value="8" unit="No.">Switch Channel Number</param>
-            <param index="2" value="1024" unit="PWM">GCS switch PWM</param>
+            <param index="2" value="352" unit="PWM">Min volume.</param>
+            <param index="3" value="1024" unit="PWM">GCS switch PWM</param>
+            <param index="4" value="1696" unit="PWM">Max volume.</param>
         </entry>
         <entry index="8" name="Gears">
             <description>Vehicle Gears.</description>

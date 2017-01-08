@@ -3,7 +3,7 @@
 
 import time
 import threading
-from library import open_serial, ascii2hex
+from library import open_serial
 from library import Singleton
 
 
@@ -50,8 +50,7 @@ class Compass(threading.Thread):
         while times < 100:
             times += 1
             self.ser.write(command)
-            res = self.ser.readline()
-            package = ascii2hex(res)
+            package = self.ser.readline().encode('hex')
             # print package
             index = package.find('68')
             if index == -1 or len(package) < index + size * 2:

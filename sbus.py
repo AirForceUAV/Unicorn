@@ -13,6 +13,7 @@ class SBUS(object):
     def __init__(self):
         # constants
         self.START_BYTE = b'0f'
+        self.FLAGS_BYTE = b'0004'
         self.END_BYTE = [b'04', b'14', b'24', b'34']
         self.SBUS_FRAME_LEN = 25
         self.SBUS_NUM_CHAN = 18
@@ -21,6 +22,7 @@ class SBUS(object):
         self.SBUS_SIGNAL_OK = 0
         self.SBUS_SIGNAL_LOST = 1
         self.SBUS_SIGNAL_FAILSAFE = 2
+        self.number = 0
 
         # Stack Variables initialization
         self.validSbusFrame = 0
@@ -37,27 +39,6 @@ class SBUS(object):
         self.isSync = False
         self.startByteFound = False
         self.failSafeStatus = self.SBUS_SIGNAL_FAILSAFE
-
-    def decode(self, package):
-        self.sbusFrame = CutFrame(package)
-        self.decode_frame()
-        result = self.get_rx_channels()
-        return result[:8]
-
-    def filter(self, package):
-        size = self.SBUS_FRAME_LEN * 2
-        begin = package.find(self.START_BYTE)
-        if begin == -1:
-            return None
-        end = begin + size
-        argv = package[begin:end]
-        if (package[- 2:] in self.END_BYTE) and len(argv) == size:
-            return argv
-        else:
-            return None
-
-    def encode(self, channels):
-        pass
 
     def get_rx_channels(self):
         """
@@ -144,11 +125,76 @@ class SBUS(object):
         if self.sbusFrame[self.SBUS_FRAME_LEN - 2] & (1 << 3):
             self.failSafeStatus = self.SBUS_SIGNAL_FAILSAFE
 
+    def filter(self, package):
+        size = self.SBUS_FRAME_LEN * 2
+        begin = package.find(self.START_BYTE)
+        if begin == -1:
+            return None
+        end = begin + size
+        argv = package[begin:end]
+        if (package[- 2:] in self.END_BYTE) and len(argv) == size:
+            return argv
+        else:
+            return None
+
+    def decode(self, package):
+        if package is None:
+            return None
+        self.sbusFrame = CutFrame(package)
+        self.decode_frame()
+        result = self.get_rx_channels()
+        return result[:8]
+
+    def encode(self, sbusChannels):
+        if sbusChannels is None:
+            return None
+        ch9_16 = '0004200001080738001080'
+        # dec2bin len(ch8_bin)=8
+        ch8_bin = map(lambda x: format(x, '0>11b'), sbusChannels[:8])
+
+        # init some parameter
+        flag = False
+        i = 8
+        j = 3
+        # len(cut_ch8)=2*8+2
+        cut_ch8 = []
+
+        for ch in ch8_bin:
+            # print 'j={} i={}'.format(j, i)
+            cut_ch8.append(ch[-i:])
+            if flag:
+                cut_ch8.append(ch[j: j + 8])
+                flag = False
+            cut_ch8.append(ch[: j])
+
+            i = (16 - j) % 8
+            j = 11 - i
+            if j > 8:
+                j -= 8
+                flag = True
+
+        # Reverse ch8
+        for i in [1, 3, 6, 8, 10, 13, 15]:
+            tmp = cut_ch8[i + 1]
+            cut_ch8[i + 1] = cut_ch8[i]
+            cut_ch8[i] = tmp
+
+        # Merge cut_ch8(binary)
+        package = reduce(lambda x, y: x + y, cut_ch8)
+        # bin2hex
+        ch1_8 = reduce(lambda x, y: x + y, [format(int(package[x:x + 8], 2), '0>2x')
+                                            for x in range(len(package)) if x % 8 == 0])
+        # Pack Frame
+        return self.START_BYTE + ch1_8 + ch9_16 + self.FLAGS_BYTE
+
 if __name__ == '__main__':
     package = '0f00a420a809086a504b182c00042000010807380010800014'
-    sbus = SBUSReceiver()
+    sbus = SBUS()
     package = sbus.filter(package)
     if package is None:
         print 'package is error'
     else:
-        print sbus.decode(package)
+        sbusChannels = sbus.decode(package)
+        print sbusChannels
+    print package
+    print sbus.encode(sbusChannels)

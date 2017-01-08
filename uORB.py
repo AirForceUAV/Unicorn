@@ -9,6 +9,7 @@ from config import config
 import FlightLog_pb2 as FlightLog
 import os
 import threading
+from sbus import SBUS
 
 
 class uORB(threading.Thread):
@@ -16,13 +17,13 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-
+        self.sbus = SBUS()
         model = ['UAV', 'Model', 'MainController']
         self._model = {}
         for m in model:
             self._model[m] = config._config[m]
 
-        module = ['MCU', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
+        module = ['Sbus', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
         self._module = {}
         for m in module:
             self._module[m] = False
@@ -38,10 +39,9 @@ class uORB(threading.Thread):
         for c in channel:
             self._channel[c] = config._config[c]
 
-        # ChannelSpec = [0] * 8
-        # for k, v in self._channel.iteritems():
-        #     ChannelSpec[v[0]] = k
-        # print ChannelSpec
+        self._volume = [0] * 8
+        for k, v in self._channel.iteritems():
+            self._volume[v[0]] = (v[1], v[3])
 
         Gear = config._config['Gear']
         self._Gear = Gear[1:]
@@ -52,8 +52,8 @@ class uORB(threading.Thread):
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
                      'Mode': 'Loiter', 'Waypoint': [], 'WaypointID': -1,
-                     'RPM': 1600, 'ChannelsOutput': None,
-                     'ChannelsInput': None, 'LoiterPWM': self.InitChannels(),
+                     'RPM': 1600, 'Sbus_State': False, 'ChannelsOutput': None,
+                     'ChannelsInput': self.InitChannels(), 'LoiterPWM': self.InitLoiter(),
                      'InitAltitude': None, 'IMU_State': False,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
@@ -85,10 +85,30 @@ class uORB(threading.Thread):
         for x in module:
             self._module[x] = False
 
-    def InitChannels(self):
+    def InitLoiter(self):
         channels = [0] * 8
         for ch, ch_val in self._channel.iteritems():
-            channels[ch_val[0]] = ch_val[2]
+            channels[ch_val[0]] = ch_val[3] if ch == 'Mode' else ch_val[2]
+        return channels
+
+    def InitChannels(self):
+        channels = [0] * 8
+        if self._model['Model'] == 'HELI':
+            for ch, ch_val in self._channel.iteritems():
+                if ch == 'Mode':
+                    channels[ch_val[0]] = ch_val[3]
+                elif ch == 'THR' or ch == 'PIT':
+                    channels[ch_val[0]] = ch_val[2 - ch_val[5]]
+                else:
+                    channels[ch_val[0]] = ch_val[2]
+        else:
+            for ch, ch_val in self._channel.iteritems():
+                if ch == 'Mode':
+                    channels[ch_val[0]] = ch_val[3]
+                elif ch == 'THR':
+                    channels[ch_val[0]] = ch_val[2 - ch_val[5]]
+                else:
+                    channels[ch_val[0]] = ch_val[2]
         return channels
 
     def distance_to_target(self):
@@ -183,12 +203,18 @@ class uORB(threading.Thread):
             id += 1
 
     def update_channelsInput(self):
-        pass
+        c = self._sensor.ChannelsInput
+        channels = self._HAL['ChannelsInput']
+        if channels is None:
+            return
+        c.ch1, c.ch2, c.ch3, c.ch4, c.ch5, c.ch6, c.ch7, c.ch8 = channels
 
     def update_channelsOutput(self):
         c = self._sensor.ChannelsOutput
-        c.ch1, c.ch2, c.ch3, c.ch4, c.ch5, c.ch6, c.ch7, c.ch8 = self._HAL[
-            'ChannelsOutput']
+        channels = self._HAL['ChannelsOutput']
+        if channels is None:
+            return
+        c.ch1, c.ch2, c.ch3, c.ch4, c.ch5, c.ch6, c.ch7, c.ch8 = channels
 
     def update_loiterPWM(self):
         c = self._sensor.LoiterPWM
@@ -212,8 +238,9 @@ class uORB(threading.Thread):
         self.update_channelsInput()
         self.update_channelsOutput()
         self.update_loiterPWM()
+        self._sensor.Mode = self._HAL['Mode']
+        return self._sensor
         return self._sensor.SerializeToString()
-        # return self._sensor
 
     def log_json(self):
         log = {}
@@ -227,20 +254,23 @@ class uORB(threading.Thread):
 
     def localtime(self):
         x = time.localtime(time.time())
-        return time.strftime('%Y-%m-%d %H:%M:%S', x)
+        return time.strftime('%Y-%m-%d-%H:%M:%S', x)
 
     def save_log(self):
         file_path = self.build_log()
         # print file_path
-        with open(file_path, 'a+') as f:
+        with open(file_path, 'w+') as f:
             while True:
-                f.write(self.log_proto().SerializeToString() + '##')
+                f.write(self.log_proto() + '##')
                 time.sleep(.5)
 
     def build_log(self):
         log_name = self.localtime() + '.log'
-        file_path = os.path.join(os.path.expanduser('~'), 'UAVLog', log_name)
-        return file_path
+        file_path = os.path.join(
+            os.path.expanduser('~'), 'UAVLog', self._model['Model'])
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        return os.path.join(file_path, log_name)
 
     def __str__(self):
         return json.dumps(self._HAL, indent=1)
@@ -255,15 +285,16 @@ if __name__ == "__main__":
     print ORB._model
     print ORB._module
     # print ORB._channel
-    print json.dumps(commands, indent=1)
+    # print ORB._volume
+    # print json.dumps(commands, indent=1)
     # print json.dumps(ORB._module, indent=1)
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
     # wp.download(origin, 0)
     # print ORB._HAL
-    # print ORB.dataflash()
+    print ORB.dataflash()
+    # print ORB._sensor.ParseFromString(ORB.dataflash())
 
     # Save FlightLog to SB card
     # Watcher()
     # ORB.start()
-    # ORB.join()

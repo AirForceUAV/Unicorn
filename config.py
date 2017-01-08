@@ -34,10 +34,7 @@ class Config(object):
         self._config['Gear'] = self.loadHAL(8, 4)
 
     def loadFUN(self, index):
-        return [self.node(index, 1) - 1, 0, self.node(index, 2)]
-
-    def loadHAL(self, index, end, start=1):
-        return [self.node(index, x) for x in range(start, end + 1)]
+        return [self.node(index, 1) - 1, self.node(index, 2), self.node(index, 3), self.node(index, 4)]
 
     def loadPIT(self, index):
         num = self.node(index, 1) - 1
@@ -45,7 +42,11 @@ class Config(object):
         mid = self.node(index, 3)
         hig = self.node(index, 4)
         var = hig - low
-        return [num, low, mid, hig, var]
+        sign = self.node(index, 5)
+        return [num, low, mid, hig, var, sign]
+
+    def loadHAL(self, index, end, start=1):
+        return [self.node(index, x) for x in range(start, end + 1)]
 
     def channel(self, index):
         num = self.node(index, 1) - 1

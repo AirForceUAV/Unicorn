@@ -9,8 +9,7 @@ from waypoint import Waypoint
 
 class Attribute(object):
 
-    def __init__(self, sbus_sender, ORB):
-        self.sbus_sender = sbus_sender
+    def __init__(self, ORB):
         self.ORB = ORB
         self._model = ORB._model['Model']
         self._log('Drone :{}'.format(ORB._model['UAV']))
@@ -26,13 +25,17 @@ class Attribute(object):
         self.RUD = ORB.channel('RUD')
         # Mode :[No.ch , 0 , pwm]
         self.mode = ORB.channel('Mode')
-        if ORB._model['Model'] == 'HELI':
+        if self._model == 'HELI':
+            # GYRO Rate :[No.ch , 0 , pwm]
             self.Rate = ORB.channel('Rate')
+            # PITCH :[No.ch , 0 , pwm]
             self.PIT = ORB.channel('PIT')
         else:
+            # Aux1 :[No.ch , 0 , pwm]
             self.Aux1 = ORB.channel('Aux1')
+            # Aux2 :[No.ch , 0 , pwm]
             self.Aux2 = ORB.channel('Aux2')
-            # 8 channels PWM:[CH1~CH8]
+        # Switch :[No.ch , 0 , pwm]
         self.Switch = ORB.channel('Switch')
         self.wp = Waypoint(ORB)
         self.update_home()
@@ -71,20 +74,10 @@ class Attribute(object):
         phase[self.RUD[0]] = self.RUD[5]
         return phase
 
-    def THR2PIT(self, THR):
-        per = 100 * (THR - self.THR[1]) / self.THR[4]
-        p1 = ((0.0022 * per * per - 0.85 * per + 63) / 63.0) * self.PIT[4]
-        PIT_PWM = int(p1) + self.PIT[1]
-        return PIT_PWM
-
     def set_channels_mid(self):
         self._log('Catching Loiter PWM...')
-        if not self.ORB.has_module('MCU'):
-            print 'Warning:MCU is closed'
-            return
-        mid = self.sbus_sender.read_channels()
+        mid = self.subscribe('ChannelsInput')
         if mid is None:
-            self._log('Error:Co-MCU is not health')
             return
         self._log('Channels Mid:{}'.format(mid))
         self.publish('LoiterPWM', mid)

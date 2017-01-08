@@ -6,48 +6,48 @@ import sys
 import time
 
 open_module = [
-    'MCU',
-    # 'Compass',
+    'Sbus',
+    'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
-    # 'Cloud',
+    'Cloud',
 ]
 
 commands = [
-    # 'arm()',
+    'arm()',
     # 'set_channels_mid()',
     # 'set_gear(2)',
-    'yaw_left_brake()',
-    'yaw_right_brake()',
-    'roll_left_brake()',
-    'roll_right_brake()',
-    'forward_brake()',
-    'backward_brake()',
+    # 'yaw_left_brake()',
+    # 'yaw_right_brake()',
+    # 'roll_left_brake()',
+    # 'roll_right_brake()',
+    # 'forward_brake()',
+    # 'backward_brake()',
     'up_brake()',
-    'down_brake()',
-    # 'condition_yaw(30)',
-    # 'condition_yaw(300)',
+    # 'down_brake()',
+    'condition_yaw(30)',
+    'condition_yaw(300)',
     # 'set_target(20, 0)',
     # 'Guided()',
     # 'download()',
     # 'Auto()',
-    # 'disarm()',
+    'disarm()',
 ]
 
 
 def build_sbus():
-    print 'Initialize SBUS ...'
-    portname = '/dev/ttyUSB0'
+    print 'Initialize Radio ...'
+    portname = '/dev/sbus'
     # portname = '/dev/ttyAMA0'
     print 'Connecting to', portname
     while True:
         try:
             com = serial.Serial(port=portname,
                                 baudrate=100000,
-                                # parity=serial.PARITY_EVEN,
-                                stopbits=serial.STOPBITS_ONE,
+                                parity=serial.PARITY_EVEN,
+                                stopbits=serial.STOPBITS_TWO,
                                 bytesize=serial.EIGHTBITS)
             return com
         except serial.SerialException:
@@ -56,7 +56,7 @@ def build_sbus():
             time.sleep(.5)
 
 close_module = [
-    'MCU',
+    'Sbus',
     'Compass',
     'GPS',
     'Baro',
@@ -67,6 +67,7 @@ close_module = [
 
 protobuf = {
     'Compass_State': True,
+    'Sbus_State': True,
     'Attitude': [
         -0.32,
         0.01,

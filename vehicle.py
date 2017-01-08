@@ -8,39 +8,41 @@ from library import CancelWatcher
 from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
+from Curve import THR2PIT
 
 
 class Vehicle(Attribute):
     __metaclass__ = Singleton
 
-    def __init__(self, sbus_sender=None, ORB=None):
-        super(Vehicle, self).__init__(sbus_sender, ORB)
+    def __init__(self, ORB):
+        super(Vehicle, self).__init__(ORB)
         self.moveTime = 2
         self.brakeTime = 0.5
 
-    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0):
+    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
         channels = [0] * 8
         channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
         channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
         channels[self.THR[0]] = self.THR[2 + THR * self.THR[5]]
         channels[self.RUD[0]] = self.RUD[2 + RUD * self.RUD[5]]
+        channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
         self.send_pwm(channels)
 
-    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0):
+    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
         channels[self.THR[0]] = self.movement(self.THR, THR)
         channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
+        channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
         self.send_pwm(channels)
 
     def _construct_channel(self, channels):
-        channels[self.mode[0]] = self.mode[2]
         if self._model == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
-            channels[self.PIT[0]] = self.PIT[2]
+            channels[self.PIT[0]] = THR2PIT(channels[self.THR[0]])
         else:
             channels[self.Aux1[0]] = self.Aux1[2]
             channels[self.Aux2[0]] = self.Aux2[2]
@@ -48,40 +50,42 @@ class Vehicle(Attribute):
 
     def arm(self):
         self._log("Arming ...")
-        self.control_stick(1, -1, -1, -1)
-        time.sleep(1)
+        if self._model == 'HELI':
+            return
+        self.control_stick(-1, -1, 1, -1, 2)
+        time.sleep(2)
         self.disarm()
 
     def disarm(self):
         self._log('DisArmed ...')
-        self.control_stick(THR=-1)
+        self.control_stick(THR=-1,Mode=2)
 
     def takeoff(self, alt=5):
+        print 'Takeoff to ', alt, 'm'
         if not self.has_module('Baro'):
             print 'Baro is closed'
             return 0
-        print 'Takeoff to ', alt, 'm'
+        
 
-        self.control_FRU(THR=1)
-        # time.sleep(2)
-        watcher = CancelWatcher()
-        while not watcher.IsCancel():
-            currentAlt = self.get_alt()
-            print 'Current Altitude', currentAlt
-            if currentAlt is None:
-                break
-            if currentAlt > alt * 0.9:
-                print 'Reached Altitude'
-                break
+        # self.control_FRU(THR=1)
+        # # time.sleep(2)
+        # watcher = CancelWatcher()
+        # while not watcher.IsCancel():
+        #     currentAlt = self.get_alt()
+        #     print 'Current Altitude', currentAlt
+        #     if currentAlt is None:
+        #         break
+        #     if currentAlt > alt * 0.9:
+        #         print 'Reached Altitude'
+        #         break
 
-        self.brake()
-        pass
+        # self.brake()
 
     def land(self):
+        print 'Landing... '
         if not self.has_module('Baro'):
             print 'Baro is closed'
             return
-        print 'Landing... '
 
         # self.control_FRU(0, 0, -1)
         # watcher = CancelWatcher()
@@ -108,12 +112,12 @@ class Vehicle(Attribute):
         #     self.disarm()
 
     def movement(self, channel, sign=1):
-        rate = self.ORB._Gear[self.subscribe('Gear') - 1] * 0.01
+        rate = self.ORB._Gear[self.subscribe('Gear') - 1] / 100.0
         variation = int(channel[5] * channel[4] * rate)
         return channel[2] + sign * variation
 
     def movement2(self, channel, sign=1):
-        rate = channel[6] * 0.01
+        rate = channel[6] / 100.0
         variation = int(channel[5] * channel[4] * rate)
         return channel[2] + sign * variation
 
@@ -186,9 +190,6 @@ class Vehicle(Attribute):
         print channels
         print self.analysis_channels(channels)
         self.publish('ChannelsOutput', channels)
-        if not self.has_module('MCU'):
-            return
-        self.sbus_sender.send_pwm(channels)
 
     def analysis_channels(self, channels):
         a = [x - y for x, y in zip(channels, self.subscribe('LoiterPWM'))]
@@ -196,7 +197,7 @@ class Vehicle(Attribute):
 
     def isStop(self, heading, target, sign):
         diff = (360 + sign * (heading - target)) % 360
-        return False if diff <= 180 and diff > 5 else True
+        return False if diff <= 180 and diff > 2 else True
 
     def condition_yaw(self, heading=0):
         """
@@ -377,9 +378,7 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    sbus_sender = None
-
-    if ORB.has_module('MCU'):
+    if ORB.has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -389,12 +388,12 @@ if __name__ == "__main__":
         sbus_receiver = Sbus_Receiver(ORB, com)
         sbus_receiver.start()
 
-        while ORB.subscribe('ChannelsInput') is None:
-            time.sleep(.5)
+        while not ORB.state('Sbus'):
+            time.sleep(.1)
 
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()
-        time.sleep(.5)
+        print 'Sbus is OK'
 
     if ORB.has_module('Compass'):
         # Initialize Compass
@@ -402,8 +401,9 @@ if __name__ == "__main__":
         compass = Compass(ORB)
 
         compass.start()
-        while not ORB.subscribe('Compass_State'):
-            time.sleep(.5)
+        while not ORB.state('Compass'):
+            time.sleep(.1)
+        print 'Compass is OK'
 
     if ORB.has_module('GPS'):
         # Initialize GPS
@@ -411,8 +411,9 @@ if __name__ == "__main__":
         gps = GPS(ORB)
 
         gps.start()
-        while not ORB.subscribe('GPS_State'):
-            time.sleep(.5)
+        while not ORB.state('GPS'):
+            time.sleep(.1)
+        print 'GPS is OK'
 
     if ORB.has_module('Baro'):
         # Initialize Barometre
@@ -420,8 +421,9 @@ if __name__ == "__main__":
         baro = Baro(ORB)
 
         baro.start()
-        while not ORB.subscribe('Baro_State'):
-            time.sleep(.5)
+        while not ORB.state('Baro'):
+            time.sleep(.1)
+        print 'Baro is OK'
 
     if ORB.has_module('IMU'):
         # Initialize IMU
@@ -429,22 +431,28 @@ if __name__ == "__main__":
         imu = IMU(ORB)
 
         imu.start()
-        while not ORB.subscribe('IMU_State'):
-            time.sleep(.5)
+        while not ORB.state('IMU'):
+            time.sleep(.1)
+        print 'IMU is OK'
 
     # Save FlightLog to SD card
     # ORB.start()
 
     # Initialize UAV
-    vehicle = Vehicle(sbus_sender, ORB)
+    vehicle = Vehicle(ORB)
 
     # Test
     import sys
     from tools import commands
     Test = commands
     for t in Test:
-        enter = raw_input(t + '???').strip()
-        if enter is '':
+        enter = raw_input(t + ' ???').strip()
+
+        if enter == 'c' or enter == 'C':
+            continue
+        elif enter == 'b' or enter == 'B':
+            break
+        else:
             command = 'vehicle.' + t
             print 'Execute command ->', command
             try:
@@ -452,9 +460,6 @@ if __name__ == "__main__":
             except Exception:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
-        elif enter == 'c':
-            CancelWatcher.Cancel = True
-            # vehicle.brake()
-            break
+                vehicle.Cancel()
 
     print 'Completed'

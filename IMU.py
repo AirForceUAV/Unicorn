@@ -35,7 +35,7 @@ class IMU(threading.Thread):
         self.ACC_UNIT = 0.000244  # G
         self.GYR_UNIT = 0.061035  # °/s
         self.MAG_UNIT = 6         # Gauss
-        self.EUL_UNIT = 0.01      # °
+        self.EUL_UNIT = 100.0    # °
 
         self.ORB = ORB
         self._imu = open_serial('/dev/IMU', 115200)
@@ -107,7 +107,7 @@ class IMU(threading.Thread):
         Gyr = map(lambda x: round(x * self.GYR_UNIT, 4),
                   self.ParseFrag(RawGyr))
         Mag = map(lambda x: x * self.MAG_UNIT, self.ParseFrag(RawMag))
-        Eul = map(lambda x: x * self.EUL_UNIT, self.ParseFrag(RawEul))
+        Eul = map(lambda x: x / self.EUL_UNIT, self.ParseFrag(RawEul))
         Qua = map(lambda x: round(x, 4), self.ParseQua(RawQua))
         return Acc, Gyr, Mag, Eul, Qua
 
@@ -163,6 +163,5 @@ if __name__ == "__main__":
         Mag = ORB.subscribe('MAG')
         Eul = ORB.subscribe('EUL')
         Qua = ORB.subscribe('QUA')
-        print 'ACC:{},GYR:{},MAG:{},EUL:{},QUA:{}'.format(Acc, Gyr, Mag, Eul, Qua)
+        print 'ACC:{}, GYR:{}, MAG:{}, EUL:{}, QUA:{}'.format(Acc, Gyr, Mag, Eul, Qua)
         raw_input('Next')
-    imu.join()

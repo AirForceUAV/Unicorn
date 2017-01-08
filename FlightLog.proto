@@ -75,6 +75,7 @@ message sensors {
   Channels ChannelsOutput = 12 ;
   Channels LoiterPWM = 13 ;
   float Altitude = 14 ;
+  string Mode = 15;
 }
 
 // [END messages]

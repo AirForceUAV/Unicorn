@@ -6,6 +6,7 @@ from library import Singleton
 import threading
 from sbus import SBUS
 import sys
+import time
 
 
 class Sbus_Receiver(threading.Thread):
@@ -16,28 +17,53 @@ class Sbus_Receiver(threading.Thread):
         self.ORB = ORB
         self._sbus = com
         self.sbus = SBUS()
+        self.before = ORB.InitChannels()
 
     def run(self):
         print ">>> Initializing sbus_receiver ..."
-        self._sbus.flushInput()
         while True:
+            self._sbus.flushInput()
             try:
-                # package = self._sbus.read(30).encode('hex')
-                package = self._sbus.readline().strip()
+                package = self._sbus.read(50).encode('hex')
+                # package = self._sbus.readline().strip()
             except serial.SerialException:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
             # print 'package', package
+
             if package is '':
                 continue
+
             sbusFrame = self.sbus.filter(package)
+
             # print sbusFrame
             if sbusFrame is None:
                 continue
-            self.ORB.publish('ChannelsInput', self.sbus.decode(sbusFrame))
+
+            input = self.sbus.decode(sbusFrame)
+
+            if not self.check(input):
+                continue
+            self.publish('Sbus_State', True)
+            self.publish('ChannelsInput', input)
+
+    def check(self, channels):
+        for x, y in zip(channels, self.before):
+            if abs(x - y) > 200:
+                self.before = channels
+                return False
+
+        self.before = channels
+        return True
+
+    def publish(self, topic, value):
+        self.ORB.publish(topic, value)
+
+    def subscribe(self, topic):
+        return self.ORB.subscribe(topic)
 
     def __str__(self):
-        input = self.ORB.subscribe('ChannelsInput')
+        input = self.subscribe('ChannelsInput')
         return 'Input: {}'.format(input)
 
 
@@ -53,10 +79,19 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    while ORB.subscribe('ChannelsInput') is None:
-        # print sbus_receiver
-        time.sleep(.5)
+    while not ORB.state('Sbus'):
+        time.sleep(.1)
     while True:
-        # print sbus_receiver
+        print sbus_receiver
         # raw_input('Next')
-        time.sleep(1)
+        # time.sleep(1)
+
+    # sbus = SBUS()
+    # with open('Curve.ML', 'a+') as f:
+    #     while True:
+    #         input = ORB.subscribe('ChannelsInput')
+    #         # print input
+    #         line = "{},{}\n".format(input[2], input[5])
+    #         print line
+    #         f.write(line)
+    #         time.sleep(.1)

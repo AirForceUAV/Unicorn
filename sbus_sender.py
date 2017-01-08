@@ -6,6 +6,8 @@ from library import Singleton
 from library import CutFrame
 import threading
 from library import CancelWatcher
+import time
+from sbus import SBUS
 
 
 class Sbus_Sender(threading.Thread):
@@ -17,19 +19,20 @@ class Sbus_Sender(threading.Thread):
         self._sbus = com
         self.FRAME_HEAD = b'aabb'
         self.FRAME_TAIL = b'cc'
-        self.FRAME_LEN = 19
-        self.TIMEOUT = 100
         self.IsRadio = True
+        self.sbus = SBUS()
 
     def run(self):
         print '>>> Initializing sbus_sender ...'
-        GCS_PWM = 1024
+        switch = self.ORB._channel['Switch']
+        GCS_PWM = switch[2]
         while True:
             package = self.subscribe('ChannelsInput')
             if package is None:
                 continue
-            ch8 = package[7]
-            if ch8 < GCS_PWM + 20 and ch8 > GCS_PWM - 20:
+            ch8 = package[switch[0]]
+            # print ch8
+            if ch8 < GCS_PWM + 100 and ch8 > GCS_PWM - 100:
                 # GCS Mode
                 # print 'GCS'
                 if self.IsRadio:
@@ -43,38 +46,29 @@ class Sbus_Sender(threading.Thread):
             else:
                 # Radio Mode
                 # print 'Radio'
-                if CancelWatcher.Cancel is False:
-                    CancelWatcher.Cancel = True
+                CancelWatcher.Cancel = True
                 self.IsRadio = True
                 self.send_package(package)
+            # self.send_package(package)
 
-    def send_package(self, channels):
+    def send_package(self, package):
         # self._sbus.flushOutput()
         # print channels
-        if self.ORB._model['Model'] == "HELI":
-            channels = map(lambda x: int(
-                1012 + (x - 352) * 775 / 1344), channels)
-        else:
-            channels = map(lambda x: int(
-                1101 + (x - 352) * 843 / 1344), channels)
+        # if self.ORB._model['Model'] == "HELI":
+        #     channels = map(lambda x: int(
+        #         1012 + (x - 352) * 775 / 1344), channels)
+        # else:
+        #     channels = map(lambda x: int(
+        #         1101 + (x - 352) * 843 / 1344), channels)
         # print channels
-        self._sbus.write(self.EncodeChannels(channels))
+        # self._sbus.write(self.EncodeChannels(channels).decode('hex'))
+        package = self.sbus.encode(package)
+        self._sbus.write(package.decode('hex'))
 
     def EncodeChannels(self, channels):
         msg = reduce(lambda x, y: x + dec2hex(y),
-                     [self.FRAME_HEAD] + channels) + self.FRAME_TAIL
-        # msg = "AABB"
-        # for channel in channels:
-        #     msg += dec2hex(channel)
-        # msg += "CC"
-        return msg.decode('hex')
-
-    def send_pwm(self, channels):
-        if not self.IsRadio:
-            self.publish('ChannelsOutput', channels)
-
-    def read_channels(self):
-        return self.subscribe('ChannelsInput')
+                     ['aabb'] + channels) + 'cc'
+        return msg
 
     def publish(self, topic, value):
         self.ORB.publish(topic, value)
@@ -101,10 +95,11 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    while ORB.subscribe('ChannelsInput') is None:
-        time.sleep(.5)
+    while not ORB.state('Sbus'):
+        time.sleep(.1)
 
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()
     while True:
         print sbus_sender
+        # time.sleep(1)

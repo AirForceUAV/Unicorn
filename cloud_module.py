@@ -29,7 +29,7 @@ def send_Log(sock, ORB):
 
 class Receiver(threading.Thread):
 
-    def __init__(self, work_queue, sock, vehicle=None):
+    def __init__(self, work_queue, sock):
         super(Receiver, self).__init__(name="Receiver")
         self.work_queue = work_queue
         self.sock = sock
@@ -71,6 +71,7 @@ class Executor(threading.Thread):
             except Exception:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
+                self.vehicle.Cancel()
 
 if __name__ == "__main__":
     from vehicle import Vehicle
@@ -99,6 +100,3 @@ if __name__ == "__main__":
     ORB._HAL = protobuf
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
     scheduler.start()
-    receiver.join()
-    executor.join()
-    work_queue.join()
