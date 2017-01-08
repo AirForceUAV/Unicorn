@@ -2,7 +2,6 @@
 # coding:utf-8
 
 import numpy
-from matplotlib import pyplot as pl
 
 
 class fitting:
@@ -26,6 +25,7 @@ class fitting:
         return self.error, self.ER2
 
     def show(self):
+        from matplotlib import pyplot as pl
         figure1 = pl.figure()
         pl.plot(self.x, self.y, 'ro-', markersize=7,
                 figure=figure1, label='origin data')
