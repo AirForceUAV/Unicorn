@@ -60,7 +60,7 @@ ORB	Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:179
 ORB	GPS_module.py	/^    ORB = uORB()$/;"	kind:variable	line:61
 ORB	IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:132
 ORB	cloud_module.py	/^    ORB = uORB()$/;"	kind:variable	line:83
-ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:84
+ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:83
 ORB	main.py	/^    ORB = uORB()$/;"	kind:variable	line:15
 ORB	sbus_receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:84
 ORB	sbus_sender.py	/^    ORB = uORB()$/;"	kind:variable	line:93
@@ -177,11 +177,11 @@ build_sbus	tools.py	/^def build_sbus():$/;"	kind:function	line:40
 channel	config.py	/^    def channel(self, index):$/;"	kind:member	line:53
 channel	uORB.py	/^    def channel(self, channel):$/;"	kind:member	line:76
 check	sbus_receiver.py	/^    def check(self, channels):$/;"	kind:member	line:51
-checksum	compass_module.py	/^    def checksum(self, package):$/;"	kind:member	line:64
+checksum	compass_module.py	/^    def checksum(self, package):$/;"	kind:member	line:63
 child	waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:62
 clear	waypoint.py	/^    def clear(self):$/;"	kind:member	line:65
 close	GPS_module.py	/^    def close(self):$/;"	kind:member	line:54
-close	compass_module.py	/^    def close(self):$/;"	kind:member	line:76
+close	compass_module.py	/^    def close(self):$/;"	kind:member	line:75
 close	uORB.py	/^    def close(self, *module):$/;"	kind:member	line:86
 close_module	tools.py	/^close_module = [$/;"	kind:variable	line:58
 cloud_module.py	cloud_module.py	1;"	kind:file	line:1
@@ -189,7 +189,7 @@ com	main.py	/^        com = build_sbus()$/;"	kind:variable	line:23
 com	sbus_receiver.py	/^    com = build_sbus()$/;"	kind:variable	line:83
 com	sbus_sender.py	/^    com = build_sbus()$/;"	kind:variable	line:92
 commands	tools.py	/^commands = [$/;"	kind:variable	line:18
-compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:85
+compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:84
 compass	main.py	/^        compass = Compass(ORB)$/;"	kind:variable	line:37
 compass_module.py	compass_module.py	1;"	kind:file	line:1
 condition_yaw	vehicle.py	/^    def condition_yaw(self, heading=0):$/;"	kind:member	line:201
@@ -215,7 +215,7 @@ count	library.py	/^    count = 0$/;"	kind:variable	line:177
 dataflash	uORB.py	/^    def dataflash(self):$/;"	kind:member	line:228
 dec2hex	library.py	/^def dec2hex(decimal, length=4):$/;"	kind:function	line:157
 decode	sbus.py	/^    def decode(self, package):$/;"	kind:member	line:140
-decode_BCD	compass_module.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:69
+decode_BCD	compass_module.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:68
 decode_frame	sbus.py	/^    def decode_frame(self):$/;"	kind:member	line:81
 disarm	vehicle.py	/^    def disarm(self):$/;"	kind:member	line:59
 distance_from_home	uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:125

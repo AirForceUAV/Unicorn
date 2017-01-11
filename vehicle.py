@@ -5,7 +5,7 @@ import time
 import json
 import math
 from library import CancelWatcher
-from library import get_distance_metres, angle_heading_target
+from library import get_distance_metres, angle_heading_target, get_bearing
 from library import Singleton, _angle
 from attribute import Attribute
 from Curve import THR2PIT
@@ -231,7 +231,7 @@ class Vehicle(Attribute):
             # self._log('{},{}'.format(current_yaw, target_angle))
         print "Result", self.get_heading()
         self.brake()
-        # self._log('After:{}'.format(self.get_heading()))
+        print "Result", self.get_heading()
 
     def navigation(self, target):
         watcher = CancelWatcher()
@@ -256,10 +256,10 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print 'Distance :', distance
+            print angle, distance
 
-            if not self.InAngle(angle, 90) or angle < radius:
-                self._log("Reached Target Waypoint!")
+            if not self.InAngle(angle, 90) or distance < radius:
+                self._log("Reached Target!")
                 break
 
             SAngle = int(math.degrees(math.asin(radius / distance))) + 20
@@ -268,6 +268,41 @@ class Vehicle(Attribute):
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(frequency)
+            # raw_input('next')
+        self.brake()
+
+    def navigation2(self, target):
+        watcher = CancelWatcher()
+        radius = 5
+        frequency = 0.5
+        current_location = self.get_location()
+        current_yaw = self.get_heading()
+        if current_location is None or current_yaw is None or target is None:
+            return
+
+        init_angle = angle_heading_target(
+            current_location, target, current_yaw)
+        self.condition_yaw(init_angle)
+
+        while not watcher.IsCancel():
+            current_location = self.get_location()
+            current_yaw = self.get_heading()
+            if current_location is None or current_yaw is None:
+                break
+            distance = round(
+                get_distance_metres(current_location, target), 2)
+            angle = angle_heading_target(
+                current_location, target, current_yaw)
+
+            print angle, distance
+
+            if not self.InAngle(angle, 90) or distance < radius:
+                self._log("Reached Target!")
+                break
+
+            self.forward()
+            time.sleep(frequency)
+            # raw_input('next')
         self.brake()
 
     def _navigation(self, target):
@@ -293,14 +328,14 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print 'Distance :', distance
+            print angle, distance
 
-            if not self.InAngle(angle, 90) or angle < radius:
+            if not self.InAngle(angle, 90) or distance < radius:
                 self._log("Reached Target Waypoint!")
                 break
-            SAngle = int(math.degrees(math.asin(radius / distance))) + 20
+            SAngle = int(math.degrees(math.asin(radius / distance)))
 
-            if self.InAngle(angle, SAngle):
+            if self.InAngle(angle, SAngle + 20):
                 self.forward()
             else:
                 if angle > SAngle and angle <= 90:
@@ -312,6 +347,7 @@ class Vehicle(Attribute):
                 else:
                     self.condition_yaw(angle)
             time.sleep(frequency)
+            # raw_input('next')
         self.brake()
 
     def InAngle(self, angle, SAngle):
@@ -358,7 +394,7 @@ class Vehicle(Attribute):
             return -1
         self.publish('Mode', 'GUIDED')
 
-        self.navigation(target)
+        self.navigation2(target)
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
 

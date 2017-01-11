@@ -62,10 +62,10 @@ def get_bearing(aLocation1, aLocation2):
     """
     off_x = aLocation2[1] - aLocation1[1]
     off_y = aLocation2[0] - aLocation1[0]
-    bearing = 90.00 + math.atan2(-off_y, off_x) * 57.2957795
+    bearing = 90.00 + math.atan2(-off_y, off_x) * 57.2957795 - 6
     if bearing < 0:
         bearing += 360.00
-    return bearing
+    return int(bearing)
 
 
 def get_location_metres(original_location, dNorth, dEast):
@@ -105,9 +105,9 @@ def angle_heading_target(origin, target, heading):
     """
     Angle from head to target (anti-clockwise)
     """
-    Target2North = get_bearing(origin, target)
-    Heading2Target = (360 + heading - Target2North) % 360
-    return int(heading_target)
+    T2NAngel = get_bearing(origin, target)
+    H2TAngle = (360 + heading - T2NAngel) % 360
+    return int(H2TAngle)
 
 
 def _angle(angle):
@@ -247,6 +247,9 @@ class Watcher(object):
 if __name__ == '__main__':
     # open_serial('/dev/compass', 9600)
     loc = [36.1111, 116.2222]
-    print get_location_metres(loc, 20, 0)
-    print get_location_metres(loc, 0, 60)
-    print dec2hex(1024)
+    # print get_location_metres(loc, 20, 0)
+    # print get_location_metres(loc, 0, 60)
+    # print dec2hex(1024)
+    TLocation = get_location_metres(loc, 1000, 1000)
+    H2TAngle = angle_heading_target(loc, TLocation, 90)
+    print H2TAngle
