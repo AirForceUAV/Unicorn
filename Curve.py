@@ -49,11 +49,15 @@ class fitting:
 
 def THR2PIT(x):
     if x < 1005:
-        z = [-8.243e-08, 0.0001138, -0.5343, 1217]
+        # z = [-8.243e-08, 0.0001138, -0.5343, 1217]
+        z = [-9.16722269e-08, 1.42260097e-04, -6.45783079e-01, 1.24867568e+03]
+
     elif x >= 1005 and x < 1400:
-        z = [-5.799e-07, 0.002291, -3.475, 2481]
+        # z = [-5.799e-07, 0.002291, -3.475, 2481]
+        z = [3.18216337e-06, -1.09121803e-02, 1.17711613e+01, -3.39113091e+03]
     else:
-        z = [2.26e-06, -0.01085, 16.69, -7785]
+        # z = [2.26e-06, -0.01085, 16.69, -7785]
+        z = [7.18993311e-07, -3.86965514e-03, 6.47078888e+00, -3.01883592e+03]
     coefficient = numpy.array(z)
     # Fitting Function
     fitfunction = numpy.poly1d(coefficient)
@@ -61,7 +65,7 @@ def THR2PIT(x):
 
 if __name__ == '__main__':
 
-    with open('Curve.ML', 'r') as f:
+    with open('Curve2.ML', 'r') as f:
         lines = f.readlines()
 
     X1 = []
@@ -114,8 +118,9 @@ if __name__ == '__main__':
     #         pitch = int(F3.predict(line[0]))
     #     print line[0], pitch, line[1], pitch - line[1]
 
-    # for line in lines:
-    #     line = line.split(',')
-    #     line = map(int, line)
-    #     p = THR2PIT(line[0])
-    #     print line[0], line[1], p, line[1] - p
+    for line in lines:
+        line = line.split(',')
+        line = map(int, line)
+        p = THR2PIT(line[0])
+        print line[0], line[1], p, line[1] - p
+    # print THR2PIT(1000)

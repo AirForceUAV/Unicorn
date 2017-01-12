@@ -38,6 +38,7 @@ class Sbus_Sender(threading.Thread):
                     self.IsRadio = False
                     self.publish('ChannelsOutput', package)
                 output = self.subscribe('ChannelsOutput')
+
                 if output is None:
                     continue
                 # print output
@@ -97,7 +98,7 @@ if __name__ == "__main__":
 
     # while not ORB.state('Sbus'):
     #     time.sleep(.1)
-
+    time.sleep(1)
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()
     while True:

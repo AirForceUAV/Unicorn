@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         # while not ORB.state('Sbus'):
         #     time.sleep(.1)
-
+        time.sleep(1)
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()
         print 'Sbus is OK'

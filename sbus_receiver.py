@@ -87,17 +87,27 @@ if __name__ == "__main__":
 
     # while not ORB.state('Sbus'):
     #     time.sleep(.1)
+
     while True:
         print sbus_receiver
+        # input = ORB.subscribe('ChannelsInput')
+        # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
         # raw_input('Next')
         # time.sleep(.5)
 
     # sbus = SBUS()
-    # with open('Curve.ML', 'a+') as f:
+    # pre = ORB._HAL['ChannelsInput']
+    # with open('Curve2.ML', 'a+') as f:
     #     while True:
     #         input = ORB.subscribe('ChannelsInput')
+
     #         # print input
+    #         # if input[2] != pre[2]:
+    #         #     line = "{},{}\n".format(input[2], input[5])
+    #         #     # print line
+    #         #     f.write(line)
+    #         # pre = input
     #         line = "{},{}\n".format(input[2], input[5])
     #         print line
     #         f.write(line)
-    #         time.sleep(.1)
+    #         raw_input('Next')

@@ -33,7 +33,7 @@ class Vehicle(Attribute):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
-        channels[self.THR[0]] = self.movement(self.THR, THR)
+        channels[self.THR[0]] = self.movement2(self.THR, THR)
         channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
@@ -43,6 +43,7 @@ class Vehicle(Attribute):
         if self._model == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
             channels[self.PIT[0]] = THR2PIT(channels[self.THR[0]])
+            # channels[self.PIT[0]] = self.PIT[0]
         else:
             channels[self.Aux1[0]] = self.Aux1[2]
             channels[self.Aux2[0]] = self.Aux2[2]
@@ -423,7 +424,7 @@ if __name__ == "__main__":
 
         # while not ORB.state('Sbus'):
         #     time.sleep(.1)
-
+        time.sleep(1)
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()
         print 'Sbus is OK'
