@@ -16,7 +16,7 @@ open_module = [
 ]
 
 commands = [
-    # 'arm()',
+    'arm()',
     # 'set_channels_mid()',
     # 'set_gear(2)',
     # 'yaw_left_brake()',
@@ -27,13 +27,13 @@ commands = [
     # 'backward_brake()',
     'up_brake()',
     'down_brake()',
-    'condition_yaw(30)',
-    'condition_yaw(300)',
-    'set_target(-20, 0)',
+    # 'condition_yaw(30)',
+    # 'condition_yaw(300)',
+    # 'set_target(-20, 0)',
     # 'Guided()',
     # 'download()',
     # 'Auto()',
-    # 'disarm()',
+    'disarm()',
 ]
 
 
