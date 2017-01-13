@@ -22,6 +22,7 @@ class Sbus_Receiver(threading.Thread):
 
     def run(self):
         print ">>> Initializing sbus_receiver ..."
+        self.publish('Sbus_State', True)
         while True:
             self._sbus.flushInput()
             try:
@@ -45,7 +46,6 @@ class Sbus_Receiver(threading.Thread):
 
             if not self.check(input):
                 continue
-            self.publish('Sbus_State', True)
             self.publish('ChannelsInput', input)
 
     def check(self, channels):
@@ -85,8 +85,8 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    # while not ORB.state('Sbus'):
-    #     time.sleep(.1)
+    while not ORB.state('Sbus'):
+        time.sleep(.1)
 
     while True:
         print sbus_receiver
@@ -96,8 +96,8 @@ if __name__ == "__main__":
         # time.sleep(.5)
 
     # sbus = SBUS()
-    # pre = ORB._HAL['ChannelsInput']
-    # with open('Curve2.ML', 'a+') as f:
+    # # pre = ORB._HAL['ChannelsInput']
+    # with open('PitchCurve.ML', 'a+') as f:
     #     while True:
     #         input = ORB.subscribe('ChannelsInput')
 

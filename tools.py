@@ -7,7 +7,7 @@ import time
 
 open_module = [
     'Sbus',
-    'Compass',
+    # 'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
@@ -18,13 +18,13 @@ open_module = [
 commands = [
     'arm()',
     # 'set_channels_mid()',
-    # 'set_gear(2)',
-    # 'yaw_left_brake()',
-    # 'yaw_right_brake()',
-    # 'roll_left_brake()',
-    # 'roll_right_brake()',
-    # 'forward_brake()',
-    # 'backward_brake()',
+    'set_gear(2)',
+    'yaw_left_brake()',
+    'yaw_right_brake()',
+    'roll_left_brake()',
+    'roll_right_brake()',
+    'forward_brake()',
+    'backward_brake()',
     'up_brake()',
     'down_brake()',
     # 'condition_yaw(30)',
@@ -68,6 +68,7 @@ close_module = [
 protobuf = {
     'Compass_State': True,
     'Sbus_State': True,
+    'Sender_State': True,
     'Attitude': [
         -0.32,
         0.01,

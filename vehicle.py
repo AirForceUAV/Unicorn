@@ -39,6 +39,16 @@ class Vehicle(Attribute):
         self._construct_channel(channels)
         self.send_pwm(channels)
 
+    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
+        channels = [0] * 8
+        channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
+        channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
+        channels[self.THR[0]] = self.control_THR(self.THR, THR)
+        channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
+        channels[self.mode[0]] = self.mode[Mode]
+        self._construct_channel(channels)
+        self.send_pwm(channels)
+
     def _construct_channel(self, channels):
         if self._model == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
@@ -48,6 +58,49 @@ class Vehicle(Attribute):
             channels[self.Aux1[0]] = self.Aux1[2]
             channels[self.Aux2[0]] = self.Aux2[2]
         channels[self.Switch[0]] = self.Switch[2]
+
+    def movement(self, channel, sign=1):
+        # sign in [-1,0,1]. By Gear
+        gear = self.subscribe('Gear') - 1
+        rate = self.ORB._Gear[gear] / 100.0
+        index = 2 + channel[5] * sign
+        section = abs(channel[2] - channel[index])
+        variation = int(channel[5] * section * rate)
+        return channel[2] + sign * variation
+
+    def movement2(self, channel, sign=1):
+        # sign in [-1,0,1].  By XML
+        rate = channel[6] / 100.0
+        index = 2 + channel[5] * sign
+        section = abs(channel[2] - channel[index])
+        variation = int(channel[5] * section * rate)
+        return channel[2] + sign * variation
+
+    def movement3(self, channel, percent=0):
+        # -100 <= percent <= 100. By Percent of PWM
+        sign = 0
+        if percent < 0:
+            sign = -1
+        elif percent > 0:
+            sign = 1
+        rate = percent / 100.0
+        index = 2 + channel[5] * sign
+        section = abs(channel[2] - channel[index])
+        variation = int(channel[5] * section * rate)
+        result = channel[2] + variation
+        # print index, variation, result
+        return result
+
+    def control_THR(self, THR, percent=0):
+        # 0 <= percent <= 100
+        rate = percent / 100.0
+        section = THR[4]
+        if THR[5] < 0:
+            rate = 1 - rate
+        variation = int(section * rate)
+        result = THR[1] + variation
+        # print result
+        return result
 
     def arm(self):
         self._log("Arming ...")
@@ -65,7 +118,7 @@ class Vehicle(Attribute):
         print 'Takeoff to ', alt, 'm'
         if not self.has_module('Baro'):
             print 'Baro is closed'
-            return 0
+            return
 
         # self.control_FRU(THR=1)
         # # time.sleep(2)
@@ -110,16 +163,6 @@ class Vehicle(Attribute):
         #         break
         # if not watcher.IsCancel():
         #     self.disarm()
-
-    def movement(self, channel, sign=1):
-        rate = self.ORB._Gear[self.subscribe('Gear') - 1] / 100.0
-        variation = int(channel[5] * channel[4] * rate)
-        return channel[2] + sign * variation
-
-    def movement2(self, channel, sign=1):
-        rate = channel[6] / 100.0
-        variation = int(channel[5] * channel[4] * rate)
-        return channel[2] + sign * variation
 
     def yaw_left(self):
         # self._log('Turn Left...')
@@ -275,7 +318,7 @@ class Vehicle(Attribute):
     def navigation2(self, target):
         watcher = CancelWatcher()
         radius = 5
-        frequency = 0.5
+        frequency = 1
         current_location = self.get_location()
         current_yaw = self.get_heading()
         if current_location is None or current_yaw is None or target is None:
@@ -375,13 +418,13 @@ class Vehicle(Attribute):
     def Auto(self):
         if self.wp.isNull():
             self._log('Waypoint is None')
-            return -1
+            return
         self.publish('Mode', 'Auto')
         watcher = CancelWatcher()
         for point in self.wp.remain_wp():
             if watcher.IsCancel():
                 self.publish('Mode', 'Loiter')
-                return 0
+                return
             self.navigation(point)
             self.wp.add_number()
 
@@ -422,11 +465,14 @@ if __name__ == "__main__":
         sbus_receiver = Sbus_Receiver(ORB, com)
         sbus_receiver.start()
 
-        # while not ORB.state('Sbus'):
-        #     time.sleep(.1)
-        time.sleep(1)
+        while not ORB.state('Sbus'):
+            time.sleep(.1)
+
         sbus_sender = Sbus_Sender(ORB, com)
         sbus_sender.start()
+
+        while not ORB.state('Sender'):
+            time.sleep(.1)
         print 'Sbus is OK'
 
     if ORB.has_module('Compass'):

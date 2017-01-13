@@ -57,6 +57,7 @@ class uORB(threading.Thread):
                      'ChannelsInput': self.InitChannels(),
                      'LoiterPWM': self.InitLoiter(),
                      'InitAltitude': None, 'IMU_State': False,
+                     'Sender_State': False,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
         self._sensor = FlightLog.sensors()
@@ -288,7 +289,7 @@ if __name__ == "__main__":
     ORB._HAL = protobuf
     print ORB._model
     print [k for k, v in ORB._module.iteritems() if v]
-    # print ORB._channel
+    print ORB._channel
     print ORB._volume
     print json.dumps(commands, indent=1)
     wp = Waypoint(ORB)

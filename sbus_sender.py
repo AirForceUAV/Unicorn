@@ -23,6 +23,7 @@ class Sbus_Sender(threading.Thread):
 
     def run(self):
         print '>>> Initializing sbus_sender ...'
+        self.publish('Sender_State', True)
         switch = self.ORB._channel['Switch']
         GCS_PWM = switch[2]
         while True:
@@ -96,11 +97,14 @@ if __name__ == "__main__":
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    # while not ORB.state('Sbus'):
-    #     time.sleep(.1)
-    time.sleep(1)
+    while not ORB.state('Sbus'):
+        time.sleep(.1)
+
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()
+
+    while not ORB.state('Sender'):
+        time.sleep(.1)
     while True:
         print sbus_sender
         # time.sleep(1)
