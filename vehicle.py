@@ -106,13 +106,13 @@ class Vehicle(Attribute):
         self._log("Arming ...")
         if self._model == 'HELI':
             return
-        self.control_stick(-1, -1, 1, -1, 2)
+        self.control_stick(-1, -1, -1, 1)
         time.sleep(2)
-        self.disarm()
+        # self.disarm()
 
     def disarm(self):
         self._log('DisArmed ...')
-        self.control_stick(THR=-1, Mode=2)
+        self.control_stick(THR=-1, 2)
 
     def takeoff(self, alt=5):
         print 'Takeoff to ', alt, 'm'
@@ -231,7 +231,7 @@ class Vehicle(Attribute):
 
     def send_pwm(self, channels):
         print channels
-        print self.analysis_channels(channels)
+        # print self.analysis_channels(channels)
         self.publish('ChannelsOutput', channels)
 
     def analysis_channels(self, channels):
