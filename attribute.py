@@ -102,17 +102,19 @@ class Attribute(object):
         if int(gear) in [1, 2, 3]:
             self.publish('Gear', int(gear))
 
-    def set_target(self, dNorth, dEast, alt=-1):
+    def set_target(self, dNorth, dEast, alt=float('inf')):
         origin = self.get_location()
         if origin is None:
             return
 
         if not (isNum(dNorth) and isNum(dEast)):
             return
-        target = get_location_metres(origin, dNorth, dEast).append(alt)
+        target = get_location_metres(origin, dNorth, dEast)
+        target.append(alt)
         self.publish('Target', target)
+        print 'Target is ', target
 
-    def set_target_angle(self, distance, angle, alt=-1):
+    def set_target_angle(self, distance, angle, alt=float('inf')):
         if not isNum(distance) or not isNum(angle):
             return
         angle = (360 + angle) % 360

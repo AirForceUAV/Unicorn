@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<vehicles ID="1">
+<vehicles ID="0">
     <vehicle index="0" UAV="copter-550" Model='HELI' MainController='ACE_ONE'>
         <entry index="0" name="AIL">
             <description>Aileron PWM.</description>
@@ -23,10 +23,10 @@
             <description>Throttle PWM.</description>
             <param index="1" value="3" unit="No.">Throttle Channel Number</param>
             <param index="2" value="299" unit="PWM">Min volume </param>
-            <param index="3" value="1088" unit="PWM">Mid volume</param>
+            <param index="3" value="1072" unit="PWM">Mid volume</param>
             <param index="4" value="1709" unit="PWM">Max volume </param>
             <param index="5" value="1" unit="bool">Positive(1) or Reverse(-1).</param>
-            <param index="6" value="20" unit="%">Variation Rate.</param>
+            <param index="6" value="15" unit="%">Variation Rate.</param>
         </entry>
         <entry index="3" name="RUD">
             <description>Rudder PWM.</description>
@@ -35,14 +35,14 @@
             <param index="3" value="827" unit="PWM">Mid volume. </param>
             <param index="4" value="1503" unit="PWM">Max volume. </param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
-            <param index="6" value="10" unit="%">Variation Rate.</param>
+            <param index="6" value="6" unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="Mode">
             <description>Flight Mode.</description>
             <param index="1" value="7" unit="No.">Flight Mode Channel Number.</param>
             <param index="2" value="487" unit="PWM">Min volume.</param>
             <param index="2" value="1024" unit="PWM">Mid volume.</param>
-            <param index="2" value="1534" unit="PWM">Max volume(Loiter volume).</param>
+            <param index="2" value="1575" unit="PWM">Max volume(Loiter volume).</param>
         </entry>
         <entry index="5" name="Rate">
             <description>Gyrometre Rate.</description>
@@ -55,7 +55,7 @@
             <description>Pitch PWM.</description>
             <param index="1" value="6" unit="No.">Pitch Channel Number</param>
             <param index="2" value="327" unit="PWM">Min volume</param>
-            <param index="3" value="740" unit="PWM">Mid volume</param>
+            <param index="3" value="754" unit="PWM">Mid volume</param>
             <param index="4" value="1140" unit="PWM">Max volume</param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
         </entry>

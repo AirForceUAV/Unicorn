@@ -5,7 +5,7 @@ import time
 import json
 import math
 from library import CancelWatcher
-from library import get_distance_metres, angle_heading_target, get_bearing
+from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
 from Curve import THR2PIT
@@ -17,7 +17,7 @@ class Vehicle(Attribute):
     def __init__(self, ORB):
         super(Vehicle, self).__init__(ORB)
         self.moveTime = 2
-        self.brakeTime = 0.5
+        self.brakeTime = 0.6
 
     def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
         channels = [0] * 8
@@ -112,7 +112,7 @@ class Vehicle(Attribute):
 
     def disarm(self):
         self._log('DisArmed ...')
-        self.control_stick(THR=-1, 2)
+        self.control_stick(THR=-1, Mode=2)
 
     def takeoff(self, alt=5):
         print 'Takeoff to ', alt, 'm'
@@ -280,7 +280,7 @@ class Vehicle(Attribute):
     def navigation(self, target):
         watcher = CancelWatcher()
         radius = 5
-        frequency = 0.5
+        frequency = 1
         current_location = self.get_location()
         current_yaw = self.get_heading()
         if current_location is None or current_yaw is None or target is None:
@@ -300,14 +300,15 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print angle, distance
-
             if not self.InAngle(angle, 90) or distance < radius:
                 self._log("Reached Target!")
                 break
 
-            SAngle = int(math.degrees(math.asin(radius / distance))) + 20
-            if not self.InAngle(angle, SAngle):
+            SAngle = int(math.degrees(math.asin(radius / distance)))
+
+            print distance, angle, SAngle
+
+            if not self.InAngle(angle, SAngle + 20):
                 self.brake()
                 self.condition_yaw(angle)
             self.forward()
@@ -338,7 +339,7 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print angle, distance
+            print distance, angle
 
             if not self.InAngle(angle, 90) or distance < radius:
                 self._log("Reached Target!")
@@ -349,10 +350,10 @@ class Vehicle(Attribute):
             # raw_input('next')
         self.brake()
 
-    def _navigation(self, target):
+    def navigation1(self, target):
         watcher = CancelWatcher()
         radius = 5
-        frequency = 0.5
+        frequency = 1
         current_location = self.get_location()
         current_yaw = self.get_heading()
         if current_location is None or current_yaw is None or target is None:
@@ -372,12 +373,12 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print angle, distance
-
             if not self.InAngle(angle, 90) or distance < radius:
                 self._log("Reached Target Waypoint!")
                 break
             SAngle = int(math.degrees(math.asin(radius / distance)))
+
+            print distance, angle, SAngle
 
             if self.InAngle(angle, SAngle + 20):
                 self.forward()
@@ -399,6 +400,17 @@ class Vehicle(Attribute):
             return False
         else:
             return True
+
+    def Guided(self):
+        target = self.get_target()
+        if target is None:
+            self._log("Target is None!")
+            return -1
+        self.publish('Mode', 'GUIDED')
+
+        self.navigation(target)
+        self.publish('Mode', 'Loiter')
+        self.publish('Target', None)
 
     def RTL(self):
         target = self.get_home()
@@ -430,17 +442,6 @@ class Vehicle(Attribute):
 
         self.publish('Mode', 'Loiter')
         self.wp.clear()
-
-    def Guided(self):
-        target = self.get_target()
-        if target is None:
-            self._log("Target is None!")
-            return -1
-        self.publish('Mode', 'GUIDED')
-
-        self.navigation2(target)
-        self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
 
     def Cancel(self):
         self._log("Cancel")

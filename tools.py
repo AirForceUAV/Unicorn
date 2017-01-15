@@ -7,33 +7,33 @@ import time
 
 open_module = [
     'Sbus',
-    # 'Compass',
+    'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
-    # 'Lidar',
+    'Lidar',
     'Cloud',
 ]
 
 commands = [
     # 'arm()',
-    # 'set_channels_mid()',
+    'set_channels_mid()',
     # 'set_gear(2)',
-    # 'yaw_left_brake()',
-    # 'yaw_right_brake()',
-    # 'roll_left_brake()',
-    # 'roll_right_brake()',
-    # 'forward_brake()',
-    # 'backward_brake()',
-    # 'up_brake()',
+    'yaw_left_brake()',
+    'yaw_right_brake()',
+    'roll_left_brake()',
+    'roll_right_brake()',
+    'forward_brake()',
+    'backward_brake()',
+    'up_brake()',
     # 'down_brake()',
-    'condition_yaw(30)',
-    'condition_yaw(300)',
+    # 'condition_yaw(30)',
+    # 'condition_yaw(300)',
     # 'set_target(-20, 0)',
     # 'Guided()',
     # 'download()',
     # 'Auto()',
-    'disarm()',
+    # 'disarm()',
 ]
 
 
