@@ -310,6 +310,10 @@ class Vehicle(Attribute):
 
             if not self.InAngle(angle, SAngle + 20):
                 self.brake()
+                # location = self.get_location()
+                # if location is None:
+                #     break
+                # angle = angle_heading_target(location, target, current_yaw)
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(frequency)
@@ -390,6 +394,11 @@ class Vehicle(Attribute):
                     print 'Roll Right'
                     self.control_FRU(AIL=1, ELE=1)
                 else:
+                    self.brake()
+                    # location = self.get_location()
+                    # if location is None:
+                    #     break
+                    # angle = angle_heading_target(location, target, current_yaw)
                     self.condition_yaw(angle)
             time.sleep(frequency)
             # raw_input('next')
@@ -438,7 +447,8 @@ class Vehicle(Attribute):
                 self.publish('Mode', 'Loiter')
                 return
             self.navigation(point)
-            self.wp.add_number()
+            if not watcher.IsCancel():
+                self.wp.add_number()
 
         self.publish('Mode', 'Loiter')
         self.wp.clear()

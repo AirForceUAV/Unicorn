@@ -31,7 +31,7 @@ commands = [
     # 'condition_yaw(300)',
     # 'set_target(-20, 0)',
     # 'Guided()',
-    # 'download()',
+    # 'download(0)',
     # 'Auto()',
     # 'disarm()',
 ]
