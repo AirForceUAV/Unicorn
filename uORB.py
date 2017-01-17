@@ -57,7 +57,7 @@ class uORB(threading.Thread):
                      'ChannelsInput': self.InitChannels(),
                      'LoiterPWM': self.InitLoiter(),
                      'InitAltitude': None, 'IMU_State': False,
-                     'Sender_State': False,
+                     'Sender_State': False, 'WaypointType': None,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
         self._sensor = FlightLog.sensors()
@@ -194,7 +194,9 @@ class uORB(threading.Thread):
     def update_waypoint(self):
         waypoint = self._sensor.waypoint
         index = self._HAL['WaypointID']
+        Type = self._HAL['WaypointType']
         waypoint.index = index
+        waypoint.type = Type
         if index < 0:
             return
         waypoints = self._HAL['Waypoint']
@@ -237,6 +239,7 @@ class uORB(threading.Thread):
         self.update_Baro()
         self.update_location(self._sensor.home, self._HAL['HomeLocation'])
         self.update_location(self._sensor.target, self._HAL['Target'])
+        self._sensor.Gear = self._HAL['Gear']
         self._sensor.DistanceToTarget = self.distance_to_target()
         self._sensor.DistanceFromHome = self.distance_from_home()
         self.update_waypoint()
@@ -244,7 +247,7 @@ class uORB(threading.Thread):
         self.update_channelsOutput()
         self.update_loiterPWM()
         self._sensor.Mode = self._HAL['Mode']
-        # return self._sensor
+        return self._sensor
         return self._sensor.SerializeToString()
 
     def log_json(self):
@@ -286,6 +289,7 @@ if __name__ == "__main__":
     from library import Watcher
     ORB = uORB()
     from tools import protobuf, commands
+
     ORB._HAL = protobuf
     print ORB._model
     print [k for k, v in ORB._module.iteritems() if v]
@@ -295,8 +299,8 @@ if __name__ == "__main__":
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
     wp.download(origin, 0)
-    # wp.add_number()
-    # print ORB.dataflash()
+    wp.add_number()
+    print ORB.dataflash()
     # print ORB._sensor.ParseFromString(ORB.dataflash())
     # print ORB
 

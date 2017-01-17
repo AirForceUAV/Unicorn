@@ -19,6 +19,10 @@ class Waypoint(object):
     def ID(self):
         return self.subscribe('WaypointID')
 
+    @property
+    def type(self):
+        return self.subscribe('WaypointType')
+
     def download(self, origin, index=0):
         count = len(self._root.getchildren())
         if index > count - 1:
@@ -35,6 +39,7 @@ class Waypoint(object):
             number += 1
         self.publish('Waypoint', result[1:])
         self.publish('WaypointID', 0)
+        self.publish('WaypointType', 'Download')
         print 'Trail :', Trail
         print 'Waypoints :', self.subscribe('Waypoint')
 
@@ -49,6 +54,7 @@ class Waypoint(object):
             result.append([float(loc[0]), float(loc[1])])
         self.publish('Waypoint', result)
         self.publish('WaypointID', 0)
+        self.publish('WaypointType', 'Route')
         print 'Waypoints :', self.subscribe('Waypoint')
 
     def remain_wp(self):

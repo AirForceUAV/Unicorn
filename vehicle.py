@@ -17,7 +17,11 @@ class Vehicle(Attribute):
     def __init__(self, ORB):
         super(Vehicle, self).__init__(ORB)
         self.moveTime = 2
-        self.brakeTime = 0.6
+
+    def brake(self, braketime=0.5):
+        self._log('brake')
+        self.send_pwm(self.subscribe('LoiterPWM'))
+        time.sleep(braketime)
 
     def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
         channels = [0] * 8
@@ -176,11 +180,6 @@ class Vehicle(Attribute):
         self._log('Forward...')
         self.control_FRU(ELE=1)
 
-    def brake(self):
-        self._log('brake')
-        self.send_pwm(self.subscribe('LoiterPWM'))
-        time.sleep(self.brakeTime)
-
     def yaw_left_brake(self):
         self._log('Yaw Left')
         self.control_FRU(RUD=-1)
@@ -221,13 +220,13 @@ class Vehicle(Attribute):
         self._log('Throttle Up')
         self.control_FRU(THR=1)
         time.sleep(self.moveTime)
-        self.brake()
+        self.brake(1)
 
     def down_brake(self):
         self._log('Throttle Down')
         self.control_FRU(THR=-1)
         time.sleep(self.moveTime)
-        self.brake()
+        self.brake(1)
 
     def send_pwm(self, channels):
         print channels

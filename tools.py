@@ -95,6 +95,7 @@ protobuf = {
     'Mode': 'Loiter',
     'Waypoint': [],
     'WaypointID': -1,
+    'WaypointType': None,
     'RPM': 1600,
     'InitAltitude': -80.81,
     'IMU_State': True,
