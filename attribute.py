@@ -173,7 +173,7 @@ class Attribute(object):
             return None
         return self.subscribe('Location')
 
-    def get_alt(self, relative=True):
+    def get_altitude(self, relative=False):
         return self.ORB.get_altitude(relative)
 
     def publish(self, topic, value):

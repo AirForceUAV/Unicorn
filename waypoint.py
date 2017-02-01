@@ -26,7 +26,7 @@ class Waypoint(object):
     def download(self, origin, index=0):
         count = len(self._root.getchildren())
         if index > count - 1:
-            print 'Error:index out of range when download'
+            print 'Error:index out of range when download Waypoints'
             return
         _root = self._root[index]
         Trail = _root.get('Trail')
@@ -81,8 +81,6 @@ class Waypoint(object):
     def subscribe(self, topic):
         return self.ORB.subscribe(topic)
 
-    def _log(self, msg):
-        print msg
 
 if __name__ == "__main__":
     from uORB import uORB
@@ -93,5 +91,5 @@ if __name__ == "__main__":
     info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"
     wp.Route(info)
     wp.add_number()
-    wp.clear()
+    # wp.clear()
     print ORB.subscribe('Waypoint'), ORB.subscribe('WaypointID')

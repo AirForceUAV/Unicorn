@@ -35,7 +35,7 @@
             <param index="3" value="827" unit="PWM">Mid volume. </param>
             <param index="4" value="1503" unit="PWM">Max volume. </param>
             <param index="5" value="-1" unit="bool">Positive(1) or Reverse(-1).</param>
-            <param index="6" value="6" unit="%">Variation Rate.</param>
+            <param index="6" value="12" unit="%">Variation Rate.</param>
         </entry>
         <entry index="4" name="Mode">
             <description>Flight Mode.</description>

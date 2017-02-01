@@ -12,7 +12,7 @@ import sys
 def open_serial(portname, baudrate, timeout=None):
     while True:
         try:
-            print ">>> Connecting to port:{0},baudrate:{1}".format(portname, baudrate)
+            print(">>>port:{0},baudrate:{1}".format(portname, baudrate))
             com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
         except serial.SerialException:
@@ -98,7 +98,8 @@ def get_distance_metres(aLocation1, aLocation2):
     """
     dlat = aLocation2[0] - aLocation1[0]
     dlong = aLocation2[1] - aLocation1[1]
-    return math.sqrt((dlat * dlat) + (dlong * dlong)) * 1.113195e5
+    distance = math.sqrt((dlat * dlat) + (dlong * dlong)) * 1.113195e5
+    return round(distance, 2)
 
 
 def angle_heading_target(origin, target, heading):
@@ -252,4 +253,4 @@ if __name__ == '__main__':
     # print dec2hex(1024)
     TLocation = get_location_metres(loc, 1000, 1000)
     H2TAngle = angle_heading_target(loc, TLocation, 90)
-    print H2TAngle
+    # print H2TAngle

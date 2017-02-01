@@ -10,6 +10,7 @@ import FlightLog_pb2 as FlightLog
 import os
 import threading
 from sbus import SBUS
+from tools import build_log
 
 
 class uORB(threading.Thread):
@@ -140,7 +141,7 @@ class uORB(threading.Thread):
         result = ['+'.join(map(str, p)) for p in points]
         return ','.join(result)
 
-    def get_altitude(self, relative=True):
+    def get_altitude(self, relative=False):
         init_altitude = self._HAL['InitAltitude']
         cur_pressure = self._HAL['Pressure']
         if init_altitude is None or cur_pressure is None:
@@ -189,14 +190,16 @@ class uORB(threading.Thread):
         if self.state('Baro'):
             baro.Pressure = self._HAL['Pressure']
             baro.Temperature = self._HAL['Temperature']
-            baro.Altitude = self.get_altitude()
+            baro.Altitude = self.get_altitude(True)
 
     def update_waypoint(self):
         waypoint = self._sensor.waypoint
         index = self._HAL['WaypointID']
         Type = self._HAL['WaypointType']
+
         waypoint.index = index
-        waypoint.type = Type
+        if Type is not None:
+            waypoint.type = Type
         if index < 0:
             return
         waypoints = self._HAL['Waypoint']
@@ -233,6 +236,7 @@ class uORB(threading.Thread):
         # return self.log_json()
 
     def log_proto(self):
+        self._sensor = FlightLog.sensors()
         self._sensor.timestamp = time.time()
         self.update_GPS()
         self.update_compass()
@@ -247,7 +251,7 @@ class uORB(threading.Thread):
         self.update_channelsOutput()
         self.update_loiterPWM()
         self._sensor.Mode = self._HAL['Mode']
-        return self._sensor
+        # return self._sensor
         return self._sensor.SerializeToString()
 
     def log_json(self):
@@ -260,25 +264,13 @@ class uORB(threading.Thread):
         # log['Target'] = self.list2str(self._HAL['Target'])
         return json.dumps(log)
 
-    def localtime(self):
-        x = time.localtime(time.time())
-        return time.strftime('%Y-%m-%d--%H:%M:%S', x)
-
     def save_log(self):
-        file_path = self.build_log()
+        file_path = build_log(self._model['Model'], 'HAL')
         # print file_path
         with open(file_path, 'w+') as f:
             while True:
                 f.write(self.log_proto() + '##')
                 time.sleep(.5)
-
-    def build_log(self):
-        log_name = self.localtime() + '.log'
-        file_path = os.path.join(
-            os.path.expanduser('~'), 'UAVLog', self._model['Model'])
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-        return os.path.join(file_path, log_name)
 
     def __str__(self):
         return json.dumps(self._HAL, indent=1)
@@ -293,17 +285,20 @@ if __name__ == "__main__":
     ORB._HAL = protobuf
     print ORB._model
     print [k for k, v in ORB._module.iteritems() if v]
-    print ORB._channel
-    print ORB._volume
-    print json.dumps(commands, indent=1)
-    wp = Waypoint(ORB)
-    origin = [36.111111, 116.222222]
-    wp.download(origin, 0)
-    wp.add_number()
+    print '--------Channel-------------\n{}' .format(ORB._channel)
+    print '--------servo volume--------\n{}'.format(ORB._volume)
+    print 'commands:', json.dumps(commands, indent=1)
+    # wp = Waypoint(ORB)
+    # origin = [36.111111, 116.222222]
+    # wp.download(origin, 0)
+    # wp.add_number()
     print ORB.dataflash()
-    # print ORB._sensor.ParseFromString(ORB.dataflash())
-    # print ORB
+
+    # b = FlightLog.sensors()
+    # b.ParseFromString(ORB.dataflash())
+    # print b
 
     """Save FlightLog to SB card"""
+    # print('Save Log')
     # Watcher()
     # ORB.start()

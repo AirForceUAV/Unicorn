@@ -50,20 +50,10 @@ class Sbus_Sender(threading.Thread):
                 CancelWatcher.Cancel = True
                 self.IsRadio = True
                 self.send_package(package)
-            # time.sleep(.01)
+            time.sleep(.01)
             # self.send_package(package)
 
     def send_package(self, package):
-        # self._sbus.flushOutput()
-        # print channels
-        # if self.ORB._model['Model'] == "HELI":
-        #     channels = map(lambda x: int(
-        #         1012 + (x - 352) * 775 / 1344), channels)
-        # else:
-        #     channels = map(lambda x: int(
-        #         1101 + (x - 352) * 843 / 1344), channels)
-        # print channels
-        # self._sbus.write(self.EncodeChannels(channels).decode('hex'))
         FRAME_TAIL = self.sbus.END_BYTE[self.index]
         package = self.sbus.encode(package) + FRAME_TAIL
         self._sbus.write(package.decode('hex'))

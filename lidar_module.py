@@ -33,7 +33,7 @@ class Lidar(object):
             self.__class__._pipeSet[(replyPipe, requestPipe)][
                 "Request"] = open(requestPipe, "w")
         self.request = self.__class__._pipeSet[
-            (replyPipe, requestPipe)]["Request"]
+            (replyPipGe, requestPipe)]["Request"]
         self.reply = self.__class__._pipeSet[(replyPipe, requestPipe)]["Reply"]
         self.vehicle = vehicle
 

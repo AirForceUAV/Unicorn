@@ -1,45 +1,36 @@
-def movement3(channel, percent=0):
-    # -100<=percent<=100
-    sign = 0
-    if percent < 0:
-        sign = -1
-    elif percent > 0:
-        sign = 1
-    rate = percent / 100.0
-    index = 2 + channel[5] * sign
-    section = abs(channel[2] - channel[index])
-    variation = int(rate * channel[5] * section)
-    result = channel[2] + variation
-    print index, variation, result
-    return result
+# pip3 install redis
+
+from multiprocessing import Pool
+import time
+import redis
 
 
-def movement4(channel, percent=0):
-    # 0<=percent<=100
-    section = channel[3] - channel[1]
-    rate = percent / 100.0
-    if channel[5] < 0:
-        rate = 1 - rate
-    variation = int(rate * section)
-    result = channel[1] + variation
-    print result
-    return result
+def send_log():
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    sendChan = r.get('ClientSendChan').decode('utf-8')
+    while True:
+        # Using LPUSH to Send FlightLog
+        cmd = "This is a FlightLog"
+        r.lpush(sendChan, cmd)
+        print('Pushed:', cmd)
+        # ct = str(int(1000 * time.time()))
+        time.sleep(1)
 
-a = [3, 159, 827, 1503, 1344, 1, 3]
-b = [3, 159, 827, 1503, 1344, -1, 3]
 
-# movement3(a, 100)
-# movement3(a, 0)
-# movement3(a, -100)
+def receive_command():
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    recvChan = r.get('ClientRecvChan').decode('utf-8')
+    while True:
+        # Using BRPOP to Receive Command
+        str = r.brpop(recvChan, timeout=0)
+        print("Received:", str[1].decode('utf-8'))
+        # ct = int(1000 * time.time())
+        # print "Command Delay: %d ms" % (ct - int(str(job.body)))
 
-# movement3(b, 100)
-# movement3(b, 0)
-# movement3(b, -100)
 
-movement4(a, 0)
-movement4(a, 50)
-movement4(a, 100)
-
-movement4(b, 0)
-movement4(b, 50)
-movement4(b, 100)
+if __name__ == '__main__':
+    p = Pool(2)
+    p.apply_async(send_log)
+    p.apply_async(receive_command)
+    p.close()
+    p.join()

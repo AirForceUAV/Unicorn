@@ -4,134 +4,147 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-Attitude	FlightLog_pb2.py	/^Attitude = _reflection.GeneratedProtocolMessageType('Attitude', (_message.Message,), dict($/;"	kind:variable	line:621
+Attitude	FlightLog_pb2.py	/^Attitude = _reflection.GeneratedProtocolMessageType('Attitude', (_message.Message,), dict($/;"	kind:variable	line:635
 Attribute	attribute.py	/^class Attribute(object):$/;"	kind:class	line:10
+Auto	lidar.py	/^    def Auto(self):$/;"	kind:member	line:113
 Auto	lidar_module.py	/^    def Auto(self):$/;"	kind:member	line:64
-Auto	vehicle.py	/^    def Auto(self):$/;"	kind:member	line:417
+Auto	vehicle.py	/^    def Auto(self):$/;"	kind:member	line:502
 Avoid	lidar_module.py	/^    def Avoid(self, target):$/;"	kind:member	line:81
 Baro	Baro.py	/^class Baro(threading.Thread):$/;"	kind:class	line:11
 Baro.py	Baro.py	1;"	kind:file	line:1
-Barometre	FlightLog_pb2.py	/^Barometre = _reflection.GeneratedProtocolMessageType('Barometre', (_message.Message,), dict($/;"	kind:variable	line:649
-Cancel	library.py	/^    Cancel = False$/;"	kind:variable	line:176
-Cancel	vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:444
-CancelWatcher	library.py	/^class CancelWatcher(object):$/;"	kind:class	line:175
-Channels	FlightLog_pb2.py	/^Channels = _reflection.GeneratedProtocolMessageType('Channels', (_message.Message,), dict($/;"	kind:variable	line:663
-Compass	FlightLog_pb2.py	/^Compass = _reflection.GeneratedProtocolMessageType('Compass', (_message.Message,), dict($/;"	kind:variable	line:642
+Barometre	FlightLog_pb2.py	/^Barometre = _reflection.GeneratedProtocolMessageType('Barometre', (_message.Message,), dict($/;"	kind:variable	line:663
+Cancel	library.py	/^    Cancel = False$/;"	kind:variable	line:177
+Cancel	vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:519
+CancelWatcher	library.py	/^class CancelWatcher(object):$/;"	kind:class	line:176
+Channels	FlightLog_pb2.py	/^Channels = _reflection.GeneratedProtocolMessageType('Channels', (_message.Message,), dict($/;"	kind:variable	line:677
+Compass	FlightLog_pb2.py	/^Compass = _reflection.GeneratedProtocolMessageType('Compass', (_message.Message,), dict($/;"	kind:variable	line:656
 Compass	compass_module.py	/^class Compass(threading.Thread):$/;"	kind:class	line:11
 Config	config.py	/^class Config(object):$/;"	kind:class	line:8
-Coordinate	FlightLog_pb2.py	/^Coordinate = _reflection.GeneratedProtocolMessageType('Coordinate', (_message.Message,), dict($/;"	kind:variable	line:628
+Coordinate	FlightLog_pb2.py	/^Coordinate = _reflection.GeneratedProtocolMessageType('Coordinate', (_message.Message,), dict($/;"	kind:variable	line:642
 Curve.py	Curve.py	1;"	kind:file	line:1
 CutFrame	library.py	/^def CutFrame(package, length=2):$/;"	kind:function	line:44
 CutFrame2	library.py	/^def CutFrame2(package, length=2):$/;"	kind:function	line:50
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _ATTITUDE,$/;"	kind:variable	line:622
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _BAROMETRE,$/;"	kind:variable	line:650
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _CHANNELS,$/;"	kind:variable	line:664
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _COMPASS,$/;"	kind:variable	line:643
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _COORDINATE,$/;"	kind:variable	line:629
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _GPS,$/;"	kind:variable	line:636
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _LOCATION,$/;"	kind:variable	line:608
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _POINT,$/;"	kind:variable	line:615
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _SENSORS,$/;"	kind:variable	line:671
-DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _WAYPOINT,$/;"	kind:variable	line:657
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _ATTITUDE,$/;"	kind:variable	line:636
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _BAROMETRE,$/;"	kind:variable	line:664
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _CHANNELS,$/;"	kind:variable	line:678
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _COMPASS,$/;"	kind:variable	line:657
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _COORDINATE,$/;"	kind:variable	line:643
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _GPS,$/;"	kind:variable	line:650
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _LOCATION,$/;"	kind:variable	line:622
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _POINT,$/;"	kind:variable	line:629
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _SENSORS,$/;"	kind:variable	line:685
+DESCRIPTOR	FlightLog_pb2.py	/^  DESCRIPTOR = _WAYPOINT,$/;"	kind:variable	line:671
 DESCRIPTOR	FlightLog_pb2.py	/^DESCRIPTOR = _descriptor.FileDescriptor($/;"	kind:variable	line:18
 Decision	lidar_module.py	/^    def Decision(self, targetDirection):$/;"	kind:member	line:40
-EncodeChannels	sbus_sender.py	/^    def EncodeChannels(self, channels):$/;"	kind:member	line:70
-Executor	cloud_module.py	/^class Executor(threading.Thread):$/;"	kind:class	line:56
+EncodeChannels	sbus_sender.py	/^    def EncodeChannels(self, channels):$/;"	kind:member	line:62
+Executor	cloud.py	/^class Executor(threading.Thread):$/;"	kind:class	line:47
+Executor	cloud_module.py	/^class Executor(threading.Thread):$/;"	kind:class	line:52
 FlightLog_pb2.py	FlightLog_pb2.py	1;"	kind:file	line:1
-GPS	FlightLog_pb2.py	/^GPS = _reflection.GeneratedProtocolMessageType('GPS', (_message.Message,), dict($/;"	kind:variable	line:635
+GPS	FlightLog_pb2.py	/^GPS = _reflection.GeneratedProtocolMessageType('GPS', (_message.Message,), dict($/;"	kind:variable	line:649
 GPS	GPS_module.py	/^class GPS(threading.Thread):$/;"	kind:class	line:11
 GPS_module.py	GPS_module.py	1;"	kind:file	line:1
+GradualTHR	vehicle.py	/^    def GradualTHR(self, begin, end):$/;"	kind:member	line:102
+Guided	lidar.py	/^    def Guided(self):$/;"	kind:member	line:91
 Guided	lidar_module.py	/^    def Guided(self):$/;"	kind:member	line:50
-Guided	vehicle.py	/^    def Guided(self):$/;"	kind:member	line:433
-H2TAngle	library.py	/^    H2TAngle = angle_heading_target(loc, TLocation, 90)$/;"	kind:variable	line:254
+Guided	vehicle.py	/^    def Guided(self):$/;"	kind:member	line:476
+H2TAngle	library.py	/^    H2TAngle = angle_heading_target(loc, TLocation, 90)$/;"	kind:variable	line:255
 ID	waypoint.py	/^    def ID(self):$/;"	kind:member	line:19
 IMU	IMU.py	/^class IMU(threading.Thread):$/;"	kind:class	line:10
 IMU.py	IMU.py	1;"	kind:file	line:1
-InAngle	vehicle.py	/^    def InAngle(self, angle, SAngle):$/;"	kind:member	line:396
-InitChannels	uORB.py	/^    def InitChannels(self):$/;"	kind:member	line:96
-InitLoiter	uORB.py	/^    def InitLoiter(self):$/;"	kind:member	line:90
-IsCancel	library.py	/^    def IsCancel(self):$/;"	kind:member	line:184
+InAngle	vehicle.py	/^    def InAngle(self, angle, SAngle):$/;"	kind:member	line:470
+InitChannels	uORB.py	/^    def InitChannels(self):$/;"	kind:member	line:98
+InitLoiter	uORB.py	/^    def InitLoiter(self):$/;"	kind:member	line:92
+IsCancel	library.py	/^    def IsCancel(self):$/;"	kind:member	line:185
+Lidar	lidar.py	/^class Lidar(object):$/;"	kind:class	line:65
 Lidar	lidar_module.py	/^class Lidar(object):$/;"	kind:class	line:12
-Location	FlightLog_pb2.py	/^Location = _reflection.GeneratedProtocolMessageType('Location', (_message.Message,), dict($/;"	kind:variable	line:607
+Location	FlightLog_pb2.py	/^Location = _reflection.GeneratedProtocolMessageType('Location', (_message.Message,), dict($/;"	kind:variable	line:621
 MergeFrame	IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:114
 ORB	Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:179
 ORB	GPS_module.py	/^    ORB = uORB()$/;"	kind:variable	line:61
 ORB	IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:132
-ORB	cloud_module.py	/^    ORB = uORB()$/;"	kind:variable	line:83
+ORB	cloud.py	/^    ORB = uORB()$/;"	kind:variable	line:75
+ORB	cloud_module.py	/^    ORB = uORB()$/;"	kind:variable	line:80
 ORB	compass_module.py	/^    ORB = uORB()$/;"	kind:variable	line:83
-ORB	main.py	/^    ORB = uORB()$/;"	kind:variable	line:15
-ORB	sbus_receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:84
-ORB	sbus_sender.py	/^    ORB = uORB()$/;"	kind:variable	line:94
-ORB	uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:286
-ORB	vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:454
-ORB	waypoint.py	/^    ORB = uORB()$/;"	kind:variable	line:83
+ORB	lidar.py	/^    ORB = uORB()$/;"	kind:variable	line:136
+ORB	main.py	/^    ORB = uORB()$/;"	kind:variable	line:11
+ORB	sbus_receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:85
+ORB	sbus_sender.py	/^    ORB = uORB()$/;"	kind:variable	line:86
+ORB	uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:282
+ORB	vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:529
+ORB	waypoint.py	/^    ORB = uORB()$/;"	kind:variable	line:87
 ParseFrag	IMU.py	/^    def ParseFrag(self, Frag):$/;"	kind:member	line:124
 ParseIMU	IMU.py	/^    def ParseIMU(self, package):$/;"	kind:member	line:88
 ParseQua	IMU.py	/^    def ParseQua(self, Qua):$/;"	kind:member	line:120
 Phase	attribute.py	/^    def Phase(self):$/;"	kind:member	line:70
-Point	FlightLog_pb2.py	/^Point = _reflection.GeneratedProtocolMessageType('Point', (_message.Message,), dict($/;"	kind:variable	line:614
+Point	FlightLog_pb2.py	/^Point = _reflection.GeneratedProtocolMessageType('Point', (_message.Message,), dict($/;"	kind:variable	line:628
+RTL	lidar.py	/^    def RTL(self):$/;"	kind:member	line:102
 RTL	lidar_module.py	/^    def RTL(self):$/;"	kind:member	line:109
-RTL	vehicle.py	/^    def RTL(self):$/;"	kind:member	line:402
+RTL	vehicle.py	/^    def RTL(self):$/;"	kind:member	line:487
 RawFrame	IMU.py	/^    def RawFrame(self):$/;"	kind:member	line:81
 RawFrame	compass_module.py	/^    def RawFrame(self, command, ack, size=8):$/;"	kind:member	line:47
-Receiver	cloud_module.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:30
+Receiver	cloud.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:21
+Receiver	cloud_module.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:29
+Redis	cloud.py	/^    Redis = redis.StrictRedis(host='localhost', port=6379, db=0)$/;"	kind:variable	line:82
+Redis	main.py	/^        Redis = redis.StrictRedis(host='localhost', port=6379, db=0)$/;"	kind:variable	line:98
 ReverseFrame	IMU.py	/^    def ReverseFrame(self, frame, length):$/;"	kind:member	line:117
-Route	vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:413
-Route	waypoint.py	/^    def Route(self, info):$/;"	kind:member	line:41
+Route	vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:498
+Route	waypoint.py	/^    def Route(self, info):$/;"	kind:member	line:46
 SBUS	sbus.py	/^class SBUS(object):$/;"	kind:class	line:11
 Sbus_Receiver	sbus_receiver.py	/^class Sbus_Receiver(threading.Thread):$/;"	kind:class	line:13
 Sbus_Sender	sbus_sender.py	/^class Sbus_Sender(threading.Thread):$/;"	kind:class	line:13
-Singleton	library.py	/^class Singleton(type):$/;"	kind:class	line:193
-THR2PIT	Curve.py	/^def THR2PIT(x):$/;"	kind:function	line:50
-TLocation	library.py	/^    TLocation = get_location_metres(loc, 1000, 1000)$/;"	kind:variable	line:253
-Test	vehicle.py	/^    Test = commands$/;"	kind:variable	line:523
-Vehicle	vehicle.py	/^class Vehicle(Attribute):$/;"	kind:class	line:14
-Watcher	library.py	/^class Watcher(object):$/;"	kind:class	line:205
-Waypoint	FlightLog_pb2.py	/^Waypoint = _reflection.GeneratedProtocolMessageType('Waypoint', (_message.Message,), dict($/;"	kind:variable	line:656
+Singleton	library.py	/^class Singleton(type):$/;"	kind:class	line:194
+THR2PIT	Curve.py	/^def THR2PIT(x):$/;"	kind:function	line:41
+TLocation	library.py	/^    TLocation = get_location_metres(loc, 1000, 1000)$/;"	kind:variable	line:254
+Test	vehicle.py	/^    Test = commands$/;"	kind:variable	line:601
+Vehicle	vehicle.py	/^class Vehicle(Attribute):$/;"	kind:class	line:15
+Watcher	library.py	/^class Watcher(object):$/;"	kind:class	line:206
+Waypoint	FlightLog_pb2.py	/^Waypoint = _reflection.GeneratedProtocolMessageType('Waypoint', (_message.Message,), dict($/;"	kind:variable	line:670
 Waypoint	waypoint.py	/^class Waypoint(object):$/;"	kind:class	line:7
 _ATTITUDE	FlightLog_pb2.py	/^_ATTITUDE = _descriptor.Descriptor($/;"	kind:variable	line:112
 _BAROMETRE	FlightLog_pb2.py	/^_BAROMETRE = _descriptor.Descriptor($/;"	kind:variable	line:285
-_CHANNELS	FlightLog_pb2.py	/^_CHANNELS = _descriptor.Descriptor($/;"	kind:variable	line:375
+_CHANNELS	FlightLog_pb2.py	/^_CHANNELS = _descriptor.Descriptor($/;"	kind:variable	line:382
 _COMPASS	FlightLog_pb2.py	/^_COMPASS = _descriptor.Descriptor($/;"	kind:variable	line:247
 _COORDINATE	FlightLog_pb2.py	/^_COORDINATE = _descriptor.Descriptor($/;"	kind:variable	line:157
 _GPS	FlightLog_pb2.py	/^_GPS = _descriptor.Descriptor($/;"	kind:variable	line:202
 _LOCATION	FlightLog_pb2.py	/^_LOCATION = _descriptor.Descriptor($/;"	kind:variable	line:29
 _POINT	FlightLog_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:74
-_SENSORS	FlightLog_pb2.py	/^_SENSORS = _descriptor.Descriptor($/;"	kind:variable	line:455
+_SENSORS	FlightLog_pb2.py	/^_SENSORS = _descriptor.Descriptor($/;"	kind:variable	line:462
 _WAYPOINT	FlightLog_pb2.py	/^_WAYPOINT = _descriptor.Descriptor($/;"	kind:variable	line:337
-__call__	library.py	/^    def __call__(cls, *args, **kw):$/;"	kind:member	line:199
-__del__	library.py	/^    def __del__(self):$/;"	kind:member	line:187
+__call__	library.py	/^    def __call__(cls, *args, **kw):$/;"	kind:member	line:200
+__del__	library.py	/^    def __del__(self):$/;"	kind:member	line:188
 __init__	Baro.py	/^    def __init__(self, ORB, bus=1, i2c=0x77, elevation=0):$/;"	kind:member	line:14
 __init__	Curve.py	/^    def __init__(self, X, Y):$/;"	kind:member	line:9
 __init__	GPS_module.py	/^    def __init__(self, ORB):$/;"	kind:member	line:14
 __init__	IMU.py	/^    def __init__(self, ORB):$/;"	kind:member	line:13
 __init__	attribute.py	/^    def __init__(self, ORB):$/;"	kind:member	line:12
-__init__	cloud_module.py	/^    def __init__(self, work_queue, sock):$/;"	kind:member	line:32
-__init__	cloud_module.py	/^    def __init__(self, work_queue, vehicle=None, lidar=None):$/;"	kind:member	line:58
+__init__	cloud.py	/^    def __init__(self, work_queue, Redis):$/;"	kind:member	line:23
+__init__	cloud.py	/^    def __init__(self, work_queue, vehicle=None, lidar=None):$/;"	kind:member	line:49
+__init__	cloud_module.py	/^    def __init__(self, work_queue, sock):$/;"	kind:member	line:31
+__init__	cloud_module.py	/^    def __init__(self, work_queue, vehicle=None, lidar=None):$/;"	kind:member	line:54
 __init__	compass_module.py	/^    def __init__(self, ORB):$/;"	kind:member	line:14
 __init__	config.py	/^    def __init__(self):$/;"	kind:member	line:11
-__init__	library.py	/^    def __init__(cls, name, bases, dict):$/;"	kind:member	line:195
-__init__	library.py	/^    def __init__(self):$/;"	kind:member	line:179
-__init__	library.py	/^    def __init__(self):$/;"	kind:member	line:221
+__init__	library.py	/^    def __init__(cls, name, bases, dict):$/;"	kind:member	line:196
+__init__	library.py	/^    def __init__(self):$/;"	kind:member	line:180
+__init__	library.py	/^    def __init__(self):$/;"	kind:member	line:222
+__init__	lidar.py	/^    def __init__(self, vehicle):$/;"	kind:member	line:68
 __init__	lidar_module.py	/^    def __init__(self, vehicle=None):$/;"	kind:member	line:16
 __init__	sbus.py	/^    def __init__(self):$/;"	kind:member	line:13
 __init__	sbus_receiver.py	/^    def __init__(self, ORB, com):$/;"	kind:member	line:16
 __init__	sbus_sender.py	/^    def __init__(self, ORB, com):$/;"	kind:member	line:16
-__init__	uORB.py	/^    def __init__(self):$/;"	kind:member	line:18
-__init__	vehicle.py	/^    def __init__(self, ORB):$/;"	kind:member	line:17
+__init__	uORB.py	/^    def __init__(self):$/;"	kind:member	line:19
+__init__	vehicle.py	/^    def __init__(self, ORB):$/;"	kind:member	line:18
 __init__	waypoint.py	/^    def __init__(self, ORB):$/;"	kind:member	line:9
 __metaclass__	Baro.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:12
 __metaclass__	GPS_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:12
 __metaclass__	IMU.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:11
 __metaclass__	compass_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:12
 __metaclass__	config.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:9
+__metaclass__	lidar.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:66
 __metaclass__	lidar_module.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:14
 __metaclass__	sbus_receiver.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:14
 __metaclass__	sbus_sender.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:14
-__metaclass__	uORB.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:16
-__metaclass__	vehicle.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:15
-__module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:609
-__module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:616
+__metaclass__	uORB.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:17
+__metaclass__	vehicle.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:16
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:623
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:630
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:637
@@ -140,54 +153,53 @@ __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	l
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:658
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:665
 __module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:672
+__module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:679
+__module__	FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:686
 __str__	config.py	/^    def __str__(self):$/;"	kind:member	line:76
-__str__	sbus_receiver.py	/^    def __str__(self):$/;"	kind:member	line:71
-__str__	sbus_sender.py	/^    def __str__(self):$/;"	kind:member	line:81
-__str__	uORB.py	/^    def __str__(self):$/;"	kind:member	line:279
-_angle	library.py	/^def _angle(angle):$/;"	kind:function	line:113
+__str__	sbus_receiver.py	/^    def __str__(self):$/;"	kind:member	line:72
+__str__	sbus_sender.py	/^    def __str__(self):$/;"	kind:member	line:73
+__str__	uORB.py	/^    def __str__(self):$/;"	kind:member	line:275
+_angle	library.py	/^def _angle(angle):$/;"	kind:function	line:114
 _b	FlightLog_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _calculte_mantissa	IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:56
-_construct_channel	vehicle.py	/^    def _construct_channel(self, channels):$/;"	kind:member	line:52
-_log	attribute.py	/^    def _log(self, msg):$/;"	kind:member	line:189
+_construct_channel	vehicle.py	/^    def _construct_channel(self, channels):$/;"	kind:member	line:60
+_log	attribute.py	/^    def _log(self, msg):$/;"	kind:member	line:191
 _log	lidar_module.py	/^    def _log(self, msg):$/;"	kind:member	line:134
-_log	waypoint.py	/^    def _log(self, msg):$/;"	kind:member	line:78
-_navigation	vehicle.py	/^    def _navigation(self, target):$/;"	kind:member	line:351
+_log	tools.py	/^def _log(message):$/;"	kind:function	line:42
 _pipeSet	lidar_module.py	/^    _pipeSet = {}$/;"	kind:variable	line:13
 _sym_db	FlightLog_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:13
-a	test.py	/^a = [3, 159, 827, 1503, 1344, 1, 3]$/;"	kind:variable	line:28
-add_number	waypoint.py	/^    def add_number(self):$/;"	kind:member	line:57
-analysis_channels	vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:236
-angle_heading_target	library.py	/^def angle_heading_target(origin, target, heading):$/;"	kind:function	line:104
-args	main.py	/^                          args=(sock, ORB), seconds=1)$/;"	kind:variable	line:105
-arm	vehicle.py	/^    def arm(self):$/;"	kind:member	line:104
-ascii2hex	library.py	/^def ascii2hex(argv):$/;"	kind:function	line:144
+add_number	waypoint.py	/^    def add_number(self):$/;"	kind:member	line:63
+analysis_channels	vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:300
+angle_heading_target	library.py	/^def angle_heading_target(origin, target, heading):$/;"	kind:function	line:105
+arm	vehicle.py	/^    def arm(self):$/;"	kind:member	line:126
+ascii2hex	library.py	/^def ascii2hex(argv):$/;"	kind:function	line:145
 attribute.py	attribute.py	1;"	kind:file	line:1
-b	test.py	/^b = [3, 159, 827, 1503, 1344, -1, 3]$/;"	kind:variable	line:29
-backward_brake	vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:201
+backward_brake	vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:265
 baro	Baro.py	/^    baro = Baro(ORB)$/;"	kind:variable	line:180
-baro	main.py	/^        baro = Baro(ORB)$/;"	kind:variable	line:57
-brake	vehicle.py	/^    def brake(self):$/;"	kind:member	line:178
-build_log	uORB.py	/^    def build_log(self):$/;"	kind:member	line:271
-build_sbus	tools.py	/^def build_sbus():$/;"	kind:function	line:40
+baro	main.py	/^        baro = Baro(ORB)$/;"	kind:variable	line:56
+brake	vehicle.py	/^    def brake(self, braketime=0.5):$/;"	kind:member	line:25
+build_log	tools.py	/^def build_log(model, suffix):$/;"	kind:function	line:46
+build_sbus	tools.py	/^def build_sbus():$/;"	kind:function	line:60
 channel	config.py	/^    def channel(self, index):$/;"	kind:member	line:53
-channel	uORB.py	/^    def channel(self, channel):$/;"	kind:member	line:76
-check	sbus_receiver.py	/^    def check(self, channels):$/;"	kind:member	line:51
+channel	uORB.py	/^    def channel(self, channel):$/;"	kind:member	line:78
+check	sbus_receiver.py	/^    def check(self, channels):$/;"	kind:member	line:52
 checksum	compass_module.py	/^    def checksum(self, package):$/;"	kind:member	line:63
-child	waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:62
-clear	waypoint.py	/^    def clear(self):$/;"	kind:member	line:65
+child	waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:68
+clear	waypoint.py	/^    def clear(self):$/;"	kind:member	line:71
 close	GPS_module.py	/^    def close(self):$/;"	kind:member	line:54
 close	compass_module.py	/^    def close(self):$/;"	kind:member	line:75
-close	uORB.py	/^    def close(self, *module):$/;"	kind:member	line:86
-close_module	tools.py	/^close_module = [$/;"	kind:variable	line:58
+close	uORB.py	/^    def close(self, *module):$/;"	kind:member	line:88
+close_module	tools.py	/^close_module = [$/;"	kind:variable	line:78
+cloud.py	cloud.py	1;"	kind:file	line:1
 cloud_module.py	cloud_module.py	1;"	kind:file	line:1
-com	main.py	/^        com = build_sbus()$/;"	kind:variable	line:23
-com	sbus_receiver.py	/^    com = build_sbus()$/;"	kind:variable	line:83
-com	sbus_sender.py	/^    com = build_sbus()$/;"	kind:variable	line:93
-commands	tools.py	/^commands = [$/;"	kind:variable	line:18
+com	main.py	/^        com = build_sbus()$/;"	kind:variable	line:19
+com	sbus_receiver.py	/^    com = build_sbus()$/;"	kind:variable	line:84
+com	sbus_sender.py	/^    com = build_sbus()$/;"	kind:variable	line:85
+commands	tools.py	/^commands = [$/;"	kind:variable	line:19
 compass	compass_module.py	/^    compass = Compass(ORB)$/;"	kind:variable	line:84
-compass	main.py	/^        compass = Compass(ORB)$/;"	kind:variable	line:37
+compass	main.py	/^        compass = Compass(ORB)$/;"	kind:variable	line:36
 compass_module.py	compass_module.py	1;"	kind:file	line:1
-condition_yaw	vehicle.py	/^    def condition_yaw(self, heading=0):$/;"	kind:member	line:244
+condition_yaw	vehicle.py	/^    def condition_yaw(self, heading=0):$/;"	kind:member	line:308
 config	config.py	/^config = Config()$/;"	kind:variable	line:80
 config.py	config.py	1;"	kind:file	line:1
 containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:117
@@ -197,29 +209,30 @@ containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	lin
 containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:290
 containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:34
 containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:342
-containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:380
-containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:460
+containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:387
+containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:467
 containing_type	FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:79
-control_FRU	vehicle.py	/^    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:32
-control_THR	vehicle.py	/^    def control_THR(self, THR, percent=0):$/;"	kind:member	line:93
-control_percent	vehicle.py	/^    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:42
-control_stick	vehicle.py	/^    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:22
+control_FRU	vehicle.py	/^    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:40
+control_THR	vehicle.py	/^    def control_THR(self, percent):$/;"	kind:member	line:114
+control_percent	vehicle.py	/^    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:50
+control_stick	vehicle.py	/^    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):$/;"	kind:member	line:30
 convert2In	Baro.py	/^    def convert2In(self, pressure):$/;"	kind:member	line:172
 convert_complement	IMU.py	/^    def convert_complement(self, hex_val):$/;"	kind:member	line:75
 convert_ieee754	IMU.py	/^    def convert_ieee754(self, hex_val):$/;"	kind:member	line:66
-cos	library.py	/^def cos(angle):$/;"	kind:function	line:165
-count	library.py	/^    count = 0$/;"	kind:variable	line:177
-dataflash	uORB.py	/^    def dataflash(self):$/;"	kind:member	line:228
-dec2hex	library.py	/^def dec2hex(decimal, length=4):$/;"	kind:function	line:157
+cos	library.py	/^def cos(angle):$/;"	kind:function	line:166
+count	library.py	/^    count = 0$/;"	kind:variable	line:178
+dataflash	uORB.py	/^    def dataflash(self):$/;"	kind:member	line:234
+dec2hex	library.py	/^def dec2hex(decimal, length=4):$/;"	kind:function	line:158
 decode	sbus.py	/^    def decode(self, package):$/;"	kind:member	line:140
 decode_BCD	compass_module.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:68
 decode_frame	sbus.py	/^    def decode_frame(self):$/;"	kind:member	line:81
-disarm	vehicle.py	/^    def disarm(self):$/;"	kind:member	line:112
-distance_from_home	uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:125
-distance_to_target	uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:116
-down_brake	vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:225
+disarm	vehicle.py	/^    def disarm(self):$/;"	kind:member	line:134
+distance_from_home	uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:127
+distance_to_target	uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:118
+down_brake	vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:289
+down_metres	vehicle.py	/^    def down_metres(self, altitude):$/;"	kind:member	line:213
 download	attribute.py	/^    def download(self, index=0):$/;"	kind:member	line:63
-download	waypoint.py	/^    def download(self, origin, index=0):$/;"	kind:member	line:22
+download	waypoint.py	/^    def download(self, origin, index=0):$/;"	kind:member	line:26
 element	library.py	/^def element(file_name):$/;"	kind:function	line:24
 encode	sbus.py	/^    def encode(self, sbusChannels):$/;"	kind:member	line:148
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:144
@@ -227,32 +240,33 @@ enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:189
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:234
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:272
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:324
-enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:362
-enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:442
-enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:571
+enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:369
+enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:449
+enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:585
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:61
 enum_types	FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:99
-executor	cloud_module.py	/^    executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:96
-executor	main.py	/^        executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:99
+executor	cloud.py	/^    executor = Executor(work_queue)$/;"	kind:variable	line:92
+executor	cloud_module.py	/^    executor = Executor(work_queue, vehicle)$/;"	kind:variable	line:95
+executor	main.py	/^        executor = Executor(work_queue, vehicle, lidar)$/;"	kind:variable	line:108
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:104
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:149
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:194
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:239
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:277
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:329
-extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:367
-extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:447
-extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:576
+extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:374
+extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:454
+extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:590
 extension_ranges	FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:66
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:141
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:186
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:231
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:269
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:321
-extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:359
-extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:439
-extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:568
+extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:366
+extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:446
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:58
+extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:582
 extensions	FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:96
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:118
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:163
@@ -261,8 +275,8 @@ fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:253
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:291
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:343
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:35
-fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:381
-fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:461
+fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:388
+fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:468
 fields	FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:80
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:116
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:161
@@ -271,8 +285,8 @@ file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:251
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:289
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:33
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:341
-file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:379
-file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:459
+file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:386
+file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:466
 file	FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:78
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:115
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:160
@@ -281,101 +295,103 @@ filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:250
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:288
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:32
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:340
-filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:378
-filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:458
+filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:385
+filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:465
 filename	FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:77
 filter	sbus.py	/^    def filter(self, package):$/;"	kind:member	line:128
 fitting	Curve.py	/^    def fitting(self, n):$/;"	kind:member	line:13
 fitting	Curve.py	/^class fitting:$/;"	kind:class	line:7
-forward	vehicle.py	/^    def forward(self):$/;"	kind:member	line:174
-forward_brake	vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:195
+forward	vehicle.py	/^    def forward(self):$/;"	kind:member	line:243
+forward_brake	vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:259
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Attitude',$/;"	kind:variable	line:114
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Barometre',$/;"	kind:variable	line:287
-full_name	FlightLog_pb2.py	/^  full_name='buffers.Channels',$/;"	kind:variable	line:377
+full_name	FlightLog_pb2.py	/^  full_name='buffers.Channels',$/;"	kind:variable	line:384
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Compass',$/;"	kind:variable	line:249
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Coordinate',$/;"	kind:variable	line:159
 full_name	FlightLog_pb2.py	/^  full_name='buffers.GPS',$/;"	kind:variable	line:204
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Location',$/;"	kind:variable	line:31
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Point',$/;"	kind:variable	line:76
 full_name	FlightLog_pb2.py	/^  full_name='buffers.Waypoint',$/;"	kind:variable	line:339
-full_name	FlightLog_pb2.py	/^  full_name='buffers.sensors',$/;"	kind:variable	line:457
+full_name	FlightLog_pb2.py	/^  full_name='buffers.sensors',$/;"	kind:variable	line:464
 getBus	Baro.py	/^    def getBus(self):$/;"	kind:member	line:161
 getPressure	Baro.py	/^    def getPressure(self):$/;"	kind:member	line:155
 getPressureAdj	Baro.py	/^    def getPressureAdj(self):$/;"	kind:member	line:158
 getTempC	Baro.py	/^    def getTempC(self):$/;"	kind:member	line:149
 getTempF	Baro.py	/^    def getTempF(self):$/;"	kind:member	line:152
-get_alt	attribute.py	/^    def get_alt(self, relative=True):$/;"	kind:member	line:174
-get_altitude	uORB.py	/^    def get_altitude(self, relative=True):$/;"	kind:member	line:142
-get_attitude	attribute.py	/^    def get_attitude(self):$/;"	kind:member	line:153
+get_altitude	attribute.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:176
+get_altitude	uORB.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:144
+get_attitude	attribute.py	/^    def get_attitude(self):$/;"	kind:member	line:155
 get_attitude	compass_module.py	/^    def get_attitude(self):$/;"	kind:member	line:36
 get_bearing	library.py	/^def get_bearing(aLocation1, aLocation2):$/;"	kind:function	line:56
 get_distance_metres	library.py	/^def get_distance_metres(aLocation1, aLocation2):$/;"	kind:function	line:95
 get_failsafe_status	sbus.py	/^    def get_failsafe_status(self):$/;"	kind:member	line:60
-get_heading	attribute.py	/^    def get_heading(self):$/;"	kind:member	line:144
-get_home	attribute.py	/^    def get_home(self):$/;"	kind:member	line:162
+get_heading	attribute.py	/^    def get_heading(self):$/;"	kind:member	line:146
+get_home	attribute.py	/^    def get_home(self):$/;"	kind:member	line:164
 get_location	GPS_module.py	/^    def get_location(self, loc):$/;"	kind:member	line:48
-get_location	attribute.py	/^    def get_location(self):$/;"	kind:member	line:165
+get_location	attribute.py	/^    def get_location(self):$/;"	kind:member	line:167
 get_location_metres	library.py	/^def get_location_metres(original_location, dNorth, dEast):$/;"	kind:function	line:71
 get_num_stars	GPS_module.py	/^    def get_num_stars(self, loc):$/;"	kind:member	line:51
-get_pitch	attribute.py	/^    def get_pitch(self):$/;"	kind:member	line:126
-get_roll	attribute.py	/^    def get_roll(self):$/;"	kind:member	line:135
+get_pitch	attribute.py	/^    def get_pitch(self):$/;"	kind:member	line:128
+get_roll	attribute.py	/^    def get_roll(self):$/;"	kind:member	line:137
 get_rx_channel	sbus.py	/^    def get_rx_channel(self, num_ch):$/;"	kind:member	line:51
 get_rx_channels	sbus.py	/^    def get_rx_channels(self):$/;"	kind:member	line:43
 get_rx_report	sbus.py	/^    def get_rx_report(self):$/;"	kind:member	line:67
 get_stars	attribute.py	/^    def get_stars(self):$/;"	kind:member	line:60
-get_target	attribute.py	/^    def get_target(self):$/;"	kind:member	line:123
+get_target	attribute.py	/^    def get_target(self):$/;"	kind:member	line:125
 geterror	Curve.py	/^    def geterror(self):$/;"	kind:member	line:24
 gps	GPS_module.py	/^    gps = GPS(ORB)$/;"	kind:variable	line:62
-gps	main.py	/^        gps = GPS(ORB)$/;"	kind:variable	line:47
-has_module	attribute.py	/^    def has_module(self, module):$/;"	kind:member	line:183
-has_module	uORB.py	/^    def has_module(self, module):$/;"	kind:member	line:79
+gps	main.py	/^        gps = GPS(ORB)$/;"	kind:variable	line:46
+has_module	attribute.py	/^    def has_module(self, module):$/;"	kind:member	line:185
+has_module	uORB.py	/^    def has_module(self, module):$/;"	kind:member	line:81
 imu	IMU.py	/^    imu = IMU(ORB)$/;"	kind:variable	line:133
-imu	main.py	/^        imu = IMU(ORB)$/;"	kind:variable	line:67
-info	waypoint.py	/^    info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"$/;"	kind:variable	line:87
+imu	main.py	/^        imu = IMU(ORB)$/;"	kind:variable	line:66
+info	waypoint.py	/^    info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"$/;"	kind:variable	line:91
 init_altitude	attribute.py	/^    def init_altitude(self):$/;"	kind:member	line:54
 init_pressure	Baro.py	/^    init_pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:185
 isInt	config.py	/^    def isInt(self, x):$/;"	kind:member	line:63
-isNull	waypoint.py	/^    def isNull(self):$/;"	kind:member	line:69
-isNum	library.py	/^def isNum(s):$/;"	kind:function	line:117
-isStop	vehicle.py	/^    def isStop(self, heading, target, sign):$/;"	kind:member	line:240
+isNull	waypoint.py	/^    def isNull(self):$/;"	kind:member	line:75
+isNum	library.py	/^def isNum(s):$/;"	kind:function	line:118
+isStop	vehicle.py	/^    def isStop(self, heading, target, sign):$/;"	kind:member	line:304
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:102
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:147
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:192
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:237
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:275
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:327
-is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:365
-is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:445
-is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:574
+is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:372
+is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:452
+is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:588
 is_extendable	FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:64
-json_points	uORB.py	/^    def json_points(self):$/;"	kind:member	line:134
-kill	library.py	/^    def kill(self):$/;"	kind:member	line:241
-land	vehicle.py	/^    def land(self):$/;"	kind:member	line:136
+json_points	uORB.py	/^    def json_points(self):$/;"	kind:member	line:136
+kill	library.py	/^    def kill(self):$/;"	kind:member	line:242
+land	vehicle.py	/^    def land(self):$/;"	kind:member	line:160
 library.py	library.py	1;"	kind:file	line:1
+lidar	lidar.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:138
 lidar	lidar_module.py	/^    lidar = Lidar()$/;"	kind:variable	line:139
 lidar	main.py	/^        lidar = Lidar(vehicle)$/;"	kind:variable	line:80
+lidar	main.py	/^    lidar = None$/;"	kind:variable	line:75
+lidar.py	lidar.py	1;"	kind:file	line:1
 lidar_module.py	lidar_module.py	1;"	kind:file	line:1
-line	Curve.py	/^        line = line.split(',')$/;"	kind:variable	line:118
-line	Curve.py	/^        line = map(int, line)$/;"	kind:variable	line:119
-lines	Curve.py	/^        lines = f.readlines()$/;"	kind:variable	line:65
-list2str	uORB.py	/^    def list2str(self, rawlist):$/;"	kind:member	line:151
+line	Curve.py	/^        line = line.split(',')$/;"	kind:variable	line:109
+line	Curve.py	/^        line = map(int, line)$/;"	kind:variable	line:110
+lines	Curve.py	/^        lines = f.readlines()$/;"	kind:variable	line:56
+list2str	uORB.py	/^    def list2str(self, rawlist):$/;"	kind:member	line:153
 loadFUN	config.py	/^    def loadFUN(self, index):$/;"	kind:member	line:36
 loadHAL	config.py	/^    def loadHAL(self, index, end, start=1):$/;"	kind:member	line:50
 loadPIT	config.py	/^    def loadPIT(self, index):$/;"	kind:member	line:41
-loc	library.py	/^    loc = [36.1111, 116.2222]$/;"	kind:variable	line:249
-localtime	uORB.py	/^    def localtime(self):$/;"	kind:member	line:259
-log_json	uORB.py	/^    def log_json(self):$/;"	kind:member	line:249
-log_proto	uORB.py	/^    def log_proto(self):$/;"	kind:member	line:232
+loc	library.py	/^    loc = [36.1111, 116.2222]$/;"	kind:variable	line:250
+localtime	tools.py	/^def localtime():$/;"	kind:function	line:55
+location	lidar.py	/^    location = [36.111122, 116.222222, 10]$/;"	kind:variable	line:139
+log_json	uORB.py	/^    def log_json(self):$/;"	kind:member	line:257
+log_proto	uORB.py	/^    def log_proto(self):$/;"	kind:member	line:238
 main.py	main.py	1;"	kind:file	line:1
 more_angle	lidar_module.py	/^    def more_angle(self, angle):$/;"	kind:member	line:121
-movement	vehicle.py	/^    def movement(self, channel, sign=1):$/;"	kind:member	line:62
-movement2	vehicle.py	/^    def movement2(self, channel, sign=1):$/;"	kind:member	line:70
-movement3	test.py	/^def movement3(channel, percent=0):$/;"	kind:function	line:1
-movement3	vehicle.py	/^    def movement3(self, channel, percent=0):$/;"	kind:member	line:78
-movement4	test.py	/^def movement4(channel, percent=0):$/;"	kind:function	line:17
+movement	vehicle.py	/^    def movement(self, channel, sign=1):$/;"	kind:member	line:70
+movement2	vehicle.py	/^    def movement2(self, channel, sign=1):$/;"	kind:member	line:79
+movement3	vehicle.py	/^    def movement3(self, channel, percent=0):$/;"	kind:member	line:87
 name	FlightLog_pb2.py	/^  name='Attitude',$/;"	kind:variable	line:113
 name	FlightLog_pb2.py	/^  name='Barometre',$/;"	kind:variable	line:286
-name	FlightLog_pb2.py	/^  name='Channels',$/;"	kind:variable	line:376
+name	FlightLog_pb2.py	/^  name='Channels',$/;"	kind:variable	line:383
 name	FlightLog_pb2.py	/^  name='Compass',$/;"	kind:variable	line:248
 name	FlightLog_pb2.py	/^  name='Coordinate',$/;"	kind:variable	line:158
 name	FlightLog_pb2.py	/^  name='FlightLog.proto',$/;"	kind:variable	line:19
@@ -383,34 +399,39 @@ name	FlightLog_pb2.py	/^  name='GPS',$/;"	kind:variable	line:203
 name	FlightLog_pb2.py	/^  name='Location',$/;"	kind:variable	line:30
 name	FlightLog_pb2.py	/^  name='Point',$/;"	kind:variable	line:75
 name	FlightLog_pb2.py	/^  name='Waypoint',$/;"	kind:variable	line:338
-name	FlightLog_pb2.py	/^  name='sensors',$/;"	kind:variable	line:456
-navigation	vehicle.py	/^    def navigation(self, target):$/;"	kind:member	line:279
-navigation2	vehicle.py	/^    def navigation2(self, target):$/;"	kind:member	line:317
+name	FlightLog_pb2.py	/^  name='sensors',$/;"	kind:variable	line:463
+navigation	lidar.py	/^    def navigation(self, target):$/;"	kind:member	line:82
+navigation	vehicle.py	/^    def navigation(self, target):$/;"	kind:member	line:343
+navigation1	vehicle.py	/^    def navigation1(self, target):$/;"	kind:member	line:386
+navigation2	vehicle.py	/^    def navigation2(self, target):$/;"	kind:member	line:436
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:143
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:188
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:233
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:271
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:323
-nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:361
-nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:441
-nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:570
+nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:368
+nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:448
+nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:584
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:60
 nested_types	FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:98
 node	config.py	/^    def node(self, param1, param2):$/;"	kind:member	line:69
+obstacle_context	lidar.py	/^def obstacle_context(vehicle, target):$/;"	kind:function	line:14
+on_connect	lidar.py	/^def on_connect(client, userdata, rc):$/;"	kind:function	line:32
+on_message	lidar.py	/^def on_message(client, vehicle, msg):$/;"	kind:function	line:40
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:105
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:150
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:195
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:240
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:278
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:330
-oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:368
-oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:448
-oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:577
+oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:375
+oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:455
+oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:591
 oneofs	FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:67
-open	uORB.py	/^    def open(self, *module):$/;"	kind:member	line:82
-open_module	tools.py	/^open_module = [$/;"	kind:variable	line:8
+open	uORB.py	/^    def open(self, *module):$/;"	kind:member	line:84
+open_module	tools.py	/^open_module = [$/;"	kind:variable	line:9
 open_serial	library.py	/^def open_serial(portname, baudrate, timeout=None):$/;"	kind:function	line:12
-open_sock	cloud_module.py	/^def open_sock():$/;"	kind:function	line:12
+open_sock	cloud_module.py	/^def open_sock():$/;"	kind:function	line:13
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:125
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:132
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:139
@@ -428,7 +449,7 @@ options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:312
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:319
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:350
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:357
-options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:388
+options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:364
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:395
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:402
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:409
@@ -437,7 +458,7 @@ options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:42
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:423
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:430
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:437
-options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:468
+options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:444
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:475
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:482
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:489
@@ -454,6 +475,8 @@ options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:552
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:559
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:56
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:566
+options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:573
+options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:580
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:87
 options	FlightLog_pb2.py	/^      options=None),$/;"	kind:variable	line:94
 options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:101
@@ -462,13 +485,13 @@ options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:191
 options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:236
 options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:274
 options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:326
-options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:364
-options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:444
-options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:573
+options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:371
+options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:451
+options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:587
 options	FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:63
-origin	uORB.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:295
-origin	waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:85
-p	Curve.py	/^        p = THR2PIT(line[0])$/;"	kind:variable	line:120
+origin	waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:89
+p	Curve.py	/^        p = THR2PIT(line[0])$/;"	kind:variable	line:111
+p	test.py	/^    p = Pool(2)$/;"	kind:variable	line:32
 package	FlightLog_pb2.py	/^  package='buffers',$/;"	kind:variable	line:20
 package	sbus.py	/^    package = '0f00a420a809086a504b182c00042000010807380010800014'$/;"	kind:variable	line:191
 package	sbus.py	/^    package = sbus.filter(package)$/;"	kind:variable	line:193
@@ -477,84 +500,90 @@ points	waypoint.py	/^    def points(self):$/;"	kind:member	line:15
 predict	Curve.py	/^    def predict(self, x):$/;"	kind:member	line:37
 pressure2Alt	library.py	/^def pressure2Alt(hpa):$/;"	kind:function	line:38
 printResults	Baro.py	/^    def printResults(self):$/;"	kind:member	line:164
-protobuf	tools.py	/^protobuf = {$/;"	kind:variable	line:68
-publish	attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:177
+protobuf	tools.py	/^protobuf = {$/;"	kind:variable	line:88
+publish	attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:179
 publish	lidar_module.py	/^    def publish(self, topic, value):$/;"	kind:member	line:128
-publish	sbus_receiver.py	/^    def publish(self, topic, value):$/;"	kind:member	line:65
-publish	sbus_sender.py	/^    def publish(self, topic, value):$/;"	kind:member	line:75
-publish	uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:67
-publish	waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:72
+publish	sbus_receiver.py	/^    def publish(self, topic, value):$/;"	kind:member	line:66
+publish	sbus_sender.py	/^    def publish(self, topic, value):$/;"	kind:member	line:67
+publish	uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:69
+publish	waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:78
 read	Baro.py	/^    def read(self):$/;"	kind:member	line:56
-receiver	cloud_module.py	/^    receiver = Receiver(work_queue, sock)$/;"	kind:variable	line:91
-receiver	main.py	/^        receiver = Receiver(work_queue, sock)$/;"	kind:variable	line:94
-remain_wp	waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:54
-roll_left_brake	vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:207
-roll_right_brake	vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:213
+receive_command	test.py	/^def receive_command():$/;"	kind:function	line:20
+receiver	cloud.py	/^    receiver = Receiver(work_queue, Redis)$/;"	kind:variable	line:87
+receiver	cloud_module.py	/^    receiver = Receiver(work_queue, sock)$/;"	kind:variable	line:90
+receiver	main.py	/^        receiver = Receiver(work_queue, Redis)$/;"	kind:variable	line:103
+remain_wp	waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:60
+roll_left_brake	vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:271
+roll_right_brake	vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:277
 run	Baro.py	/^    def run(self):$/;"	kind:member	line:33
 run	GPS_module.py	/^    def run(self):$/;"	kind:member	line:20
 run	IMU.py	/^    def run(self):$/;"	kind:member	line:43
-run	cloud_module.py	/^    def run(self):$/;"	kind:member	line:38
-run	cloud_module.py	/^    def run(self):$/;"	kind:member	line:63
+run	cloud.py	/^    def run(self):$/;"	kind:member	line:28
+run	cloud.py	/^    def run(self):$/;"	kind:member	line:55
+run	cloud_module.py	/^    def run(self):$/;"	kind:member	line:36
+run	cloud_module.py	/^    def run(self):$/;"	kind:member	line:60
 run	compass_module.py	/^    def run(self):$/;"	kind:member	line:20
 run	sbus_receiver.py	/^    def run(self):$/;"	kind:member	line:23
 run	sbus_sender.py	/^    def run(self):$/;"	kind:member	line:24
-run	uORB.py	/^    def run(self):$/;"	kind:member	line:64
-save_log	uORB.py	/^    def save_log(self):$/;"	kind:member	line:263
+run	uORB.py	/^    def run(self):$/;"	kind:member	line:66
+save_log	uORB.py	/^    def save_log(self):$/;"	kind:member	line:267
 sbus	sbus.py	/^    sbus = SBUS()$/;"	kind:variable	line:192
 sbus.py	sbus.py	1;"	kind:file	line:1
-sbus_receiver	main.py	/^        sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:24
-sbus_receiver	sbus_receiver.py	/^    sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:85
-sbus_receiver	sbus_sender.py	/^    sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:96
+sbus_receiver	main.py	/^        sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:20
+sbus_receiver	sbus_receiver.py	/^    sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:86
+sbus_receiver	sbus_sender.py	/^    sbus_receiver = Sbus_Receiver(ORB, com)$/;"	kind:variable	line:88
 sbus_receiver.py	sbus_receiver.py	1;"	kind:file	line:1
-sbus_sender	main.py	/^        sbus_sender = Sbus_Sender(ORB, com)$/;"	kind:variable	line:30
-sbus_sender	sbus_sender.py	/^    sbus_sender = Sbus_Sender(ORB, com)$/;"	kind:variable	line:102
+sbus_sender	main.py	/^        sbus_sender = Sbus_Sender(ORB, com)$/;"	kind:variable	line:26
+sbus_sender	sbus_sender.py	/^    sbus_sender = Sbus_Sender(ORB, com)$/;"	kind:variable	line:94
 sbus_sender.py	sbus_sender.py	1;"	kind:file	line:1
-scheduler	cloud_module.py	/^    scheduler = BackgroundScheduler()$/;"	kind:variable	line:85
-scheduler	main.py	/^    scheduler = BackgroundScheduler()$/;"	kind:variable	line:10
-send_Log	cloud_module.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:23
-send_package	sbus_sender.py	/^    def send_package(self, package):$/;"	kind:member	line:54
-send_pwm	vehicle.py	/^    def send_pwm(self, channels):$/;"	kind:member	line:231
-sensors	FlightLog_pb2.py	/^sensors = _reflection.GeneratedProtocolMessageType('sensors', (_message.Message,), dict($/;"	kind:variable	line:670
-serialized_end	FlightLog_pb2.py	/^  serialized_end=1109,$/;"	kind:variable	line:580
+scheduler	cloud.py	/^    scheduler = BackgroundScheduler()$/;"	kind:variable	line:79
+scheduler	cloud_module.py	/^    scheduler = BackgroundScheduler()$/;"	kind:variable	line:84
+scheduler	main.py	/^        scheduler = BackgroundScheduler()$/;"	kind:variable	line:92
+send_Log	cloud.py	/^def send_Log(Redis, ORB):$/;"	kind:function	line:13
+send_Log	cloud_module.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:24
+send_log	test.py	/^def send_log():$/;"	kind:function	line:8
+send_package	sbus_sender.py	/^    def send_package(self, package):$/;"	kind:member	line:56
+send_pwm	vehicle.py	/^    def send_pwm(self, channels):$/;"	kind:member	line:295
+sensors	FlightLog_pb2.py	/^sensors = _reflection.GeneratedProtocolMessageType('sensors', (_message.Message,), dict($/;"	kind:variable	line:684
+serialized_end	FlightLog_pb2.py	/^  serialized_end=1137,$/;"	kind:variable	line:594
 serialized_end	FlightLog_pb2.py	/^  serialized_end=151,$/;"	kind:variable	line:108
 serialized_end	FlightLog_pb2.py	/^  serialized_end=205,$/;"	kind:variable	line:153
 serialized_end	FlightLog_pb2.py	/^  serialized_end=252,$/;"	kind:variable	line:198
 serialized_end	FlightLog_pb2.py	/^  serialized_end=330,$/;"	kind:variable	line:243
 serialized_end	FlightLog_pb2.py	/^  serialized_end=393,$/;"	kind:variable	line:281
 serialized_end	FlightLog_pb2.py	/^  serialized_end=478,$/;"	kind:variable	line:333
-serialized_end	FlightLog_pb2.py	/^  serialized_end=536,$/;"	kind:variable	line:371
-serialized_end	FlightLog_pb2.py	/^  serialized_end=652,$/;"	kind:variable	line:451
+serialized_end	FlightLog_pb2.py	/^  serialized_end=550,$/;"	kind:variable	line:378
+serialized_end	FlightLog_pb2.py	/^  serialized_end=666,$/;"	kind:variable	line:458
 serialized_end	FlightLog_pb2.py	/^  serialized_end=93,$/;"	kind:variable	line:70
-serialized_pb	FlightLog_pb2.py	/^  serialized_pb=_b('\\n\\x0f\\x46lightLog.proto\\x12\\x07\\x62uffers\\"A\\n\\x08Location\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"8\\n\\x05Point\\x12\\n\\n\\x02ID\\x18\\x01 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Location\\"4\\n\\x08\\x41ttitude\\x12\\r\\n\\x05pitch\\x18\\x01 \\x01(\\x02\\x12\\x0c\\n\\x04roll\\x18\\x02 \\x01(\\x02\\x12\\x0b\\n\\x03yaw\\x18\\x03 \\x01(\\x02\\"-\\n\\nCoordinate\\x12\\t\\n\\x01x\\x18\\x01 \\x01(\\x02\\x12\\t\\n\\x01y\\x18\\x02 \\x01(\\x02\\x12\\t\\n\\x01z\\x18\\x03 \\x01(\\x02\\"L\\n\\x03GPS\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x11\\n\\tnum_stars\\x18\\x02 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x03 \\x01(\\x0b\\x32\\x11.buffers.Location\\"=\\n\\x07\\x43ompass\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12#\\n\\x08\\x61ttitude\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Attitude\\"S\\n\\tBarometre\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x10\\n\\x08Pressure\\x18\\x02 \\x01(\\x02\\x12\\x13\\n\\x0bTemperature\\x18\\x03 \\x01(\\x02\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x04 \\x01(\\x02\\"8\\n\\x08Waypoint\\x12\\r\\n\\x05index\\x18\\x01 \\x01(\\x11\\x12\\x1d\\n\\x05point\\x18\\x02 \\x03(\\x0b\\x32\\x0e.buffers.Point\\"r\\n\\x08\\x43hannels\\x12\\x0b\\n\\x03\\x63h1\\x18\\x01 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h2\\x18\\x02 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h3\\x18\\x03 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h4\\x18\\x04 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h5\\x18\\x05 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h6\\x18\\x06 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h7\\x18\\x07 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h8\\x18\\x08 \\x01(\\x05\\"\\xc6\\x03\\n\\x07sensors\\x12\\x11\\n\\ttimestamp\\x18\\x01 \\x01(\\x02\\x12\\x19\\n\\x03gps\\x18\\x02 \\x01(\\x0b\\x32\\x0c.buffers.GPS\\x12!\\n\\x07\\x63ompass\\x18\\x03 \\x01(\\x0b\\x32\\x10.buffers.Compass\\x12 \\n\\x04\\x62\\x61ro\\x18\\x04 \\x01(\\x0b\\x32\\x12.buffers.Barometre\\x12#\\n\\x08waypoint\\x18\\x05 \\x01(\\x0b\\x32\\x11.buffers.Waypoint\\x12!\\n\\x06target\\x18\\x06 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x1f\\n\\x04home\\x18\\x07 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x10\\n\\x08init_alt\\x18\\x08 \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceToTarget\\x18\\t \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceFromHome\\x18\\n \\x01(\\x02\\x12(\\n\\rChannelsInput\\x18\\x0b \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12)\\n\\x0e\\x43hannelsOutput\\x18\\x0c \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12$\\n\\tLoiterPWM\\x18\\r \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x0e \\x01(\\x02\\x12\\x0c\\n\\x04Mode\\x18\\x0f \\x01(\\tb\\x06proto3')$/;"	kind:variable	line:22
+serialized_pb	FlightLog_pb2.py	/^  serialized_pb=_b('\\n\\x0f\\x46lightLog.proto\\x12\\x07\\x62uffers\\"A\\n\\x08Location\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"8\\n\\x05Point\\x12\\n\\n\\x02ID\\x18\\x01 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Location\\"4\\n\\x08\\x41ttitude\\x12\\r\\n\\x05pitch\\x18\\x01 \\x01(\\x02\\x12\\x0c\\n\\x04roll\\x18\\x02 \\x01(\\x02\\x12\\x0b\\n\\x03yaw\\x18\\x03 \\x01(\\x02\\"-\\n\\nCoordinate\\x12\\t\\n\\x01x\\x18\\x01 \\x01(\\x02\\x12\\t\\n\\x01y\\x18\\x02 \\x01(\\x02\\x12\\t\\n\\x01z\\x18\\x03 \\x01(\\x02\\"L\\n\\x03GPS\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x11\\n\\tnum_stars\\x18\\x02 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x03 \\x01(\\x0b\\x32\\x11.buffers.Location\\"=\\n\\x07\\x43ompass\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12#\\n\\x08\\x61ttitude\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Attitude\\"S\\n\\tBarometre\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x10\\n\\x08Pressure\\x18\\x02 \\x01(\\x02\\x12\\x13\\n\\x0bTemperature\\x18\\x03 \\x01(\\x02\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x04 \\x01(\\x02\\"F\\n\\x08Waypoint\\x12\\r\\n\\x05index\\x18\\x01 \\x01(\\x11\\x12\\x1d\\n\\x05point\\x18\\x02 \\x03(\\x0b\\x32\\x0e.buffers.Point\\x12\\x0c\\n\\x04type\\x18\\x03 \\x01(\\t\\"r\\n\\x08\\x43hannels\\x12\\x0b\\n\\x03\\x63h1\\x18\\x01 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h2\\x18\\x02 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h3\\x18\\x03 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h4\\x18\\x04 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h5\\x18\\x05 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h6\\x18\\x06 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h7\\x18\\x07 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h8\\x18\\x08 \\x01(\\x05\\"\\xd4\\x03\\n\\x07sensors\\x12\\x11\\n\\ttimestamp\\x18\\x01 \\x01(\\x02\\x12\\x19\\n\\x03gps\\x18\\x02 \\x01(\\x0b\\x32\\x0c.buffers.GPS\\x12!\\n\\x07\\x63ompass\\x18\\x03 \\x01(\\x0b\\x32\\x10.buffers.Compass\\x12 \\n\\x04\\x62\\x61ro\\x18\\x04 \\x01(\\x0b\\x32\\x12.buffers.Barometre\\x12#\\n\\x08waypoint\\x18\\x05 \\x01(\\x0b\\x32\\x11.buffers.Waypoint\\x12!\\n\\x06target\\x18\\x06 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x1f\\n\\x04home\\x18\\x07 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x10\\n\\x08init_alt\\x18\\x08 \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceToTarget\\x18\\t \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceFromHome\\x18\\n \\x01(\\x02\\x12(\\n\\rChannelsInput\\x18\\x0b \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12)\\n\\x0e\\x43hannelsOutput\\x18\\x0c \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12$\\n\\tLoiterPWM\\x18\\r \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x0e \\x01(\\x02\\x12\\x0c\\n\\x04Mode\\x18\\x0f \\x01(\\t\\x12\\x0c\\n\\x04Gear\\x18\\x10 \\x01(\\x05\\x62\\x06proto3')$/;"	kind:variable	line:22
 serialized_start	FlightLog_pb2.py	/^  serialized_start=153,$/;"	kind:variable	line:152
 serialized_start	FlightLog_pb2.py	/^  serialized_start=207,$/;"	kind:variable	line:197
 serialized_start	FlightLog_pb2.py	/^  serialized_start=254,$/;"	kind:variable	line:242
 serialized_start	FlightLog_pb2.py	/^  serialized_start=28,$/;"	kind:variable	line:69
 serialized_start	FlightLog_pb2.py	/^  serialized_start=332,$/;"	kind:variable	line:280
 serialized_start	FlightLog_pb2.py	/^  serialized_start=395,$/;"	kind:variable	line:332
-serialized_start	FlightLog_pb2.py	/^  serialized_start=480,$/;"	kind:variable	line:370
-serialized_start	FlightLog_pb2.py	/^  serialized_start=538,$/;"	kind:variable	line:450
-serialized_start	FlightLog_pb2.py	/^  serialized_start=655,$/;"	kind:variable	line:579
+serialized_start	FlightLog_pb2.py	/^  serialized_start=480,$/;"	kind:variable	line:377
+serialized_start	FlightLog_pb2.py	/^  serialized_start=552,$/;"	kind:variable	line:457
+serialized_start	FlightLog_pb2.py	/^  serialized_start=669,$/;"	kind:variable	line:593
 serialized_start	FlightLog_pb2.py	/^  serialized_start=95,$/;"	kind:variable	line:107
 setElevation	Baro.py	/^    def setElevation(self, elevation):$/;"	kind:member	line:47
 setElevationFt	Baro.py	/^    def setElevationFt(self, elevation):$/;"	kind:member	line:50
 setI2c	Baro.py	/^    def setI2c(self, i2c):$/;"	kind:member	line:53
 set_channels_mid	attribute.py	/^    def set_channels_mid(self):$/;"	kind:member	line:81
 set_gear	attribute.py	/^    def set_gear(self, gear):$/;"	kind:member	line:101
-set_target	attribute.py	/^    def set_target(self, dNorth, dEast, alt=-1):$/;"	kind:member	line:105
-set_target_angle	attribute.py	/^    def set_target_angle(self, distance, angle, alt=-1):$/;"	kind:member	line:115
+set_target	attribute.py	/^    def set_target(self, dNorth, dEast, alt=float('inf')):$/;"	kind:member	line:105
+set_target_angle	attribute.py	/^    def set_target_angle(self, distance, angle, alt=float('inf')):$/;"	kind:member	line:117
 show	Curve.py	/^    def show(self):$/;"	kind:member	line:27
-sin	library.py	/^def sin(angle):$/;"	kind:function	line:170
-sock	cloud_module.py	/^    sock = open_sock()$/;"	kind:variable	line:87
-sock	main.py	/^        sock = open_sock()$/;"	kind:variable	line:90
-state	attribute.py	/^    def state(self, module):$/;"	kind:member	line:186
-state	uORB.py	/^    def state(self, module):$/;"	kind:member	line:73
-subscribe	attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:180
+sin	library.py	/^def sin(angle):$/;"	kind:function	line:171
+sock	cloud_module.py	/^    sock = open_sock()$/;"	kind:variable	line:86
+state	attribute.py	/^    def state(self, module):$/;"	kind:member	line:188
+state	uORB.py	/^    def state(self, module):$/;"	kind:member	line:75
+subscribe	attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:182
 subscribe	lidar_module.py	/^    def subscribe(self, topic):$/;"	kind:member	line:131
-subscribe	sbus_receiver.py	/^    def subscribe(self, topic):$/;"	kind:member	line:68
-subscribe	sbus_sender.py	/^    def subscribe(self, topic):$/;"	kind:member	line:78
-subscribe	uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:70
-subscribe	waypoint.py	/^    def subscribe(self, topic):$/;"	kind:member	line:75
+subscribe	sbus_receiver.py	/^    def subscribe(self, topic):$/;"	kind:member	line:69
+subscribe	sbus_sender.py	/^    def subscribe(self, topic):$/;"	kind:member	line:70
+subscribe	uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:72
+subscribe	waypoint.py	/^    def subscribe(self, topic):$/;"	kind:member	line:81
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:103
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:148
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:193
@@ -562,41 +591,45 @@ syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:21
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:238
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:276
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:328
-syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:366
-syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:446
-syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:575
+syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:373
+syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:453
+syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:589
 syntax	FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:65
-takeoff	vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:116
+takeoff	vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:138
 test.py	test.py	1;"	kind:file	line:1
 tools.py	tools.py	1;"	kind:file	line:1
-uORB	uORB.py	/^class uORB(threading.Thread):$/;"	kind:class	line:15
+type	waypoint.py	/^    def type(self):$/;"	kind:member	line:23
+uORB	uORB.py	/^class uORB(threading.Thread):$/;"	kind:class	line:16
 uORB.py	uORB.py	1;"	kind:file	line:1
-up_brake	vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:219
+up_brake	vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:283
+up_metres	vehicle.py	/^    def up_metres(self, altitude, relative=True):$/;"	kind:member	line:190
 update	Baro.py	/^    def update(self, dictories):$/;"	kind:member	line:43
 update	GPS_module.py	/^    def update(self, dictories):$/;"	kind:member	line:31
 update	IMU.py	/^    def update(self, dictories):$/;"	kind:member	line:52
 update	compass_module.py	/^    def update(self, dictories):$/;"	kind:member	line:32
-update_Baro	uORB.py	/^    def update_Baro(self):$/;"	kind:member	line:185
-update_GPS	uORB.py	/^    def update_GPS(self):$/;"	kind:member	line:172
-update_attitude	uORB.py	/^    def update_attitude(self, ProtoAttitude, Attitude):$/;"	kind:member	line:165
-update_channelsInput	uORB.py	/^    def update_channelsInput(self):$/;"	kind:member	line:207
-update_channelsOutput	uORB.py	/^    def update_channelsOutput(self):$/;"	kind:member	line:214
-update_compass	uORB.py	/^    def update_compass(self):$/;"	kind:member	line:179
+update_Baro	uORB.py	/^    def update_Baro(self):$/;"	kind:member	line:187
+update_GPS	uORB.py	/^    def update_GPS(self):$/;"	kind:member	line:174
+update_attitude	uORB.py	/^    def update_attitude(self, ProtoAttitude, Attitude):$/;"	kind:member	line:167
+update_channelsInput	uORB.py	/^    def update_channelsInput(self):$/;"	kind:member	line:213
+update_channelsOutput	uORB.py	/^    def update_channelsOutput(self):$/;"	kind:member	line:220
+update_compass	uORB.py	/^    def update_compass(self):$/;"	kind:member	line:181
 update_home	attribute.py	/^    def update_home(self):$/;"	kind:member	line:44
-update_location	uORB.py	/^    def update_location(self, ProtoLocation, Locaiton):$/;"	kind:member	line:157
-update_loiterPWM	uORB.py	/^    def update_loiterPWM(self):$/;"	kind:member	line:221
-update_waypoint	uORB.py	/^    def update_waypoint(self):$/;"	kind:member	line:193
-vehicle	cloud_module.py	/^    vehicle = Vehicle(ORB=ORB)$/;"	kind:variable	line:84
-vehicle	main.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:75
-vehicle	vehicle.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:518
+update_location	uORB.py	/^    def update_location(self, ProtoLocation, Locaiton):$/;"	kind:member	line:159
+update_loiterPWM	uORB.py	/^    def update_loiterPWM(self):$/;"	kind:member	line:227
+update_waypoint	uORB.py	/^    def update_waypoint(self):$/;"	kind:member	line:195
+vehicle	cloud.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:78
+vehicle	cloud_module.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:83
+vehicle	lidar.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:137
+vehicle	main.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:74
+vehicle	vehicle.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:596
 vehicle.py	vehicle.py	1;"	kind:file	line:1
-watch	library.py	/^    def watch(self):$/;"	kind:member	line:232
+watch	library.py	/^    def watch(self):$/;"	kind:member	line:233
 waypoint.py	waypoint.py	1;"	kind:file	line:1
-work_queue	cloud_module.py	/^    work_queue = Queue.Queue()$/;"	kind:variable	line:88
-work_queue	main.py	/^        work_queue = Queue.Queue()$/;"	kind:variable	line:91
-wp	uORB.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:294
-wp	waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:84
-yaw_left	vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:166
-yaw_left_brake	vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:183
-yaw_right	vehicle.py	/^    def yaw_right(self):$/;"	kind:member	line:170
-yaw_right_brake	vehicle.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:189
+work_queue	cloud.py	/^    work_queue = Queue.Queue()$/;"	kind:variable	line:83
+work_queue	cloud_module.py	/^    work_queue = Queue.Queue()$/;"	kind:variable	line:87
+work_queue	main.py	/^        work_queue = Queue.Queue()$/;"	kind:variable	line:99
+wp	waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:88
+yaw_left	vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:237
+yaw_left_brake	vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:247
+yaw_right	vehicle.py	/^    def yaw_right(self):$/;"	kind:member	line:240
+yaw_right_brake	vehicle.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:253

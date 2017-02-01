@@ -34,7 +34,7 @@ class Config(object):
         self._config['Gear'] = self.loadHAL(8, 4)
 
     def loadFUN(self, index):
-        return [self.node(index, 1) - 1] + [self.node(index, i) for i in xrange(2, 5)]
+        return [self.node(index, 1) - 1] + [self.node(index, i) for i in range(2, 5)]
         # return [self.node(index, 1) - 1, self.node(index, 2),
         # self.node(index, 3), self.node(index, 4)]
 
@@ -80,4 +80,4 @@ class Config(object):
 config = Config()
 
 if __name__ == "__main__":
-    print config
+    print(config)

@@ -4,28 +4,29 @@
 import serial
 import sys
 import time
+import os
 
 open_module = [
-    'Sbus',
-    'Compass',
+    # 'Sbus',
+    # 'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
-    'Lidar',
+    # 'Lidar',
     'Cloud',
 ]
 
 commands = [
     # 'arm()',
-    'set_channels_mid()',
+    # 'set_channels_mid()',
     # 'set_gear(2)',
-    'yaw_left_brake()',
-    'yaw_right_brake()',
-    'roll_left_brake()',
-    'roll_right_brake()',
-    'forward_brake()',
-    'backward_brake()',
-    'up_brake()',
+    # 'yaw_left_brake()',
+    # 'yaw_right_brake()',
+    # 'roll_left_brake()',
+    # 'roll_right_brake()',
+    # 'forward_brake()',
+    # 'backward_brake()',
+    # 'up_brake()',
     # 'down_brake()',
     # 'condition_yaw(30)',
     # 'condition_yaw(300)',
@@ -34,7 +35,26 @@ commands = [
     # 'download(0)',
     # 'Auto()',
     # 'disarm()',
+    # 'GradualTHR(0, 60)'
 ]
+
+
+def _log(message):
+    print(message)
+
+
+def build_log(model, suffix):
+    log_name = localtime() + '.' + suffix
+    file_path = os.path.join(
+        os.path.expanduser('~'), 'UAVLog', model)
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+    return os.path.join(file_path, log_name)
+
+
+def localtime():
+    x = time.localtime(time.time())
+    return time.strftime('%Y-%m-%d--%H:%M:%S', x)
 
 
 def build_sbus():
@@ -92,10 +112,26 @@ protobuf = {
         36.1111,
         116.22286716842115],
     'LoiterPWM': [1000] * 8,
-    'Mode': 'Loiter',
-    'Waypoint': [],
-    'WaypointID': -1,
-    'WaypointType': None,
+    'Mode': 'STAB',
+    'Waypoint': [
+        [
+            36.121111111111,
+            116.22211080524757
+        ],
+        [
+            36.111200831528414,
+            116.2223331950068
+        ],
+        [
+            36.111111,
+            116.22222200012719
+        ]
+    ],
+    'WaypointID': 0,
+    'WaypointType': 'Download',
+    # 'Waypoint': [],
+    # 'WaypointID': -1,
+    # 'WaypointType': None,
     'RPM': 1600,
     'InitAltitude': -80.81,
     'IMU_State': True,

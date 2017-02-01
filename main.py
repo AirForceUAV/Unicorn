@@ -2,13 +2,9 @@
 # coding:utf-8
 
 import time
-import Queue
 from vehicle import Vehicle
 
 if __name__ == '__main__':
-    from apscheduler.schedulers.background import BackgroundScheduler
-    scheduler = BackgroundScheduler()
-
     from uORB import uORB
     from library import Watcher
 
@@ -76,10 +72,11 @@ if __name__ == '__main__':
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
+    lidar = None
 
     if ORB.has_module('Lidar'):
         # Initialize Lidar
-        from lidar_module import Lidar
+        from lidar import Lidar
         lidar = Lidar(vehicle)
 
     # Save FlightLog to SD
@@ -87,29 +84,38 @@ if __name__ == '__main__':
 
     if ORB.has_module('Cloud'):
         # Initialize Cloud
-        print('>>> Initialize Cloud ...')
-        from cloud_module import open_sock, Receiver, Executor, send_Log
 
-        sock = open_sock()
+        print('>>> Initialize Cloud ...')
+        import Queue
+        import redis
+        from apscheduler.schedulers.background import BackgroundScheduler
+        scheduler = BackgroundScheduler()
+
+        # from cloud_module import Receiver, Executor, open_sock, send_Log
+        from cloud import Receiver, Executor, send_Log
+
+        # sock = open_sock()
+        Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         work_queue = Queue.Queue()
 
         print('>>> Start Receiver Thread')
-        receiver = Receiver(work_queue, sock)
+        # receiver = Receiver(work_queue, sock)
+        receiver = Receiver(work_queue, Redis)
         receiver.daemon = True
         receiver.start()
 
         print('>>> Start Executor Thread')
-        executor = Executor(work_queue, vehicle)
+        executor = Executor(work_queue, vehicle, lidar)
         executor.daemon = True
         executor.start()
         from tools import protobuf
         ORB._HAL = protobuf
-        scheduler.add_job(send_Log, 'interval',
-                          args=(sock, ORB), seconds=1)
+        # scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
+        scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
 
         # while True:
         #     message = ORB.dataflash()
-        #     sock.send(message)
+        #     # print message
         #     time.sleep(1)
         scheduler.start()
 

@@ -15,7 +15,7 @@ def send_Log(Redis, ORB):
     sendChan = Redis.get('ClientSendChan').decode('utf-8')
     # print "ClientSendChan:", sendChan
     Redis.lpush(sendChan, message)
-    # print 'Pushed:', message
+    print 'Pushed:', message
 
 
 class Receiver(threading.Thread):

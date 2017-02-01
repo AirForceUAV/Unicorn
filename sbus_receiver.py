@@ -47,7 +47,7 @@ class Sbus_Receiver(threading.Thread):
             if not self.check(input):
                 continue
             self.publish('ChannelsInput', input)
-            # time.sleep(.01)
+            time.sleep(.01)
 
     def check(self, channels):
         Flag = True

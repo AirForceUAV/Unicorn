@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import socket
-import redis
 import time
 import os
 import sys
@@ -63,7 +62,7 @@ class Executor(threading.Thread):
             command = "self." + command
             print 'Execute command {}'.format(command)
             try:
-                eval(command)
+                # eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
@@ -98,6 +97,9 @@ if __name__ == "__main__":
     from tools import protobuf
     ORB._HAL = protobuf
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
+    # while True:
+    #     send_Log(sock, ORB)
+    #     time.sleep(1)
     scheduler.start()
     executor.join()
     receiver.join()
