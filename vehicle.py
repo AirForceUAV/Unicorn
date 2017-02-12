@@ -9,7 +9,6 @@ from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
 from Curve import THR2PIT
-from tools import _log
 
 
 class Vehicle(Attribute):
@@ -20,10 +19,13 @@ class Vehicle(Attribute):
         self.moveTime = 2
         self.Epsilon = 20
         self.radius = 5
+        self.prepre_state = 'STOP'
+        self.pre_state = 'STOP'
         self.state = 'STOP'
+        self._target = None
 
     def brake(self, braketime=0.5):
-        _log('brake')
+        self._log('brake')
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
 
@@ -96,7 +98,6 @@ class Vehicle(Attribute):
         section = abs(channel[2] - channel[index])
         variation = int(channel[5] * section * rate)
         result = channel[2] + variation
-        # print index, variation, result
         return result
 
     def GradualTHR(self, begin, end):
@@ -120,11 +121,10 @@ class Vehicle(Attribute):
             rate = 1 - rate
         variation = int(section * rate)
         result = THR[1] + variation
-        # print result
         return result
 
     def arm(self):
-        _log("Arming ...")
+        self._log("Arming ...")
         if self._model == 'HELI':
             return
         self.control_stick(-1, -1, -1, 1)
@@ -132,35 +132,35 @@ class Vehicle(Attribute):
         # self.disarm()
 
     def disarm(self):
-        _log('DisArmed ...')
+        self._log('DisArmed ...')
         self.control_stick(THR=-1, Mode=2)
 
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
-        print 'Takeoff to ', alt, 'm'
+        self._log('Takeoff to {} m'.format(alt))
         if not self.has_module('Baro'):
-            print 'Baro is closed'
+            self._warning('Baro is closed')
             return
 
         self.escalate(0, 60)
 
         while not watcher.IsCancel():
             currentAlt = self.get_alttitude(True)
-            print 'Current Altitude', currentAlt
+            self._debug('Current Altitude :{}'.format(currentAlt))
             if currentAlt is None:
-                print 'Baro is not health'
+                self._error('Baro is not health')
                 break
             if currentAlt > alt * 0.95:
-                print 'Reached Altitude', currentAlt
+                self._log('Reached Altitude :{}'.format(currentAlt))
                 break
             time.sleep(.1)
 
         self.brake()
 
     def land(self):
-        print 'Landing... '
+        self._log('Landing...')
         if not self.has_module('Baro'):
-            print 'Baro is closed'
+            self._warning('Baro is closed')
             return
 
         # self.control_FRU(0, 0, -1)
@@ -188,18 +188,27 @@ class Vehicle(Attribute):
         #     self.disarm()
 
     def up_metres(self, altitude, relative=True):
-        if altitude <= 0 or not self.ORB.has_module('Baro'):
-            print 'Baro is closed'
+        if altitude <= 0:
+            self._warning('Altitude({}) is unvalid'.format(altitude))
+            return
+        if not self.ORB.has_module('Baro'):
+            self._warning('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
+            self._error('Baro is not health')
             return
         if relative:
             TAlt = CAlt + altitude
         else:
-            TAlt = self.ORB._HAL['InitAltitude'] + altitude
+            IAlt = self.ORB._HAL['InitAltitude']
+            if IAlt is None:
+                self._error('InitAltitude is null')
+                return
+            TAlt = IAlt + altitude
         if TAlt < CAlt:
-            print 'Error:Less than CAltitude ({}).'.format(CAlt)
+            self._warning(
+                'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
             return
         self.control_FRU(THR=1)
         watcher = CancelWatcher()
@@ -210,21 +219,25 @@ class Vehicle(Attribute):
             time.sleep(.1)
         self.brake()
 
-    def down_metres(self, altitude):
-        if altitude <= 0 or not self.ORB.has_module('Baro'):
-            print 'Baro is closed'
+    def down_metres(self, altitude, relative=True):
+        if altitude <= 0:
+            self._warning('Altitude({}) is unvalid'.format(altitude))
+            return
+        if not self.ORB.has_module('Baro'):
+            self._warning('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
+            self._error('Barometre is not health')
             return
 
         TAlt = CAlt - altitude
         IAlt = self.ORB._HAL['InitAltitude']
         if IAlt is None:
-            print 'Barometre is not health'
+            self._error('InitAltitude is null')
             return
         if TAlt < IAlt + 1:
-            print 'Error:TAltitude({}) is too low.'.format(TAlt - IAlt)
+            self._warning('TAltitude({}) is too low.'.format(TAlt - IAlt))
             return
         self.control_FRU(THR=-1)
         watcher = CancelWatcher()
@@ -241,60 +254,60 @@ class Vehicle(Attribute):
         self.control_FRU(RUD=1)
 
     def forward(self):
-        _log('Forward...')
+        self._log('Forward...')
         self.control_FRU(ELE=1)
 
     def yaw_left_brake(self):
-        _log('Yaw Left')
+        self._log('Yaw Left')
         self.control_FRU(RUD=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def yaw_right_brake(self):
-        _log('Yaw Right')
+        self._log('Yaw Right')
         self.control_FRU(RUD=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def forward_brake(self):
-        _log('Forward')
+        self._log('Forward')
         self.control_FRU(ELE=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def backward_brake(self):
-        _log('Backward')
+        self._log('Backward')
         self.control_FRU(ELE=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def roll_left_brake(self):
-        _log('Roll Left')
+        self._log('Roll Left')
         self.control_FRU(AIL=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def roll_right_brake(self):
-        _log('Roll Right')
+        self._log('Roll Right')
         self.control_FRU(AIL=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def up_brake(self):
-        _log('Throttle Up')
+        self._log('Throttle Up')
         self.control_FRU(THR=1)
         time.sleep(self.moveTime)
         self.brake(1)
 
     def down_brake(self):
-        _log('Throttle Down')
+        self._log('Throttle Down')
         self.control_FRU(THR=-1)
         time.sleep(self.moveTime)
         self.brake(1)
 
     def send_pwm(self, channels):
-        # print channels
-        # print self.analysis_channels(channels)
+        # self._debug(channels)
+        # self._debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 
     def analysis_channels(self, channels):
@@ -322,27 +335,27 @@ class Vehicle(Attribute):
         TurnAngle = (360 + current_yaw - target_angle) % 360
         if TurnAngle >= 0 and TurnAngle <= 180:
             is_cw = 1
-            _log('Turn left {}'.format(TurnAngle))
+            self._log('Turn left {}'.format(TurnAngle))
             self.yaw_left()
         else:
             is_cw = -1
             self._log('Turn right {}'.format(360 - TurnAngle))
             self.yaw_right()
-        print "Target", target_angle
+        self._debug("Target %d" % target_angle)
         while not watcher.IsCancel():
             current_yaw = self.get_heading()
             if current_yaw is None:
                 break
             if self.isStop(current_yaw, target_angle, is_cw):
                 break
-            # _log('{},{}'.format(current_yaw, target_angle))
-        print "Result", self.get_heading()
+            # self._debug('{},{}'.format(current_yaw, target_angle))
+        self._debug("Before Angle {}".format(self.get_heading()))
         self.brake()
-        print "Result", self.get_heading()
+        self._debug("After  Angle {}".format(self.get_heading()))
 
     def navigation(self, target):
         watcher = CancelWatcher()
-        radius = 5
+        radius = self.radius
         frequency = 1
         current_location = self.get_location()
         current_yaw = self.get_heading()
@@ -364,12 +377,12 @@ class Vehicle(Attribute):
                 current_location, target, current_yaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                print("Reached Target!")
+                self._log("Reached Target!")
                 break
 
             SAngle = int(math.degrees(math.asin(radius / distance)))
 
-            print distance, angle, SAngle
+            self._debug('{} {} {}'.format(distance, angle, SAngle))
 
             if not self.InAngle(angle, max(SAngle, self.Epsilon)):
                 self.brake()
@@ -385,7 +398,7 @@ class Vehicle(Attribute):
 
     def navigation1(self, target):
         watcher = CancelWatcher()
-        radius = 5
+        radius = self.radius
         frequency = 1
         current_location = self.get_location()
         current_yaw = self.get_heading()
@@ -407,27 +420,23 @@ class Vehicle(Attribute):
                 current_location, target, current_yaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                _log("Reached Target Waypoint!")
+                self._log("Reached Target Waypoint!")
                 break
             SAngle = int(math.degrees(math.asin(radius / distance)))
 
-            print distance, angle, SAngle
+            self._debug('{} {} {}'.format(distance, angle, SAngle))
 
             if self.InAngle(angle, max(SAngle, self.Epsilon)):
                 self.control_FRU(ELE=1)
             else:
                 if angle > SAngle and angle <= 90:
-                    print 'Roll Left'
+                    self._debug('Roll Left')
                     self.control_FRU(AIL=-1, ELE=1)
                 elif angle >= 270 and angle < 360 - SAngle:
-                    print 'Roll Right'
+                    self._debug('Roll Right')
                     self.control_FRU(AIL=1, ELE=1)
                 else:
                     self.brake()
-                    # location = self.get_location()
-                    # if location is None:
-                    #     break
-                    # angle = angle_heading_target(location, target, current_yaw)
                     self.condition_yaw(angle)
             time.sleep(frequency)
             # raw_input('next')
@@ -456,10 +465,10 @@ class Vehicle(Attribute):
             angle = angle_heading_target(
                 current_location, target, current_yaw)
 
-            print distance, angle
+            self._debug('{} {}'.format(distance, angle))
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                print("Reached Target!")
+                self._log("Reached Target!")
                 break
 
             self.forward()
@@ -476,7 +485,7 @@ class Vehicle(Attribute):
     def Guided(self):
         target = self.get_target()
         if target is None:
-            print("Target is None!")
+            self._warning("Target is None!")
             return
         self.publish('Mode', 'GUIDED')
 
@@ -487,7 +496,7 @@ class Vehicle(Attribute):
     def RTL(self):
         target = self.get_home()
         if target is None:
-            print("Home is None!")
+            self._warning("Home is None!")
             return
         self.publish('Mode', 'RTL')
 

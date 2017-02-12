@@ -12,7 +12,9 @@ class Attribute(object):
     def __init__(self, ORB):
         self.ORB = ORB
         self._model = ORB._model['Model']
-        self._log('Drone :{}'.format(ORB._model['UAV']))
+        from tools import init_logger
+        self.logger = init_logger(self._model)
+        self._log('Drone Type:{}'.format(ORB._model['UAV']))
         self._log('Drone model:{}'.format(ORB._model['Model']))
         self._log('MainController:{}'.format(ORB._model['MainController']))
         # Aileron :[No.ch, low ,mid, high ,var, sign, rate]
@@ -102,7 +104,7 @@ class Attribute(object):
         if int(gear) in [1, 2, 3]:
             self.publish('Gear', int(gear))
 
-    def set_target(self, dNorth, dEast, alt=float('inf')):
+    def set_target(self, dNorth, dEast, alt=-1000, relative=True):
         origin = self.get_location()
         if origin is None:
             return
@@ -112,9 +114,9 @@ class Attribute(object):
         target = get_location_metres(origin, dNorth, dEast)
         target.append(alt)
         self.publish('Target', target)
-        print 'Target is ', target
+        self._log('Target is {}'.format(target))
 
-    def set_target_angle(self, distance, angle, alt=float('inf')):
+    def set_target_angle(self, distance, angle, alt=-1000, relative=True):
         if not isNum(distance) or not isNum(angle):
             return
         angle = (360 + angle) % 360
@@ -127,37 +129,37 @@ class Attribute(object):
 
     def get_pitch(self):
         if not self.has_module('Compass'):
-            self._log('Warning:Compass is closed')
+            self._warning('Compass is closed')
             return None
         if not self.state('Compass'):
-            self._log('Error:Compass is not health')
+            self._error('Compass is not health')
             return None
         return self.subscribe('Attitude')[0]
 
     def get_roll(self):
         if not self.has_module('Compass'):
-            self._log('Warning:Compass is closed')
+            self._warning('Compass is closed')
             return None
         if not self.state('Compass'):
-            self._log('Error:Compass is not health')
+            self._error('Compass is not health')
             return None
         return self.subscribe('Attitude')[1]
 
     def get_heading(self):
         if not self.has_module('Compass'):
-            self._log('Warning:Compass is closed')
+            self._warning('Compass is closed')
             return None
         if not self.state('Compass'):
-            self._log('Error:Compass is not health')
+            self._error('Compass is not health')
             return None
         return self.subscribe('Attitude')[2]
 
     def get_attitude(self):
         if not self.has_module('Compass'):
-            self._log('Warning:Compass is closed')
+            self._warning('Compass is closed')
             return None
         if not self.state('Compass'):
-            self._log('Error:Compass is not health')
+            self._error('Compass is not health')
             return None
         return self.subscribe('Attitude')
 
@@ -165,11 +167,11 @@ class Attribute(object):
         return self.subscribe("HomeLocation")
 
     def get_location(self):
-        if not self.has_module('GPS'):
-            self._log('Warning:GPS is closed')
+        if not self.has_module('Compass'):
+            self._warning('Compass is closed')
             return None
-        if not self.state('GPS'):
-            self._log('Error:GPS is not health')
+        if not self.state('Compass'):
+            self._error('Compass is not health')
             return None
         return self.subscribe('Location')
 
@@ -189,4 +191,13 @@ class Attribute(object):
         return self.ORB.state(module)
 
     def _log(self, msg):
-        print ">>>", msg
+        self.logger.info(msg)
+
+    def _debug(self, msg):
+        self.logger.debug(msg)
+
+    def _error(self, msg):
+        self.logger.error(msg)
+
+    def _warning(self, msg):
+        self.logger.warning(msg)

@@ -8,6 +8,7 @@ import threading
 from library import CancelWatcher
 import time
 from sbus import SBUS
+from tools import _log
 
 
 class Sbus_Sender(threading.Thread):
@@ -22,7 +23,7 @@ class Sbus_Sender(threading.Thread):
         self.index = 0
 
     def run(self):
-        print '>>> Initializing sbus_sender ...'
+        _log('Initializing sbus_sender ...')
         self.publish('Sender_State', True)
         switch = self.ORB._channel['Switch']
         GCS_PWM = switch[2]

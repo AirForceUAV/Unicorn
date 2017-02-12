@@ -15,7 +15,7 @@ def send_Log(Redis, ORB):
     sendChan = Redis.get('ClientSendChan').decode('utf-8')
     # print "ClientSendChan:", sendChan
     Redis.lpush(sendChan, message)
-    print 'Pushed:', message
+    # print 'Pushed:', message
 
 
 class Receiver(threading.Thread):
@@ -34,7 +34,7 @@ class Receiver(threading.Thread):
             cmd = data[1].decode('utf-8')
             if cmd is '':
                 continue
-            print("Received:", cmd)
+            print("Received:%s" % cmd)
             if cmd.find('Cancel') != -1:
                 print('Execute Cancel')
                 CancelWatcher.Cancel = True
@@ -55,6 +55,8 @@ class Executor(threading.Thread):
     def run(self):
         while True:
             command = self.work_queue.get()
+            if command is '':
+                continue
             command = "self." + command
             print('Execute command {}'.format(command))
             try:

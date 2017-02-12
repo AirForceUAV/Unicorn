@@ -12,25 +12,22 @@ import sys
 def open_serial(portname, baudrate, timeout=None):
     while True:
         try:
-            print(">>>port:{0},baudrate:{1}".format(portname, baudrate))
+            # print("port:{0},baudrate:{1}".format(portname, baudrate))
             com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            print "{0}:{1}".format(*info)
+            print("{0}:{1}".format(*info))
             time.sleep(1.0)
 
 
 def element(file_name):
-    try:
-        import xml.etree.cElementTree as ET
-    except ImportError:
-        import xml.etree.ElementTree as ET
+    import xml.etree.cElementTree as ET
     try:
         tree = ET.parse(file_name)
         _root = tree.getroot()
     except Exception as e:
-        print "Error:cannot parse file:{0}".format(file_name)
+        print("Cannot parse file:{0}".format(file_name))
         sys.exit(1)
     return _root
 

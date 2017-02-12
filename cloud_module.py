@@ -16,7 +16,7 @@ def open_sock():
         sock.connect(server_address)
         return sock
     except socket.error as msg:
-        print "{}:{}".format(sys.stderr, msg)
+        print("{}:{}".format(sys.stderr, msg))
         sys.exit(1)
 
 
@@ -59,6 +59,8 @@ class Executor(threading.Thread):
     def run(self):
         while True:
             command = self.work_queue.get()
+            if command is '':
+                continue
             command = "self." + command
             print 'Execute command {}'.format(command)
             try:

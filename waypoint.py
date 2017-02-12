@@ -26,7 +26,7 @@ class Waypoint(object):
     def download(self, origin, index=0):
         count = len(self._root.getchildren())
         if index > count - 1:
-            print 'Error:index out of range when download Waypoints'
+            print '[Warning]- index out of range when download Waypoints'
             return
         _root = self._root[index]
         Trail = _root.get('Trail')
@@ -40,8 +40,8 @@ class Waypoint(object):
         self.publish('Waypoint', result[1:])
         self.publish('WaypointID', 0)
         self.publish('WaypointType', 'Download')
-        print 'Trail :', Trail
-        print 'Waypoints :', self.subscribe('Waypoint')
+        print('Trail:{} Waypoints:{}'.format(
+            Trail, self.subscribe('Waypoint')))
 
     def Route(self, info):
         if info == "":

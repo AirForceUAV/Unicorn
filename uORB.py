@@ -285,7 +285,7 @@ if __name__ == "__main__":
     ORB._HAL = protobuf
     print ORB._model
     print [k for k, v in ORB._module.iteritems() if v]
-    print '--------Channel-------------\n{}' .format(ORB._channel)
+    print '--------Channel-------------\n{}'.format(ORB._channel)
     print '--------servo volume--------\n{}'.format(ORB._volume)
     print 'commands:', json.dumps(commands, indent=1)
     # wp = Waypoint(ORB)

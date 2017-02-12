@@ -3,6 +3,8 @@
 
 import time
 from vehicle import Vehicle
+from tools import _log
+
 
 if __name__ == '__main__':
     from uORB import uORB
@@ -28,7 +30,7 @@ if __name__ == '__main__':
 
         while not ORB.state('Sender'):
             time.sleep(.1)
-        print 'Sbus is OK'
+        _log('Sbus is OK')
 
     if ORB.has_module('Compass'):
         # Initialize Compass
@@ -38,7 +40,7 @@ if __name__ == '__main__':
         compass.start()
         while not ORB.state('Compass'):
             time.sleep(.1)
-        print 'Compass is OK'
+        _log('Compass is OK')
 
     if ORB.has_module('GPS'):
         # Initialize GPS
@@ -48,7 +50,7 @@ if __name__ == '__main__':
         gps.start()
         while not ORB.state('GPS'):
             time.sleep(.1)
-        print 'GPS is OK'
+        _log('GPS is OK')
 
     if ORB.has_module('Baro'):
         # Initialize Barometre
@@ -58,7 +60,7 @@ if __name__ == '__main__':
         baro.start()
         while not ORB.state('Baro'):
             time.sleep(.1)
-        print 'Baro is OK'
+        _log('Baro is OK')
 
     if ORB.has_module('IMU'):
         # Initialize IMU
@@ -68,7 +70,7 @@ if __name__ == '__main__':
         imu.start()
         while not ORB.state('IMU'):
             time.sleep(.1)
-        print 'IMU is OK'
+        _log('IMU is OK')
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     if ORB.has_module('Cloud'):
         # Initialize Cloud
 
-        print('>>> Initialize Cloud ...')
+        _log('Initialize Cloud ...')
         import Queue
         import redis
         from apscheduler.schedulers.background import BackgroundScheduler
@@ -98,18 +100,18 @@ if __name__ == '__main__':
         Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         work_queue = Queue.Queue()
 
-        print('>>> Start Receiver Thread')
+        _log('Start Receiver Thread')
         # receiver = Receiver(work_queue, sock)
         receiver = Receiver(work_queue, Redis)
         receiver.daemon = True
         receiver.start()
 
-        print('>>> Start Executor Thread')
+        _log('Start Executor Thread')
         executor = Executor(work_queue, vehicle, lidar)
         executor.daemon = True
         executor.start()
-        from tools import protobuf
-        ORB._HAL = protobuf
+        # from tools import protobuf
+        # ORB._HAL = protobuf
         # scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
         scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
 
@@ -119,4 +121,4 @@ if __name__ == '__main__':
         #     time.sleep(1)
         scheduler.start()
 
-    print '>>> completed'
+    _log('completed')

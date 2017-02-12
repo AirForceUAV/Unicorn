@@ -5,11 +5,14 @@ import serial
 import sys
 import time
 import os
+import datetime
+import logging
+import logging.config
 
 open_module = [
-    # 'Sbus',
-    # 'Compass',
-    # 'GPS',
+    'Sbus',
+    'Compass',
+    'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
@@ -17,16 +20,16 @@ open_module = [
 ]
 
 commands = [
-    # 'arm()',
-    # 'set_channels_mid()',
-    # 'set_gear(2)',
-    # 'yaw_left_brake()',
-    # 'yaw_right_brake()',
-    # 'roll_left_brake()',
-    # 'roll_right_brake()',
-    # 'forward_brake()',
-    # 'backward_brake()',
-    # 'up_brake()',
+    'arm()',
+    'set_channels_mid()',
+    'set_gear(2)',
+    'yaw_left_brake()',
+    'yaw_right_brake()',
+    'roll_left_brake()',
+    'roll_right_brake()',
+    'forward_brake()',
+    'backward_brake()',
+    'up_brake()',
     # 'down_brake()',
     # 'condition_yaw(30)',
     # 'condition_yaw(300)',
@@ -40,7 +43,7 @@ commands = [
 
 
 def _log(message):
-    print(message)
+    print('>>> ' + message)
 
 
 def build_log(model, suffix):
@@ -58,10 +61,8 @@ def localtime():
 
 
 def build_sbus():
-    print 'Initialize Radio ...'
     portname = '/dev/sbus'
     # portname = '/dev/ttyAMA0'
-    print 'Connecting to', portname
     while True:
         try:
             com = serial.Serial(port=portname,
@@ -72,8 +73,67 @@ def build_sbus():
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            print "{0}:{1}".format(*info)
+            _LOG("{0}:{1}".format(*info))
             time.sleep(.5)
+
+
+def init_logger(model=None):
+    LOG_NAME = 'console'
+    model = model or 'Test'
+    LOG_FILE = build_log(model, 'info')
+    # print LOG_FILE
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "simple": {
+                # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+                'format': '%(asctime)s [%(name)s] [%(levelname)s]- %(message)s'
+            },
+            'standard': {
+                'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+            },
+        },
+
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "level": "DEBUG",
+                "formatter": "simple",
+                "stream": "ext://sys.stdout"
+            },
+
+            "file": {
+                "class": "logging.handlers.RotatingFileHandler",
+                "level": "DEBUG",
+                "formatter": "simple",
+                "filename": LOG_FILE,
+                'mode': 'w+',
+                "maxBytes": 1024 * 1024 * 5,  # 5 MB
+                "backupCount": 20,
+                "encoding": "utf8"
+            },
+        },
+
+        # "loggers": {
+        #     "app_name": {
+        #         'handlers': ['console'],
+        #         'level': 'DEBUG',
+        #         'propagate': False
+        #     }
+        # },
+
+        "root": {
+            'handlers': ['console'],
+            "level": "DEBUG",
+            'propagate': False
+        }
+    }
+
+    logging.config.dictConfig(LOGGING)
+    logger = logging.getLogger(LOG_NAME)
+    return logger
+
 
 close_module = [
     'Sbus',
@@ -156,3 +216,12 @@ protobuf = {
         0.2,
         0.3,
         0.4]}
+
+
+if __name__ == '__main__':
+    logger = init_logger('HEX')
+    logger.debug('debug message')
+    logger.info('info message')
+    logger.warn('warn message')
+    logger.error('error message')
+    logger.critical('critical message')

@@ -31,7 +31,7 @@ class Baro(threading.Thread):
         self.elevation = elevation
 
     def run(self):
-        print '>>> Initializing Barometre'
+        print('>>> Initializing Barometre')
 
         while True:
             self.read()

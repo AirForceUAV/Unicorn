@@ -8,6 +8,7 @@ from sbus import SBUS
 import sys
 import time
 from Curve import THR2PIT
+from tools import _log
 
 
 class Sbus_Receiver(threading.Thread):
@@ -21,7 +22,7 @@ class Sbus_Receiver(threading.Thread):
         # self.before = ORB.InitChannels()
 
     def run(self):
-        print ">>> Initializing sbus_receiver ..."
+        _log("Initializing sbus_receiver ...")
         self.publish('Sbus_State', True)
         while True:
             self._sbus.flushInput()
@@ -30,7 +31,7 @@ class Sbus_Receiver(threading.Thread):
                 # package = self._sbus.readline().encode('hex').strip()
             except serial.SerialException:
                 info = sys.exc_info()
-                print "{0}:{1}".format(*info)
+                _log("{0}:{1}".format(*info))
             # print 'package', package
 
             if package is '':
