@@ -1,7 +1,6 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-import os
 import time
 import math
 from library import CancelWatcher, get_distance_metres
@@ -19,9 +18,9 @@ def obstacle_context(vehicle):
         vehicle._error('GPS is None or Compass is None or target is None')
         return None
     angle = angle_heading_target(CLocation, target, CYaw)
-    Epsilon = math.degrees(math.asin(vehicle.radius / distance))
-    state = vehicle.state
     distance = get_distance_metres(CLocation, target)
+    Epsilon = math.degrees(math.asin(vehicle.radius / distance))
+    state = vehicle._state
     context = {'Head2Target': angle,
                'Epsilon': int(Epsilon),
                'State': state,
@@ -32,7 +31,7 @@ def obstacle_context(vehicle):
 def _obstacle_context(vehicle):
     context = {'Head2Target': 0,
                'Epsilon': 0,
-               'State': vehicle.state,
+               'State': vehicle._state,
                'Distance': 100}
     return context
 
@@ -55,10 +54,11 @@ def on_message(client, vehicle, msg):
         return
     distance = context['Distance']
     angle = context['Head2Target']
-    if not vehicle.InAngle(angle, 90) or distance <= vehicle.radius:
+    # if not vehicle.InAngle(angle, 90) or distance <= vehicle.radius:
+    if distance <= vehicle.radius:
         vehicle._log("Reached Target!")
         vehicle.brake()
-        vehicle.pre_state = vehicle.prepre_state = vehicle.state = 'STOP'
+        vehicle.pre_state = vehicle.prepre_state = vehicle._state = 'STOP'
         return
 
     command = msg.payload
@@ -66,12 +66,12 @@ def on_message(client, vehicle, msg):
     if command not in input:
         vehicle._error('Command({}) is unvalid!'.format(command))
         return
-    if command is not vehicle.state:
+    if command != vehicle._state:
         vehicle.prepre_state = vehicle.pre_state
-        vehicle.pre_state = vehicle.state
-        vehicle.state = command
+        vehicle.pre_state = vehicle._state
+        vehicle._state = command
         context['State'] = command
-        # vehicle.brake()
+        vehicle.brake()
     action = input[command]
     vehicle.control_FRU(**action)
     context['pre'] = vehicle.pre_state
@@ -79,11 +79,13 @@ def on_message(client, vehicle, msg):
 
     message = '{Head2Target} {Epsilon} {State} {pre} {prepre}'.format(
         **context)
+
     # vehicle._debug('Context:{}'.format(message))
     # message = raw_input('Next')
     time.sleep(2)
     # print message
     client.publish('Context', message, qos=2)
+    vehicle._debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
 
 
 class Lidar(object):

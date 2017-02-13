@@ -12,8 +12,8 @@ class Attribute(object):
     def __init__(self, ORB):
         self.ORB = ORB
         self._model = ORB._model['Model']
-        from tools import init_logger
-        self.logger = init_logger(self._model)
+        from tools import logger
+        self.logger = logger
         self._log('Drone Type:{}'.format(ORB._model['UAV']))
         self._log('Drone model:{}'.format(ORB._model['Model']))
         self._log('MainController:{}'.format(ORB._model['MainController']))
@@ -129,7 +129,7 @@ class Attribute(object):
 
     def get_pitch(self):
         if not self.has_module('Compass'):
-            self._warning('Compass is closed')
+            self._warn('Compass is closed')
             return None
         if not self.state('Compass'):
             self._error('Compass is not health')
@@ -138,7 +138,7 @@ class Attribute(object):
 
     def get_roll(self):
         if not self.has_module('Compass'):
-            self._warning('Compass is closed')
+            self._warn('Compass is closed')
             return None
         if not self.state('Compass'):
             self._error('Compass is not health')
@@ -147,7 +147,7 @@ class Attribute(object):
 
     def get_heading(self):
         if not self.has_module('Compass'):
-            self._warning('Compass is closed')
+            self._warn('Compass is closed')
             return None
         if not self.state('Compass'):
             self._error('Compass is not health')
@@ -156,7 +156,7 @@ class Attribute(object):
 
     def get_attitude(self):
         if not self.has_module('Compass'):
-            self._warning('Compass is closed')
+            self._warn('Compass is closed')
             return None
         if not self.state('Compass'):
             self._error('Compass is not health')
@@ -168,7 +168,7 @@ class Attribute(object):
 
     def get_location(self):
         if not self.has_module('Compass'):
-            self._warning('Compass is closed')
+            self._warn('Compass is closed')
             return None
         if not self.state('Compass'):
             self._error('Compass is not health')
@@ -199,5 +199,5 @@ class Attribute(object):
     def _error(self, msg):
         self.logger.error(msg)
 
-    def _warning(self, msg):
-        self.logger.warning(msg)
+    def _warn(self, msg):
+        self.logger.warn(msg)

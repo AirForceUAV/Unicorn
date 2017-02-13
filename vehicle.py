@@ -21,7 +21,7 @@ class Vehicle(Attribute):
         self.radius = 5
         self.prepre_state = 'STOP'
         self.pre_state = 'STOP'
-        self.state = 'STOP'
+        self._state = 'STOP'
         self._target = None
 
     def brake(self, braketime=0.5):
@@ -139,7 +139,7 @@ class Vehicle(Attribute):
         watcher = CancelWatcher()
         self._log('Takeoff to {} m'.format(alt))
         if not self.has_module('Baro'):
-            self._warning('Baro is closed')
+            self._warn('Baro is closed')
             return
 
         self.escalate(0, 60)
@@ -160,7 +160,7 @@ class Vehicle(Attribute):
     def land(self):
         self._log('Landing...')
         if not self.has_module('Baro'):
-            self._warning('Baro is closed')
+            self._warn('Baro is closed')
             return
 
         # self.control_FRU(0, 0, -1)
@@ -189,10 +189,10 @@ class Vehicle(Attribute):
 
     def up_metres(self, altitude, relative=True):
         if altitude <= 0:
-            self._warning('Altitude({}) is unvalid'.format(altitude))
+            self._warn('Altitude({}) is unvalid'.format(altitude))
             return
         if not self.ORB.has_module('Baro'):
-            self._warning('Baro is closed')
+            self._warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
@@ -207,7 +207,7 @@ class Vehicle(Attribute):
                 return
             TAlt = IAlt + altitude
         if TAlt < CAlt:
-            self._warning(
+            self._warn(
                 'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
             return
         self.control_FRU(THR=1)
@@ -221,10 +221,10 @@ class Vehicle(Attribute):
 
     def down_metres(self, altitude, relative=True):
         if altitude <= 0:
-            self._warning('Altitude({}) is unvalid'.format(altitude))
+            self._warn('Altitude({}) is unvalid'.format(altitude))
             return
         if not self.ORB.has_module('Baro'):
-            self._warning('Baro is closed')
+            self._warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
@@ -237,7 +237,7 @@ class Vehicle(Attribute):
             self._error('InitAltitude is null')
             return
         if TAlt < IAlt + 1:
-            self._warning('TAltitude({}) is too low.'.format(TAlt - IAlt))
+            self._warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
             return
         self.control_FRU(THR=-1)
         watcher = CancelWatcher()
@@ -485,7 +485,7 @@ class Vehicle(Attribute):
     def Guided(self):
         target = self.get_target()
         if target is None:
-            self._warning("Target is None!")
+            self._warn("Target is None!")
             return
         self.publish('Mode', 'GUIDED')
 
@@ -496,7 +496,7 @@ class Vehicle(Attribute):
     def RTL(self):
         target = self.get_home()
         if target is None:
-            self._warning("Home is None!")
+            self._warn("Home is None!")
             return
         self.publish('Mode', 'RTL')
 

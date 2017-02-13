@@ -8,6 +8,7 @@ import os
 import datetime
 import logging
 import logging.config
+from config import config
 
 open_module = [
     'Sbus',
@@ -42,10 +43,6 @@ commands = [
 ]
 
 
-def _log(message):
-    print('>>> ' + message)
-
-
 def build_log(model, suffix):
     log_name = localtime() + '.' + suffix
     file_path = os.path.join(
@@ -73,7 +70,7 @@ def build_sbus():
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            _LOG("{0}:{1}".format(*info))
+            _log("{0}:{1}".format(*info))
             time.sleep(.5)
 
 
@@ -88,7 +85,7 @@ def init_logger(model=None):
         "formatters": {
             "simple": {
                 # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
-                'format': '%(asctime)s [%(name)s] [%(levelname)s]- %(message)s'
+                'format': '[%(name)s] [%(levelname)s]- %(message)s'
             },
             'standard': {
                 'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
@@ -217,9 +214,17 @@ protobuf = {
         0.3,
         0.4]}
 
+model = config.model
+logger = init_logger(model)
+
+
+def _log(message):
+    global logger
+    logger.info(message)
+    # print('>>> ' + message)
+
 
 if __name__ == '__main__':
-    logger = init_logger('HEX')
     logger.debug('debug message')
     logger.info('info message')
     logger.warn('warn message')

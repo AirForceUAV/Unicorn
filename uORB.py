@@ -193,13 +193,15 @@ class uORB(threading.Thread):
             baro.Altitude = self.get_altitude(True)
 
     def update_waypoint(self):
-        waypoint = self._sensor.waypoint
-        index = self._HAL['WaypointID']
         Type = self._HAL['WaypointType']
 
+        if Type != 'Download':
+            return
+        waypoint = self._sensor.waypoint
+        index = self._HAL['WaypointID']
+
         waypoint.index = index
-        if Type is not None:
-            waypoint.type = Type
+        waypoint.type = Type
         if index < 0:
             return
         waypoints = self._HAL['Waypoint']
@@ -285,14 +287,14 @@ if __name__ == "__main__":
     ORB._HAL = protobuf
     print ORB._model
     print [k for k, v in ORB._module.iteritems() if v]
-    print '--------Channel-------------\n{}'.format(ORB._channel)
-    print '--------servo volume--------\n{}'.format(ORB._volume)
+    # print '--------Channel-------------\n{}'.format(ORB._channel)
+    # print '--------servo volume--------\n{}'.format(ORB._volume)
     print 'commands:', json.dumps(commands, indent=1)
     # wp = Waypoint(ORB)
     # origin = [36.111111, 116.222222]
     # wp.download(origin, 0)
     # wp.add_number()
-    print ORB.dataflash()
+    # print ORB.dataflash()
 
     # b = FlightLog.sensors()
     # b.ParseFromString(ORB.dataflash())

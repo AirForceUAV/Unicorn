@@ -5,6 +5,7 @@ from library import Singleton, open_serial
 import threading
 import time
 from library import CutFrame2
+from tools import _log
 
 
 class IMU(threading.Thread):
@@ -41,7 +42,7 @@ class IMU(threading.Thread):
         self._imu = open_serial('/dev/IMU', 115200)
 
     def run(self):
-        print '>>> Initializing IMU....'
+        _log('Initializing IMU....')
         while True:
             frame = self.RawFrame()
             Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)

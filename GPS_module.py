@@ -6,6 +6,7 @@ import time
 from library import open_serial
 from library import Singleton
 import threading
+from tools import _log
 
 
 class GPS(threading.Thread):
@@ -14,11 +15,11 @@ class GPS(threading.Thread):
     def __init__(self, ORB):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
-        print ">>> Connecting to GPS Module"
+        _log("Connecting to GPS Module")
         self.ser = open_serial('/dev/GPS', 9600, timeout=0.01)
 
     def run(self):
-        print ">>> Initializing GPS Module"
+        _log("Initializing GPS Module")
         while True:
             location = self.parseGPS()
             if location is not None:
@@ -27,6 +28,7 @@ class GPS(threading.Thread):
             else:
                 dic = {'GPS_State': False, 'NumStars': 0}
             self.update(dic)
+            time.sleep(.01)
 
     def update(self, dictories):
         for (k, v) in dictories.items():

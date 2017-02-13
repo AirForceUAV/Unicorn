@@ -6,6 +6,7 @@ from library import Singleton
 import math
 from smbus import SMBus
 import threading
+from tools import _log
 
 
 class Baro(threading.Thread):
@@ -31,7 +32,7 @@ class Baro(threading.Thread):
         self.elevation = elevation
 
     def run(self):
-        print('>>> Initializing Barometre')
+        _log('Initializing Barometre')
 
         while True:
             self.read()

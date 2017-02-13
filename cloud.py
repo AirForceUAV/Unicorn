@@ -8,6 +8,7 @@ import os
 import sys
 from library import CancelWatcher
 import threading
+from tools import _log
 
 
 def send_Log(Redis, ORB):

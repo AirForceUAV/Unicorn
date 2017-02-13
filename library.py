@@ -17,7 +17,8 @@ def open_serial(portname, baudrate, timeout=None):
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            print("{0}:{1}".format(*info))
+            from tools import logger
+            logger.info("{0}:{1}".format(*info))
             time.sleep(1.0)
 
 
@@ -27,7 +28,8 @@ def element(file_name):
         tree = ET.parse(file_name)
         _root = tree.getroot()
     except Exception as e:
-        print("Cannot parse file:{0}".format(file_name))
+        from tools import logger
+        logger._info("Cannot parse file:{0}".format(file_name))
         sys.exit(1)
     return _root
 
@@ -243,7 +245,7 @@ class Watcher(object):
             pass
 
 if __name__ == '__main__':
-    # open_serial('/dev/compass', 9600)
+    open_serial('/dev/compass', 9600)
     loc = [36.1111, 116.2222]
     # print get_location_metres(loc, 20, 0)
     # print get_location_metres(loc, 0, 60)
