@@ -6,6 +6,7 @@ import threading
 from library import open_serial
 from library import Singleton
 from library import CutFrame
+from tools import _log
 
 
 class Compass(threading.Thread):
@@ -13,12 +14,12 @@ class Compass(threading.Thread):
 
     def __init__(self, ORB):
         super(Compass, self).__init__(name="Compass")
-        print ">>> Connecting to Compass ..."
+        _log("Connecting to Compass ...")
         self.ORB = ORB
         self.ser = open_serial('/dev/compass', 9600, timeout=0.01)
 
     def run(self):
-        print ">>> Initializing Compass ..."
+        _log("Initializing Compass ...")
 
         while True:
             attitude = self.get_attitude()

@@ -7,6 +7,7 @@ import os
 import sys
 from library import CancelWatcher
 import threading
+from tools import _log, _debug, _error
 
 
 def open_sock():
@@ -16,7 +17,7 @@ def open_sock():
         sock.connect(server_address)
         return sock
     except socket.error as msg:
-        print("{}:{}".format(sys.stderr, msg))
+        _error("{}:{}".format(sys.stderr, msg))
         sys.exit(1)
 
 
@@ -40,7 +41,7 @@ class Receiver(threading.Thread):
             if cmd is '':
                 continue
             if cmd.find('Cancel') != -1:
-                print 'Execute Cancel'
+                _log('Execute Cancel')
                 CancelWatcher.Cancel = True
                 # self.work_queue.put('vehicle.brake()')
             else:
@@ -62,13 +63,13 @@ class Executor(threading.Thread):
             if command is '':
                 continue
             command = "self." + command
-            print 'Execute command {}'.format(command)
+            _debug('Execute command {}'.format(command))
             try:
-                # eval(command)
+                eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
-                print "{0}:{1}".format(*info)
+                _error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
 if __name__ == "__main__":
@@ -87,12 +88,12 @@ if __name__ == "__main__":
     sock = open_sock()
     work_queue = Queue.Queue()
 
-    print '>>> Start Receiver Thread'
+    _log('Start Receiver Thread')
     receiver = Receiver(work_queue, sock)
     receiver.daemon = True
     receiver.start()
 
-    print '>>> Start Executor Thread'
+    _log('Start Executor Thread')
     executor = Executor(work_queue, vehicle)
     executor.daemon = True
     executor.start()

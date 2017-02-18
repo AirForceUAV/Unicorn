@@ -160,7 +160,6 @@ class SBUS(object):
         cut_ch8 = []
 
         for ch in ch8_bin:
-            # print 'j={} i={}'.format(j, i)
             cut_ch8.append(ch[-i:])
             if flag:
                 cut_ch8.append(ch[j: j + 8])

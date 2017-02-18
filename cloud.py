@@ -8,7 +8,7 @@ import os
 import sys
 from library import CancelWatcher
 import threading
-from tools import _log
+from tools import _log, _debug, _error
 
 
 def send_Log(Redis, ORB):
@@ -35,9 +35,9 @@ class Receiver(threading.Thread):
             cmd = data[1].decode('utf-8')
             if cmd is '':
                 continue
-            print("Received:%s" % cmd)
+            _debug("Received:%s" % cmd)
             if cmd.find('Cancel') != -1:
-                print('Execute Cancel')
+                _debug('Execute Cancel')
                 CancelWatcher.Cancel = True
                 # self.work_queue.put('vehicle.brake()')
             else:
@@ -59,13 +59,13 @@ class Executor(threading.Thread):
             if command is '':
                 continue
             command = "self." + command
-            print('Execute command {}'.format(command))
+            _debug('Execute command {}'.format(command))
             try:
                 # eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
-                print("{0}:{1}".format(*info))
+                _error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
 if __name__ == "__main__":

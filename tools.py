@@ -11,9 +11,9 @@ import logging.config
 from config import config
 
 open_module = [
-    'Sbus',
-    'Compass',
-    'GPS',
+    # 'Sbus',
+    # 'Compass',
+    # 'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
@@ -75,31 +75,45 @@ def build_sbus():
 
 
 def init_logger(model=None):
-    LOG_NAME = 'console'
+    LOG_NAME = 'debugLogger'
     model = model or 'Test'
-    LOG_FILE = build_log(model, 'info')
+    LOG_FILE = build_log(model, 'log')
     # print LOG_FILE
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
             "simple": {
-                # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
-                'format': '[%(name)s] [%(levelname)s]- %(message)s'
+                # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s',
+                'format': '[%(levelname)s]- %(message)s',
+                'datefmt': '%Y-%m-%d %H:%M:%S'
             },
             'standard': {
-                'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+                'format': '%(asctime)s [%(levelname)s]- %(message)s',
+                # 'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s',
+                'datefmt': '%Y-%m-%d %H:%M:%S'
             },
         },
 
         "handlers": {
-            "console": {
+            "debugHandler": {
                 "class": "logging.StreamHandler",
                 "level": "DEBUG",
                 "formatter": "simple",
                 "stream": "ext://sys.stdout"
             },
-
+            "infoHandler": {
+                "class": "logging.StreamHandler",
+                "level": "INFO",
+                "formatter": "simple",
+                "stream": "ext://sys.stdout"
+            },
+            "errorHandler": {
+                "class": "logging.StreamHandler",
+                "level": "ERROR",
+                "formatter": "simple",
+                "stream": "ext://sys.stdout"
+            },
             "file": {
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "DEBUG",
@@ -111,20 +125,26 @@ def init_logger(model=None):
                 "encoding": "utf8"
             },
         },
-
-        # "loggers": {
-        #     "app_name": {
-        #         'handlers': ['console'],
-        #         'level': 'DEBUG',
-        #         'propagate': False
-        #     }
-        # },
-
-        "root": {
-            'handlers': ['console'],
-            "level": "DEBUG",
-            'propagate': False
-        }
+        "loggers": {
+            "root": {
+                'handlers': ['errorHandler'],
+                'level': 'WARNING',
+            },
+            "debugLogger": {
+                'handlers': ['debugHandler'],
+                # 'handlers': ['debugHandler', 'file'],
+                'level': 'DEBUG',
+                'propagate': False,
+                'qualname': 'debugLogger'
+            },
+            "infoLogger": {
+                'handlers': ['debugHandler'],
+                # 'handlers': ['debugHandler', 'file'],
+                'level': 'INFO',
+                'propagate': False,
+                'qualname': 'infoLogger'
+            }
+        },
     }
 
     logging.config.dictConfig(LOGGING)
@@ -221,8 +241,19 @@ logger = init_logger(model)
 def _log(message):
     global logger
     logger.info(message)
-    # print('>>> ' + message)
+    # print(message)
 
+
+def _debug(message):
+    global logger
+    logger.debug(message)
+    # print(message)
+
+
+def _error(message):
+    global logger
+    logger.error(message)
+    # print(message)
 
 if __name__ == '__main__':
     logger.debug('debug message')

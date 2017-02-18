@@ -15,7 +15,7 @@ class Attribute(object):
         from tools import logger
         self.logger = logger
         self._log('Drone Type:{}'.format(ORB._model['UAV']))
-        self._log('Drone model:{}'.format(ORB._model['Model']))
+        # self._log('Drone model:{}'.format(ORB._model['Model']))
         self._log('MainController:{}'.format(ORB._model['MainController']))
         # Aileron :[No.ch, low ,mid, high ,var, sign, rate]
         self.AIL = ORB.channel('AIL')

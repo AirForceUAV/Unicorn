@@ -11,6 +11,19 @@ from attribute import Attribute
 from Curve import THR2PIT
 
 
+def movement(vehicle, command):
+    control = {'w': ['ELE', 1], 's': ['ELE', -1],
+               'a': ['AIL', 1], 'd': ['AIL', -1]}
+    action = {}
+    for cmd in command:
+        col = control[cmd]
+        action[col[0]] = col[1]
+    print action
+    # vehicle.control_FRU(**action)
+    # time.sleep(1)
+    # vehicle.brake()
+
+
 class Vehicle(Attribute):
     __metaclass__ = Singleton
 
@@ -25,7 +38,7 @@ class Vehicle(Attribute):
         self._target = None
 
     def brake(self, braketime=0.5):
-        self._log('brake')
+        # self._log('brake')
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
 
@@ -525,6 +538,18 @@ class Vehicle(Attribute):
         self.publish('Mode', 'Loiter')
         self.wp.clear()
 
+    def keycontrol(self):
+        import keyboard
+        rules = ('wa', 'wd', 'sa', 'sd', 'w', 'a', 's', 'd')
+
+        for rule in rules:
+            if len(rule) > 1:
+                combinekey = rule[0] + ',' + rule[1]
+            else:
+                combinekey = rule
+            keyboard.add_hotkey(combinekey, movement, args=(self, rule))
+        keyboard.wait('esc')
+
     def Cancel(self):
         self._log("Cancel")
         CancelWatcher.Cancel = True
@@ -603,7 +628,7 @@ if __name__ == "__main__":
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
-
+    vehicle.keycontrol()
     # Test
     import sys
     from tools import commands

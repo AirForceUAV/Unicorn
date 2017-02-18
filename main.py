@@ -93,16 +93,16 @@ if __name__ == '__main__':
         from apscheduler.schedulers.background import BackgroundScheduler
         scheduler = BackgroundScheduler()
 
-        # from cloud_module import Receiver, Executor, open_sock, send_Log
-        from cloud import Receiver, Executor, send_Log
+        from cloud_module import Receiver, Executor, open_sock, send_Log
+        # from cloud import Receiver, Executor, send_Log
 
-        # sock = open_sock()
-        Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
+        sock = open_sock()
+        # Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         work_queue = Queue.Queue()
 
         _log('Start Receiver Thread')
-        # receiver = Receiver(work_queue, sock)
-        receiver = Receiver(work_queue, Redis)
+        receiver = Receiver(work_queue, sock)
+        # receiver = Receiver(work_queue, Redis)
         receiver.daemon = True
         receiver.start()
 
@@ -112,8 +112,8 @@ if __name__ == '__main__':
         executor.start()
         # from tools import protobuf
         # ORB._HAL = protobuf
-        # scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
-        scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
+        scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
+        # scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
 
         # while True:
         #     message = ORB.dataflash()
