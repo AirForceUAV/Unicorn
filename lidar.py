@@ -10,43 +10,51 @@ from tools import exe_cmd
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import paho.mqtt.subscribe as subscribe
+from debug_env import env
 
 full_auto_topic = "Full-Automatic"
 semi_auto_topic = "Semi-Automatic"
 context_topic = 'Context'
 control_topic = 'Control'
-# host = '192.168.31.10'c
+# host = '192.168.31.10'
 host = 'localhost'
 port = 12345
 full_client_id = 'FULLFC'
 semi_client_id = 'SEMIFC'
 
 
-def _obstacle_context(vehicle):
-    target = vehicle._target
-    CLocation = vehicle.get_location()
-    CYaw = vehicle.get_heading()
-
-    if CLocation is None or CYaw is None or target is None:
-        vehicle._error('GPS is None or Compass is None or target is None')
-        return None
-    angle = angle_heading_target(CLocation, target, CYaw)
-    distance = get_distance_metres(CLocation, target)
-    Epsilon = math.degrees(math.asin(vehicle.radius / distance))
-    state = vehicle._state
-    context = {'Head2Target': angle,
-               'Epsilon': int(Epsilon),
-               'State': state,
-               'Distance': distance}
-    return context
-
-
 def obstacle_context(vehicle):
-    context = {'Head2Target': 0,
-               'Epsilon': 0,
-               'State': vehicle._state,
-               'Distance': 100}
-    return context
+
+    global env
+
+    def context_debug():
+        target = vehicle._target
+        CLocation = vehicle.get_location()
+        CYaw = vehicle.get_heading()
+
+        if CLocation is None or CYaw is None or target is None:
+            vehicle._error('GPS is None or Compass is None or target is None')
+            return None
+        angle = angle_heading_target(CLocation, target, CYaw)
+        distance = get_distance_metres(CLocation, target)
+        Epsilon = math.degrees(math.asin(vehicle.radius / distance))
+        state = vehicle._state
+        context = {'Head2Target': angle,
+                   'Epsilon': int(Epsilon),
+                   'State': state,
+                   'Distance': distance}
+        return context
+
+    def context_release():
+        context = {'Head2Target': 0,
+                   'Epsilon': 0,
+                   'State': vehicle._state,
+                   'Distance': 100}
+        return context
+    if env == 'debug':
+        return context_debug()
+    else:
+        return context_release()
 
 
 def on_connect(client, vehicle, rc):
@@ -94,8 +102,7 @@ def on_message(client, vehicle, msg):
         time.sleep(2)
         print message
         client.publish(context_topic, message, qos=2)
-        # vehicle._debug('{Distance} {Head2Target}
-        # {Epsilon}'.format(**context))
+        vehicle._debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
     # elif topic == semi_auto_topic:
     #     time.sleep(1)
     #     vehicle.brake()
@@ -199,7 +206,6 @@ class Lidar(object):
             else:
                 return False
 
-        name = ''
         while True:
             event = keyboard.read_key(callback)
             name = event.name
