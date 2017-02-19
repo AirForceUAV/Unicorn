@@ -1,7 +1,7 @@
 open_module = [
-    # 'Sbus',
-    # 'Compass',
-    # 'GPS',
+    'Sbus',
+    'Compass',
+    'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
