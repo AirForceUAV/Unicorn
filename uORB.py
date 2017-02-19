@@ -25,11 +25,9 @@ class uORB(threading.Thread):
             self._model[m] = config._config[m]
 
         module = ['Sbus', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
-        # self._module = {}
-        # for m in module:
-        #     self._module[m] = False
+
         self._module = {x: False for x in module}
-        from tools import open_module
+        from debug_env import open_module
         self.open(*open_module)
 
         channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode', 'Switch']
@@ -37,9 +35,7 @@ class uORB(threading.Thread):
             channel += ['Rate', 'PIT']
         else:
             channel += ['Aux1', 'Aux2']
-        # self._channel = {}
-        # for c in channel:
-        #     self._channel[c] = config._config[c]
+
         self._channel = {x: config._config[x] for x in channel}
         self._volume = [0] * 8
         for k, v in self._channel.iteritems():
@@ -248,7 +244,7 @@ class uORB(threading.Thread):
         self._sensor.Gear = self._HAL['Gear']
         self._sensor.DistanceToTarget = self.distance_to_target()
         self._sensor.DistanceFromHome = self.distance_from_home()
-        self.update_waypoint()
+        # self.update_waypoint()
         self.update_channelsInput()
         self.update_channelsOutput()
         self.update_loiterPWM()
@@ -282,7 +278,7 @@ if __name__ == "__main__":
     from waypoint import Waypoint
     from library import Watcher
     ORB = uORB()
-    from tools import protobuf, commands
+    from debug_env import protobuf, commands
 
     ORB._HAL = protobuf
     print ORB._model

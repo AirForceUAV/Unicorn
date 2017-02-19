@@ -141,7 +141,7 @@ class Vehicle(Attribute):
         if self._model == 'HELI':
             return
         self.control_stick(-1, -1, -1, 1)
-        time.sleep(2)
+        # time.sleep(2)
         # self.disarm()
 
     def disarm(self):
@@ -540,15 +540,28 @@ class Vehicle(Attribute):
 
     def keycontrol(self):
         import keyboard
-        rules = ('wa', 'wd', 'sa', 'sd', 'w', 'a', 's', 'd')
+        from tools import exe_cmd
+        info = {'up': 'FORWARD', 'down': 'BACKWARD',
+                'left': 'LEFT_ROLL', 'right': 'RIGHT_ROLL',
+                'space': 'STOP', 'esc': 'esc', 'page up': 'UP',
+                'page down': 'DOWN'}
 
-        for rule in rules:
-            if len(rule) > 1:
-                combinekey = rule[0] + ',' + rule[1]
+        def callback(event):
+            eventType = event.event_type
+            name = event.name
+            if eventType == 'down' and name in info:
+                return True
             else:
-                combinekey = rule
-            keyboard.add_hotkey(combinekey, movement, args=(self, rule))
-        keyboard.wait('esc')
+                return False
+
+        while True:
+            event = keyboard.read_key(callback)
+            name = event.name
+            # print name
+            if name == 'esc':
+                print 'esc'
+                return
+            exe_cmd(self, info[name])
 
     def Cancel(self):
         self._log("Cancel")
@@ -631,7 +644,7 @@ if __name__ == "__main__":
     vehicle.keycontrol()
     # Test
     import sys
-    from tools import commands
+    from debug_env import commands
     Test = commands
     for t in Test:
         enter = raw_input(t + ' ???').strip()

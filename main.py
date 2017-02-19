@@ -110,7 +110,7 @@ if __name__ == '__main__':
         executor = Executor(work_queue, vehicle, lidar)
         executor.daemon = True
         executor.start()
-        # from tools import protobuf
+        # from debug_env import protobuf
         # ORB._HAL = protobuf
         scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
         # scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)

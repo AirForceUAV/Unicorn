@@ -6,6 +6,7 @@ import math
 from library import CancelWatcher, get_distance_metres
 from library import angle_heading_target
 from library import Singleton
+from tools import exe_cmd
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import paho.mqtt.subscribe as subscribe
@@ -14,12 +15,13 @@ full_auto_topic = "Full-Automatic"
 semi_auto_topic = "Semi-Automatic"
 context_topic = 'Context'
 control_topic = 'Control'
-IP = '192.168.31.10'
+host = '192.168.31.10'
 port = 12345
-client_id = 'FC'
+full_client_id = 'FULLFC'
+semi_client_id = 'SEMIFC'
 
 
-def obstacle_context(vehicle):
+def _obstacle_context(vehicle):
     target = vehicle._target
     CLocation = vehicle.get_location()
     CYaw = vehicle.get_heading()
@@ -38,7 +40,7 @@ def obstacle_context(vehicle):
     return context
 
 
-def _obstacle_context(vehicle):
+def obstacle_context(vehicle):
     context = {'Head2Target': 0,
                'Epsilon': 0,
                'State': vehicle._state,
@@ -48,18 +50,15 @@ def _obstacle_context(vehicle):
 
 def on_connect(client, vehicle, rc):
     global full_auto_topic, semi_auto_topic
-    # topic = "$SYS/#"
-    # vehicle._debug("Connected cloud with result code {}".format(rc))
-    # Subscribe Topic "Command"
+    vehicle._debug("Connected cloud with result code {}".format(rc))
     # client.subscribe([(full_auto_topic, 2), (semi_auto_topic, 2)])
-    client.subscribe([(full_auto_topic, 2)])
+    client.subscribe(full_auto_topic, qos=2)
 
 
 def on_message(client, vehicle, msg):
     global full_auto_topic, semi_auto_topic, context_topic
     topic = msg.topic
     command = msg.payload.strip()
-    print '---', command
     isValid = exe_cmd(vehicle, command)
     if not isValid:
         return
@@ -96,38 +95,18 @@ def on_message(client, vehicle, msg):
         client.publish(context_topic, message, qos=2)
         # vehicle._debug('{Distance} {Head2Target}
         # {Epsilon}'.format(**context))
-    elif topic == semi_auto_topic:
-        vehicle.brake()
-
-
-def exe_cmd(vehicle, command):
-    input = {'STOP': {}, 'FORWARD': {'ELE': 1},
-             'BACKWARD': {'ELE': -1},
-             'LEFT_YAW': {'RUD': -1}, 'RIGHT_YAW': {'RUD': 1},
-             'LEFT_ROLL': {'AIL': -1}, 'RIGHT_ROLL': {'AIL': 1}}
-
-    cmds = command.split(' ')
-    action = {}
-    for cmd in cmds:
-        if cmd in input:
-            action = dict(action, **input[cmd])
-        else:
-            vehicle._error('Command({}) is unvalid!'.format(command))
-            return False
-
-    print 'action:', action
-    vehicle.control_FRU(**action)
-    return True
+    # elif topic == semi_auto_topic:
+    #     time.sleep(1)
+    #     vehicle.brake()
 
 
 def movement(vehicle, command):
-    global control_topic, semi_auto_topic, client_id, IP, port
-    other_param = {'client_id': client_id, 'hostname': IP, 'port': port}
+    global control_topic, semi_auto_topic, semi_client_id, host, port
+    other_param = {'client_id': semi_client_id, 'hostname': host, 'port': port}
     print 'Send:', command
     publish.single(control_topic, command, **other_param)
     msg = subscribe.simple(semi_auto_topic, **other_param)
     cmd = msg.payload.strip()
-    print '--', cmd
     exe_cmd(vehicle, cmd)
 
 
@@ -135,12 +114,12 @@ class Lidar(object):
     __metaclass__ = Singleton
 
     def __init__(self, vehicle):
-        global IP, port, client_id
-        self.client = mqtt.Client(client_id='FC')
+        global host, port, full_client_id
+        self.client = mqtt.Client(client_id=full_client_id)
         self.client.user_data_set(vehicle)
-        self.client.on_connect = on_connect
-        self.client.on_message = on_message
-        self.client.connect(IP, port)
+        self.client.on_connect = on_connect  # callback when connected
+        self.client.on_message = on_message  # callback when received message
+        self.client.connect(host, port)
         self.client.loop_start()
         self.vehicle = vehicle
         self.radius = vehicle.radius
@@ -208,7 +187,8 @@ class Lidar(object):
 
         info = {'up': 'FORWARD', 'down': 'BACKWARD',
                 'left': 'LEFT_ROLL', 'right': 'RIGHT_ROLL',
-                'space': 'STOP'}
+                'space': 'STOP', 'esc': 'esc', 'page up': 'UP',
+                'page down': 'DOWN'}
 
         def callback(event):
             eventType = event.event_type
@@ -218,17 +198,14 @@ class Lidar(object):
             else:
                 return False
 
-        # def blocking(event):
-        #     eventType = event.event_type
-        #     name = event.name
-
-        #     if eventType == 'down' and name in info:
-        #         movement(self.vehicle, self.client, info[name])
-
+        name = ''
         while True:
             event = keyboard.read_key(callback)
-            # print event
             name = event.name
+            # print name
+            if name == 'esc':
+                print 'esc'
+                return
             movement(self.vehicle, info[name])
 
         # keyboard.wait('esc')
@@ -309,8 +286,9 @@ if __name__ == "__main__":
     lidar = Lidar(vehicle)
     # vehicle.set_target(-30, 0)
     # lidar.Guided()
+    lidar.keycontrol()
     # location = [36.111122, 116.222222, 10]
     # lidar.navigation(location)
-    lidar.keycontrol()
-    # while True:
-    #     time.sleep(100)
+
+    while True:
+        time.sleep(100)
