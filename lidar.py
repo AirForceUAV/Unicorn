@@ -27,7 +27,7 @@ def obstacle_context(vehicle):
 
     global env
 
-    def context_debug():
+    def context_release():
         target = vehicle._target
         CLocation = vehicle.get_location()
         CYaw = vehicle.get_heading()
@@ -45,7 +45,7 @@ def obstacle_context(vehicle):
                    'Distance': distance}
         return context
 
-    def context_release():
+    def context_debug():
         context = {'Head2Target': 0,
                    'Epsilon': 0,
                    'State': vehicle._state,
@@ -99,7 +99,7 @@ def on_message(client, vehicle, msg):
             **context)
 
         # message = raw_input('Next')
-        time.sleep(2)
+        time.sleep(3)
         print message
         client.publish(context_topic, message, qos=2)
         vehicle._debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
@@ -110,7 +110,8 @@ def on_message(client, vehicle, msg):
 
 def movement(vehicle, command):
     global control_topic, semi_auto_topic, semi_client_id, host, port
-    other_param = {'client_id': semi_client_id, 'hostname': host, 'port': port}
+    other_param = {'client_id': semi_client_id,
+                   'hostname': host, 'port': port, 'qos': 2}
     print 'Send:', command
     publish.single(control_topic, command, **other_param)
     msg = subscribe.simple(semi_auto_topic, **other_param)
@@ -293,9 +294,9 @@ if __name__ == "__main__":
     lidar = Lidar(vehicle)
     # vehicle.set_target(-30, 0)
     # lidar.Guided()
-    lidar.keycontrol()
-    # location = [36.111122, 116.222222, 10]
-    # lidar.navigation(location)
+    # lidar.keycontrol()
+    location = [36.111122, 116.222222, 10]
+    lidar.navigation(location)
 
     while True:
         time.sleep(100)
