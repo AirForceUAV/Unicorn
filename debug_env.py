@@ -1,9 +1,18 @@
-env = 'release'
+env = 'debug'
+full_auto_topic = "Full-Automatic"
+semi_auto_topic = "Semi-Automatic"
+context_topic = 'Context'
+control_topic = 'Control'
+# host = '192.168.31.10'
+host = 'localhost'
+port = 1883
+full_client_id = 'FULLFC'
+semi_client_id = 'SEMIFC'
 
 open_module = [
-    'Sbus',
-    'Compass',
-    'GPS',
+    # 'Sbus',
+    # 'Compass',
+    # 'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',

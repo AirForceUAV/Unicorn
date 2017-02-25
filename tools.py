@@ -42,9 +42,11 @@ def build_sbus():
             time.sleep(.5)
 
 
-def config_logger(model=None):
-    model = model or 'Test'
-    LOG_FILE = build_log(model, 'log')
+def config_logger(model, version):
+    if version.find('release') != 1:
+        LOG_FILE = build_log(model, 'log')
+    else:
+        LOG_FILE = ''
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -103,9 +105,8 @@ def config_logger(model=None):
                 'propagate': False,
                 'qualname': 'debugLogger'
             },
-            "infoLogger": {
-                'handlers': ['debugHandler'],
-                # 'handlers': ['debugHandler', 'file'],
+            "releaseLogger": {
+                'handlers': ['infoHandler', 'file'],
                 'level': 'INFO',
                 'propagate': False,
                 'qualname': 'infoLogger'
@@ -115,15 +116,21 @@ def config_logger(model=None):
     return LOGGING
 
 
-def init_logger(model=None):
+def init_logger(model):
     LOG_NAME = 'debugLogger'
-    LOGGING = config_logger(model)
+    LOGGING = config_logger(model, LOG_NAME)
     logging.config.dictConfig(LOGGING)
     logger = logging.getLogger(LOG_NAME)
     return logger
 
 
 def _log(message):
+    global logger
+    logger.info(message)
+    # print(message)
+
+
+def _info(message):
     global logger
     logger.info(message)
     # print(message)
@@ -139,6 +146,11 @@ def _error(message):
     global logger
     logger.error(message)
     # print(message)
+
+
+def _critical(msg):
+    global logger
+    self.logger.critical(msg)
 
 
 def exe_cmd(vehicle, command):

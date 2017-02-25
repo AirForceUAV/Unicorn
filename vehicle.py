@@ -11,19 +11,6 @@ from attribute import Attribute
 from Curve import THR2PIT
 
 
-def movement(vehicle, command):
-    control = {'w': ['ELE', 1], 's': ['ELE', -1],
-               'a': ['AIL', 1], 'd': ['AIL', -1]}
-    action = {}
-    for cmd in command:
-        col = control[cmd]
-        action[col[0]] = col[1]
-    print action
-    # vehicle.control_FRU(**action)
-    # time.sleep(1)
-    # vehicle.brake()
-
-
 class Vehicle(Attribute):
     __metaclass__ = Singleton
 
@@ -539,29 +526,14 @@ class Vehicle(Attribute):
         self.wp.clear()
 
     def keycontrol(self):
-        import keyboard
-        from tools import exe_cmd
-        info = {'up': 'FORWARD', 'down': 'BACKWARD',
-                'left': 'LEFT_ROLL', 'right': 'RIGHT_ROLL',
-                'space': 'STOP', 'esc': 'esc', 'page up': 'UP',
-                'page down': 'DOWN'}
-
-        def callback(event):
-            eventType = event.event_type
-            name = event.name
-            if eventType == 'down' and name in info:
-                return True
-            else:
-                return False
+        from keyboard_control import keyboard_event_wait, exe_cmd
 
         while True:
-            event = keyboard.read_key(callback)
-            name = event.name
-            # print name
-            if name == 'esc':
-                print 'esc'
-                return
-            exe_cmd(self, info[name])
+            command = keyboard_event_wait()
+            if command == 'esc':
+                break
+            exe_cmd(self, command)
+        time.sleep(.5)
 
     def Cancel(self):
         self._log("Cancel")

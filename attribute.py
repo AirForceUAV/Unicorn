@@ -201,3 +201,6 @@ class Attribute(object):
 
     def _warn(self, msg):
         self.logger.warn(msg)
+    
+    def _critical(self,msg):
+        self.logger.critical(msg)

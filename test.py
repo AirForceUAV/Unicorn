@@ -28,23 +28,9 @@ def receive_command():
         # print "Command Delay: %d ms" % (ct - int(str(job.body)))
 
 
-def movement(command):
-    control = {'w': ['PIT', 1], 's': ['PIT', -1],
-               'a': ['AIL', 1], 'd': ['AIL', -1]}
-    keys = command.split(',')
-    action = {}
-    for key in keys:
-        col = control[key]
-        action[col[0]] = col[1]
-    print action
-
 if __name__ == '__main__':
     # p = Pool(2)
     # p.apply_async(send_log)
     # p.apply_async(receive_command)
     # p.close()
     # p.join()
-
-    import keyboard
-    keyboard.add_hotkey('w', movement, args=('w'))
-    keyboard.wait('esc')
