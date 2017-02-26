@@ -39,7 +39,7 @@ class IMU(threading.Thread):
         self.EUL_UNIT = 100.0    # °
 
         self.ORB = ORB
-        from config import IMU
+        from config import IMU_serial
         self._imu = open_serial(IMU, 115200)
 
     def run(self):

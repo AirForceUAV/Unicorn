@@ -16,7 +16,7 @@ class Compass(threading.Thread):
         super(Compass, self).__init__(name="Compass")
         # print("Connecting to Compass ...")
         self.ORB = ORB
-        from config import compass
+        from config import compass_serial
         self.ser = open_serial(compass, 9600, timeout=0.01)
 
     def run(self):

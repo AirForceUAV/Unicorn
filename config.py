@@ -88,10 +88,10 @@ control_topic = str(conf['topic']['publish']['semi'])
 full_auto_topic = str(conf['topic']['subscribe']['full'])
 semi_auto_topic = str(conf['topic']['subscribe']['semi'])
 
-sbus = get_sbus(conf)
-compass = conf['compass']['port']
-GPS = conf['GPS']['port']
-IMU = conf['IMU']['port']
+sbus_serial = get_sbus(conf)
+compass_serial = conf['compass']['port']
+GPS_serial = conf['GPS']['port']
+IMU_serial = conf['IMU']['port']
 
 if __name__ == '__main__':
     print context_topic, control_topic, full_auto_topic, semi_auto_topic

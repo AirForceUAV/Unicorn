@@ -8,7 +8,7 @@ import os
 import datetime
 import logging
 import logging.config
-from config import version, drone, sbus
+from config import version, drone, sbus_serial
 
 
 def build_log(model, suffix):

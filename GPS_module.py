@@ -16,8 +16,8 @@ class GPS(threading.Thread):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
         logger.info("Connecting to GPS Module")
-        from config import GPS
-        self.ser = open_serial(GPS, 9600, timeout=0.01)
+        from config import GPS_serial
+        self.ser = open_serial(GPS_serial, 9600, timeout=0.01)
 
     def run(self):
         logger.info("Initializing GPS Module")
