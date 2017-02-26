@@ -81,8 +81,10 @@ commands = [
 
 
 [MQTT]
-host = 'localhost'
-port = 1883
+# host = 'localhost'
+# port = 1883
+host = '192.168.31.10'
+port = 12345
 
 [topic]
     [topic.publish]

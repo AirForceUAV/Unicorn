@@ -8,7 +8,7 @@ import os
 import datetime
 import logging
 import logging.config
-from config import drone, sbus
+from config import version, drone, sbus
 
 
 def build_log(model, suffix):
@@ -92,7 +92,7 @@ def config_logger(model, version):
                 'handlers': ['errorHandler'],
                 'level': 'WARNING',
             },
-            "betagLogger": {
+            "betaLogger": {
                 'handlers': ['debugHandler'],
                 # 'handlers': ['debugHandler', 'file'],
                 'level': 'DEBUG',
@@ -111,7 +111,7 @@ def config_logger(model, version):
 
 
 def init_logger(model):
-    LOG_NAME = 'betaLogger'
+    LOG_NAME = version + 'Logger'
     LOGGING = config_logger(model, LOG_NAME)
     logging.config.dictConfig(LOGGING)
     logger = logging.getLogger(LOG_NAME)

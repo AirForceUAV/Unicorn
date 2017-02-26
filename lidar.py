@@ -152,9 +152,9 @@ if __name__ == "__main__":
     lidar = Lidar(vehicle)
     # vehicle.set_target(-30, 0)
     # lidar.Guided()
-    # lidar.keycontrol()
-    location = [36.111122, 116.222222, 10]
-    lidar.navigation(location)
+    lidar.keycontrol()
+    # location = [36.111122, 116.222222, 10]
+    # lidar.navigation(location)
 
     while True:
         time.sleep(100)

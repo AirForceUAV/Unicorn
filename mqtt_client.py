@@ -81,7 +81,7 @@ def semi_publish(client, userdata):
         return True
     # infot = client.publish(control_topic, command, qos=2)
     # infot.wait_for_publish()
-    mqtt_RTO(client, control_topic, command, userdata)
+    mqtt_RTO(client, control_topic, command, userdata, True)
     return False
 
 
@@ -153,7 +153,7 @@ def obstacle_context(vehicle, command=None):
                    'prepre': 'STOP',
                    'Distance': 100}
         return context
-
+    return context_deta()
     return context_alpha()
 
 

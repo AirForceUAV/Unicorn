@@ -44,9 +44,8 @@ def keyboard_filter(event):
 
 def exe_cmd(vehicle, command):
     global map_event_args
-    # command = 'FORWARD'
     action = {}
-    for cmd in command.split(" "):
+    for cmd in command.strip().split(" "):
         args = map_event_args.get(cmd, None)
         if args is None or args[0] in action:
             logger.error('command is unvalid -- {}'.format(command))
@@ -66,4 +65,4 @@ def main():
         exe_cmd(None, command)
 
 if __name__ == '__main__':
-    main()
+    exe_cmd(None, 'STOP')
