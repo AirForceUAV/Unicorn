@@ -20,7 +20,7 @@ class Compass(threading.Thread):
         self.ser = open_serial(compass, 9600, timeout=0.01)
 
     def run(self):
-        logger.ifno("Initializing Compass ...")
+        logger.info("Initializing Compass ...")
 
         while True:
             attitude = self.get_attitude()

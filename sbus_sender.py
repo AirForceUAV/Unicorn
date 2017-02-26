@@ -9,6 +9,7 @@ from library import CutFrame
 from library import CancelWatcher
 from sbus import SBUS
 from tools import logger
+from config import *
 
 
 class Sbus_Sender(threading.Thread):
@@ -25,7 +26,7 @@ class Sbus_Sender(threading.Thread):
     def run(self):
         logger.info('Initializing sbus_sender ...')
         self.publish('Sender_State', True)
-        switch = self.ORB._channel['Switch']
+        switch = channels['Switch']
         GCS_PWM = switch[2]
         while True:
             package = self.subscribe('ChannelsInput')
