@@ -9,6 +9,8 @@ from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
 from Curve import THR2PIT
+from config import *
+from tools import logger
 
 
 class Vehicle(Attribute):
@@ -25,7 +27,6 @@ class Vehicle(Attribute):
         self._target = None
 
     def brake(self, braketime=0.5):
-        # self._log('brake')
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
 
@@ -60,7 +61,7 @@ class Vehicle(Attribute):
         self.send_pwm(channels)
 
     def _construct_channel(self, channels):
-        if self._model == 'HELI':
+        if drone['Model'] == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
             channels[self.PIT[0]] = THR2PIT(channels[self.THR[0]])
             # channels[self.PIT[0]] = self.PIT[0]
@@ -72,7 +73,7 @@ class Vehicle(Attribute):
     def movement(self, channel, sign=1):
         # sign in [-1,0,1]. By Gear
         gear = self.subscribe('Gear') - 1
-        rate = self.ORB._Gear[gear] / 100.0
+        rate = drone['Gear'][gear] / 100.0
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
         variation = int(channel[5] * section * rate)
@@ -124,43 +125,43 @@ class Vehicle(Attribute):
         return result
 
     def arm(self):
-        self._log("Arming ...")
-        if self._model == 'HELI':
+        logger.info("Arming ...")
+        if drone['Model'] == 'HELI':
             return
         self.control_stick(-1, -1, -1, 1)
         # time.sleep(2)
         # self.disarm()
 
     def disarm(self):
-        self._log('DisArmed ...')
+        logger.info('DisArmed ...')
         self.control_stick(THR=-1, Mode=2)
 
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
-        self._log('Takeoff to {} m'.format(alt))
+        logger.info('Takeoff to {} m'.format(alt))
         if not self.has_module('Baro'):
-            self._warn('Baro is closed')
+            logger.warn('Baro is closed')
             return
 
         self.escalate(0, 60)
 
         while not watcher.IsCancel():
             currentAlt = self.get_alttitude(True)
-            self._debug('Current Altitude :{}'.format(currentAlt))
+            logger.debug('Current Altitude :{}'.format(currentAlt))
             if currentAlt is None:
-                self._error('Baro is not health')
+                logger.error('Baro is not health')
                 break
             if currentAlt > alt * 0.95:
-                self._log('Reached Altitude :{}'.format(currentAlt))
+                logger.info('Reached Altitude :{}'.format(currentAlt))
                 break
             time.sleep(.1)
 
         self.brake()
 
     def land(self):
-        self._log('Landing...')
+        logger.info('Landing...')
         if not self.has_module('Baro'):
-            self._warn('Baro is closed')
+            logger.warn('Baro is closed')
             return
 
         # self.control_FRU(0, 0, -1)
@@ -189,25 +190,25 @@ class Vehicle(Attribute):
 
     def up_metres(self, altitude, relative=True):
         if altitude <= 0:
-            self._warn('Altitude({}) is unvalid'.format(altitude))
+            logger.warn('Altitude({}) is unvalid'.format(altitude))
             return
-        if not self.ORB.has_module('Baro'):
-            self._warn('Baro is closed')
+        if not self.has_module('Baro'):
+            logger.warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
-            self._error('Baro is not health')
+            logger.error('Baro is not health')
             return
         if relative:
             TAlt = CAlt + altitude
         else:
             IAlt = self.ORB._HAL['InitAltitude']
             if IAlt is None:
-                self._error('InitAltitude is null')
+                logger.error('InitAltitude is null')
                 return
             TAlt = IAlt + altitude
         if TAlt < CAlt:
-            self._warn(
+            logger.warn(
                 'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
             return
         self.control_FRU(THR=1)
@@ -221,23 +222,23 @@ class Vehicle(Attribute):
 
     def down_metres(self, altitude, relative=True):
         if altitude <= 0:
-            self._warn('Altitude({}) is unvalid'.format(altitude))
+            logger.warn('Altitude({}) is unvalid'.format(altitude))
             return
-        if not self.ORB.has_module('Baro'):
-            self._warn('Baro is closed')
+        if not self.has_module('Baro'):
+            logger.warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
         if CAlt is None:
-            self._error('Barometre is not health')
+            logger.error('Barometre is not health')
             return
 
         TAlt = CAlt - altitude
         IAlt = self.ORB._HAL['InitAltitude']
         if IAlt is None:
-            self._error('InitAltitude is null')
+            logger.error('InitAltitude is null')
             return
         if TAlt < IAlt + 1:
-            self._warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
+            logger.warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
             return
         self.control_FRU(THR=-1)
         watcher = CancelWatcher()
@@ -254,53 +255,53 @@ class Vehicle(Attribute):
         self.control_FRU(RUD=1)
 
     def forward(self):
-        self._log('Forward...')
+        logger.info('Forward...')
         self.control_FRU(ELE=1)
 
     def yaw_left_brake(self):
-        self._log('Yaw Left')
+        logger.info('Yaw Left')
         self.control_FRU(RUD=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def yaw_right_brake(self):
-        self._log('Yaw Right')
+        logger.info('Yaw Right')
         self.control_FRU(RUD=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def forward_brake(self):
-        self._log('Forward')
+        logger.info('Forward')
         self.control_FRU(ELE=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def backward_brake(self):
-        self._log('Backward')
+        logger.info('Backward')
         self.control_FRU(ELE=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def roll_left_brake(self):
-        self._log('Roll Left')
+        logger.info('Roll Left')
         self.control_FRU(AIL=-1)
         time.sleep(self.moveTime)
         self.brake()
 
     def roll_right_brake(self):
-        self._log('Roll Right')
+        logger.info('Roll Right')
         self.control_FRU(AIL=1)
         time.sleep(self.moveTime)
         self.brake()
 
     def up_brake(self):
-        self._log('Throttle Up')
+        logger.info('Throttle Up')
         self.control_FRU(THR=1)
         time.sleep(self.moveTime)
         self.brake(1)
 
     def down_brake(self):
-        self._log('Throttle Down')
+        logger.info('Throttle Down')
         self.control_FRU(THR=-1)
         time.sleep(self.moveTime)
         self.brake(1)
@@ -335,23 +336,24 @@ class Vehicle(Attribute):
         TurnAngle = (360 + current_yaw - target_angle) % 360
         if TurnAngle >= 0 and TurnAngle <= 180:
             is_cw = 1
-            self._log('Turn left {}'.format(TurnAngle))
+            logger.debug('Turn left {}'.format(TurnAngle))
             self.yaw_left()
         else:
             is_cw = -1
-            self._log('Turn right {}'.format(360 - TurnAngle))
+            logger.debug('Turn right {}'.format(360 - TurnAngle))
             self.yaw_right()
-        self._debug("Target %d" % target_angle)
+
+        logger.debug("Target Angle: %d" % target_angle)
         while not watcher.IsCancel():
             current_yaw = self.get_heading()
             if current_yaw is None:
                 break
             if self.isStop(current_yaw, target_angle, is_cw):
                 break
-            # self._debug('{},{}'.format(current_yaw, target_angle))
-        self._debug("Before Angle {}".format(self.get_heading()))
+            # logger.debug('{},{}'.format(current_yaw, target_angle))
+        logger.debug("Before Angle:{}".format(self.get_heading()))
         self.brake()
-        self._debug("After  Angle {}".format(self.get_heading()))
+        logger.debug("After  Angle:{}".format(self.get_heading()))
 
     def navigation(self, target):
         watcher = CancelWatcher()
@@ -377,7 +379,7 @@ class Vehicle(Attribute):
                 current_location, target, current_yaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                self._log("Reached Target!")
+                logger.info("Reached Target!")
                 break
 
             SAngle = int(math.degrees(math.asin(radius / distance)))
@@ -420,7 +422,7 @@ class Vehicle(Attribute):
                 current_location, target, current_yaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                self._log("Reached Target Waypoint!")
+                logger.info("Reached Target Waypoint!")
                 break
             SAngle = int(math.degrees(math.asin(radius / distance)))
 
@@ -430,10 +432,10 @@ class Vehicle(Attribute):
                 self.control_FRU(ELE=1)
             else:
                 if angle > SAngle and angle <= 90:
-                    self._debug('Roll Left')
+                    logger.debug('Roll Left')
                     self.control_FRU(AIL=-1, ELE=1)
                 elif angle >= 270 and angle < 360 - SAngle:
-                    self._debug('Roll Right')
+                    logger.debug('Roll Right')
                     self.control_FRU(AIL=1, ELE=1)
                 else:
                     self.brake()
@@ -468,7 +470,7 @@ class Vehicle(Attribute):
             self._debug('{} {}'.format(distance, angle))
 
             if not self.InAngle(angle, 90) or distance <= radius:
-                self._log("Reached Target!")
+                logger.info("Reached Target!")
                 break
 
             self.forward()
@@ -485,7 +487,7 @@ class Vehicle(Attribute):
     def Guided(self):
         target = self.get_target()
         if target is None:
-            self._warn("Target is None!")
+            logger.warn("Target is None!")
             return
         self.publish('Mode', 'GUIDED')
 
@@ -496,7 +498,7 @@ class Vehicle(Attribute):
     def RTL(self):
         target = self.get_home()
         if target is None:
-            self._warn("Home is None!")
+            logger.warn("Home is None!")
             return
         self.publish('Mode', 'RTL')
 
@@ -510,7 +512,7 @@ class Vehicle(Attribute):
 
     def Auto(self):
         if self.wp.isNull():
-            self._log('Waypoint is None')
+            logger.info('Waypoint is None')
             return
         self.publish('Mode', 'Auto')
         watcher = CancelWatcher()
@@ -536,7 +538,6 @@ class Vehicle(Attribute):
         time.sleep(.5)
 
     def Cancel(self):
-        self._log("Cancel")
         CancelWatcher.Cancel = True
         time.sleep(.1)
         self.brake()
@@ -548,7 +549,7 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    if ORB.has_module('Sbus'):
+    if has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -568,7 +569,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Sbus is OK'
 
-    if ORB.has_module('Compass'):
+    if has_module('Compass'):
         # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
@@ -578,7 +579,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Compass is OK'
 
-    if ORB.has_module('GPS'):
+    if has_module('GPS'):
         # Initialize GPS
         from GPS_module import GPS
         gps = GPS(ORB)
@@ -588,7 +589,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'GPS is OK'
 
-    if ORB.has_module('Baro'):
+    if has_module('Baro'):
         # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
@@ -598,7 +599,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Baro is OK'
 
-    if ORB.has_module('IMU'):
+    if has_module('IMU'):
         # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)
@@ -613,12 +614,11 @@ if __name__ == "__main__":
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
-    vehicle.keycontrol()
+    # vehicle.keycontrol()
     # Test
     import sys
-    from debug_env import commands
-    Test = commands
-    for t in Test:
+
+    for t in commands:
         enter = raw_input(t + ' ???').strip()
 
         if enter == 'c' or enter == 'C':

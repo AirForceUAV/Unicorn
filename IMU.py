@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from library import Singleton, open_serial
 import threading
 import time
-from library import CutFrame2
-from tools import _log
+from library import CutFrame2, Singleton, open_serial
+from config import IMU
+from tools import logger
 
 
 class IMU(threading.Thread):
@@ -39,10 +39,11 @@ class IMU(threading.Thread):
         self.EUL_UNIT = 100.0    # °
 
         self.ORB = ORB
-        self._imu = open_serial('/dev/IMU', 115200)
+        from config import IMU
+        self._imu = open_serial(IMU, 115200)
 
     def run(self):
-        _log('Initializing IMU....')
+        logger.info('Initializing IMU....')
         while True:
             frame = self.RawFrame()
             Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)

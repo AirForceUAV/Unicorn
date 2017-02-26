@@ -4,8 +4,7 @@
 import array
 import time
 import sys
-from library import CancelWatcher
-from library import CutFrame
+from library import CancelWatcher, CutFrame
 
 
 class SBUS(object):

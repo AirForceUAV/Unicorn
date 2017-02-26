@@ -7,7 +7,7 @@ import os
 import sys
 from library import CancelWatcher
 import threading
-from tools import _log, _debug, _error
+from tools import logger
 
 
 def open_sock():
@@ -17,7 +17,7 @@ def open_sock():
         sock.connect(server_address)
         return sock
     except socket.error as msg:
-        _error("{}:{}".format(sys.stderr, msg))
+        logger.error("{}:{}".format(sys.stderr, msg))
         sys.exit(1)
 
 
@@ -41,7 +41,7 @@ class Receiver(threading.Thread):
             if cmd is '':
                 continue
             if cmd.find('Cancel') != -1:
-                _log('Execute Cancel')
+                logger.info('Execute Cancel')
                 CancelWatcher.Cancel = True
                 # self.work_queue.put('vehicle.brake()')
             else:
@@ -63,13 +63,13 @@ class Executor(threading.Thread):
             if command is '':
                 continue
             command = "self." + command
-            _debug('Execute command {}'.format(command))
+            logger.debug('Execute command {}'.format(command))
             try:
                 eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
-                _error("{0}:{1}".format(*info))
+                logger.error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
 if __name__ == "__main__":
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     import Queue
 
     ORB = uORB()
-    from tools import protobuf
+    from test_data import protobuf
     ORB._HAL = protobuf
     vehicle = Vehicle(ORB)
     scheduler = BackgroundScheduler()
@@ -88,12 +88,12 @@ if __name__ == "__main__":
     sock = open_sock()
     work_queue = Queue.Queue()
 
-    _log('Start Receiver Thread')
+    print('Start Receiver Thread')
     receiver = Receiver(work_queue, sock)
     receiver.daemon = True
     receiver.start()
 
-    _log('Start Executor Thread')
+    print('Start Executor Thread')
     executor = Executor(work_queue, vehicle)
     executor.daemon = True
     executor.start()

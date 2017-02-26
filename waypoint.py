@@ -2,7 +2,7 @@
 # -*- coding=utf-8 -*-
 
 from library import element, get_location_metres
-from tools import _log
+from tools import logger
 
 
 class Waypoint(object):
@@ -27,7 +27,7 @@ class Waypoint(object):
     def download(self, origin, index=0):
         count = len(self._root.getchildren())
         if index > count - 1:
-            _log('index out of range when download Waypoints')
+            logger.error('index out of range when download Waypoints')
             return
         _root = self._root[index]
         Trail = _root.get('Trail')
@@ -44,7 +44,7 @@ class Waypoint(object):
 
         # print('Trail:{} Waypoints:{}'.format(
         #     Trail, self.subscribe('Waypoint')))
-        _log('Download complete')
+        logger.info('Download complete')
 
     def Route(self, info):
         if info == "":
@@ -59,7 +59,7 @@ class Waypoint(object):
         self.publish('WaypointType', 'Route')
 
         # print 'Waypoints :', self.subscribe('Waypoint')
-        _log('Route planning complete')
+        logger.info('Route planning complete')
 
     def remain_wp(self):
         return self.points[self.ID:] if self.ID is not -1 else []

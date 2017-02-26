@@ -1,0 +1,110 @@
+SystemID = 2
+version = "beta"
+# version = "alpha"
+client_id = "FC"
+
+open_module = [
+    'Sbus',
+    'Compass',
+    'GPS',
+    # 'Baro',
+    # 'IMU',
+    # 'Lidar',
+    'Cloud'
+]
+
+commands = [
+    'arm()',
+    # 'set_channels_mid()',
+    # 'set_gear(2)',
+    # 'yaw_left_brake()',
+    # 'yaw_right_brake()',
+    # 'roll_left_brake()',
+    # 'roll_right_brake()',
+    # 'forward_brake()',
+    # 'backward_brake()',
+    # 'up_brake()'
+    # 'down_brake()',
+    # 'condition_yaw(30)',
+    # 'condition_yaw(300)',
+    # 'set_target(-20, 0)',
+    # 'Guided()',
+    # 'download(0)',
+    # 'Auto()',
+    'disarm()',
+    # 'GradualTHR(0, 60)'
+]
+
+
+[System1]
+    UAV="HEX6" 
+    Model='HEX' 
+    MainController='NAZA v2'
+    AIL = [1,352,1024,1696,1,20]
+    ELE = [2,352,1046,1696,-1,20]
+    THR = [3,352,1020,1696,-1,15]
+    RUD = [4,352,1028,1696,1,10]
+    Mode = [5,494,1024,1561,2,3]
+    Aux1 = [6,,1024,1024,1024]
+    Aux2 = [7,494,1024,1554]
+    Switch = [8,352,1024,1696]
+    Gear = [20,40,60]
+    
+[System2]
+    UAV="HEX8" 
+    Model='HEX' 
+    MainController='N3'
+    AIL = [1,352,1024,1696,1,20]
+    ELE = [2,352,1046,1696,-1,20]
+    THR = [3,352,1024,1696,-1,15]
+    RUD = [4,352,1026,1696,1,10]
+    Mode = [6,352,1024,1696,2,1]
+    Aux1 = [5,,352,1024,1696]
+    Aux2 = [7,1024,1024,1024]
+    Switch = [8,352,1024,1696]
+    Gear = [20,40,60]
+
+
+[System3]
+    UAV="HELI-550" 
+    Model='HELI' 
+    MainController='ACE_ONE'
+    AIL = [1,352,1024,1696,-1,20]
+    ELE = [2,352,1046,1696,-1,20]
+    THR = [3,299,1072,1709,1,15]
+    RUD = [4,159,827,1503,-1,12]
+    Mode = [7,487,1024,1575,2,3]
+    Rate = [5,,1312,1312,1312]
+    PIT = [6,327,754,1140]
+    Switch = [8,352,1024,1696]
+    Gear = [20,40,60]
+
+
+[MQTT]
+host = 'localhost'
+port = 1883
+
+[topic]
+    [topic.publish]
+    full = 'Context'
+    semi = 'Control'
+    [topic.subscribe]
+    full = 'Full-Automatic'
+    semi = 'Semi-Automatic'
+    
+
+[sbus]
+    port = '/dev/sbus'
+    baudrate = 100000
+
+[GPS]
+    port = '/dev/GPS'
+    baudrate = 9600
+
+[compass]
+    port = '/dev/compass'
+    baudrate = 9600
+
+[IMU]
+    port = '/dev/IMU'
+    baudrate = 115200

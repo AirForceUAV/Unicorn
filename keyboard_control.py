@@ -3,8 +3,8 @@
 
 import keyboard
 import time
+from tools import logger
 
-control_topic = 'Control'
 
 keyboard_event = {'up': 'FORWARD', 'down': 'BACKWARD',
                   'left': 'LEFT_ROLL', 'right': 'RIGHT_ROLL',
@@ -49,11 +49,11 @@ def exe_cmd(vehicle, command):
     for cmd in command.split(" "):
         args = map_event_args.get(cmd, None)
         if args is None or args[0] in action:
-            print('command is unvalid -- {}'.format(command))
+            logger.error('command is unvalid -- {}'.format(command))
             return
         action[args[0]] = args[1]
 
-    print 'Execute command:', command
+    logger.info('Execute command:{}'.format(command))
     if vehicle is not None:
         vehicle.control_FRU(**action)
 
@@ -67,4 +67,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    time.sleep(.5)

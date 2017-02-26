@@ -1,12 +1,12 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-import pynmea2
+
 import time
-from library import open_serial
-from library import Singleton
 import threading
-from tools import _log
+import pynmea2
+from library import open_serial, Singleton
+from tools import logger
 
 
 class GPS(threading.Thread):
@@ -15,11 +15,12 @@ class GPS(threading.Thread):
     def __init__(self, ORB):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
-        _log("Connecting to GPS Module")
-        self.ser = open_serial('/dev/GPS', 9600, timeout=0.01)
+        logger.info("Connecting to GPS Module")
+        from config import GPS
+        self.ser = open_serial(GPS, 9600, timeout=0.01)
 
     def run(self):
-        _log("Initializing GPS Module")
+        logger.info("Initializing GPS Module")
         while True:
             location = self.parseGPS()
             if location is not None:

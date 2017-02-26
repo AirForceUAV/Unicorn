@@ -2,7 +2,7 @@
 # coding:utf-8
 
 import paho.mqtt.client as mqtt
-from debug_env import *
+from config import *
 
 
 def init_mqtt(userdata=None):
@@ -10,7 +10,7 @@ def init_mqtt(userdata=None):
     client.user_data_set(userdata)
     client.on_connect = on_connect  # callback when connected
     client.on_message = on_message  # callback when received message
-    client.connect(host, port)
+    client.connect(*mqtt_socket)
     return client
 
 

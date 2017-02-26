@@ -1,8 +1,8 @@
 # pip3 install redis
 
-from multiprocessing import Pool
 import time
 import redis
+from multiprocessing import Pool
 
 
 def send_log():
@@ -29,8 +29,8 @@ def receive_command():
 
 
 if __name__ == '__main__':
-    # p = Pool(2)
-    # p.apply_async(send_log)
-    # p.apply_async(receive_command)
-    # p.close()
-    # p.join()
+    p = Pool(2)
+    p.apply_async(send_log)
+    p.apply_async(receive_command)
+    p.close()
+    p.join()

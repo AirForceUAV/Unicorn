@@ -1,14 +1,14 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
+import time
+import threading
 from library import ascii2hex, dec2hex
 from library import Singleton
 from library import CutFrame
-import threading
 from library import CancelWatcher
-import time
 from sbus import SBUS
-from tools import _log
+from tools import logger
 
 
 class Sbus_Sender(threading.Thread):
@@ -23,7 +23,7 @@ class Sbus_Sender(threading.Thread):
         self.index = 0
 
     def run(self):
-        _log('Initializing sbus_sender ...')
+        logger.info('Initializing sbus_sender ...')
         self.publish('Sender_State', True)
         switch = self.ORB._channel['Switch']
         GCS_PWM = switch[2]

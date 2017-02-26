@@ -8,7 +8,7 @@ import os
 import datetime
 import logging
 import logging.config
-from config import config
+from config import drone, sbus
 
 
 def build_log(model, suffix):
@@ -26,24 +26,18 @@ def localtime():
 
 
 def build_sbus():
-    portname = '/dev/sbus'
-    # portname = '/dev/ttyAMA0'
     while True:
         try:
-            com = serial.Serial(port=portname,
-                                baudrate=100000,
-                                parity=serial.PARITY_EVEN,
-                                stopbits=serial.STOPBITS_TWO,
-                                bytesize=serial.EIGHTBITS)
+            com = serial.Serial(**sbus)
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            _log("{0}:{1}".format(*info))
+            print("{0}:{1}".format(*info))
             time.sleep(.5)
 
 
 def config_logger(model, version):
-    if version.find('release') != 1:
+    if version.find('alpha') != 1:
         LOG_FILE = build_log(model, 'log')
     else:
         LOG_FILE = ''
@@ -98,18 +92,18 @@ def config_logger(model, version):
                 'handlers': ['errorHandler'],
                 'level': 'WARNING',
             },
-            "debugLogger": {
+            "betagLogger": {
                 'handlers': ['debugHandler'],
                 # 'handlers': ['debugHandler', 'file'],
                 'level': 'DEBUG',
                 'propagate': False,
-                'qualname': 'debugLogger'
+                'qualname': 'betaLogger'
             },
-            "releaseLogger": {
+            "alphaLogger": {
                 'handlers': ['infoHandler', 'file'],
                 'level': 'INFO',
                 'propagate': False,
-                'qualname': 'infoLogger'
+                'qualname': 'alphaLogger'
             }
         },
     }
@@ -117,67 +111,14 @@ def config_logger(model, version):
 
 
 def init_logger(model):
-    LOG_NAME = 'debugLogger'
+    LOG_NAME = 'betaLogger'
     LOGGING = config_logger(model, LOG_NAME)
     logging.config.dictConfig(LOGGING)
     logger = logging.getLogger(LOG_NAME)
     return logger
 
 
-def _log(message):
-    global logger
-    logger.info(message)
-    # print(message)
-
-
-def _info(message):
-    global logger
-    logger.info(message)
-    # print(message)
-
-
-def _debug(message):
-    global logger
-    logger.debug(message)
-    # print(message)
-
-
-def _error(message):
-    global logger
-    logger.error(message)
-    # print(message)
-
-
-def _critical(msg):
-    global logger
-    self.logger.critical(msg)
-
-
-def exe_cmd(vehicle, command):
-    flag = True
-    print 'Recv--', command
-    input = {'STOP': {}, 'FORWARD': {'ELE': 1},
-             'BACKWARD': {'ELE': -1},
-             'LEFT_YAW': {'RUD': -1}, 'RIGHT_YAW': {'RUD': 1},
-             'LEFT_ROLL': {'AIL': -1}, 'RIGHT_ROLL': {'AIL': 1},
-             'UP': {'THR': 1}, 'DOWN': {'THR': -1}}
-
-    cmds = command.split(' ')
-    action = {}
-    for cmd in cmds:
-        if cmd in input and cmd not in action:
-            action = dict(action, **input[cmd])
-        else:
-            vehicle._error('Command({}) is unvalid!'.format(command))
-            action = {}
-            flag = False
-            break
-
-    # print 'action:', action
-    vehicle.control_FRU(**action)
-    return flag
-
-model = config.model
+model = drone['Model']
 logger = init_logger(model)
 
 if __name__ == '__main__':

@@ -5,10 +5,9 @@ import math
 import time
 import paho.mqtt.client as mqtt
 from keyboard_control import keyboard_event_wait, exe_cmd
-from debug_env import *
-from tools import _info, _debug, _error
-from library import angle_heading_target, get_distance_metres, CancelWatcher
-import threading
+from tools import logger
+from library import *
+from config import *
 
 
 def print_userdata(userdata):
@@ -16,26 +15,27 @@ def print_userdata(userdata):
 
 
 def init_mqtt(userdata):
-    client = mqtt.Client(client_id=full_client_id)
+    client = mqtt.Client(client_id=client_id)
     client.user_data_set(userdata)
     client.on_connect = on_connect  # callback when connected
     client.on_message = on_message  # callback when received message
-    client.connect(host, port)
+    client.connect(*mqtt_socket)
     return client
 
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected to broker successfully")
+    logger.info("Connected to mqtt broker")
     client.subscribe([(full_auto_topic, 2), (semi_auto_topic, 2)])
 
 
 def on_message(client, userdata, msg):
+    wathcer = CancelWatcher()
     topic2id = {full_auto_topic: 'full_id', semi_auto_topic: 'semi_id'}
     message = msg.payload
     topic = msg.topic
 
     revid, command = unpack(message)
-    print('Recv message:({})'.format(message))
+    logger.debug('Recv message:({})'.format(message))
     vehicle = userdata['vehicle']
     key_mid = topic2id[topic]
 
@@ -43,7 +43,7 @@ def on_message(client, userdata, msg):
         userdata['code'] = True
         exe_cmd(vehicle, command)
     else:
-        print('Revid is unvalid revid:{} mid:{}'.format(
+        logger.error('Revid is unvalid revid:{} mid:{}'.format(
             revid, userdata[key_mid]))
         userdata['times'] = userdata['times'] + 1
         if userdata['times'] >= 10:
@@ -51,9 +51,9 @@ def on_message(client, userdata, msg):
             userdata['times'] = 0
             return
 
-    if topic == full_auto_topic and not CancelWatcher.Cancel:
+    if topic == full_auto_topic and not wathcer.IsCancel():
         full_publish(client, userdata, command)
-    elif topic == semi_auto_topic and not CancelWatcher.Cancel:
+    elif topic == semi_auto_topic and not wathcer.IsCancel():
         semi_publish(client, userdata)
 
 
@@ -69,7 +69,7 @@ def full_publish(client, userdata, command):
     time.sleep(interval)
     # client.publish(context_topic, message, qos=2)
     mqtt_RTO(client, context_topic, message, userdata)
-    _debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
+    logger.debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
 
 
 def semi_publish(client, userdata):
@@ -77,7 +77,7 @@ def semi_publish(client, userdata):
     command = keyboard_event_wait()
     print 'command', command
     if command == 'esc':
-        print 'esc'
+        logger.info('esc')
         return True
     # infot = client.publish(control_topic, command, qos=2)
     # infot.wait_for_publish()
@@ -107,15 +107,13 @@ def unpack(message):
 
 
 def obstacle_context(vehicle, command=None):
-    global env
-
-    def context_release():
+    def context_alpha():
         target = vehicle._target
         CLocation = vehicle.get_location()
         CYaw = vehicle.get_heading()
 
         if None in (CLocation, CYaw, target):
-            _error('GPS is None or Compass is None or target is None')
+            logger.error('GPS is None or Compass is None or target is None')
             return None
         angle = angle_heading_target(CLocation, target, CYaw)
         distance = get_distance_metres(CLocation, target)
@@ -123,7 +121,7 @@ def obstacle_context(vehicle, command=None):
 
         # if not vehicle.InAngle(angle, 90) or distance <= vehicle.radius:
         if distance <= vehicle.radius:
-            _info("Reached Target!")
+            logger.info("Reached Target!")
             vehicle._target = None
             vehicle.pre_state = vehicle.prepre_state = vehicle._state = 'STOP'
             vehicle.brake()
@@ -147,7 +145,7 @@ def obstacle_context(vehicle, command=None):
 
         return context
 
-    def context_debug():
+    def context_deta():
         context = {'Head2Target': 0,
                    'Epsilon': 0,
                    'State': 'STOP',
@@ -156,10 +154,7 @@ def obstacle_context(vehicle, command=None):
                    'Distance': 100}
         return context
 
-    if env == 'debug':
-        return context_debug()
-    else:
-        return context_release()
+    return context_alpha()
 
 
 def mqtt_RTO2(client, topic, message, userdata, blocking=False):
@@ -189,7 +184,12 @@ def mqtt_RTO(client, topic, message, userdata, blocking=False):
     key_mid = topic2id[topic]
     userdata[key_mid] = userdata[key_mid] + 1
     data = str(userdata[key_mid]) + " " + message
-    print('Send message:({})'.format(data))
+    logger.debug('Send message:({})'.format(data))
     infot = client.publish(topic, data, qos=2)
     if blocking:
         infot.wait_for_publish()
+
+
+if __name__ == '__main__':
+    client = init_mqtt(None)
+    client.loop_forever()

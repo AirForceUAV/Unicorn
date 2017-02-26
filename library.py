@@ -17,8 +17,7 @@ def open_serial(portname, baudrate, timeout=None):
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            from tools import logger
-            logger.info("{0}:{1}".format(*info))
+            print("{0}:{1}".format(*info))
             time.sleep(1.0)
 
 
@@ -28,8 +27,7 @@ def element(file_name):
         tree = ET.parse(file_name)
         _root = tree.getroot()
     except Exception as e:
-        from tools import logger
-        logger._info("Cannot parse file:{0}".format(file_name))
+        print("Cannot parse file:{0}".format(file_name))
         sys.exit(1)
     return _root
 

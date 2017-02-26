@@ -3,17 +3,15 @@
 
 import time
 from vehicle import Vehicle
-from tools import _log
-
+from config import *
 
 if __name__ == '__main__':
     from uORB import uORB
     from library import Watcher
-
     ORB = uORB()
     Watcher()
 
-    if ORB.has_module('Sbus'):
+    if has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -30,9 +28,9 @@ if __name__ == '__main__':
 
         while not ORB.state('Sender'):
             time.sleep(.1)
-        _log('Sbus is OK')
+        print('Sbus is OK')
 
-    if ORB.has_module('Compass'):
+    if has_module('Compass'):
         # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
@@ -40,9 +38,9 @@ if __name__ == '__main__':
         compass.start()
         while not ORB.state('Compass'):
             time.sleep(.1)
-        _log('Compass is OK')
+        print('Compass is OK')
 
-    if ORB.has_module('GPS'):
+    if has_module('GPS'):
         # Initialize GPS
         from GPS_module import GPS
         gps = GPS(ORB)
@@ -50,9 +48,9 @@ if __name__ == '__main__':
         gps.start()
         while not ORB.state('GPS'):
             time.sleep(.1)
-        _log('GPS is OK')
+        print('GPS is OK')
 
-    if ORB.has_module('Baro'):
+    if has_module('Baro'):
         # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
@@ -60,9 +58,9 @@ if __name__ == '__main__':
         baro.start()
         while not ORB.state('Baro'):
             time.sleep(.1)
-        _log('Baro is OK')
+        print('Baro is OK')
 
-    if ORB.has_module('IMU'):
+    if has_module('IMU'):
         # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)
@@ -70,13 +68,13 @@ if __name__ == '__main__':
         imu.start()
         while not ORB.state('IMU'):
             time.sleep(.1)
-        _log('IMU is OK')
+        print('IMU is OK')
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
     lidar = None
 
-    if ORB.has_module('Lidar'):
+    if has_module('Lidar'):
         # Initialize Lidar
         from lidar import Lidar
         lidar = Lidar(vehicle)
@@ -84,10 +82,10 @@ if __name__ == '__main__':
     # Save FlightLog to SD
     # ORB.start()
 
-    if ORB.has_module('Cloud'):
+    if has_module('Cloud'):
         # Initialize Cloud
 
-        _log('Initialize Cloud ...')
+        print('Initialize Cloud ...')
         import Queue
         import redis
         from apscheduler.schedulers.background import BackgroundScheduler
@@ -100,18 +98,17 @@ if __name__ == '__main__':
         # Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         work_queue = Queue.Queue()
 
-        _log('Start Receiver Thread')
+        print('Start Receiver Thread')
         receiver = Receiver(work_queue, sock)
         # receiver = Receiver(work_queue, Redis)
         receiver.daemon = True
         receiver.start()
 
-        _log('Start Executor Thread')
+        print('Start Executor Thread')
         executor = Executor(work_queue, vehicle, lidar)
         executor.daemon = True
         executor.start()
-        # from debug_env import protobuf
-        # ORB._HAL = protobuf
+
         scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
         # scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
 
@@ -121,4 +118,4 @@ if __name__ == '__main__':
         #     time.sleep(1)
         scheduler.start()
 
-    _log('completed')
+    print('completed')

@@ -8,7 +8,7 @@ import os
 import sys
 from library import CancelWatcher
 import threading
-from tools import _log, _debug, _error
+from tools import logger
 
 
 def send_Log(Redis, ORB):
@@ -35,9 +35,9 @@ class Receiver(threading.Thread):
             cmd = data[1].decode('utf-8')
             if cmd is '':
                 continue
-            _debug("Received:%s" % cmd)
+            logger.debug("Received:%s" % cmd)
             if cmd.find('Cancel') != -1:
-                _debug('Execute Cancel')
+                logger.debug('Execute Cancel')
                 CancelWatcher.Cancel = True
                 # self.work_queue.put('vehicle.brake()')
             else:
@@ -59,13 +59,13 @@ class Executor(threading.Thread):
             if command is '':
                 continue
             command = "self." + command
-            _debug('Execute command {}'.format(command))
+            logger.debug('Execute command {}'.format(command))
             try:
-                # eval(command)
+                eval(command)
                 pass
             except Exception:
                 info = sys.exc_info()
-                _error("{0}:{1}".format(*info))
+                logger.error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
 if __name__ == "__main__":
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     import Queue
 
     ORB = uORB()
-    from tools import protobuf
+    from test_data import protobuf
     ORB._HAL = protobuf
     vehicle = Vehicle(ORB)
     scheduler = BackgroundScheduler()

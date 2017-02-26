@@ -1,83 +1,97 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-from library import Singleton, element
-import json
+import toml
 
 
-class Config(object):
-    __metaclass__ = Singleton
+def main_channel(ch):
+    num = ch[0] - 1
+    low = ch[1]
+    mid = ch[2]
+    hig = ch[3]
+    var = hig - low
+    sign = ch[4]
+    rate = ch[5]
+    return [num, low, mid, hig, var, sign, rate]
 
-    def __init__(self):
-        file_name = 'Vehicle.xml'
-        root_node = element(file_name)
-        ID = int(root_node.get('ID'))
-        self._root = root_node[ID]
-        self._config = {}
-        self._config['UAV'] = self._root.get('UAV')
-        self.model = self._root.get('Model')
-        self._config['Model'] = self.model
-        self._config['MainController'] = self._root.get('MainController')
-        self._config['AIL'] = self.channel(0)
-        self._config['ELE'] = self.channel(1)
-        self._config['THR'] = self.channel(2)
-        self._config['RUD'] = self.channel(3)
-        self._config['Mode'] = self.loadFUN(4)
-        if self.model == 'HELI':
-            self._config['Rate'] = self.loadFUN(5)
-            self._config['PIT'] = self.loadPIT(6)
-        else:
-            self._config['Aux1'] = self.loadFUN(5)
-            self._config['Aux2'] = self.loadFUN(6)
-        self._config['Switch'] = self.loadFUN(7)
-        # [Current Gear,Low Gear,Mid Gear,High Gear]
-        self._config['Gear'] = self.loadHAL(8, 4)
 
-    def loadFUN(self, index):
-        return [self.node(index, 1) - 1] + [self.node(index, i) for i in range(2, 5)]
-        # return [self.node(index, 1) - 1, self.node(index, 2),
-        # self.node(index, 3), self.node(index, 4)]
+def aux_channel(ch):
+    return [ch[0] - 1] + ch[1:]
 
-    def loadPIT(self, index):
-        num = self.node(index, 1) - 1
-        low = self.node(index, 2)
-        mid = self.node(index, 3)
-        hig = self.node(index, 4)
-        var = hig - low
-        sign = self.node(index, 5)
-        return [num, low, mid, hig, var, sign]
 
-    def loadHAL(self, index, end, start=1):
-        return [self.node(index, x) for x in range(start, end + 1)]
+def init_drone(conf):
+    drone = dict()
+    chs = dict()
 
-    def channel(self, index):
-        num = self.node(index, 1) - 1
-        low = self.node(index, 2)
-        mid = self.node(index, 3)
-        hig = self.node(index, 4)
-        var = hig - low
-        sign = self.node(index, 5)
-        rate = self.node(index, 6)
-        return [num, low, mid, hig, var, sign, rate]
+    system = "System{}".format(conf["SystemID"])
+    UAV_config = conf[system]
+    # print UAV_config
+    drone['UAV'] = UAV_config['UAV']
+    drone['Model'] = UAV_config['Model']
+    drone['MainController'] = UAV_config['MainController']
+    drone['Gear'] = UAV_config["Gear"]
 
-    def isInt(self, x):
-        try:
-            return isinstance(int(x), int)
-        except ValueError:
-            return False
+    chs['AIL'] = main_channel(UAV_config['AIL'])
+    chs['ELE'] = main_channel(UAV_config['ELE'])
+    chs['THR'] = main_channel(UAV_config['THR'])
+    chs['RUD'] = main_channel(UAV_config['RUD'])
+    chs['Mode'] = aux_channel(UAV_config['Mode'])
+    chs['Switch'] = aux_channel(UAV_config['Switch'])
 
-    def node(self, param1, param2):
-        value = self._root[param1][param2].get('value')
-        if self.isInt(value):
-            return int(value)
-        else:
-            return value
+    if drone['Model'] == 'HELI':
+        chs['Rate'] = aux_channel(UAV_config['Rate'])
+        chs['PIT'] = main_channel(UAV_config['PIT'])
+    else:
+        chs['Aux1'] = aux_channel(UAV_config['Aux1'])
+        chs['Aux2'] = aux_channel(UAV_config['Aux2'])
+    return drone, chs
 
-    def __str__(self):
-        return json.dumps(self._config)
 
-# Global config
-config = Config()
+def has_module(module):
+    return module in open_module
 
-if __name__ == "__main__":
-    print(config)
+
+def get_sbus(config):
+    import serial
+    _sbus = {}
+    _sbus['port'] = config['sbus']['port']
+    _sbus['baudrate'] = config['sbus']['baudrate']
+    _sbus['parity'] = serial.PARITY_EVEN
+    _sbus['stopbits'] = serial.STOPBITS_TWO
+    _sbus['bytesize'] = serial.EIGHTBITS
+    return _sbus
+
+
+def get_uart(sensor, conifg):
+    return (config[sensor][port], config[sensor][baudrate])
+
+
+def sock(config):
+    return (config['MQTT']['host'], config['MQTT']['port'])
+
+
+with open("config.yaml") as f:
+    conf = toml.loads(f.read())
+# print conf
+
+version = conf['version']
+drone, channels = init_drone(conf)
+
+open_module = conf['open_module']
+commands = conf['commands']
+
+mqtt_socket = sock(conf)
+client_id = conf['client_id']
+
+context_topic = str(conf['topic']['publish']['full'])
+control_topic = str(conf['topic']['publish']['semi'])
+full_auto_topic = str(conf['topic']['subscribe']['full'])
+semi_auto_topic = str(conf['topic']['subscribe']['semi'])
+
+sbus = get_sbus(conf)
+compass = conf['compass']['port']
+GPS = conf['GPS']['port']
+IMU = conf['IMU']['port']
+
+if __name__ == '__main__':
+    print context_topic, control_topic, full_auto_topic, semi_auto_topic

@@ -5,7 +5,8 @@ import time
 from library import CancelWatcher
 from library import Singleton
 from mqtt_client import *
-from debug_env import *
+from config import *
+from tools import logger
 
 
 class Lidar(object):
@@ -20,9 +21,8 @@ class Lidar(object):
         self.client.loop_start()
 
     def navigation(self, target):
-        global context_topic
         if target is None:
-            self.vehicle._warn('Target is None')
+            logger.warn('Target is None')
             return
         self.vehicle._target = target
         context = obstacle_context(self.vehicle)
@@ -37,7 +37,7 @@ class Lidar(object):
     def Guided(self):
         target = self.vehicle.get_target()
         if target is None:
-            self.vehicle._warn('Target is None')
+            logger.warn('Target is None.Please set')
             return
         self.vehicle.publish('Mode', 'GUIDED')
         self.navigation(target)
@@ -47,7 +47,7 @@ class Lidar(object):
     def RTL(self):
         target = self.vehicle.get_home()
         if target is None:
-            self.vehicle._warning("HomeLocation is None!")
+            logger.warn("HomeLocation is None.")
             return
         self.vehicle.publish('Mode', 'RTL')
 
@@ -57,7 +57,7 @@ class Lidar(object):
 
     def Auto(self):
         if self.vehicle.wp.isNull():
-            self.vehicle._warn('Waypoint is None')
+            logger.warn('Waypoint is None.please set')
             return
         self.vehicle.publish('Mode', 'Auto')
         watcher = CancelWatcher()
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    if ORB.has_module('Sbus'):
+    if has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -104,7 +104,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Sbus is OK'
 
-    if ORB.has_module('Compass'):
+    if has_module('Compass'):
         # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
@@ -114,7 +114,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Compass is OK'
 
-    if ORB.has_module('GPS'):
+    if has_module('GPS'):
         # Initialize GPS
         from GPS_module import GPS
         gps = GPS(ORB)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'GPS is OK'
 
-    if ORB.has_module('Baro'):
+    if has_module('Baro'):
         # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Baro is OK'
 
-    if ORB.has_module('IMU'):
+    if has_module('IMU'):
         # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)

@@ -1,16 +1,15 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-from library import Singleton
+
 import json
 import time
-from library import get_distance_metres, pressure2Alt
-from config import config
-import FlightLog_pb2 as FlightLog
-import os
 import threading
-from sbus import SBUS
-from tools import build_log
+import FlightLog_pb2 as FlightLog
+from library import get_distance_metres, pressure2Alt
+from config import *
+# from tools import build_log
+from library import Singleton
 
 
 class uORB(threading.Thread):
@@ -18,35 +17,11 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-        self.sbus = SBUS()
-        model = ['UAV', 'Model', 'MainController']
-        self._model = {}
-        for m in model:
-            self._model[m] = config._config[m]
-
-        module = ['Sbus', 'Compass', 'GPS', 'IMU', 'Baro', 'Lidar', 'Cloud']
-
-        self._module = {x: False for x in module}
-        from debug_env import open_module
-        self.open(*open_module)
-
-        channel = ['AIL', 'ELE', 'THR', 'RUD', 'Mode', 'Switch']
-        if self._model['Model'] == 'HELI':
-            channel += ['Rate', 'PIT']
-        else:
-            channel += ['Aux1', 'Aux2']
-
-        self._channel = {x: config._config[x] for x in channel}
-        self._volume = [0] * 8
-        for k, v in self._channel.iteritems():
-            self._volume[v[0]] = (v[1], v[2], v[3])
-
-        Gear = config._config['Gear']
-        self._Gear = Gear[1:]
+        self.model = drone['Model']
 
         self._HAL = {'Compass_State': False, 'Attitude': None,
                      'Baro_State': False, 'Pressure': None,
-                     'Temperature': None, 'Gear': Gear[0],
+                     'Temperature': None, 'Gear': 1,
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
                      'Mode': 'STAB', 'Waypoint': [], 'WaypointID': -1,
@@ -57,7 +32,6 @@ class uORB(threading.Thread):
                      'Sender_State': False, 'WaypointType': None,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
-        self._sensor = FlightLog.sensors()
 
     def run(self):
         self.save_log()
@@ -71,44 +45,17 @@ class uORB(threading.Thread):
     def state(self, module):
         return self._HAL[module + '_State']
 
-    def channel(self, channel):
-        return self._channel[channel]
-
-    def has_module(self, module):
-        return self._module[module]
-
-    def open(self, *module):
-        for x in module:
-            self._module[x] = True
-
-    def close(self, *module):
-        for x in module:
-            self._module[x] = False
-
     def InitLoiter(self):
-        channels = [0] * 8
-        for ch, ch_val in self._channel.iteritems():
-            channels[ch_val[0]] = ch_val[3] if ch == 'Mode' else ch_val[2]
-        return channels
+        global channels
+        channel = [0] * 8
+        for k, v in channels.iteritems():
+            index = v[0]
+            pwm = v[v[5]] if k == 'Mode' else v[2]
+            channel[index] = pwm
+        return channel
 
     def InitChannels(self):
         channels = [0] * 8
-        if self._model['Model'] == 'HELI':
-            for ch, ch_val in self._channel.iteritems():
-                if ch == 'Mode':
-                    channels[ch_val[0]] = ch_val[3]
-                elif ch == 'THR' or ch == 'PIT':
-                    channels[ch_val[0]] = ch_val[2 - ch_val[5]]
-                else:
-                    channels[ch_val[0]] = ch_val[2]
-        else:
-            for ch, ch_val in self._channel.iteritems():
-                if ch == 'Mode':
-                    channels[ch_val[0]] = ch_val[3]
-                elif ch == 'THR':
-                    channels[ch_val[0]] = ch_val[2 - ch_val[5]]
-                else:
-                    channels[ch_val[0]] = ch_val[2]
         return channels
 
     def distance_to_target(self):
@@ -129,14 +76,6 @@ class uORB(threading.Thread):
             distance = get_distance_metres(location, target)
             return round(distance, 2)
 
-    def json_points(self):
-        ID = self._HAL['WaypointID']
-        if ID is -1:
-            return ""
-        points = self._HAL['Waypoint']
-        result = ['+'.join(map(str, p)) for p in points]
-        return ','.join(result)
-
     def get_altitude(self, relative=False):
         init_altitude = self._HAL['InitAltitude']
         cur_pressure = self._HAL['Pressure']
@@ -145,12 +84,6 @@ class uORB(threading.Thread):
         alt = pressure2Alt(
             cur_pressure) - init_altitude if relative else pressure2Alt(cur_pressure)
         return round(alt, 2)
-
-    def list2str(self, rawlist):
-        if rawlist is None:
-            return ""
-        else:
-            return ','.join(map(str, rawlist))
 
     def update_location(self, ProtoLocation, Locaiton):
         if Locaiton is None:
@@ -231,7 +164,6 @@ class uORB(threading.Thread):
 
     def dataflash(self):
         return self.log_proto()
-        # return self.log_json()
 
     def log_proto(self):
         self._sensor = FlightLog.sensors()
@@ -252,16 +184,6 @@ class uORB(threading.Thread):
         # return self._sensor
         return self._sensor.SerializeToString()
 
-    def log_json(self):
-        log = {}
-        log['Timestamp'] = time.time()
-        log['DistanceToTarget'] = self.distance_to_target()
-        log['DistanceFromHome'] = self.distance_from_home()
-        log.update(self._HAL)
-        # log['Waypoint'] = self.json_points()
-        # log['Target'] = self.list2str(self._HAL['Target'])
-        return json.dumps(log)
-
     def save_log(self):
         file_path = build_log(self._model['Model'], 'HAL')
         # print file_path
@@ -277,15 +199,13 @@ class uORB(threading.Thread):
 if __name__ == "__main__":
     from waypoint import Waypoint
     from library import Watcher
+    from test_data import protobuf
     ORB = uORB()
-    from debug_env import protobuf, commands
 
-    ORB._HAL = protobuf
-    print ORB._model
-    print [k for k, v in ORB._module.iteritems() if v]
-    # print '--------Channel-------------\n{}'.format(ORB._channel)
-    # print '--------servo volume--------\n{}'.format(ORB._volume)
-    print 'commands:', json.dumps(commands, indent=1)
+    # ORB._HAL = protobuf
+    print('Drone', drone)
+    print('Module', open_module)
+    print('commands', commands)
     # wp = Waypoint(ORB)
     # origin = [36.111111, 116.222222]
     # wp.download(origin, 0)
@@ -300,3 +220,4 @@ if __name__ == "__main__":
     # print('Save Log')
     # Watcher()
     # ORB.start()
+    print ORB
