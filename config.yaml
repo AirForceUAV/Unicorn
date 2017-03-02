@@ -5,7 +5,7 @@ client_id = "FC"
 debug = true
 open_module = [
     # 'Sbus',
-    'Compass',
+    # 'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',

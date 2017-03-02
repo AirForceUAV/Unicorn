@@ -61,7 +61,7 @@ class Vehicle(Attribute):
         self.send_pwm(channels)
 
     def _construct_channel(self, channels):
-        if drone['Model'] == 'HELI':
+        if config.drone['Model'] == 'HELI':
             channels[self.Rate[0]] = self.Rate[2]
             channels[self.PIT[0]] = THR2PIT(channels[self.THR[0]])
             # channels[self.PIT[0]] = self.PIT[0]
@@ -127,7 +127,7 @@ class Vehicle(Attribute):
 
     def arm(self):
         logger.info("Arming ...")
-        if drone['Model'] == 'HELI':
+        if config.drone['Model'] == 'HELI':
             return
         self.control_stick(-1, -1, -1, 1)
         # time.sleep(2)

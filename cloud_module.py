@@ -97,8 +97,7 @@ if __name__ == "__main__":
     executor = Executor(work_queue, vehicle)
     executor.daemon = True
     executor.start()
-    from tools import protobuf
-    ORB._HAL = protobuf
+
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
     # while True:
     #     send_Log(sock, ORB)
