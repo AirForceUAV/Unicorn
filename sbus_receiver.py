@@ -9,6 +9,7 @@ import sys
 import time
 from Curve import THR2PIT
 from tools import logger
+from config import config
 
 
 class Sbus_Receiver(threading.Thread):
@@ -48,20 +49,15 @@ class Sbus_Receiver(threading.Thread):
             if not self.check(input):
                 continue
             self.publish('ChannelsInput', input)
-            time.sleep(.01)
+            # time.sleep(.01)
 
-    def check(self, channels):
+    def check(self, channel):
         Flag = True
-        volume = self.ORB._volume
-        for x, y in zip(channels, volume):
+        for x, y in zip(channel, config.volume):
+
             if not (x > y[0] - 10 and x < y[2] + 10):
                 Flag = False
                 break
-        # for x, y in zip(channels, self.before):
-        #     if abs(x - y) > 200:
-        #         Flag = False
-        #         break
-        # self.before = channels
         return Flag
 
     def publish(self, topic, value):
@@ -95,7 +91,6 @@ if __name__ == "__main__":
         # input = ORB.subscribe('ChannelsInput')
         # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
         # raw_input('Next')
-        # time.sleep(.5)
 
     # sbus = SBUS()
     # # pre = ORB._HAL['ChannelsInput']

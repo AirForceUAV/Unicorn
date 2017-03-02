@@ -4,7 +4,7 @@
 import threading
 import time
 from library import CutFrame2, Singleton, open_serial
-from config import IMU
+from config import config
 from tools import logger
 
 
@@ -39,8 +39,7 @@ class IMU(threading.Thread):
         self.EUL_UNIT = 100.0    # °
 
         self.ORB = ORB
-        from config import IMU_serial
-        self._imu = open_serial(IMU, 115200)
+        self._imu = open_serial(config.IMU_serial, 115200)
 
     def run(self):
         logger.info('Initializing IMU....')

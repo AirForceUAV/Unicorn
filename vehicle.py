@@ -9,7 +9,7 @@ from library import get_distance_metres, angle_heading_target
 from library import Singleton, _angle
 from attribute import Attribute
 from Curve import THR2PIT
-from config import *
+from config import config
 from tools import logger
 
 
@@ -30,7 +30,7 @@ class Vehicle(Attribute):
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
 
-    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
+    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
         channels[self.ELE[0]] = self.ELE[2 + ELE * self.ELE[5]]
@@ -40,7 +40,7 @@ class Vehicle(Attribute):
         self._construct_channel(channels)
         self.send_pwm(channels)
 
-    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
+    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
@@ -50,7 +50,7 @@ class Vehicle(Attribute):
         self._construct_channel(channels)
         self.send_pwm(channels)
 
-    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=3):
+    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
@@ -72,8 +72,8 @@ class Vehicle(Attribute):
 
     def movement(self, channel, sign=1):
         # sign in [-1,0,1]. By Gear
-        gear = self.subscribe('Gear') - 1
-        rate = drone['Gear'][gear] / 100.0
+        gear = self.subscribe('Gear')
+        rate = config.drone['Gear'][gear] / 100.0
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
         variation = int(channel[5] * section * rate)
@@ -102,13 +102,14 @@ class Vehicle(Attribute):
         return result
 
     def GradualTHR(self, begin, end):
+        watcher = CancelWatcher()
         if begin <= end:
-            while begin <= end:
+            while begin <= end and not watcher.IsCancel():
                 self.control_percent(THR=begin)
                 begin += 1
                 time.sleep(0.05)
         else:
-            while begin >= end:
+            while begin >= end and not watcher.IsCancel():
                 self.control_percent(THR=begin)
                 begin -= 1
                 time.sleep(0.05)
@@ -139,7 +140,7 @@ class Vehicle(Attribute):
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
         logger.info('Takeoff to {} m'.format(alt))
-        if not self.has_module('Baro'):
+        if not config.has_module('Baro'):
             logger.warn('Baro is closed')
             return
 
@@ -160,7 +161,7 @@ class Vehicle(Attribute):
 
     def land(self):
         logger.info('Landing...')
-        if not self.has_module('Baro'):
+        if not config.has_module('Baro'):
             logger.warn('Baro is closed')
             return
 
@@ -192,7 +193,7 @@ class Vehicle(Attribute):
         if altitude <= 0:
             logger.warn('Altitude({}) is unvalid'.format(altitude))
             return
-        if not self.has_module('Baro'):
+        if not config.has_module('Baro'):
             logger.warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
@@ -224,7 +225,7 @@ class Vehicle(Attribute):
         if altitude <= 0:
             logger.warn('Altitude({}) is unvalid'.format(altitude))
             return
-        if not self.has_module('Baro'):
+        if not config.has_module('Baro'):
             logger.warn('Baro is closed')
             return
         CAlt = self.get_altitude(False)
@@ -522,20 +523,11 @@ class Vehicle(Attribute):
                 return
             self.navigation(point)
             if not watcher.IsCancel():
+                gear
                 self.wp.add_number()
 
         self.publish('Mode', 'Loiter')
         self.wp.clear()
-
-    def keycontrol(self):
-        from keyboard_control import keyboard_event_wait, exe_cmd
-
-        while True:
-            command = keyboard_event_wait()
-            if command == 'esc':
-                break
-            exe_cmd(self, command)
-        time.sleep(.5)
 
     def Cancel(self):
         CancelWatcher.Cancel = True
@@ -549,7 +541,7 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    if has_module('Sbus'):
+    if config.has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -569,7 +561,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Sbus is OK'
 
-    if has_module('Compass'):
+    if config.has_module('Compass'):
         # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
@@ -579,7 +571,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Compass is OK'
 
-    if has_module('GPS'):
+    if config.has_module('GPS'):
         # Initialize GPS
         from GPS_module import GPS
         gps = GPS(ORB)
@@ -589,7 +581,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'GPS is OK'
 
-    if has_module('Baro'):
+    if config.has_module('Baro'):
         # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
@@ -599,7 +591,7 @@ if __name__ == "__main__":
             time.sleep(.1)
         print 'Baro is OK'
 
-    if has_module('IMU'):
+    if config.has_module('IMU'):
         # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)
@@ -614,11 +606,9 @@ if __name__ == "__main__":
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
-    # vehicle.keycontrol()
-    # Test
     import sys
 
-    for t in commands:
+    for t in config.commands:
         enter = raw_input(t + ' ???').strip()
 
         if enter == 'c' or enter == 'C':

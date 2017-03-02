@@ -5,9 +5,8 @@ import keyboard
 import time
 from tools import logger
 
-
-keyboard_event = {'up': 'FORWARD', 'down': 'BACKWARD',
-                  'left': 'LEFT_ROLL', 'right': 'RIGHT_ROLL',
+keyboard_event = {'w': 'FORWARD', 's': 'BACKWARD',
+                  'a': 'LEFT_ROLL', 'd': 'RIGHT_ROLL',
                   'page up': 'UP', 'page down': 'DOWN',
                   'space': 'STOP', 'esc': 'esc'}
 
@@ -21,22 +20,28 @@ map_event_args = {'FORWARD': ('ELE', 1), 'BACKWARD': ('ELE', -1),
 
 def keyboard_event_wait():
     global keyboard_event
-
+    valid_event = [()]
     event = keyboard.read_key(keyboard_filter)
-    name = event.name
+    event_info = [event.name, event.event_type]
+
+    if event_info[1] == 'up':
+        name = 'space'
+    else:
+        name = event_info[0]
+    # print name
     command = keyboard_event.get(name)
 
-    # print 'Send -->', command
+    # print 'keboard command', command
     return command
 
 
 def keyboard_filter(event):
     global keyboard_event
     # wait for threading start
-    time.sleep(.1)
     eventType = event.event_type
     name = event.name
-    if eventType == 'down' and name in keyboard_event:
+    # print name
+    if name in keyboard_event:
         return True
     else:
         return False
@@ -46,12 +51,15 @@ def exe_cmd(vehicle, command):
     global map_event_args
     action = {}
     for cmd in command.strip().split(" "):
+        if cmd == 'STOP':
+            action = {}
+            break
         args = map_event_args.get(cmd, None)
         if args is None or args[0] in action:
             logger.error('command is unvalid -- {}'.format(command))
             return
         action[args[0]] = args[1]
-
+    # action = map_event_args.get(command.strip())
     logger.info('Execute command:{}'.format(command))
     if vehicle is not None:
         vehicle.control_FRU(**action)
@@ -60,9 +68,12 @@ def exe_cmd(vehicle, command):
 def main():
     while True:
         command = keyboard_event_wait()
+        print 'command', command
         if command == 'esc':
+            print'esc'
             return
+
         exe_cmd(None, command)
 
 if __name__ == '__main__':
-    exe_cmd(None, 'STOP')
+    main()

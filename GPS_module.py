@@ -7,6 +7,7 @@ import threading
 import pynmea2
 from library import open_serial, Singleton
 from tools import logger
+from config import config
 
 
 class GPS(threading.Thread):
@@ -16,8 +17,7 @@ class GPS(threading.Thread):
         super(GPS, self).__init__(name='GPS')
         self.ORB = ORB
         logger.info("Connecting to GPS Module")
-        from config import GPS_serial
-        self.ser = open_serial(GPS_serial, 9600, timeout=0.01)
+        self.ser = open_serial(config.GPS_serial, 9600, timeout=0.01)
 
     def run(self):
         logger.info("Initializing GPS Module")

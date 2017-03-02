@@ -7,7 +7,7 @@ import paho.mqtt.client as mqtt
 from keyboard_control import keyboard_event_wait, exe_cmd
 from tools import logger
 from library import *
-from config import *
+from config import config
 
 
 def print_userdata(userdata):
@@ -15,74 +15,79 @@ def print_userdata(userdata):
 
 
 def init_mqtt(userdata):
-    client = mqtt.Client(client_id=client_id)
+    client = mqtt.Client(client_id=config.client_id)
     client.user_data_set(userdata)
     client.on_connect = on_connect  # callback when connected
     client.on_message = on_message  # callback when received message
-    client.connect(*mqtt_socket)
+    client.connect(*config.mqtt_socket)
     return client
 
 
 def on_connect(client, userdata, flags, rc):
     logger.info("Connected to mqtt broker")
-    client.subscribe([(full_auto_topic, 2), (semi_auto_topic, 2)])
+    topics = [(config.full_auto_topic, 2),
+              (config.semi_auto_topic, 2),
+              (config.keyboard_topic, 2)]
+    client.subscribe(topics)
 
 
 def on_message(client, userdata, msg):
-    wathcer = CancelWatcher()
-    topic2id = {full_auto_topic: 'full_id', semi_auto_topic: 'semi_id'}
     message = msg.payload
     topic = msg.topic
+    watcher = CancelWatcher()
+    if watcher.IsCancel():
+        # client.unsubscribe(topic)
+        return
 
-    revid, command = unpack(message)
-    logger.debug('Recv message:({})'.format(message))
     vehicle = userdata['vehicle']
-    key_mid = topic2id[topic]
 
-    if revid == userdata[key_mid]:
-        userdata['code'] = True
-        exe_cmd(vehicle, command)
-    else:
-        logger.error('Revid is unvalid revid:{} mid:{}'.format(
-            revid, userdata[key_mid]))
-        userdata['times'] = userdata['times'] + 1
-        if userdata['times'] >= 10:
-            print('exit')
-            userdata['times'] = 0
+    logger.debug('From topic [{}] receive ({})'.format(topic, message))
+
+    if topic == config.keyboard_topic:
+        if message == 'esc':
+            print 'Exit semi_auto'
+            # client.unsubscribe(keyboard_topic)
             return
+        mqtt_publish(client, config.control_topic, message, userdata)
+        # mqtt_publish(client, control_topic, message, userdata, True)
+    else:
+        revid, command = unpack(message)
+        result = revid_is_valid(topic, revid, userdata)
+        if result:
+            exe_cmd(vehicle, command)
 
-    if topic == full_auto_topic and not wathcer.IsCancel():
-        full_publish(client, userdata, command)
-    elif topic == semi_auto_topic and not wathcer.IsCancel():
-        semi_publish(client, userdata)
+        if topic == config.full_auto_topic:
+            full_publish(client, userdata, command)
+
+
+def revid_is_valid(topic, revid, userdata):
+    topic2key = {config.full_auto_topic: 'full_id',
+                 config.semi_auto_topic: 'semi_id'}
+
+    key = topic2key[topic]
+    expectid = userdata[key]
+    if revid == expectid:
+        userdata['code'] = True
+        return True
+    else:
+        logger.error(
+            'Revid is unvalid revid:{} expectid:{}'.format(revid, expectid))
+        return False
 
 
 def full_publish(client, userdata, command):
-    global context_topic
     interval = 3
     vehicle = userdata['vehicle']
     context = obstacle_context(vehicle, command)
     if context is None:
+        print 'Exit full_atuo'
         return
     message = pack(context)
     # raw_input('Next')
     time.sleep(interval)
-    # client.publish(context_topic, message, qos=2)
-    mqtt_RTO(client, context_topic, message, userdata)
+    # client.publish(config.context_topic, message, qos=2)
+    mqtt_publish(client, config.context_topic, message, userdata)
     logger.debug('{Distance} {Head2Target} {Epsilon}'.format(**context))
-
-
-def semi_publish(client, userdata):
-    global control_topic
-    command = keyboard_event_wait()
-    print 'command', command
-    if command == 'esc':
-        logger.info('esc')
-        return True
-    # infot = client.publish(control_topic, command, qos=2)
-    # infot.wait_for_publish()
-    mqtt_RTO(client, control_topic, command, userdata, True)
-    return False
 
 
 def pack(context):
@@ -106,8 +111,17 @@ def unpack(message):
         return mid, command
 
 
-def obstacle_context(vehicle, command=None):
-    def context_alpha():
+def obstacle_context(vehicle, command):
+    def context_debug():
+        context = {'Head2Target': 0,
+                   'Epsilon': 0,
+                   'State': 'STOP',
+                   'pre': 'STOP',
+                   'prepre': 'STOP',
+                   'Distance': 100}
+        return context
+
+    def context_release():
         target = vehicle._target
         CLocation = vehicle.get_location()
         CYaw = vehicle.get_heading()
@@ -127,10 +141,7 @@ def obstacle_context(vehicle, command=None):
             vehicle.brake()
             return None
 
-        if command is None:
-            vehicle.condition_yaw(angle)
-
-        if command is not None and command != vehicle._state:
+        if command != vehicle._state:
             vehicle.prepre_state = vehicle.pre_state
             vehicle.pre_state = vehicle._state
             vehicle._state = command
@@ -142,54 +153,54 @@ def obstacle_context(vehicle, command=None):
                    'Distance': distance,
                    'pre': vehicle.pre_state,
                    'prepre': vehicle.prepre_state}
-
         return context
 
-    def context_deta():
-        context = {'Head2Target': 0,
-                   'Epsilon': 0,
-                   'State': 'STOP',
-                   'pre': 'STOP',
-                   'prepre': 'STOP',
-                   'Distance': 100}
-        return context
-    return context_deta()
-    return context_alpha()
+    return context_debug() if debug else context_release()
 
 
-def mqtt_RTO2(client, topic, message, userdata, blocking=False):
-    topic2id = {context_topic: 'full_id', control_topic: 'semi_id'}
-    retry = 5
-    interval = 1
-    key_mid = topic2id[topic]
-    for times in range(retry):
-        userdata[key_mid] = userdata[key_mid] + 1
-        data = str(userdata[key_mid]) + " " + message
-        print('Send message:({})'.format(data))
-        infot = client.publish(topic, data, qos=2)
-        if blocking:
-            infot.wait_for_publish()
-        for i in range(interval * 10):
-            if userdata['code']:
-                userdata['code'] = False
-                return
-            time.sleep(.1)
-        print('Retry No.%d times' % (times + 1))
-    userdata['code'] = False
-    print('Mqtt broker has no reponses')
+# def mqtt_publish2(client, topic, message, userdata, blocking=False):
+#     topic2id = {context_topic: 'full_id', control_topic: 'semi_id'}
+#     retry = 5
+#     interval = 1
+#     key_mid = topic2id[topic]
+#     for times in range(retry):
+#         userdata[key_mid] = userdata[key_mid] + 1
+#         data = str(userdata[key_mid]) + " " + message
+#         print('Send message:({})'.format(data))
+#         infot = client.publish(topic, data, qos=2)
+#         if blocking:
+#             infot.wait_for_publish()
+#         for i in range(interval * 10):
+#             if userdata['code']:
+#                 userdata['code'] = False
+#                 return
+#             time.sleep(.1)
+#         print('Retry No.%d times' % (times + 1))
+#     userdata['code'] = False
+#     print('Mqtt broker has no reponses')
 
 
-def mqtt_RTO(client, topic, message, userdata, blocking=False):
-    topic2id = {context_topic: 'full_id', control_topic: 'semi_id'}
+def mqtt_publish(client, topic, message, userdata, blocking=False):
+    topic2id = {config.context_topic: 'full_id',
+                config.control_topic: 'semi_id'}
     key_mid = topic2id[topic]
     userdata[key_mid] = userdata[key_mid] + 1
     data = str(userdata[key_mid]) + " " + message
-    logger.debug('Send message:({})'.format(data))
+    logger.debug('Send message:({}) to topic:[{}]'.format(data, topic))
     infot = client.publish(topic, data, qos=2)
+
     if blocking:
         infot.wait_for_publish()
 
 
 if __name__ == '__main__':
-    client = init_mqtt(None)
-    client.loop_forever()
+    userdata = {'vehicle': None,
+                'full_id': 0,
+                'semi_id': 0,
+                'times': 0,
+                'code': False}
+    client = init_mqtt(userdata)
+    client.loop_start()
+
+    while True:
+        mqtt_publish(client, control_topic, 'STOP', userdata, True)

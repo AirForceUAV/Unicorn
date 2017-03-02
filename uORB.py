@@ -7,7 +7,7 @@ import time
 import threading
 import FlightLog_pb2 as FlightLog
 from library import get_distance_metres, pressure2Alt
-from config import *
+from config import config
 # from tools import build_log
 from library import Singleton
 
@@ -17,7 +17,7 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-        self.model = drone['Model']
+        self.model = config.drone['Model']
 
         self._HAL = {'Compass_State': False, 'Attitude': None,
                      'Baro_State': False, 'Pressure': None,
@@ -37,7 +37,8 @@ class uORB(threading.Thread):
         self.save_log()
 
     def publish(self, topic, value):
-        self._HAL[topic] = value
+        if self._HAL[topic] != value:
+            self._HAL[topic] = value
 
     def subscribe(self, topic):
         return self._HAL[topic]
@@ -46,12 +47,10 @@ class uORB(threading.Thread):
         return self._HAL[module + '_State']
 
     def InitLoiter(self):
-        global channels
         channel = [0] * 8
-        for k, v in channels.iteritems():
+        for v in config.channels.itervalues():
             index = v[0]
-            pwm = v[v[5]] if k == 'Mode' else v[2]
-            channel[index] = pwm
+            channel[index] = v[2]
         return channel
 
     def InitChannels(self):
@@ -173,7 +172,7 @@ class uORB(threading.Thread):
         self.update_Baro()
         self.update_location(self._sensor.home, self._HAL['HomeLocation'])
         self.update_location(self._sensor.target, self._HAL['Target'])
-        self._sensor.Gear = self._HAL['Gear']
+        self._sensor.Gear = self._HAL['Gear'] + 1
         self._sensor.DistanceToTarget = self.distance_to_target()
         self._sensor.DistanceFromHome = self.distance_from_home()
         # self.update_waypoint()
@@ -206,6 +205,7 @@ if __name__ == "__main__":
     print('Drone', drone)
     print('Module', open_module)
     print('commands', commands)
+    print ORB._HAL
     # wp = Waypoint(ORB)
     # origin = [36.111111, 116.222222]
     # wp.download(origin, 0)

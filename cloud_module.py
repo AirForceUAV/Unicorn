@@ -37,7 +37,7 @@ class Receiver(threading.Thread):
         buffer_size = 4096
         while True:
             # use this to receive command
-            cmd = self.sock.recv(buffer_size)
+            cmd = self.sock.recv(buffer_size).strip()
             if cmd is '':
                 continue
             if cmd.find('Cancel') != -1:

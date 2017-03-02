@@ -4,7 +4,7 @@
 import time
 from library import *
 from waypoint import Waypoint
-from config import *
+from config import config
 from tools import logger
 
 
@@ -12,36 +12,36 @@ class Attribute(object):
 
     def __init__(self, ORB):
         self.ORB = ORB
-        logger.info('Drone Type:{}'.format(drone['UAV']))
-        logger.info('MainController:{}'.format(drone['MainController']))
+        logger.info('Drone Type:{}'.format(config.drone['UAV']))
+        logger.info('MainController:{}'.format(config.drone['MainController']))
         # Aileron :[No.ch, low ,mid, high ,var, sign, rate]
-        self.AIL = channels['AIL']
+        self.AIL = config.channels['AIL']
         # Elevator:[No.ch, low ,mid, high ,var, sign, rate]
-        self.ELE = channels['ELE']
+        self.ELE = config.channels['ELE']
         # Throttle:[No.ch, low ,mid, high ,var, sign, rate]
-        self.THR = channels['THR']
+        self.THR = config.channels['THR']
         # Rudder  :[No.ch, low ,mid, high ,var, sign, rate]
-        self.RUD = channels['RUD']
+        self.RUD = config.channels['RUD']
         # Mode :[No.ch , 0 , pwm]
-        self.mode = channels['Mode']
-        if drone['Model'] == 'HELI':
+        self.mode = config.channels['Mode']
+        if config.drone['Model'] == 'HELI':
             # GYRO Rate :[No.ch , 0 , pwm]
-            self.Rate = channels['Rate']
+            self.Rate = config.channels['Rate']
             # PITCH :[No.ch , 0 , pwm]
-            self.PIT = channels['PIT']
+            self.PIT = config.channels['PIT']
         else:
             # Aux1 :[No.ch , 0 , pwm]
-            self.Aux1 = channels['Aux1']
+            self.Aux1 = config.channels['Aux1']
             # Aux2 :[No.ch , 0 , pwm]
-            self.Aux2 = channels['Aux2']
+            self.Aux2 = config.channels['Aux2']
         # Switch :[No.ch , 0 , pwm]
-        self.Switch = channels['Switch']
+        self.Switch = config.channels['Switch']
         self.wp = Waypoint(ORB)
         self.update_home()
         self.init_altitude()
 
     def update_home(self):
-        if not has_module('GPS'):
+        if not config.has_module('GPS'):
             return
         logger.info('Waiting for home location')
         while not self.state('GPS'):
@@ -51,7 +51,8 @@ class Attribute(object):
         logger.info('Home location :{}'.format(home))
 
     def init_altitude(self):
-        if not has_module('Baro'):
+        if not config.has_module('Baro'):
+            logger.warn('Baro is closed')
             return
         init_pressure = self.subscribe('Pressure')
         self.publish('InitAltitude', pressure2Alt(init_pressure))
@@ -81,6 +82,7 @@ class Attribute(object):
         logger.info('Catching Loiter PWM...')
         mid = self.subscribe('ChannelsInput')
         if mid is None:
+            logger.error('Sbus reveiver is not health')
             return
         logger.info('Channels Mid:{}'.format(mid))
         self.publish('LoiterPWM', mid)
@@ -88,18 +90,14 @@ class Attribute(object):
         self.ELE[2] = mid[self.ELE[0]]
         self.THR[2] = mid[self.THR[0]]
         self.RUD[2] = mid[self.RUD[0]]
-        self.mode[2] = mid[self.mode[0]]
+
         if drone['Model'] == 'HELI':
             self.Rate[2] = mid[self.Rate[0]]
             self.PIT[2] = mid[self.PIT[0]]
-        else:
-            self.Aux1[2] = mid[self.Aux1[0]]
-            self.Aux2[2] = mid[self.Aux2[0]]
-        self.Switch[2] = mid[self.Switch[0]]
 
-    def set_gear(self, gear):
-        if int(gear) in [1, 2, 3]:
-            self.publish('Gear', int(gear))
+    def set_gear(self, Gear):
+        if int(Gear) in [1, 2, 3]:
+            self.publish('Gear', int(Gear) - 1)
 
     def set_target(self, dNorth, dEast, alt=-1000, relative=True):
         origin = self.get_location()
@@ -125,7 +123,7 @@ class Attribute(object):
         return self.subscribe('Target')
 
     def get_pitch(self):
-        if not has_module('Compass'):
+        if not config.has_module('Compass'):
             logger.warn('Compass is closed')
             return None
         if not self.state('Compass'):
@@ -134,7 +132,7 @@ class Attribute(object):
         return self.subscribe('Attitude')[0]
 
     def get_roll(self):
-        if not has_module('Compass'):
+        if not config.has_module('Compass'):
             logger.warn('Compass is closed')
             return None
         if not self.state('Compass'):
@@ -143,7 +141,7 @@ class Attribute(object):
         return self.subscribe('Attitude')[1]
 
     def get_heading(self):
-        if not has_module('Compass'):
+        if not config.has_module('Compass'):
             logger.warn('Compass is closed')
             return None
         if not self.state('Compass'):
@@ -152,7 +150,7 @@ class Attribute(object):
         return self.subscribe('Attitude')[2]
 
     def get_attitude(self):
-        if not has_module('Compass'):
+        if not config.has_module('Compass'):
             logger.warn('Compass is closed')
             return None
         if not self.state('Compass'):
@@ -164,7 +162,7 @@ class Attribute(object):
         return self.subscribe("HomeLocation")
 
     def get_location(self):
-        if not has_module('Compass'):
+        if not config.has_module('Compass'):
             logger.warn('Compass is closed')
             return None
         if not self.state('Compass'):

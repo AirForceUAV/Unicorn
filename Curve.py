@@ -1,8 +1,6 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
-import numpy
-
 
 class fitting:
 
@@ -51,7 +49,7 @@ def THR2PIT(x):
     return int(numpy.polyval(fitfunction, x))
 
 if __name__ == '__main__':
-
+    import numpy
     with open('PitchCurve.ML', 'r') as f:
         lines = f.readlines()
 

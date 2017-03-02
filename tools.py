@@ -8,7 +8,7 @@ import os
 import datetime
 import logging
 import logging.config
-from config import version, drone, sbus_serial
+from config import config
 
 
 def build_log(model, suffix):
@@ -28,7 +28,7 @@ def localtime():
 def build_sbus():
     while True:
         try:
-            com = serial.Serial(**sbus)
+            com = serial.Serial(**config.sbus_serial)
             return com
         except serial.SerialException:
             info = sys.exc_info()
@@ -111,14 +111,14 @@ def config_logger(model, version):
 
 
 def init_logger(model):
-    LOG_NAME = version + 'Logger'
+    LOG_NAME = config.version + 'Logger'
     LOGGING = config_logger(model, LOG_NAME)
     logging.config.dictConfig(LOGGING)
     logger = logging.getLogger(LOG_NAME)
     return logger
 
 
-model = drone['Model']
+model = config.drone['Model']
 logger = init_logger(model)
 
 if __name__ == '__main__':

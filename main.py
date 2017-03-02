@@ -3,7 +3,7 @@
 
 import time
 from vehicle import Vehicle
-from config import *
+from config import config
 
 if __name__ == '__main__':
     from uORB import uORB
@@ -11,7 +11,7 @@ if __name__ == '__main__':
     ORB = uORB()
     Watcher()
 
-    if has_module('Sbus'):
+    if config.has_module('Sbus'):
         # Initialize SBUS
         from sbus_receiver import Sbus_Receiver
         from sbus_sender import Sbus_Sender
@@ -30,7 +30,7 @@ if __name__ == '__main__':
             time.sleep(.1)
         print('Sbus is OK')
 
-    if has_module('Compass'):
+    if config.has_module('Compass'):
         # Initialize Compass
         from compass_module import Compass
         compass = Compass(ORB)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             time.sleep(.1)
         print('Compass is OK')
 
-    if has_module('GPS'):
+    if config.has_module('GPS'):
         # Initialize GPS
         from GPS_module import GPS
         gps = GPS(ORB)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
             time.sleep(.1)
         print('GPS is OK')
 
-    if has_module('Baro'):
+    if config.has_module('Baro'):
         # Initialize Barometre
         from Baro import Baro
         baro = Baro(ORB)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             time.sleep(.1)
         print('Baro is OK')
 
-    if has_module('IMU'):
+    if config.has_module('IMU'):
         # Initialize IMU
         from IMU import IMU
         imu = IMU(ORB)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     vehicle = Vehicle(ORB)
     lidar = None
 
-    if has_module('Lidar'):
+    if config.has_module('Lidar'):
         # Initialize Lidar
         from lidar import Lidar
         lidar = Lidar(vehicle)
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # Save FlightLog to SD
     # ORB.start()
 
-    if has_module('Cloud'):
+    if config.has_module('Cloud'):
         # Initialize Cloud
 
         print('Initialize Cloud ...')

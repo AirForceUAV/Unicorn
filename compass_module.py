@@ -7,6 +7,7 @@ from library import open_serial
 from library import Singleton
 from library import CutFrame
 from tools import logger
+from config import config
 
 
 class Compass(threading.Thread):
@@ -16,8 +17,7 @@ class Compass(threading.Thread):
         super(Compass, self).__init__(name="Compass")
         # print("Connecting to Compass ...")
         self.ORB = ORB
-        from config import compass_serial
-        self.ser = open_serial(compass, 9600, timeout=0.01)
+        self.ser = open_serial(config.compass_serial, 9600, timeout=0.01)
 
     def run(self):
         logger.info("Initializing Compass ...")
