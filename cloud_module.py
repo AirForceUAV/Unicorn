@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import socket
-import time
 import os
 import sys
-from library import CancelWatcher
+import socket
+import time
 import threading
+from library import CancelWatcher
 from tools import logger
 
 
@@ -51,7 +51,7 @@ class Receiver(threading.Thread):
 
 class Executor(threading.Thread):
 
-    def __init__(self, work_queue, vehicle=None, lidar=None):
+    def __init__(self, work_queue, vehicle, lidar):
         super(Executor, self).__init__(name="Executor")
         self.work_queue = work_queue
         self.vehicle = vehicle
@@ -59,32 +59,24 @@ class Executor(threading.Thread):
 
     def run(self):
         while True:
-            command = self.work_queue.get()
+            command = self.work_queue.get().strip()
             if command is '':
                 continue
             command = "self." + command
             logger.debug('Execute command {}'.format(command))
             try:
                 eval(command)
-                pass
             except Exception:
                 info = sys.exc_info()
                 logger.error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
-if __name__ == "__main__":
-    from apscheduler.schedulers.background import BackgroundScheduler
-    from vehicle import Vehicle
-    from library import Watcher
-    from uORB import uORB
-    import Queue
 
-    ORB = uORB()
-    from test_data import protobuf
-    ORB._HAL = protobuf
-    vehicle = Vehicle(ORB)
+def cloud_start(ORB, vehicle=None, lidar=None):
+    from apscheduler.schedulers.background import BackgroundScheduler
+    import Queue
     scheduler = BackgroundScheduler()
-    Watcher()
+
     sock = open_sock()
     work_queue = Queue.Queue()
 
@@ -94,14 +86,28 @@ if __name__ == "__main__":
     receiver.start()
 
     print('Start Executor Thread')
-    executor = Executor(work_queue, vehicle)
+    executor = Executor(work_queue, vehicle, lidar)
     executor.daemon = True
     executor.start()
 
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
-    # while True:
-    #     send_Log(sock, ORB)
-    #     time.sleep(1)
+
     scheduler.start()
-    executor.join()
-    receiver.join()
+    # executor.join()
+    # receiver.join()
+
+
+if __name__ == "__main__":
+    from vehicle import Vehicle
+    from library import Watcher
+    from uORB import uORB
+
+    ORB = uORB()
+    Watcher()
+
+    from test_data import protobuf
+    ORB._HAL = protobuf
+
+    vehicle = Vehicle(ORB)
+
+    cloud_start(ORB, vehicle)

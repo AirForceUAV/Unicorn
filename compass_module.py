@@ -80,16 +80,22 @@ class Compass(threading.Thread):
             self.ser.close()
 
 
-if __name__ == '__main__':
-    from library import Watcher
-    from uORB import uORB
-    ORB = uORB()
+def compass_start(ORB):
     compass = Compass(ORB)
-    Watcher()
     compass.start()
     while not ORB.subscribe('Compass_State'):
         time.sleep(.1)
-    print 'Compass is OK'
+    print('Compass is OK')
+
+if __name__ == '__main__':
+    from library import Watcher
+    from uORB import uORB
+
+    ORB = uORB()
+    Watcher()
+
+    compass_start(ORB)
+
     while True:
         print ORB.subscribe('Attitude')
-        # time.sleep(.1)
+        time.sleep(.1)

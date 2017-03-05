@@ -72,8 +72,8 @@ class Vehicle(Attribute):
 
     def movement(self, channel, sign=1):
         # sign in [-1,0,1]. By Gear
-        gear = self.subscribe('Gear')
-        rate = config.drone['Gear'][gear] / 100.0
+        index = self.subscribe('Gear')
+        rate = config.drone['Gear'][index] / 100.0
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
         variation = int(channel[5] * section * rate)
@@ -543,84 +543,49 @@ if __name__ == "__main__":
 
     if config.has_module('Sbus'):
         # Initialize SBUS
-        from sbus_receiver import Sbus_Receiver
-        from sbus_sender import Sbus_Sender
-        from tools import build_sbus
-
-        com = build_sbus()
-        sbus_receiver = Sbus_Receiver(ORB, com)
-        sbus_receiver.start()
-
-        while not ORB.state('Sbus'):
-            time.sleep(.1)
-
-        sbus_sender = Sbus_Sender(ORB, com)
-        sbus_sender.start()
-
-        while not ORB.state('Sender'):
-            time.sleep(.1)
-        print 'Sbus is OK'
+        from sbus_sender import sbus_start
+        sbus_start(ORB)
 
     if config.has_module('Compass'):
         # Initialize Compass
-        from compass_module import Compass
-        compass = Compass(ORB)
-
-        compass.start()
-        while not ORB.state('Compass'):
-            time.sleep(.1)
-        print 'Compass is OK'
+        from compass_module import compass_start
+        compass_start(ORB)
 
     if config.has_module('GPS'):
         # Initialize GPS
-        from GPS_module import GPS
-        gps = GPS(ORB)
-
-        gps.start()
-        while not ORB.state('GPS'):
-            time.sleep(.1)
-        print 'GPS is OK'
+        from GPS_module import GPS_start
+        GPS_start(ORB)
 
     if config.has_module('Baro'):
         # Initialize Barometre
-        from Baro import Baro
-        baro = Baro(ORB)
-
-        baro.start()
-        while not ORB.state('Baro'):
-            time.sleep(.1)
-        print 'Baro is OK'
+        from Baro import Baro_start
+        Baro_start(ORB)
 
     if config.has_module('IMU'):
         # Initialize IMU
-        from IMU import IMU
-        imu = IMU(ORB)
-
-        imu.start()
-        while not ORB.state('IMU'):
-            time.sleep(.1)
-        print 'IMU is OK'
+        from IMU import IMU_start
+        IMU_start(ORB)
 
     # Save FlightLog to SD card
     # ORB.start()
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
-    import sys
 
-    for t in config.commands:
-        enter = raw_input(t + ' ???').strip()
+    for c in config.commands:
+        enter = raw_input(c + ' ?').strip()
 
         if enter == 'c' or enter == 'C':
             continue
         elif enter == 'b' or enter == 'B':
             break
         else:
-            command = 'vehicle.' + t
+            command = 'vehicle.' + c
             print 'Execute command ->', command
             try:
                 eval(command)
             except Exception:
+                import sys
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
                 vehicle.Cancel()

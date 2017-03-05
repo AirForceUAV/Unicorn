@@ -68,38 +68,46 @@ class Executor(threading.Thread):
                 logger.error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()
 
-if __name__ == "__main__":
-    from apscheduler.schedulers.background import BackgroundScheduler
-    from vehicle import Vehicle
-    from library import Watcher
-    from uORB import uORB
+
+def cloud_start(ORB, vehicle, lidar):
+    print('Initialize Cloud ...')
     import Queue
 
-    ORB = uORB()
-    from test_data import protobuf
-    ORB._HAL = protobuf
-    vehicle = Vehicle(ORB)
-    scheduler = BackgroundScheduler()
-    Watcher()
+    from apscheduler.schedulers.background import BackgroundScheduler
 
-    Redis = redis.StrictRedis(host='localhost', port=6379, db=0)
+    scheduler = BackgroundScheduler()
+    sock = open_sock()
+
     work_queue = Queue.Queue()
 
-    # print '>>> Start Receiver Thread'
+    print('Start Receiver Thread')
+    receiver = Receiver(work_queue, sock)
 
-    receiver = Receiver(work_queue, Redis)
     receiver.daemon = True
     receiver.start()
 
-    # print '>>> Start Executor Thread'
-    executor = Executor(work_queue)
+    print('Start Executor Thread')
+    executor = Executor(work_queue, vehicle, lidar)
     executor.daemon = True
     executor.start()
 
-    scheduler.add_job(send_Log, 'interval', args=(Redis, ORB), seconds=1)
+    scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
+
     # while True:
-    #     send_Log(Redis, ORB)
+    #     message = ORB.dataflash()
+    #     # print message
     #     time.sleep(1)
+
     scheduler.start()
-    executor.join()
-    receiver.join()
+
+if __name__ == "__main__":
+    from uORB import uORB
+    from library import Watcher
+    ORB = uORB()
+    Watcher()
+
+    from test_data import protobuf
+    ORB._HAL = protobuf
+
+    vehicle = Vehicle(ORB)
+    cloud_start(ORB, vehicle)

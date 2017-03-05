@@ -47,7 +47,7 @@ def config_logger(model, version):
         "formatters": {
             "simple": {
                 # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s',
-                'format': '[%(levelname)s]- %(message)s',
+                'format': '[%(levelname)s] [%(module)s:%(lineno)d] - %(message)s',
                 'datefmt': '%Y-%m-%d %H:%M:%S'
             },
             'standard': {

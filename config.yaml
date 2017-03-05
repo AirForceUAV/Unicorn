@@ -1,16 +1,16 @@
-SystemID = 2
+SystemID = 3
 version = "beta"
 # version = "alpha"
 client_id = "FC"
 debug = true
 open_module = [
-    # 'Sbus',
-    # 'Compass',
+    'Sbus',
+    'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
-    'Cloud'
+    # 'Cloud'
 ]
 
 commands = [
@@ -29,7 +29,7 @@ commands = [
     # 'condition_yaw(300)',
     # 'set_target(-20, 0)',
     # 'Guided()',
-    # 'download(0)',
+    # 'download()',
     # 'Auto()',
     'disarm()',
     # 'GradualTHR(0, 60)'
@@ -66,16 +66,16 @@ commands = [
 
 
 [System3]
-    UAV="HELI-550" 
+    UAV="HELI550" 
     Model='HELI' 
     MainController='ACE_ONE'
     AIL = [1,352,1024,1696,-1,20]
     ELE = [2,352,1046,1696,-1,20]
-    THR = [3,299,1072,1709,1,15]
-    RUD = [4,159,827,1503,-1,12]
+    THR = [3,299,1125,1709,1,15]
+    RUD = [4,159,828,1503,-1,12]
     Mode = [7,487,1575,1575]
     Rate = [5,,1312,1312,1312]
-    PIT = [6,327,754,1140]
+    PIT = [6,327,633,1066]
     Switch = [8,352,1024,1696]
     Gear = [20,40,60]
 

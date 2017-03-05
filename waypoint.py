@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding=utf-8 -*-
 
-from library import element, get_location_metres
+from library import get_location_metres
 from tools import logger
 
 
@@ -9,7 +9,6 @@ class Waypoint(object):
 
     def __init__(self, ORB):
         file_path = 'waypoint.xml'
-        self._root = element(file_path)
         self.ORB = ORB
 
     @property
@@ -24,26 +23,30 @@ class Waypoint(object):
     def type(self):
         return self.subscribe('WaypointType')
 
-    def download(self, origin, index=0):
-        count = len(self._root.getchildren())
-        if index > count - 1:
+    def download(self, origin, index):
+        import toml
+        key = "waypoint{}".format(index)
+        with open('waypoint.yaml') as f:
+            wps = toml.loads(f.read())
+        count = len(wps)
+        if index > count or index == 0:
             logger.error('index out of range when download Waypoints')
             return
-        _root = self._root[index]
-        Trail = _root.get('Trail')
+        waypoints = wps[key]
+        Trail = waypoints['Trail']
         result = [origin]
-        points = _root.getchildren()
+        points = waypoints['points']
         number = 0
         for point in points:
             result.append(get_location_metres(
-                result[number], self.child(point, 0), self.child(point, 1)))
+                result[number], point[0], point[1]))
             number += 1
         self.publish('Waypoint', result[1:])
         self.publish('WaypointID', 0)
         self.publish('WaypointType', 'Download')
 
-        # print('Trail:{} Waypoints:{}'.format(
-        #     Trail, self.subscribe('Waypoint')))
+        print('Trail:{}\nWaypoints:{}'.format(
+            Trail, self.subscribe('Waypoint')))
         logger.info('Download complete')
 
     def Route(self, info):
@@ -93,7 +96,7 @@ if __name__ == "__main__":
     ORB = uORB()
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
-    wp.download(origin, 0)
+    wp.download(origin, 1)
     info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"
     wp.Route(info)
     wp.add_number()

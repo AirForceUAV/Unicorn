@@ -77,20 +77,17 @@ class Sbus_Sender(threading.Thread):
         output = self.subscribe('ChannelsOutput')
         return "Input: {} Output: {}".format(input, output)
 
-if __name__ == "__main__":
-    import time
-    from uORB import uORB
-    from library import Watcher
+
+def sbus_start(ORB):
     from sbus_receiver import Sbus_Receiver
     from tools import build_sbus
 
     com = build_sbus()
-    ORB = uORB()
-    Watcher()
+
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
 
-    while not ORB.state('Sbus'):
+    while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
         time.sleep(.1)
 
     sbus_sender = Sbus_Sender(ORB, com)
@@ -98,6 +95,20 @@ if __name__ == "__main__":
 
     while not ORB.state('Sender'):
         time.sleep(.1)
+
+    print('Sbus is OK')
+
+
+if __name__ == "__main__":
+    from uORB import uORB
+    from library import Watcher
+
+    ORB = uORB()
+    Watcher()
+
+    sbus_start(ORB)
+
     while True:
-        print sbus_sender
-        # time.sleep(1)
+        input = ORB.subscribe('ChannelsInput')
+        output = ORB.subscribe('ChannelsOutput')
+        print "Input: {} Output: {}".format(input, output)

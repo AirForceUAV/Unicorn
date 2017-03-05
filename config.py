@@ -88,7 +88,7 @@ class Config:
 
         if drone['Model'] == 'HELI':
             chs['Rate'] = self.aux_channel(UAV_config['Rate'])
-            chs['PIT'] = self.main_channel(UAV_config['PIT'])
+            chs['PIT'] = self.aux_channel(UAV_config['PIT'])
         else:
             chs['Aux1'] = self.aux_channel(UAV_config['Aux1'])
             chs['Aux2'] = self.aux_channel(UAV_config['Aux2'])
@@ -127,9 +127,8 @@ config = Config()
 
 if __name__ == '__main__':
     # print config
-    # print 'Drone', config.drone
+    print 'Drone', config.drone
     print 'Channels', config.channels
-    print 'channels volume', config.volume
-    # print 'open module', config.open_module
-    # print config.has_module('GPS')
-    # print 'commands', config.commands
+    # print 'channels volume', config.volume
+    print 'open module', config.open_module
+    print 'commands', config.commands

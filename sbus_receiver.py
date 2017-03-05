@@ -2,12 +2,11 @@
 # coding:utf-8
 
 import serial
-from library import Singleton
-import threading
-from sbus import SBUS
 import sys
 import time
-from Curve import THR2PIT
+import threading
+from library import Singleton
+from sbus import SBUS
 from tools import logger
 from config import config
 
@@ -46,8 +45,8 @@ class Sbus_Receiver(threading.Thread):
 
             input = self.sbus.decode(sbusFrame)
 
-            if not self.check(input):
-                continue
+            # if not self.check(input):
+            #     continue
             self.publish('ChannelsInput', input)
             # time.sleep(.01)
 
@@ -69,12 +68,11 @@ class Sbus_Receiver(threading.Thread):
     def __str__(self):
         input = self.subscribe('ChannelsInput')
         return 'Input: {}'.format(input)
-        # return str(input[5] - THR2PIT(input[2]))
+
 
 if __name__ == "__main__":
     from library import Watcher
     from uORB import uORB
-    import time
     from tools import build_sbus
     Watcher()
 
@@ -86,25 +84,9 @@ if __name__ == "__main__":
     while not ORB.state('Sbus'):
         time.sleep(.1)
 
+    from Curve import THR2PIT
     while True:
         print sbus_receiver
         # input = ORB.subscribe('ChannelsInput')
         # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
-        # raw_input('Next')
-
-    # sbus = SBUS()
-    # # pre = ORB._HAL['ChannelsInput']
-    # with open('PitchCurve.ML', 'a+') as f:
-    #     while True:
-    #         input = ORB.subscribe('ChannelsInput')
-
-    #         # print input
-    #         # if input[2] != pre[2]:
-    #         #     line = "{},{}\n".format(input[2], input[5])
-    #         #     # print line
-    #         #     f.write(line)
-    #         # pre = input
-    #         line = "{},{}\n".format(input[2], input[5])
-    #         print line
-    #         f.write(line)
-    #         raw_input('Next')
+        raw_input('Next')

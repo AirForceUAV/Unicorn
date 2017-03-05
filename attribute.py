@@ -41,9 +41,10 @@ class Attribute(object):
         self.init_altitude()
 
     def update_home(self):
-        if not config.has_module('GPS'):
-            return
         logger.info('Waiting for home location')
+        if not config.has_module('GPS'):
+            logger.warn('GPS is closed')
+            return
         while not self.state('GPS'):
             time.sleep(.1)
         home = self.get_location()
@@ -51,8 +52,12 @@ class Attribute(object):
         logger.info('Home location :{}'.format(home))
 
     def init_altitude(self):
+        logger.info('Waiting for init altitude')
         if not config.has_module('Baro'):
             logger.warn('Baro is closed')
+            return
+        if not self.state('Baro'):
+            logger.error('Baro is not health')
             return
         init_pressure = self.subscribe('Pressure')
         self.publish('InitAltitude', pressure2Alt(init_pressure))
@@ -60,7 +65,7 @@ class Attribute(object):
     def get_stars(self):
         return self.subscribe('NumStars')
 
-    def download(self, index=0):
+    def download(self, index=1):
         location = self.get_location()
         if location is None:
             return
@@ -74,7 +79,7 @@ class Attribute(object):
         phase[self.THR[0]] = self.THR[5]
         phase[self.RUD[0]] = self.RUD[5]
         phase[self.mode[0]] = 1
-        if drone['Model'] == 'HELI':
+        if config.drone['Model'] == 'HELI':
             phase[self.PIT[0]] = self.PIT[5]
         return phase
 
@@ -91,7 +96,7 @@ class Attribute(object):
         self.THR[2] = mid[self.THR[0]]
         self.RUD[2] = mid[self.RUD[0]]
 
-        if drone['Model'] == 'HELI':
+        if config.drone['Model'] == 'HELI':
             self.Rate[2] = mid[self.Rate[0]]
             self.PIT[2] = mid[self.PIT[0]]
 
@@ -162,11 +167,11 @@ class Attribute(object):
         return self.subscribe("HomeLocation")
 
     def get_location(self):
-        if not config.has_module('Compass'):
-            logger.warn('Compass is closed')
+        if not config.has_module('GPS'):
+            logger.warn('GPS is closed')
             return None
-        if not self.state('Compass'):
-            logger.error('Compass is not health')
+        if not self.state('GPS'):
+            logger.error('GPS is not health')
             return None
         return self.subscribe('Location')
 

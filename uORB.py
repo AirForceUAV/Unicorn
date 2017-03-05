@@ -55,7 +55,7 @@ class uORB(threading.Thread):
 
     def InitChannels(self):
         channels = [0] * 8
-        return channels
+        return None
 
     def distance_to_target(self):
         location = self._HAL['Location']
@@ -201,10 +201,6 @@ if __name__ == "__main__":
     from test_data import protobuf
     ORB = uORB()
 
-    # ORB._HAL = protobuf
-    print('Drone', drone)
-    print('Module', open_module)
-    print('commands', commands)
     print ORB._HAL
     # wp = Waypoint(ORB)
     # origin = [36.111111, 116.222222]
@@ -220,4 +216,4 @@ if __name__ == "__main__":
     # print('Save Log')
     # Watcher()
     # ORB.start()
-    print ORB
+    # print ORB

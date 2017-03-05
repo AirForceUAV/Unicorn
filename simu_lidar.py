@@ -21,8 +21,8 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
-    map_topic = {config.context_topic: full_auto_topic,
-                 config.control_topic: semi_auto_topic}
+    map_topic = {config.context_topic: config.full_auto_topic,
+                 config.control_topic: config.semi_auto_topic}
     message = msg.payload
     topic = msg.topic
     print('From topic:[{}] receive message:({})'.format(topic, message))

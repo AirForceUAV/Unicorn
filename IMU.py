@@ -127,11 +127,20 @@ class IMU(threading.Thread):
         return map(self.convert_complement, a)
 
 
+def IMU_start(ORB):
+    imu = IMU(ORB)
+    imu.start()
+    while not ORB.subscribe('IMU_State'):
+        time.sleep(.1)
+    print('IMU is OK')
+
 if __name__ == "__main__":
     from library import Watcher
     from uORB import uORB
     ORB = uORB()
-    imu = IMU(ORB)
+    Watcher()
+
+    IMU_start(ORB)
 
     # a0='a0'+'edff7c003310'
     # b0='b0'+'000000000000'
@@ -143,10 +152,6 @@ if __name__ == "__main__":
     # Acc,Gyr, Mag, Eul, Qua=imu.ParseIMU(frame)
     # print Acc, Gyr, Mag, Eul, Qua
 
-    Watcher()
-    imu.start()
-    while not ORB.subscribe('IMU_State'):
-        time.sleep(.1)
     while True:
         Acc = ORB.subscribe('ACC')
         Gyr = ORB.subscribe('GYR')

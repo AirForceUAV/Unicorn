@@ -29,7 +29,7 @@ class GPS(threading.Thread):
             else:
                 dic = {'GPS_State': False, 'NumStars': 0}
             self.update(dic)
-            time.sleep(.01)
+            # time.sleep(.01)
 
     def update(self, dictories):
         for (k, v) in dictories.items():
@@ -58,16 +58,23 @@ class GPS(threading.Thread):
         if self.ser.is_open is True:
             self.ser.close()
 
-if __name__ == "__main__":
-    from library import Watcher
-    from uORB import uORB
-    ORB = uORB()
+
+def GPS_start(ORB):
     gps = GPS(ORB)
-    Watcher()
     gps.start()
     while not ORB.subscribe('GPS_State'):
         time.sleep(.1)
-    print 'GPS is OK'
+    print('GPS is OK')
+
+if __name__ == "__main__":
+    from library import Watcher
+    from uORB import uORB
+
+    ORB = uORB()
+    Watcher()
+
+    GPS_start(ORB)
+
     while True:
         print ORB.subscribe('Location'), ORB.subscribe('NumStars')
         # time.sleep(.1)

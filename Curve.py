@@ -1,6 +1,15 @@
 #!/usr/bin/evn python
 # coding:utf-8
 
+import numpy
+import toml
+from config import config
+
+flag = False
+UAV = config.drone['UAV']
+T2P_file = UAV + ".t2p"
+ratio_file = UAV + '.ratio'
+
 
 class fitting:
 
@@ -36,75 +45,129 @@ class fitting:
         return numpy.polyval(self.p, x)
 
 
+def change_flag():
+    global flag
+    flag = True
+
+
+def collect_pwm(ORB):
+    import keyboard
+    global flag
+    global T2P_file
+    raw_input('Start collecting pwm --> [enter]:start [esc]:exit')
+
+    keyboard.add_hotkey('esc', change_flag)
+    THR_PIT = {}
+    while not flag:
+        input = ORB.subscribe('ChannelsInput')
+        # print input
+        THR_PIT[str(input[2])] = input[5]
+
+    flag = False
+
+    message = toml.dumps(THR_PIT)
+    # print message
+    with open(T2P_file, 'w') as f:
+        f.write(message)
+
+    print('End collecting')
+
+
+def generate_ratio():
+    global T2P_file
+    global ratio_file
+    with open(T2P_file, 'r') as f:
+        THR_PIT = toml.loads(f.read())
+    X1 = []
+    Y1 = []
+    X2 = []
+    Y2 = []
+    X3 = []
+    Y3 = []
+    for THR, PIT in THR_PIT.iteritems():
+        THR = int(THR)
+        if THR < 1005:
+            X1.append(THR)
+            Y1.append(PIT)
+        elif THR >= 1005 and THR < 1400:
+            X2.append(THR)
+            Y2.append(PIT)
+        else:
+            X3.append(THR)
+            Y3.append(PIT)
+
+    F1 = fitting(X1, Y1)
+    z1, p1 = F1.fitting(3)
+
+    F2 = fitting(X2, Y2)
+    z2, p2 = F2.fitting(3)
+
+    F3 = fitting(X3, Y3)
+    z3, p3 = F3.fitting(3)
+
+    message = {}
+    message = {k: v.tolist()
+               for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
+
+    with open(ratio_file, 'w') as f:
+        print toml.dumps(message)
+        f.write(toml.dumps(message))
+
+    # F1.show()
+    # F2.show()
+    # F3.show()
+
+
+def check_error():
+    global T2P_file
+    with open(T2P_file, 'r') as f:
+        THR_PIT = toml.loads(f.read())
+    # with open(file)
+    for THR, PIT in THR_PIT.iteritems():
+        p = THR2PIT(int(THR))
+        print THR, PIT, p, PIT - p
+
+
 def THR2PIT(x):
+    global ratio_file
+    with open(ratio_file, 'r') as f:
+        ratios = toml.loads(f.read())
     if x < 1005:
-        z = [-2.33768242e-07,  3.30021519e-04, -6.02869587e-01, 1.29651932e+03]
+        z = ratios['z1']
     elif x >= 1005 and x < 1400:
-        z = [1.14590757e-07, -4.24145284e-04, -8.53510386e-02, 1.18774116e+03]
+        z = ratios['z2']
     else:
-        z = [1.09535756e-06, -5.23323098e-03, 7.57707790e+00, -2.80403030e+03]
+        z = ratios['z3']
+
     coefficient = numpy.array(z)
     # Fitting Function
     fitfunction = numpy.poly1d(coefficient)
     return int(numpy.polyval(fitfunction, x))
 
 if __name__ == '__main__':
-    import numpy
-    with open('PitchCurve.ML', 'r') as f:
-        lines = f.readlines()
+    # from config import config
+    # import time
+    # from library import Watcher
+    # from uORB import uORB
+    # from tools import build_sbus
+    # from sbus_receiver import Sbus_Receiver
 
-    # X1 = []
-    # Y1 = []
-    # X2 = []
-    # Y2 = []
-    # X3 = []
-    # Y3 = []
-    # for line in lines:
-    #     line = line.split(',')
-    #     line = map(int, line)
-    #     if line[0] < 1005:
-    #         X1.append(line[0])
-    #         Y1.append(line[1])
-    #     elif line[0] >= 1005 and line[0] < 1400:
-    #         X2.append(line[0])
-    #         Y2.append(line[1])
-    #     else:
-    #         X3.append(line[0])
-    #         Y3.append(line[1])
+    # Watcher()
 
-    # F1 = fitting(X1, Y1)
-    # z1, p1 = F1.fitting(3)
+    # com = build_sbus()
+    # ORB = uORB()
+    # sbus_receiver = Sbus_Receiver(ORB, com)
+    # sbus_receiver.start()
 
-    # F2 = fitting(X2, Y2)
-    # z2, p2 = F2.fitting(3)
+    # while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
+    #     time.sleep(.1)
 
-    # F3 = fitting(X3, Y3)
-    # z3, p3 = F3.fitting(3)
+    # print('Sbus is OK')
 
-    # print 'poly1：'
-    # print z1
-    # print 'poly2：'
-    # print z2
-    # print 'poly3：'
-    # print z3
+    # collect_pwm(ORB)
 
-    # F1.show()
-    # F2.show()
-    # F3.show()
+    generate_ratio()
 
-    # for line in lines:
-    #     line = line.split(',')
-    #     line = map(int, line)
-    #     if line[0] < 1005:
-    #         pitch = int(F1.predict(line[0]))
-    #     elif line[0] >= 1005 and line[0] < 1400:
-    #         pitch = int(F2.predict(line[0]))
-    #     else:
-    #         pitch = int(F3.predict(line[0]))
-    #     print line[0], pitch, line[1], pitch - line[1]
+    # check_error()
 
-    for line in lines:
-        line = line.split(',')
-        line = map(int, line)
-        p = THR2PIT(line[0])
-        print line[0], line[1], p, line[1] - p
+    # print THR2PIT(1000)
