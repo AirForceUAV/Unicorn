@@ -55,6 +55,6 @@ if __name__ == '__main__':
     if config.has_module('GCS'):
         # Initialize GCSProxy
         from AF_GCS.GCSProxy import GCS_start
-        cloud_start(ORB, vehicle, lidar)
+        GCS_start(ORB, vehicle, lidar)
 
     logger.info('completed')

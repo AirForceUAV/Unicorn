@@ -2,7 +2,7 @@ SystemID = 1
 version = "beta"
 # version = "alpha"
 client_id = "FC"
-debug = fasle
+debug = false
 open_module = [
     'Sbus',
     # 'Compass',

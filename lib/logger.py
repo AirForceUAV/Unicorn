@@ -26,7 +26,10 @@ def build_log(model, suffix):
 
 
 def config_logger(model):
-    LOG_FILE = build_log(model, 'log')
+    if config.version == 'beta':
+        LOG_FILE = build_log(model, 'log')
+    else:
+        LOG_FILE = ''
 
     LOGGING = {
         "version": 1,
@@ -74,8 +77,8 @@ def config_logger(model):
                 'level': 'WARNING',
             },
             "beta": {
-                # 'handlers': ['debugHandler'],
-                'handlers': ['debugHandler', 'file'],
+                'handlers': ['debugHandler'],
+                # 'handlers': ['debugHandler', 'file'],
                 'level': 'DEBUG',
                 'propagate': False,
                 'qualname': 'beta'
