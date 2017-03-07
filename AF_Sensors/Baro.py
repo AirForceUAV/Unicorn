@@ -193,6 +193,6 @@ if __name__ == "__main__":
     Baro_start(ORB)
 
     init_pressure = ORB.subscribe('Pressure')
-    self.publish('InitAltitude', pressure2Alt(init_pressure))
+    ORB.publish('InitAltitude', pressure2Alt(init_pressure))
     while True:
-        print ORB.get_altitude()
+        print ORB.get_altitude(True)

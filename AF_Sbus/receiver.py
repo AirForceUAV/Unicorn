@@ -90,7 +90,8 @@ if __name__ == "__main__":
     sbus_receive_start(ORB)
     from AF_ML.Curve import THR2PIT
     while True:
-        print sbus_receiver
-        # input = ORB.subscribe('ChannelsInput')
+        # print sbus_receiver
+        input = ORB.subscribe('ChannelsInput')
+        print input
         # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
         # raw_input('Next')
