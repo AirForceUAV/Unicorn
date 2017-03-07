@@ -5,6 +5,7 @@ import sys
 sys.path.append('..')
 import time
 from lib.config import config
+from lib.logger import logger
 
 
 if __name__ == '__main__':

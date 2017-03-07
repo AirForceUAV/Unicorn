@@ -46,8 +46,8 @@ class Sbus_Receiver(threading.Thread):
 
             input = self.sbus.decode(sbusFrame)
 
-            # if not self.check(input):
-            #     continue
+            if not self.check(input):
+                continue
             self.publish('ChannelsInput', input)
             # time.sleep(.01)
 

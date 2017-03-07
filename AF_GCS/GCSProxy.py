@@ -12,7 +12,7 @@ from lib.logger import logger
 
 
 def open_sock():
-    server_address = os.path.join(os.path.expanduser('~'), '.UDS', '_fc')
+    server_address = os.path.join(os.path.expanduser('~'), '.UDS_fc')
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
         sock.connect(server_address)
