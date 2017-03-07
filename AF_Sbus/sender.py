@@ -79,16 +79,11 @@ class Sbus_Sender(threading.Thread):
 
 
 def sbus_start(ORB):
-    from sbus_receiver import Sbus_Receiver
+    from receiver import sbus_receive_start
     from sbus import build_sbus
 
     com = build_sbus()
-
-    sbus_receiver = Sbus_Receiver(ORB, com)
-    sbus_receiver.start()
-
-    while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
-        time.sleep(.1)
+    sbus_receive_start(ORB, com)
 
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()
@@ -96,7 +91,7 @@ def sbus_start(ORB):
     while not ORB.state('Sender'):
         time.sleep(.1)
 
-    print('Sbus is OK')
+    logger.info('Sbus is OK')
 
 
 if __name__ == "__main__":
@@ -111,4 +106,4 @@ if __name__ == "__main__":
     while True:
         input = ORB.subscribe('ChannelsInput')
         output = ORB.subscribe('ChannelsOutput')
-        print "Input: {} Output: {}".format(input, output)
+        print "Input:{} Output:{}".format(input, output)

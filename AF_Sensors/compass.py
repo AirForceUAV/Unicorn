@@ -86,7 +86,7 @@ def compass_start(ORB):
     compass.start()
     while not ORB.subscribe('Compass_State'):
         time.sleep(.1)
-    print('Compass is OK')
+    logger.info('Compass is OK')
 
 if __name__ == '__main__':
     from lib.tools import Watcher

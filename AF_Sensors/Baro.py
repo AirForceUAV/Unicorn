@@ -181,7 +181,7 @@ def Baro_start(ORB):
     baro.start()
     while not ORB.subscribe('Baro_State'):
         time.sleep(.1)
-    print('Barometre is OK')
+    logger.info('Barometre is OK')
 
 if __name__ == "__main__":
     from lib.tools import Watcher

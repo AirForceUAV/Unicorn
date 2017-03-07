@@ -1,16 +1,16 @@
-SystemID = 3
+SystemID = 1
 version = "beta"
 # version = "alpha"
 client_id = "FC"
-debug = false
+debug = fasle
 open_module = [
-    # 'Sbus',
+    'Sbus',
     # 'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
-    # 'Cloud'
+    'GCS'
 ]
 
 commands = [
@@ -39,7 +39,7 @@ commands = [
 [System1]
     UAV="HEX6" 
     Model='HEX' 
-    MainController='NAZA v2'
+    MainController='NAZA-v2'
     AIL = [1,352,1024,1696,1,20]
     ELE = [2,352,1046,1696,-1,20]
     THR = [3,352,1020,1696,-1,15]

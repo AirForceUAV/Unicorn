@@ -7,17 +7,6 @@ import os
 import sys
 
 
-# def element(file_name):
-#     import xml.etree.cElementTree as ET
-#     try:
-#         tree = ET.parse(file_name)
-#         _root = tree.getroot()
-#     except Exception as e:
-#         print("Cannot parse file:{0}".format(file_name))
-#         sys.exit(1)
-#     return _root
-
-
 def pressure2Alt(hpa):
     # mba===hpa
     tmp = hpa / 1013.25
@@ -94,8 +83,11 @@ def angle_heading_target(origin, target, heading):
     return int(H2TAngle)
 
 
-def _angle(angle):
-    return angle if angle < 180 else 360 - angle
+def angle_diff(minuend, subtrahend, sign=1):
+    angle = sign * (minuend - subtrahend)
+    if angle < 0:
+        angle += 360
+    return angle
 
 
 def isNum(s):
@@ -113,16 +105,6 @@ def isNum(s):
         pass
 
     return False
-
-
-'''
-str.decode('hex')  >> hex->unicode
-str.encode('hex')  >> unicode->hex
-hex(int10) hex(1024) >> 0x400
-int('ff',16)  >> 255
-chr(0x30) >> '0'    chr(48) >> '0'
-ord('0')  >> 48    '%02x'%ord('0')  >> '30'
-'''
 
 
 def ascii2hex(argv):

@@ -7,6 +7,7 @@ import math
 import time
 import paho.mqtt.client as mqtt
 from AF_Keyboard.KB_Control import exe_cmd
+from lib.science import *
 from lib.logger import logger
 from lib.tools import *
 from lib.config import config
@@ -35,6 +36,7 @@ def on_message(client, userdata, msg):
     watcher = CancelWatcher()
     if watcher.IsCancel():
         # client.unsubscribe(topic)
+        Finally(vehicle)
         return
 
     vehicle = userdata['vehicle']
@@ -45,6 +47,7 @@ def on_message(client, userdata, msg):
         if message == 'esc':
             print 'Exit semi_auto'
             # client.unsubscribe(keyboard_topic)
+            Finally(vehicle)
             return
         mqtt_publish(client, config.control_topic, message, userdata)
         # mqtt_publish(client, control_topic, message, userdata, True)
@@ -77,9 +80,31 @@ def full_publish(client, userdata, command):
     interval = 3
     vehicle = userdata['vehicle']
     context = obstacle_context(vehicle, command)
-    if context is None:
-        print 'Exit full_atuo'
+    # print 'context', context
+    if not context:
+        Finally(vehicle)
         return
+    elif context == True:
+        mode = vehicle.subscribe('Mode')
+        if mode == 'AI_Auto':
+            ID = vehicle.wp.ID
+            points = vehicle.wp.points
+            wp_count = len(points)
+            if ID == wp_count - 1:
+                logger.info('{} have been finished'.format(mode))
+                Finally(vehicle)
+                return
+            else:
+                vehicle.wp.add_number()
+                vehicle.publish('Target', points[ID + 1])
+                context = obstacle_context(vehicle)
+                if not context:
+                    Finally(vehicle)
+                    return
+        else:
+            logger.info('{} have been finished'.format(mode))
+            Finally(vehicle)
+            return
     message = pack(context)
     # raw_input('Next')
     time.sleep(interval)
@@ -109,7 +134,7 @@ def unpack(message):
         return mid, command
 
 
-def obstacle_context(vehicle, command):
+def obstacle_context(vehicle, command=None):
     def context_debug():
         context = {'Head2Target': 0,
                    'Epsilon': 0,
@@ -120,26 +145,29 @@ def obstacle_context(vehicle, command):
         return context
 
     def context_release():
-        target = vehicle._target
+        target = vehicle.subscribe('Target')
         CLocation = vehicle.get_location()
         CYaw = vehicle.get_heading()
+        if target is None:
+            logger.error('Target is None')
+            return False
+        elif CYaw is None:
+            return False
+        elif CLocation is None:
+            return False
 
-        if None in (CLocation, CYaw, target):
-            logger.error('GPS is None or Compass is None or target is None')
-            return None
         angle = angle_heading_target(CLocation, target, CYaw)
         distance = get_distance_metres(CLocation, target)
         Epsilon = math.degrees(math.asin(vehicle.radius / distance))
 
         # if not vehicle.InAngle(angle, 90) or distance <= vehicle.radius:
-        if distance <= vehicle.radius:
+        if distance <= vehicle.radius and command is not None:
             logger.info("Reached Target!")
-            vehicle._target = None
-            vehicle.pre_state = vehicle.prepre_state = vehicle._state = 'STOP'
-            vehicle.brake()
-            return None
+            return True
 
-        if command != vehicle._state:
+        if command == None:
+            vehicle.condition_yaw(angle)
+        elif command != vehicle._state:
             vehicle.prepre_state = vehicle.pre_state
             vehicle.pre_state = vehicle._state
             vehicle._state = command
@@ -153,7 +181,8 @@ def obstacle_context(vehicle, command):
                    'prepre': vehicle.prepre_state}
         return context
 
-    return context_debug() if debug else context_release()
+    context = context_debug() if config.debug else context_release()
+    return context
 
 
 # def mqtt_publish2(client, topic, message, userdata, blocking=False):
@@ -190,6 +219,14 @@ def mqtt_publish(client, topic, message, userdata, blocking=False):
     if blocking:
         infot.wait_for_publish()
 
+
+def Finally(vehicle):
+    vehicle.publish('Target', None)
+    vehicle.pre_state = vehicle.prepre_state = vehicle._state = 'STOP'
+    if vehicle.subscribe('Mode') == 'AI_Auto':
+        vehicle.wp.clear()
+    vehicle.publish('Mode', 'Loiter')
+    vehicle.brake()
 
 if __name__ == '__main__':
     userdata = {'vehicle': None,

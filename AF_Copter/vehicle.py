@@ -9,7 +9,7 @@ from attribute import Attribute
 from AF_ML.Curve import THR2PIT
 from lib.config import config
 from lib.tools import CancelWatcher, Singleton
-from lib.science import get_distance_metres, angle_heading_target, _angle
+from lib.science import get_distance_metres, angle_heading_target, angle_diff
 from lib.logger import logger
 
 
@@ -21,10 +21,10 @@ class Vehicle(Attribute):
         self.moveTime = 2
         self.Epsilon = 20
         self.radius = 5
+        self.frequence = 1
         self.prepre_state = 'STOP'
         self.pre_state = 'STOP'
         self._state = 'STOP'
-        self._target = None
 
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
@@ -80,7 +80,7 @@ class Vehicle(Attribute):
         return channel[2] + sign * variation
 
     def movement2(self, channel, sign=1):
-        # sign in [-1,0,1].  By XML
+        # sign in [-1,0,1].  By TOML
         rate = channel[6] / 100.0
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
@@ -317,10 +317,11 @@ class Vehicle(Attribute):
         return [x * y for x, y in zip(a, self.Phase())]
 
     def isStop(self, heading, target, sign):
-        diff = (360 + sign * (heading - target)) % 360
+        diff = angle_diff(heading, target, sign)
+
         return False if diff <= 180 and diff > 2 else True
 
-    def condition_yaw(self, heading=0):
+    def condition_yaw(self, heading):
         """
         0<=heading<360 (anti-clockwise)
         """
@@ -328,13 +329,13 @@ class Vehicle(Attribute):
             return
 
         watcher = CancelWatcher()
-        current_yaw = self.get_heading()
-        if current_yaw is None:
+        CYaw = self.get_heading()
+        if CYaw is None:
             return
         # Relative angle to heading
-        target_angle = (360 + current_yaw - heading) % 360
+        target_angle = angle_diff(CYaw, heading)
+        TurnAngle = angle_diff(CYaw, target_angle)
 
-        TurnAngle = (360 + current_yaw - target_angle) % 360
         if TurnAngle >= 0 and TurnAngle <= 180:
             is_cw = 1
             logger.debug('Turn left {}'.format(TurnAngle))
@@ -346,53 +347,47 @@ class Vehicle(Attribute):
 
         logger.debug("Target Angle: %d" % target_angle)
         while not watcher.IsCancel():
-            current_yaw = self.get_heading()
-            if current_yaw is None:
+            CYaw = self.get_heading()
+            if CYaw is None:
                 break
-            if self.isStop(current_yaw, target_angle, is_cw):
+            if self.isStop(CYaw, target_angle, is_cw):
                 break
-            # logger.debug('{},{}'.format(current_yaw, target_angle))
-        logger.debug("Before Angle:{}".format(self.get_heading()))
+            # logger.debug('{},{}'.format(CYaw, target_angle))
+        # logger.debug("Before Angle:{}".format(self.get_heading()))
         self.brake()
         logger.debug("After  Angle:{}".format(self.get_heading()))
 
     def navigation(self, target):
+        self.publish('Target', target)
         watcher = CancelWatcher()
         radius = self.radius
-        frequency = 1
-        current_location = self.get_location()
-        current_yaw = self.get_heading()
-        if current_location is None or current_yaw is None or target is None:
+        frequency = self.frequence
+        CLocation = self.get_location()
+        CYaw = self.get_heading()
+        if CLocation is None or CYaw is None or target is None:
             return
 
-        init_angle = angle_heading_target(
-            current_location, target, current_yaw)
+        init_angle = angle_heading_target(CLocation, target, CYaw)
         self.condition_yaw(init_angle)
 
         while not watcher.IsCancel():
-            current_location = self.get_location()
-            current_yaw = self.get_heading()
-            if current_location is None or current_yaw is None:
+            CLocation = self.get_location()
+            CYaw = self.get_heading()
+            if CLocation is None or CYaw is None:
                 break
-            distance = round(
-                get_distance_metres(current_location, target), 2)
-            angle = angle_heading_target(
-                current_location, target, current_yaw)
+            distance = get_distance_metres(CLocation, target)
+            angle = angle_heading_target(CLocation, target, CYaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
                 logger.info("Reached Target!")
                 break
 
-            SAngle = int(math.degrees(math.asin(radius / distance)))
+            EAngle = int(math.degrees(math.asin(radius / distance)))
 
-            self._debug('{} {} {}'.format(distance, angle, SAngle))
+            self._debug('{} {} {}'.format(distance, angle, EAngle))
 
-            if not self.InAngle(angle, max(SAngle, self.Epsilon)):
+            if not self.InAngle(angle, max(EAngle, self.Epsilon)):
                 self.brake()
-                # location = self.get_location()
-                # if location is None:
-                #     break
-                # angle = angle_heading_target(location, target, current_yaw)
                 self.condition_yaw(angle)
             self.forward()
             time.sleep(frequency)
@@ -400,42 +395,42 @@ class Vehicle(Attribute):
         self.brake()
 
     def navigation1(self, target):
+        self.publish('Target', target)
         watcher = CancelWatcher()
         radius = self.radius
-        frequency = 1
-        current_location = self.get_location()
-        current_yaw = self.get_heading()
-        if current_location is None or current_yaw is None or target is None:
+        frequency = self.frequence
+
+        CLocation = self.get_location()
+        CYaw = self.get_heading()
+        if CLocation is None or CYaw is None or target is None:
             return
 
-        init_angle = angle_heading_target(
-            current_location, target, current_yaw)
+        init_angle = angle_heading_target(CLocation, target, CYaw)
         self.condition_yaw(init_angle)
 
         while not watcher.IsCancel():
-            current_location = self.get_location()
-            current_yaw = self.get_heading()
-            if current_location is None or current_yaw is None:
+            CLocation = self.get_location()
+            CYaw = self.get_heading()
+            if CLocation is None or CYaw is None:
                 break
-            distance = round(
-                get_distance_metres(current_location, target), 2)
-            angle = angle_heading_target(
-                current_location, target, current_yaw)
+            distance = get_distance_metres(CLocation, target)
+            angle = angle_heading_target(CLocation, target, CYaw)
 
             if not self.InAngle(angle, 90) or distance <= radius:
+                # if distance <= radius:
                 logger.info("Reached Target Waypoint!")
                 break
-            SAngle = int(math.degrees(math.asin(radius / distance)))
+            EAngle = int(math.degrees(math.asin(radius / distance)))
 
-            self._debug('{} {} {}'.format(distance, angle, SAngle))
+            self._debug('{} {} {}'.format(distance, angle, EAngle))
 
-            if self.InAngle(angle, max(SAngle, self.Epsilon)):
+            if self.InAngle(angle, max(EAngle, self.Epsilon)):
                 self.control_FRU(ELE=1)
             else:
-                if angle > SAngle and angle <= 90:
+                if angle > EAngle and angle <= 90:
                     logger.debug('Roll Left')
                     self.control_FRU(AIL=-1, ELE=1)
-                elif angle >= 270 and angle < 360 - SAngle:
+                elif angle >= 270 and angle < 360 - EAngle:
                     logger.debug('Roll Right')
                     self.control_FRU(AIL=1, ELE=1)
                 else:
@@ -446,27 +441,25 @@ class Vehicle(Attribute):
         self.brake()
 
     def navigation2(self, target):
+        self.publish('Target', target)
         watcher = CancelWatcher()
         radius = self.radius
         frequency = 1
-        current_location = self.get_location()
-        current_yaw = self.get_heading()
-        if current_location is None or current_yaw is None or target is None:
+        CLocation = self.get_location()
+        CYaw = self.get_heading()
+        if CLocation is None or CYaw is None or target is None:
             return
 
-        init_angle = angle_heading_target(
-            current_location, target, current_yaw)
+        init_angle = angle_heading_target(CLocation, target, CYaw)
         self.condition_yaw(init_angle)
 
         while not watcher.IsCancel():
-            current_location = self.get_location()
-            current_yaw = self.get_heading()
-            if current_location is None or current_yaw is None:
+            CLocation = self.get_location()
+            CYaw = self.get_heading()
+            if CLocation is None or CYaw is None:
                 break
-            distance = round(
-                get_distance_metres(current_location, target), 2)
-            angle = angle_heading_target(
-                current_location, target, current_yaw)
+            distance = get_distance_metres(CLocation, target)
+            angle = angle_heading_target(CLocation, target, CYaw)
 
             self._debug('{} {}'.format(distance, angle))
 
@@ -479,8 +472,8 @@ class Vehicle(Attribute):
             # raw_input('next')
         self.brake()
 
-    def InAngle(self, angle, SAngle):
-        if angle < 360 - SAngle and angle > SAngle:
+    def InAngle(self, angle, EAngle):
+        if angle < 360 - EAngle and angle > EAngle:
             return False
         else:
             return True
@@ -519,14 +512,13 @@ class Vehicle(Attribute):
         watcher = CancelWatcher()
         for point in self.wp.remain_wp():
             if watcher.IsCancel():
-                self.publish('Mode', 'Loiter')
-                return
+                break
+
             self.navigation(point)
-            if not watcher.IsCancel():
-                gear
-                self.wp.add_number()
+            self.wp.add_number()
 
         self.publish('Mode', 'Loiter')
+        self.publish('Target', None)
         self.wp.clear()
 
     def Cancel(self):
@@ -543,7 +535,7 @@ if __name__ == "__main__":
 
     if config.has_module('Sbus'):
         # Initialize SBUS
-        from AF_Sbus.sbus_sender import sbus_start
+        from AF_Sbus.sender import sbus_start
         sbus_start(ORB)
 
     if config.has_module('Compass'):
@@ -573,7 +565,7 @@ if __name__ == "__main__":
     vehicle = Vehicle(ORB)
 
     for c in config.commands:
-        enter = raw_input(c + ' ?').strip()
+        enter = raw_input(c + '?').strip()
 
         if enter == 'c' or enter == 'C':
             continue
@@ -581,7 +573,7 @@ if __name__ == "__main__":
             break
         else:
             command = 'vehicle.' + c
-            print 'Execute command ->', command
+            # print 'Execute command ->', command
             try:
                 eval(command)
             except Exception:

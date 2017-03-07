@@ -27,41 +27,13 @@ class Lidar(object):
         self.client.loop_start()
 
     def navigation(self, target):
-        if config.debug:
-            context = {'Head2Target': 0,
-                       'Epsilon': 0,
-                       'State': 'STOP',
-                       'pre': 'STOP',
-                       'prepre': 'STOP',
-                       'Distance': 100}
-        else:
-            self.vehicle._target = target
-            CLocation = self.vehicle.get_location()
-            CYaw = self.vehicle.get_heading()
+        self.publish('Target', target)
 
-            if None in (CLocation, CYaw, target):
-                logger.error(
-                    'GPS is None or Compass is None or target is None')
-                return
-            angle = angle_heading_target(CLocation, target, CYaw)
-            distance = get_distance_metres(CLocation, target)
-            Epsilon = math.degrees(math.asin(self.vehicle.radius / distance))
-
-            if distance <= self.vehicle.radius:
-                logger.info("Reached Target!")
-                self.vehicle._target = None
-                return
-            context = {'Head2Target': angle,
-                       'Epsilon': int(Epsilon),
-                       'State': self.vehicle._state,
-                       'Distance': distance,
-                       'pre': self.vehicle.pre_state,
-                       'prepre': self.vehicle.prepre_state}
-
-            vehicle.condition_yaw(angle)
+        context = obstacle_context(vehicle)
+        if not context:
+            return
 
         message = pack(context)
-
         mqtt_publish(self.client, config.context_topic, message, self.userdata)
 
     def Guided(self):
@@ -69,39 +41,30 @@ class Lidar(object):
         if target is None:
             logger.warn('Target is None.Please set')
             return
-        self.vehicle.publish('Mode', 'GUIDED')
+
+        self.publish('Mode', 'AI_GUIDED')
         self.navigation(target)
-        self.vehicle.publish('Mode', 'Loiter')
-        self.vehicle.publish('Target', None)
 
     def RTL(self):
         target = self.vehicle.get_home()
         if target is None:
             logger.warn("HomeLocation is None.")
             return
-        self.vehicle.publish('Mode', 'RTL')
 
+        self.vehicle.publish('Mode', 'AI_RTL')
         self.navigation(target)
-        # self.vehicle.land()
-        self.vehicle.publish('Mode', 'STAB')
 
     def Auto(self):
         if self.vehicle.wp.isNull():
             logger.warn('Waypoint is None.Please set')
             return
-        self.vehicle.publish('Mode', 'Auto')
-        watcher = CancelWatcher()
-        for point in self.vehicle.wp.remain_wp():
-            if watcher.IsCancel():
-                self.vehicle.publish('Mode', 'Loiter')
-                return
-            self.navigation(point)
-            if not watcher.IsCancel():
-                self.vehicle.wp.add_number()
+        self.vehicle.publish('Mode', 'AI_Auto')
+        ID = self.vehicle.wp.ID
+        points = self.vehicle.wp.points
+        self.navigation(points[ID])
 
-        self.vehicle.publish('Mode', 'Loiter')
-        self.vehicle.wp.clear()
-
+    def publish(self, topic, message):
+        self.vehicle.publish(topic, message)
 
 if __name__ == "__main__":
     from AF_uORB.uORB import uORB
@@ -112,7 +75,7 @@ if __name__ == "__main__":
 
     if config.has_module('Sbus'):
         # Initialize SBUS
-        from AF_Sbus.sbus_sender import sbus_start
+        from AF_Sbus.sender import sbus_start
         sbus_start(ORB)
 
     if config.has_module('Compass'):
@@ -142,10 +105,15 @@ if __name__ == "__main__":
     from AF_Copter.vehicle import Vehicle
     vehicle = Vehicle(ORB)
     lidar = Lidar(vehicle)
+
+    # vehicle.download()
+    vehicle.publish('Waypoint', [[36.111122, 116.222222, 10]])
+    vehicle.publish('WaypointID', 0)
+    lidar.Auto()
+    # location = [36.111122, 116.222222, 10]
+    # vehicle.publish('Target', location)
     # vehicle.set_target(-30, 0)
     # lidar.Guided()
-    location = [36.111122, 116.222222, 10]
-    lidar.navigation(location)
 
     while True:
         time.sleep(100)

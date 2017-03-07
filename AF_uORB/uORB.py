@@ -9,7 +9,6 @@ import threading
 import protobuf.FlightLog_pb2 as FlightLog
 from lib.science import get_distance_metres, pressure2Alt
 from lib.config import config
-# from tools import build_log
 from lib.tools import Singleton
 
 
@@ -18,24 +17,23 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-        self.model = config.drone['Model']
 
         self._HAL = {'Compass_State': False, 'Attitude': None,
                      'Baro_State': False, 'Pressure': None,
-                     'Temperature': None, 'Gear': 1,
+                     'Temperature': None, 'Gear': 0,
                      'GPS_State': False, 'Location': None, 'NumStars': 0,
                      'HomeLocation': None, 'Target': None,
                      'Mode': 'STAB', 'Waypoint': [], 'WaypointID': -1,
                      'RPM': 1600, 'Sbus_State': False, 'ChannelsOutput': None,
-                     'ChannelsInput': self.InitChannels(),
-                     'LoiterPWM': self.InitLoiter(),
+                     'ChannelsInput': None,
+                     'LoiterPWM': config.InitLoiter(),
                      'InitAltitude': None, 'IMU_State': False,
                      'Sender_State': False, 'WaypointType': None,
                      'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                      'QUA': None}
 
-    def run(self):
-        self.save_log()
+    # def run(self):
+    #     self.save_log()
 
     def publish(self, topic, value):
         if self._HAL[topic] != value:
@@ -46,17 +44,6 @@ class uORB(threading.Thread):
 
     def state(self, module):
         return self._HAL[module + '_State']
-
-    def InitLoiter(self):
-        channel = [0] * 8
-        for v in config.channels.itervalues():
-            index = v[0]
-            channel[index] = v[2]
-        return channel
-
-    def InitChannels(self):
-        channels = [0] * 8
-        return None
 
     def distance_to_target(self):
         location = self._HAL['Location']
@@ -79,18 +66,20 @@ class uORB(threading.Thread):
     def get_altitude(self, relative=False):
         init_altitude = self._HAL['InitAltitude']
         cur_pressure = self._HAL['Pressure']
-        if init_altitude is None or cur_pressure is None:
-            return None
-        alt = pressure2Alt(
-            cur_pressure) - init_altitude if relative else pressure2Alt(cur_pressure)
-        return round(alt, 2)
+        if relative and init_altitude is not None and cur_pressure is not None:
+            alt = pressure2Alt(cur_pressure) - init_altitude
+        elif not relative and cur_pressure is not None:
+            alt = pressure2Alt(cur_pressure)
+        else:
+            alt = None
+        return alt
 
     def update_location(self, ProtoLocation, Locaiton):
         if Locaiton is None:
             return
         ProtoLocation.latitude = Locaiton[0]
         ProtoLocation.longitude = Locaiton[1]
-        if len(Locaiton) > 2:
+        if len(Locaiton) == 3:
             ProtoLocation.altitude = Locaiton[2]
 
     def update_attitude(self, ProtoAttitude, Attitude):
@@ -116,16 +105,12 @@ class uORB(threading.Thread):
     def update_Baro(self):
         baro = self._sensor.baro
         baro.state = self._HAL['Baro_State']
-        if self.state('Baro'):
+        if self.state('Baro') and self._HAL['InitAltitude'] is not None:
             baro.Pressure = self._HAL['Pressure']
             baro.Temperature = self._HAL['Temperature']
             baro.Altitude = self.get_altitude(True)
 
     def update_waypoint(self):
-        Type = self._HAL['WaypointType']
-
-        if Type != 'Download':
-            return
         waypoint = self._sensor.waypoint
         index = self._HAL['WaypointID']
 
@@ -184,14 +169,6 @@ class uORB(threading.Thread):
         # return self._sensor
         return self._sensor.SerializeToString()
 
-    def save_log(self):
-        file_path = build_log(self._model['Model'], 'HAL')
-        # print file_path
-        with open(file_path, 'w+') as f:
-            while True:
-                f.write(self.log_proto() + '##')
-                time.sleep(.5)
-
     def __str__(self):
         return json.dumps(self._HAL, indent=1)
 
@@ -199,10 +176,13 @@ class uORB(threading.Thread):
 if __name__ == "__main__":
     from AF_Copter.waypoint import Waypoint
     from lib.tools import Watcher
-    from lib.proto_test import protobuf
-    ORB = uORB()
 
-    # ORB._HAL = protobuf
+    ORB = uORB()
+    Watcher()
+
+    from protobuf.proto_test import protobuf
+    ORB._HAL = protobuf
+
     wp = Waypoint(ORB)
     origin = [36.111111, 116.222222]
     wp.download(origin, 0)
@@ -212,9 +192,3 @@ if __name__ == "__main__":
     b = FlightLog.sensors()
     b.ParseFromString(ORB.dataflash())
     print b
-
-    """Save FlightLog to SB card"""
-    # print('Save Log')
-    # Watcher()
-    # ORB.start()
-    # print ORB

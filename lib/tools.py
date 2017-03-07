@@ -8,6 +8,7 @@ import time
 import os
 import signal
 from lib.config import config
+from lib.logger import logger
 
 
 def open_serial(portname, baudrate, timeout=None):
@@ -18,7 +19,7 @@ def open_serial(portname, baudrate, timeout=None):
             return com
         except serial.SerialException:
             info = sys.exc_info()
-            print("{0}:{1}".format(*info))
+            logger.error("{0}:{1}".format(*info))
             time.sleep(1.0)
 
 

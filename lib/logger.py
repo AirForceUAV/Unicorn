@@ -7,6 +7,7 @@ import time
 import os
 import logging
 import logging.config
+import colorlog
 from lib.config import config
 
 
@@ -24,23 +25,21 @@ def build_log(model, suffix):
     return os.path.join(file_path, log_name)
 
 
-def config_logger(model, version):
-    if version.find('alpha') != 1:
-        LOG_FILE = build_log(model, 'log')
-    else:
-        LOG_FILE = ''
+def config_logger(model):
+    LOG_FILE = build_log(model, 'log')
+
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
+            'colored': {
+                '()': 'colorlog.ColoredFormatter',
+                'format': "%(log_color)s[%(levelname)-8s] %(white)s%(module)-9s:%(lineno)-3d %(cyan)s%(message)s ",
+                'datefmt': '%Y-%m-%d %H:%M:%S'
+            },
             "simple": {
                 # 'format': '%(asctime)s [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s',
                 'format': '[%(levelname)s] [%(module)s:%(lineno)d] - %(message)s',
-                'datefmt': '%Y-%m-%d %H:%M:%S'
-            },
-            'standard': {
-                'format': '%(asctime)s [%(levelname)s]- %(message)s',
-                # 'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s',
                 'datefmt': '%Y-%m-%d %H:%M:%S'
             },
         },
@@ -49,19 +48,13 @@ def config_logger(model, version):
             "debugHandler": {
                 "class": "logging.StreamHandler",
                 "level": "DEBUG",
-                "formatter": "simple",
+                "formatter": "colored",
                 "stream": "ext://sys.stdout"
             },
             "infoHandler": {
                 "class": "logging.StreamHandler",
                 "level": "INFO",
-                "formatter": "simple",
-                "stream": "ext://sys.stdout"
-            },
-            "errorHandler": {
-                "class": "logging.StreamHandler",
-                "level": "ERROR",
-                "formatter": "simple",
+                "formatter": "colored",
                 "stream": "ext://sys.stdout"
             },
             "file": {
@@ -77,21 +70,21 @@ def config_logger(model, version):
         },
         "loggers": {
             "root": {
-                'handlers': ['errorHandler'],
+                'handlers': ['infoHandler'],
                 'level': 'WARNING',
             },
-            "betaLogger": {
-                'handlers': ['debugHandler'],
-                # 'handlers': ['debugHandler', 'file'],
+            "beta": {
+                # 'handlers': ['debugHandler'],
+                'handlers': ['debugHandler', 'file'],
                 'level': 'DEBUG',
                 'propagate': False,
-                'qualname': 'betaLogger'
+                'qualname': 'beta'
             },
-            "alphaLogger": {
+            "alpha": {
                 'handlers': ['infoHandler', 'file'],
                 'level': 'INFO',
                 'propagate': False,
-                'qualname': 'alphaLogger'
+                'qualname': 'alpha'
             }
         },
     }
@@ -99,8 +92,8 @@ def config_logger(model, version):
 
 
 def init_logger(model):
-    LOG_NAME = config.version + 'Logger'
-    LOGGING = config_logger(model, LOG_NAME)
+    LOG_NAME = config.version
+    LOGGING = config_logger(model)
     logging.config.dictConfig(LOGGING)
     logger = logging.getLogger(LOG_NAME)
     return logger

@@ -8,7 +8,7 @@ import numpy
 import toml
 from lib.config import config
 
-flag = False
+exit = False
 UAV = config.drone['UAV']
 T2P_file = os.path.join('..', 'ML', UAV + ".t2p")
 ratio_file = os.path.join('..', 'ML', UAV + ".ratio")
@@ -48,25 +48,25 @@ class fitting:
         return numpy.polyval(self.p, x)
 
 
-def change_flag():
-    global flag
-    flag = True
+def change_exit():
+    global exit
+    exit = True
 
 
 def collect_pwm(ORB):
     import keyboard
-    global flag
+    global exit
     global T2P_file
     raw_input('Start collecting pwm --> [enter]:start [esc]:exit')
 
-    keyboard.add_hotkey('esc', change_flag)
+    keyboard.add_hotkey('esc', change_exit)
     THR_PIT = {}
-    while not flag:
+    while not exit:
         input = ORB.subscribe('ChannelsInput')
         # print input
         THR_PIT[str(input[2])] = input[5]
 
-    flag = False
+    exit = False
 
     message = toml.dumps(THR_PIT)
     # print message
@@ -108,13 +108,14 @@ def generate_ratio():
     F3 = fitting(X3, Y3)
     z3, p3 = F3.fitting(3)
 
-    message = {}
-    message = {k: v.tolist()
-               for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
+    T2P = {}
+    T2P = {k: v.tolist()
+           for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
 
     with open(ratio_file, 'w') as f:
-        print toml.dumps(message)
-        f.write(toml.dumps(message))
+        message = toml.dumps(message)
+        print message
+        f.write(message)
 
     # F1.show()
     # F2.show()
@@ -148,29 +149,22 @@ def THR2PIT(x):
     return int(numpy.polyval(fitfunction, x))
 
 if __name__ == '__main__':
-    # import time
-    # from libraries.library import Watcher
-    # from SF_uORB.uORB import uORB
-    # from Tools.tools import build_sbus
-    # from AF_Sbus.sbus_receiver import Sbus_Receiver
 
-    # Watcher()
+    from lib.tools import Watcher
+    from AF_uORB.uORB import uORB
+    from AF_Sbus.receiver import sbus_recevie_start
 
-    # com = build_sbus()
-    # ORB = uORB()
-    # sbus_receiver = Sbus_Receiver(ORB, com)
-    # sbus_receiver.start()
+    ORB = uORB()
+    Watcher()
 
-    # while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
-    #     time.sleep(.1)
+    sbus_recevie_start(ORB)
 
-    # print('Sbus is OK')
+    print('Sbus is OK')
 
-    # collect_pwm(ORB)
+    collect_pwm(ORB)
 
-    # generate_ratio()
+    generate_ratio()
 
-    # check_error()
+    check_error()
 
-    print THR2PIT(1000)
-    pass
+    # print THR2PIT(1000)

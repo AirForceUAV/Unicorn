@@ -101,7 +101,7 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    from lib.proto_test import protobuf
+    from protobuf.proto_test import protobuf
     ORB._HAL = protobuf
 
     vehicle = Vehicle(ORB)

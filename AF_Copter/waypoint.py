@@ -46,7 +46,7 @@ class Waypoint(object):
             number += 1
         self.publish('Waypoint', result[1:])
         self.publish('WaypointID', 0)
-        self.publish('WaypointType', 'Download')
+        # self.publish('WaypointType', 'Download')
 
         print('Trail:{}\nWaypoints:{}'.format(
             Trail, self.subscribe('Waypoint')))
@@ -62,9 +62,9 @@ class Waypoint(object):
             result.append([float(loc[0]), float(loc[1])])
         self.publish('Waypoint', result)
         self.publish('WaypointID', 0)
-        self.publish('WaypointType', 'Route')
+        # self.publish('WaypointType', 'Route')
 
-        # print 'Waypoints :', self.subscribe('Waypoint')
+        # print 'Waypoints :', self.points
         logger.info('Route planning complete')
 
     def remain_wp(self):
@@ -81,7 +81,7 @@ class Waypoint(object):
     def clear(self):
         self.publish('Waypoint', [])
         self.publish('WaypointID', -1)
-        self.publish('WaypointType', None)
+        # self.publish('WaypointType', None)
 
     def isNull(self):
         return True if self.subscribe('WaypointID') < 0 else False

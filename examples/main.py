@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     if config.has_module('Sbus'):
         # Initialize SBUS
-        from AF_Sbus.sbus_sender import sbus_start
+        from AF_Sbus.sender import sbus_start
         sbus_start(ORB)
 
     if config.has_module('Compass'):
@@ -52,9 +52,9 @@ if __name__ == '__main__':
     # Save FlightLog to SD
     # ORB.start()
 
-    if config.has_module('Cloud'):
-        # Initialize Cloud
+    if config.has_module('GCS'):
+        # Initialize GCSProxy
         from AF_GCS.GCSProxy import GCS_start
         cloud_start(ORB, vehicle, lidar)
 
-    print('completed')
+    logger.info('completed')

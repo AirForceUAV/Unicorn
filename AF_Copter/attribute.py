@@ -24,7 +24,7 @@ class Attribute(object):
         self.THR = config.channels['THR']
         # Rudder  :[No.ch, low ,mid, high ,var, sign, rate]
         self.RUD = config.channels['RUD']
-        # Mode :[No.ch , 0 , pwm]
+        # Mode :[No.ch , low , Loiter, high]
         self.mode = config.channels['Mode']
         if config.drone['Model'] == 'HELI':
             # GYRO Rate :[No.ch , 0 , pwm]
@@ -44,22 +44,15 @@ class Attribute(object):
 
     def update_home(self):
         logger.info('Waiting for home location')
-        if not config.has_module('GPS'):
-            logger.warn('GPS is closed')
+        if not self.check("GPS"):
             return
-        while not self.state('GPS'):
-            time.sleep(.1)
         home = self.get_location()
         self.publish('HomeLocation', home)
         logger.info('Home location :{}'.format(home))
 
     def init_altitude(self):
         logger.info('Waiting for init altitude')
-        if not config.has_module('Baro'):
-            logger.warn('Baro is closed')
-            return
-        if not self.state('Baro'):
-            logger.error('Baro is not health')
+        if not self.check("Baro"):
             return
         init_pressure = self.subscribe('Pressure')
         self.publish('InitAltitude', pressure2Alt(init_pressure))
@@ -80,7 +73,7 @@ class Attribute(object):
         phase[self.ELE[0]] = self.ELE[5]
         phase[self.THR[0]] = self.THR[5]
         phase[self.RUD[0]] = self.RUD[5]
-        phase[self.mode[0]] = 1
+        # phase[self.mode[0]] = 1
         if config.drone['Model'] == 'HELI':
             phase[self.PIT[0]] = self.PIT[5]
         return phase
@@ -106,62 +99,50 @@ class Attribute(object):
         if int(Gear) in [1, 2, 3]:
             self.publish('Gear', int(Gear) - 1)
 
-    def set_target(self, dNorth, dEast, alt=-1000, relative=True):
+    def set_target(self, dNorth, dEast):
         origin = self.get_location()
         if origin is None:
             return
 
-        if not (isNum(dNorth) and isNum(dEast)):
-            return
         target = get_location_metres(origin, dNorth, dEast)
-        target.append(alt)
         self.publish('Target', target)
         logger.info('Target is {}'.format(target))
 
-    def set_target_angle(self, distance, angle, alt=-1000, relative=True):
-        if not isNum(distance) or not isNum(angle):
-            return
+    def set_target_angle(self, distance, angle):
         angle = (360 + angle) % 360
         dNorth = round(cos(angle) * distance, 2)
         dEast = round(sin(angle) * distance, 2)
-        self.set_target(dNorth, dEast, alt)
+        self.set_target(dNorth, dEast)
 
     def get_target(self):
         return self.subscribe('Target')
 
+    def check(self, sensor):
+        if not config.has_module(sensor):
+            logger.warn('{} is closed'.format(sensor))
+            return False
+        if not self.state(sensor):
+            logger.error('{} is not health'.format(sensor))
+            return False
+        return True
+
     def get_pitch(self):
-        if not config.has_module('Compass'):
-            logger.warn('Compass is closed')
-            return None
-        if not self.state('Compass'):
-            logger.error('Compass is not health')
+        if not self.check("Comapss"):
             return None
         return self.subscribe('Attitude')[0]
 
     def get_roll(self):
-        if not config.has_module('Compass'):
-            logger.warn('Compass is closed')
-            return None
-        if not self.state('Compass'):
-            logger.error('Compass is not health')
+        if not self.check("Comapss"):
             return None
         return self.subscribe('Attitude')[1]
 
     def get_heading(self):
-        if not config.has_module('Compass'):
-            logger.warn('Compass is closed')
-            return None
-        if not self.state('Compass'):
-            logger.error('Compass is not health')
+        if not self.check("Comapss"):
             return None
         return self.subscribe('Attitude')[2]
 
     def get_attitude(self):
-        if not config.has_module('Compass'):
-            logger.warn('Compass is closed')
-            return None
-        if not self.state('Compass'):
-            logger.error('Compass is not health')
+        if not self.check("Comapss"):
             return None
         return self.subscribe('Attitude')
 
@@ -169,11 +150,7 @@ class Attribute(object):
         return self.subscribe("HomeLocation")
 
     def get_location(self):
-        if not config.has_module('GPS'):
-            logger.warn('GPS is closed')
-            return None
-        if not self.state('GPS'):
-            logger.error('GPS is not health')
+        if not self.check("GPS"):
             return None
         return self.subscribe('Location')
 

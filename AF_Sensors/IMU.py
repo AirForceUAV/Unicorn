@@ -6,7 +6,7 @@ import time
 from lib.science import CutFrame2
 from lib.tools import Singleton, open_serial
 from lib.config import config
-from tools import logger
+from lib.logger import logger
 
 
 class IMU(threading.Thread):
@@ -133,7 +133,7 @@ def IMU_start(ORB):
     imu.start()
     while not ORB.subscribe('IMU_State'):
         time.sleep(.1)
-    print('IMU is OK')
+    logger.info('IMU is OK')
 
 if __name__ == "__main__":
     from lib.tools import Watcher

@@ -15,15 +15,12 @@ class Config:
 
         self.version = self.conf['version']
         self.debug = self.conf['debug']
+
         self.drone, self.channels = self.init_drone()
         self.volume = self.get_volume()
 
-        self.open_module = self.conf['open_module']
-        self.commands = self.conf['commands']
-
         self.mqtt_socket = self.sock()
         self.client_id = self.conf['client_id']
-
         self.context_topic = str(self.conf['topic']['publish']['full'])
         self.control_topic = str(self.conf['topic']['publish']['semi'])
         self.full_auto_topic = str(self.conf['topic']['subscribe']['full'])
@@ -35,20 +32,8 @@ class Config:
         self.GPS_serial = self.conf['GPS']['port']
         self.IMU_serial = self.conf['IMU']['port']
 
-        self.drone, self.channels = self.init_drone()
-        self.volume = self.get_volume()
-
         self.open_module = self.conf['open_module']
         self.commands = self.conf['commands']
-
-        self.mqtt_socket = self.sock()
-        self.client_id = self.conf['client_id']
-
-        self.context_topic = str(self.conf['topic']['publish']['full'])
-        self.control_topic = str(self.conf['topic']['publish']['semi'])
-        self.full_auto_topic = str(self.conf['topic']['subscribe']['full'])
-        self.semi_auto_topic = str(self.conf['topic']['subscribe']['semi'])
-        self.keyboard_topic = str(self.conf['topic']['keyboard'])
 
     def main_channel(self, ch):
         num = ch[0] - 1
@@ -115,6 +100,13 @@ class Config:
         for v in self.channels.itervalues():
             stroke[v[0]] = [v[1], v[2], v[3]]
         return stroke
+
+    def InitLoiter(self):
+        channel = [0] * 8
+        for v in self.channels.itervalues():
+            index = v[0]
+            channel[index] = v[2]
+        return channel
 
     def __str__(self):
         return json.dumps(self.__dict__, indent=1)

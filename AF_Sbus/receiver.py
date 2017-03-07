@@ -71,20 +71,23 @@ class Sbus_Receiver(threading.Thread):
         return 'Input: {}'.format(input)
 
 
+def sbus_receive_start(ORB, com=None):
+    if com is None:
+        from sbus import build_sbus
+        com = build_sbus()
+    sbus_receiver = Sbus_Receiver(ORB, com)
+    sbus_receiver.start()
+    while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
+        time.sleep(.1)
+
 if __name__ == "__main__":
     from lib.tools import Watcher
     from AF_uORB.uORB import uORB
-    from sbus import build_sbus
+
+    ORB = uORB()
     Watcher()
 
-    com = build_sbus()
-    ORB = uORB()
-    sbus_receiver = Sbus_Receiver(ORB, com)
-    sbus_receiver.start()
-
-    while not ORB.state('Sbus'):
-        time.sleep(.1)
-
+    sbus_receive_start(ORB)
     from AF_ML.Curve import THR2PIT
     while True:
         print sbus_receiver
