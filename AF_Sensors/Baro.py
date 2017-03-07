@@ -47,6 +47,18 @@ class Baro(threading.Thread):
         for (k, v) in dictories.items():
             self.ORB.publish(k, v)
 
+    def average_pressure(self):
+        count = 0
+        num = 3
+        container = []
+        while count < num:
+            self.read()
+            p = self.getPressureAdj()
+            if p not in container:
+                count += 1
+                container.append(p)
+        return reduce(lambda x, y: x + y, container) / num
+
     def setElevation(self, elevation):
         self.elevation = elevation
 
@@ -195,4 +207,5 @@ if __name__ == "__main__":
     init_pressure = ORB.subscribe('Pressure')
     ORB.publish('InitAltitude', pressure2Alt(init_pressure))
     while True:
-        print ORB.get_altitude(True)
+        # print ORB.get_altitude(True)
+        print ORB.subscribe('Pressure')

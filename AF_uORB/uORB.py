@@ -65,7 +65,7 @@ class uORB(threading.Thread):
 
     def get_altitude(self, relative=False):
         init_altitude = self._HAL['InitAltitude']
-        CPressure = self.average_pressure()
+        CPressure = self._HAL['Pressure']
 
         if relative and init_altitude is not None and CPressure is not None:
             alt = pressure2Alt(CPressure) - init_altitude
@@ -74,17 +74,6 @@ class uORB(threading.Thread):
         else:
             alt = None
         return alt
-
-    def average_pressure(self):
-        count = 0
-        num = 5
-        container = []
-        while count < num:
-            p = self._HAL['Pressure']
-            if p not in container:
-                count += 1
-                container.append(p)
-        return reduce(lambda x, y: x + y, container) / num
 
     def update_location(self, ProtoLocation, Locaiton):
         if Locaiton is None:
