@@ -1,5 +1,4 @@
 *.pyc
 .vscode
 tags
-test.py
 config.yaml
