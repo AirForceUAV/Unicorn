@@ -11,7 +11,6 @@ from lib.config import config
 from lib.tools import CancelWatcher, Singleton
 from lib.science import get_distance_metres, angle_heading_target, angle_diff
 from lib.logger import logger
-from lib.parse import parseError
 
 
 class Vehicle(Attribute):

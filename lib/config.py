@@ -10,7 +10,7 @@ class Config:
     def __init__(self):
         import os
         file_path = os.path.join('..', 'Toml', 'config.yaml')
-        with open(file_path) as f:
+        with open(file_path,'r') as f:
             self.conf = toml.loads(f.read())
 
         self.version = self.conf['version']

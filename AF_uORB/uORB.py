@@ -17,7 +17,7 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-        LoiterPWM=config.InitLoiter()
+        LoiterPWM=self.InitLoiter()
         
         if config.debug:
             from test import FlightLog
@@ -61,6 +61,13 @@ class uORB(threading.Thread):
     def state(self, module):
         return self._HAL[module + '_State']
 
+    def InitLoiter(self):
+        channel = [0] * 8
+        for v in config.channels.itervalues():
+            index = v[0]
+            channel[index] = v[2]
+        return channel
+        
     def distance_to_target(self):
         try:
             location = self.get_location()
