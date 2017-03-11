@@ -63,9 +63,9 @@ class GPS(threading.Thread):
 def GPS_start(ORB):
     gps = GPS(ORB)
     gps.start()
-    while not ORB.subscribe('GPS_State'):
+    while not ORB.state('GPS'):
         time.sleep(.1)
-    logger.info('GPS is OK')
+    logger.info('>>> GPS is OK')
 
 if __name__ == "__main__":
     from lib.tools import Watcher

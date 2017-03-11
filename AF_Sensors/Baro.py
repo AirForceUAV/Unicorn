@@ -191,9 +191,9 @@ class Baro(threading.Thread):
 def Baro_start(ORB):
     baro = Baro(ORB)
     baro.start()
-    while not ORB.subscribe('Baro_State'):
+    while not ORB.state('Baro'):
         time.sleep(.1)
-    logger.info('Barometre is OK')
+    logger.info('>>> Barometre is OK')
 
 if __name__ == "__main__":
     from lib.tools import Watcher
@@ -207,5 +207,5 @@ if __name__ == "__main__":
     init_pressure = ORB.subscribe('Pressure')
     ORB.publish('InitAltitude', pressure2Alt(init_pressure))
     while True:
-        # print ORB.get_altitude(True)
-        print ORB.subscribe('Pressure')
+        print ORB.get_altitude(True)
+        # print ORB.subscribe('Pressure')

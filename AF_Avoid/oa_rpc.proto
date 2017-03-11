@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package oa_rpc;
+
+enum Action {
+    STOP            = 0;
+    FORWARD         = 1;
+    BACKWARD        = 2;
+    LEFT_YAW        = 4;
+    RIGHT_YAW       = 8;
+    LEFT_ROLL       = 16;
+    RIGHT_ROLL      = 32;
+    UP              = 64;
+    DOWN            = 128;
+    INVALID         = 0xee;
+    ANY             = 0xff;
+}
+
+//full-automatic context
+message FullContext {
+    uint64 id = 1;
+    int32 target = 2;
+    uint32 epsilon = 3;
+    repeated Action current = 4;
+    repeated Action last_state = 5;
+    repeated Action last_previous_state = 6;
+}
+
+//semi-automatic context
+message SemiContext {
+    uint64 id = 1;
+    repeated Action actions = 2;
+}
+
+message Strategy{
+    uint64 id = 1;
+    repeated Action actions = 2;
+}
+
+service ObstacleAvoidance {
+    rpc FullAutomatic(FullContext) returns (Strategy) {}
+    rpc SemiAutomatic(SemiContext) returns (Strategy) {}
+}
+

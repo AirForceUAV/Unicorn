@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     if config.has_module('Lidar'):
         # Initialize Lidar
-        from AF_Avoid.lidar import Lidar
+        from AF_Avoid.lidar_rpc import Lidar
         lidar = Lidar(vehicle)
 
     # Save FlightLog to SD

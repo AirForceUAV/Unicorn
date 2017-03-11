@@ -8,7 +8,7 @@ import os
 import logging
 import logging.config
 import colorlog
-from lib.config import config
+from config import config
 
 
 def localtime():

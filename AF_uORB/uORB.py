@@ -17,20 +17,36 @@ class uORB(threading.Thread):
 
     def __init__(self):
         super(uORB, self).__init__(name='uORB')
-
-        self._HAL = {'Compass_State': False, 'Attitude': None,
-                     'Baro_State': False, 'Pressure': None,
-                     'Temperature': None, 'Gear': 0,
-                     'GPS_State': False, 'Location': None, 'NumStars': 0,
-                     'HomeLocation': None, 'Target': None,
-                     'Mode': 'STAB', 'Waypoint': [], 'WaypointID': -1,
-                     'RPM': 1600, 'Sbus_State': False, 'ChannelsOutput': None,
-                     'ChannelsInput': None,
-                     'LoiterPWM': config.InitLoiter(),
-                     'InitAltitude': None, 'IMU_State': False,
-                     'Sender_State': False, 'WaypointType': None,
-                     'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
-                     'QUA': None}
+        LoiterPWM=config.InitLoiter()
+        
+        if config.debug:
+            from test import FlightLog
+            self._HAL = FlightLog(LoiterPWM)
+        else:
+            self._HAL = {'Compass_State': False,
+                        'Attitude': None,
+                        'Baro_State': False,
+                        'Pressure': None,
+                        'Temperature': None,
+                        'Gear': 0,
+                        'GPS_State': False,
+                        'Location': None,
+                        'NumStars': 0,
+                        'HomeLocation': None,
+                        'Target': None,
+                        'Mode': 'STAB',
+                        'Waypoint': [],
+                        'WaypointID': -1,
+                        'RPM': 1600,
+                        'Sbus_State':False,
+                        'ChannelsOutput': None,
+                        'ChannelsInput': None,
+                        'LoiterPWM': LoiterPWM,
+                        'InitAltitude': None,
+                        'IMU_State': False,
+                        'WaypointType': None,
+                        'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
+                        'QUA': None}
 
     # def run(self):
     #     self.save_log()
@@ -46,34 +62,64 @@ class uORB(threading.Thread):
         return self._HAL[module + '_State']
 
     def distance_to_target(self):
-        location = self._HAL['Location']
-        target = self._HAL['Target']
-        if location is None or target is None:
+        try:
+            location = self.get_location()
+            target = self.get_target()
+        except AssertionError,e:
             return -1
-        else:
-            distance = get_distance_metres(location, target)
-            return round(distance, 2)
+        distance = get_distance_metres(location, target)
+        return distance
 
     def distance_from_home(self):
-        location = self._HAL['Location']
-        target = self._HAL['HomeLocation']
-        if location is None or target is None:
+        try:
+            location = self.get_location()
+            home = self.get_home()
+        except AssertionError,e:
             return -1
-        else:
-            distance = get_distance_metres(location, target)
-            return round(distance, 2)
+
+        distance = get_distance_metres(location, home)
+        return distance
+
+    def get_attitude(self):
+        assert self.state('Compass'),'Compass is not health'
+        return self._HAL['Attitude']
+
+    def get_heading(self):
+        return self.get_attitude()[2]
+
+    def get_location(self):
+        assert self.state('GPS'),'GPS is not health'
+        location = self._HAL['Location']
+        return location
+
+    def get_home(self):
+        home = self._HAL['HomeLocation']
+        assert home != None,'Home is Null'
+        return home
+
+    def get_target(self):
+        target = self._HAL['Target']
+        assert target != None,'Target is Null'
+        return target
 
     def get_altitude(self, relative=False):
-        init_altitude = self._HAL['InitAltitude']
-        CPressure = self._HAL['Pressure']
-
-        if relative and init_altitude is not None and CPressure is not None:
-            alt = pressure2Alt(CPressure) - init_altitude
-        elif not relative and CPressure is not None:
-            alt = pressure2Alt(CPressure)
+        CPressure = self.get_pressure()
+        init_alt = self.get_init_alt()
+        CurAlt= pressure2Alt(CPressure)
+        if relative:
+            alt = CurAlt - init_alt
         else:
-            alt = None
+            alt = CurAlt
         return alt
+
+    def get_init_alt(self):
+        initAlt = self._HAL['InitAltitude']
+        assert initAlt != None,'Init Altitude is Null'
+        return initAlt
+
+    def get_pressure(self):
+        assert self.state('Baro') == True,'Barometre is not health'
+        return self._HAL['Pressure']
 
     def update_location(self, ProtoLocation, Locaiton):
         if Locaiton is None:
@@ -86,30 +132,36 @@ class uORB(threading.Thread):
     def update_attitude(self, ProtoAttitude, Attitude):
         if Attitude is None:
             return
-        ProtoAttitude.pitch = Attitude[0]
-        ProtoAttitude.roll = Attitude[1]
-        ProtoAttitude.yaw = Attitude[2]
+        ProtoAttitude.pitch,ProtoAttitude.roll,ProtoAttitude.yaw = Attitude
 
     def update_GPS(self):
         gps = self._sensor.gps
-        gps.state = self._HAL['GPS_State']
+        gps.state = self.state('GPS')
         gps.num_stars = self._HAL['NumStars']
-        if self.state("GPS"):
-            self.update_location(gps.location, self._HAL['Location'])
+        try:
+            location = self.get_location()
+            self.update_location(gps.location, location)
+        except AssertionError,e:
+            pass       
 
     def update_compass(self):
         compass = self._sensor.compass
-        compass.state = self._HAL['Compass_State']
-        if self.state("Compass"):
-            self.update_attitude(compass.attitude, self._HAL['Attitude'])
+        compass.state = self.state('Compass')
+        try:
+            attitude = self.get_attitude()
+            self.update_attitude(compass.attitude, attitude)
+        except AssertionError,e:
+            pass
 
     def update_Baro(self):
         baro = self._sensor.baro
-        baro.state = self._HAL['Baro_State']
-        if self.state('Baro') and self._HAL['InitAltitude'] is not None:
-            baro.Pressure = self._HAL['Pressure']
-            baro.Temperature = self._HAL['Temperature']
+        baro.state = self.state('Baro')
+        try:
+            baro.Pressure = self.get_pressure()      
+            baro.Temperature = self._HAL['Temperature']  
             baro.Altitude = self.get_altitude(True)
+        except AssertionError,e:
+            pass
 
     def update_waypoint(self):
         waypoint = self._sensor.waypoint
@@ -180,16 +232,14 @@ if __name__ == "__main__":
 
     ORB = uORB()
     Watcher()
+    # print ORB
 
-    from protobuf.proto_test import protobuf
-    ORB._HAL = protobuf
-
-    wp = Waypoint(ORB)
-    origin = [36.111111, 116.222222]
-    wp.download(origin, 0)
-    wp.add_number()
+    # wp = Waypoint(ORB)
+    # origin = [36.111111, 116.222222]
+    # wp.download(origin, 0)
+    # wp.add_number()
     print ORB.dataflash()
 
-    b = FlightLog.sensors()
-    b.ParseFromString(ORB.dataflash())
-    print b
+    # b = FlightLog.sensors()
+    # b.ParseFromString(ORB.dataflash())
+    # print b

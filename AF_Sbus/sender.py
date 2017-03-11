@@ -25,7 +25,7 @@ class Sbus_Sender(threading.Thread):
 
     def run(self):
         logger.info('Initializing sbus_sender ...')
-        self.publish('Sender_State', True)
+
         switch = config.channels['Switch']
         GCS_PWM = switch[2]
         while True:
@@ -52,7 +52,7 @@ class Sbus_Sender(threading.Thread):
                 CancelWatcher.Cancel = True
                 self.IsRadio = True
                 self.send_package(package)
-            time.sleep(.01)
+            # time.sleep(.01)
             # self.send_package(package)
 
     def send_package(self, package):
@@ -87,9 +87,6 @@ def sbus_start(ORB):
 
     sbus_sender = Sbus_Sender(ORB, com)
     sbus_sender.start()
-
-    while not ORB.state('Sender'):
-        time.sleep(.1)
 
     logger.info('Sbus is OK')
 

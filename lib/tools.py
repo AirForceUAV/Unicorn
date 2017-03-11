@@ -17,10 +17,9 @@ def open_serial(portname, baudrate, timeout=None):
             # print("port:{0},baudrate:{1}".format(portname, baudrate))
             com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
-        except serial.SerialException:
-            info = sys.exc_info()
-            logger.error("{0}:{1}".format(*info))
-            time.sleep(1.0)
+        except serial.SerialException, e:
+            logger.critical(e)
+            time.sleep(1)
 
 
 class Singleton(type):
@@ -94,3 +93,6 @@ class Watcher(object):
             os.kill(self.child, signal.SIGKILL)
         except OSError:
             pass
+
+if __name__ == '__main__':
+    open_serial('/dev/AMA0', 9600)

@@ -1,34 +1,45 @@
 import sys
 sys.path.append('..')
+import time
 import paho.mqtt.client as mqtt
-from keyboard_control import keyboard_event_wait
+from KB_Control import keyboard_event_wait, keyboard_event
 from lib.config import config
+
+ACK = False
 
 
 def on_connect(client, userdata, flags, rc):
     print("Keyboard has connected to mqtt. code:{}".format(rc))
+    client.subscribe('ACK', qos=2)
+
+
+def on_message(client, userdata, msg):
+    global ACK
+    # print 'Receive', msg.payload
+    ACK = True
 
 
 def listen_keyboard(client):
+    global ACK
     print 'start listen keboard'
     precommand = ''
     while True:
+        ACK = False
         command = keyboard_event_wait()
         if command == 'esc':
             print 'Exit listen keyboard'
-            infot = client.publish(config.keyboard_topic, command, qos=2)
-            infot.wait_for_publish()
             return
-
-        # precommand = command
-        print 'keyboard_command', command
+        print 'command', command
         infot = client.publish(config.keyboard_topic, command, qos=2)
         infot.wait_for_publish()
+        while not ACK:
+            time.sleep(.01)
 
 
 def start_client(host, port, id):
     client = mqtt.Client(client_id=id)
     client.on_connect = on_connect
+    client.on_message = on_message
     client.connect(host, port)
     client.loop_start()
     return client

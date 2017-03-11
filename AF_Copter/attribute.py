@@ -16,6 +16,7 @@ class Attribute(object):
         self.ORB = ORB
         logger.info('Drone Type:{}'.format(config.drone['UAV']))
         logger.info('MainController:{}'.format(config.drone['MainController']))
+        self._model = config.drone['Model']
         # Aileron :[No.ch, low ,mid, high ,var, sign, rate]
         self.AIL = config.channels['AIL']
         # Elevator:[No.ch, low ,mid, high ,var, sign, rate]
@@ -39,33 +40,39 @@ class Attribute(object):
         # Switch :[No.ch , 0 , pwm]
         self.Switch = config.channels['Switch']
         self.wp = Waypoint(ORB)
-        self.update_home()
-        self.init_altitude()
+        # self.update_home()
+        # self.init_altitude()
 
     def update_home(self):
         logger.info('Waiting for home location')
-        if not self.check("GPS"):
-            return
-        home = self.get_location()
-        self.publish('HomeLocation', home)
-        logger.info('Home location :{}'.format(home))
+        try:
+            home = self.get_location()
+            self.publish('HomeLocation', home)
+            logger.info('Home location :{}'.format(home))
+        except AssertionError,e:
+            logger.error(e)
+
 
     def init_altitude(self):
         logger.info('Waiting for init altitude')
-        if not self.check("Baro"):
-            return
-        init_pressure = self.subscribe('Pressure')
-        self.publish('InitAltitude', pressure2Alt(init_pressure))
+        try:
+            init_alt = self.get_altitude(False)
+            self.publish('InitAltitude', init_alt)
+            logger.info('Init Altitude :{}'.format(init_alt))
+        except AssertionError,e:
+            logger.error(e)
+
 
     def get_stars(self):
         return self.subscribe('NumStars')
 
     def download(self, index=1):
-        location = self.get_location()
-        if location is None:
-            return
-        # location=[39.11111,116.33333]
-        self.wp.download(location, index)
+        try:
+            location = self.get_location()
+            self.wp.download(location, index)
+        except AssertionError,e:
+            logger.error(e)
+
 
     def Phase(self):
         phase = [0] * 8
@@ -80,9 +87,10 @@ class Attribute(object):
 
     def set_channels_mid(self):
         logger.info('Catching Loiter PWM...')
-        mid = self.subscribe('ChannelsInput')
-        if mid is None:
-            logger.error('Sbus reveiver is not health')
+        if self.state('Sbus'):
+            mid = self.subscribe('ChannelsInput')
+        else:
+            logger.error('Sbus receiver is not health')
             return
         logger.info('Channels Mid:{}'.format(mid))
         self.publish('LoiterPWM', mid)
@@ -91,7 +99,7 @@ class Attribute(object):
         self.THR[2] = mid[self.THR[0]]
         self.RUD[2] = mid[self.RUD[0]]
 
-        if config.drone['Model'] == 'HELI':
+        if self._model == 'HELI':
             self.Rate[2] = mid[self.Rate[0]]
             self.PIT[2] = mid[self.PIT[0]]
 
@@ -100,13 +108,13 @@ class Attribute(object):
             self.publish('Gear', int(Gear) - 1)
 
     def set_target(self, dNorth, dEast):
-        origin = self.get_location()
-        if origin is None:
-            return
-
-        target = get_location_metres(origin, dNorth, dEast)
-        self.publish('Target', target)
-        logger.info('Target is {}'.format(target))
+        try:
+            origin = self.get_location()
+            target = get_location_metres(origin, dNorth, dEast)
+            self.publish('Target', target)
+            logger.info('Target is {}'.format(target))
+        except AssertionError,e:
+            logger.error(e)
 
     def set_target_angle(self, distance, angle):
         angle = (360 + angle) % 360
@@ -115,44 +123,16 @@ class Attribute(object):
         self.set_target(dNorth, dEast)
 
     def get_target(self):
-        return self.subscribe('Target')
-
-    def check(self, sensor):
-        if not config.has_module(sensor):
-            logger.warn('{} is closed'.format(sensor))
-            return False
-        if not self.state(sensor):
-            logger.error('{} is not health'.format(sensor))
-            return False
-        return True
-
-    def get_pitch(self):
-        if not self.check("Comapss"):
-            return None
-        return self.subscribe('Attitude')[0]
-
-    def get_roll(self):
-        if not self.check("Comapss"):
-            return None
-        return self.subscribe('Attitude')[1]
-
-    def get_heading(self):
-        if not self.check("Comapss"):
-            return None
-        return self.subscribe('Attitude')[2]
-
-    def get_attitude(self):
-        if not self.check("Comapss"):
-            return None
-        return self.subscribe('Attitude')
+        return self.ORB.get_target()
 
     def get_home(self):
-        return self.subscribe("HomeLocation")
+        return self.ORB.get_home()
 
     def get_location(self):
-        if not self.check("GPS"):
-            return None
-        return self.subscribe('Location')
+        return self.ORB.get_location()
+
+    def get_heading(self):
+        return self.ORB.get_attitude()[2]
 
     def get_altitude(self, relative=False):
         return self.ORB.get_altitude(relative)
@@ -165,3 +145,19 @@ class Attribute(object):
 
     def state(self, module):
         return self.ORB.state(module)
+
+    def has_module(self, module):
+        return config.has_module(module)
+
+if __name__ == "__main__":
+    from AF_uORB.uORB import uORB
+
+    ORB = uORB()
+    
+    try:
+        print attr.get_location()
+        print attr.get_home()
+        print attr.get_target()
+        print attr.get_heading()
+    except AssertionError,e:
+        logger.error(e)

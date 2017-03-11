@@ -131,9 +131,9 @@ class IMU(threading.Thread):
 def IMU_start(ORB):
     imu = IMU(ORB)
     imu.start()
-    while not ORB.subscribe('IMU_State'):
+    while not ORB.state('IMU'):
         time.sleep(.1)
-    logger.info('IMU is OK')
+    logger.info('>>> IMU is OK')
 
 if __name__ == "__main__":
     from lib.tools import Watcher

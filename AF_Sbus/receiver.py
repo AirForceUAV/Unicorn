@@ -24,15 +24,17 @@ class Sbus_Receiver(threading.Thread):
 
     def run(self):
         logger.info("Initializing sbus_receiver ...")
-        self.publish('Sbus_State', True)
+
         while True:
             self._sbus.flushInput()
             try:
                 package = self._sbus.read(50).encode('hex')
                 # package = self._sbus.readline().encode('hex').strip()
             except serial.SerialException:
+                self.publish('Sbus_State', False)
                 info = sys.exc_info()
                 logger.error("{0}:{1}".format(*info))
+                continue
             # print 'package', package
 
             if package is '':
@@ -49,12 +51,12 @@ class Sbus_Receiver(threading.Thread):
             if not self.check(input):
                 continue
             self.publish('ChannelsInput', input)
+            self.publish('Sbus_State', True)
             # time.sleep(.01)
 
     def check(self, channel):
         Flag = True
         for x, y in zip(channel, config.volume):
-
             if not (x > y[0] - 10 and x < y[2] + 10):
                 Flag = False
                 break
@@ -77,7 +79,7 @@ def sbus_receive_start(ORB, com=None):
         com = build_sbus()
     sbus_receiver = Sbus_Receiver(ORB, com)
     sbus_receiver.start()
-    while not ORB.state('Sbus') or ORB._HAL['ChannelsInput'] == None:
+    while not ORB.state('Sbus'):
         time.sleep(.1)
 
 if __name__ == "__main__":
@@ -90,7 +92,6 @@ if __name__ == "__main__":
     sbus_receive_start(ORB)
     from AF_ML.Curve import THR2PIT
     while True:
-        # print sbus_receiver
         input = ORB.subscribe('ChannelsInput')
         print input
         # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])

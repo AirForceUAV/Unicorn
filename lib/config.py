@@ -120,3 +120,4 @@ if __name__ == '__main__':
     # # print 'channels volume', config.volume
     # print 'open module', config.open_module
     # print 'commands', config.commands
+    # print config.has_module('GCS')

@@ -69,7 +69,7 @@ class Executor(threading.Thread):
                 # self.vehicle.Cancel()
 
 
-def cloud_start(ORB, vehicle=None, lidar=None):
+def GCS_start(ORB, vehicle=None, lidar=None):
     print('Initialize Cloud ...')
 
     from apscheduler.schedulers.background import BackgroundScheduler
@@ -101,8 +101,5 @@ if __name__ == "__main__":
     ORB = uORB()
     Watcher()
 
-    from protobuf.proto_test import protobuf
-    ORB._HAL = protobuf
-
     vehicle = Vehicle(ORB)
-    cloud_start(ORB, vehicle)
+    GCS_start(ORB, vehicle)

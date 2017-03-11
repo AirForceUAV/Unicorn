@@ -7,10 +7,17 @@ import keyboard
 import time
 from lib.logger import logger
 
-keyboard_event = {'w': 'FORWARD', 's': 'BACKWARD',
-                  'a': 'LEFT_ROLL', 'd': 'RIGHT_ROLL',
-                  'page up': 'UP', 'page down': 'DOWN',
-                  'space': 'STOP', 'esc': 'esc'}
+# keyboard_event = {'w': 'FORWARD', 's': 'BACKWARD',
+#                   'a': 'LEFT_ROLL', 'd': 'RIGHT_ROLL',
+#                   'page up': 'UP', 'page down': 'DOWN',
+#                   'space': 'STOP', 'esc': 'esc'}
+
+keyboard_event = {'w': '1', 's': '2',
+                  'a': '16', 'd': '32',
+                  'page up': '64', 'page down': '128',
+                  'space': '0', 
+                  'q':'4','e':'32',
+                  'esc': 'esc'}
 
 map_event_args = {'FORWARD': ('ELE', 1), 'BACKWARD': ('ELE', -1),
                   'LEFT_ROLL': ('AIL', -1), 'RIGHT_ROLL': ('AIL', 1),
@@ -75,7 +82,7 @@ def main():
             print'esc'
             return
 
-        exe_cmd(None, command)
+        # exe_cmd(None, command)
 
 if __name__ == '__main__':
     main()

@@ -48,7 +48,7 @@ class Waypoint(object):
         self.publish('WaypointID', 0)
         # self.publish('WaypointType', 'Download')
 
-        print('Trail:{}\nWaypoints:{}'.format(
+        logger.debug('Trail:{}\nWaypoints:{}'.format(
             Trail, self.subscribe('Waypoint')))
         logger.info('Download complete')
 
@@ -68,7 +68,7 @@ class Waypoint(object):
         logger.info('Route planning complete')
 
     def remain_wp(self):
-        return self.points[self.ID:] if self.ID is not -1 else []
+        return self.points[self.ID:] if self.ID != -1 else []
 
     def add_number(self):
         a = len(self.points) - 1

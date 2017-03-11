@@ -11,6 +11,7 @@ from lib.config import config
 from lib.tools import CancelWatcher, Singleton
 from lib.science import get_distance_metres, angle_heading_target, angle_diff
 from lib.logger import logger
+from lib.parse import parseError
 
 
 class Vehicle(Attribute):
@@ -22,9 +23,9 @@ class Vehicle(Attribute):
         self.Epsilon = 20
         self.radius = 5
         self.frequence = 1
-        self.prepre_state = 'STOP'
-        self.pre_state = 'STOP'
-        self._state = 'STOP'
+        self.prepre_state = [0]
+        self.pre_state = [0]
+        self._state = [0]
 
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
@@ -88,7 +89,7 @@ class Vehicle(Attribute):
         return channel[2] + sign * variation
 
     def movement3(self, channel, percent=0):
-        # -100 <= percent <= 100. By Percent of PWM
+        # -100 <= percent <= 100. By Percent
         sign = 0
         if percent < 0:
             sign = -1
@@ -104,12 +105,12 @@ class Vehicle(Attribute):
     def GradualTHR(self, begin, end):
         watcher = CancelWatcher()
         if begin <= end:
-            while begin <= end and not watcher.IsCancel():
+            while begin < end and not watcher.IsCancel():
                 self.control_percent(THR=begin)
                 begin += 1
                 time.sleep(0.05)
         else:
-            while begin >= end and not watcher.IsCancel():
+            while begin > end and not watcher.IsCancel():
                 self.control_percent(THR=begin)
                 begin -= 1
                 time.sleep(0.05)
@@ -139,115 +140,77 @@ class Vehicle(Attribute):
 
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
-        logger.info('Takeoff to {} m'.format(alt))
-        if not config.has_module('Baro'):
-            logger.warn('Baro is closed')
+        if not self.state('Baro'):
             return
+        logger.info('Takeoff to {} m'.format(alt))      
 
         self.escalate(0, 60)
 
         while not watcher.IsCancel():
-            currentAlt = self.get_alttitude(True)
-            logger.debug('Current Altitude :{}'.format(currentAlt))
-            if currentAlt is None:
-                logger.error('Baro is not health')
+            try:
+                currentAlt = self.get_altitude(True)
+            except AssertionError,e:
+                logger.error(e)
                 break
             if currentAlt > alt * 0.95:
                 logger.info('Reached Altitude :{}'.format(currentAlt))
                 break
-            time.sleep(.1)
+            time.sleep(.01)
 
         self.brake()
 
     def land(self):
         logger.info('Landing...')
-        if not config.has_module('Baro'):
-            logger.warn('Baro is closed')
-            return
 
-        # self.control_FRU(0, 0, -1)
-        # watcher = CancelWatcher()
-        # time.sleep(3)
-        # preAlt = self.get_altitude()
-        # times = 0
-        # while not watcher.IsCancel():
-        #     currentAlt = self.get_altitude()
-        #     print 'Current Altitude', currentAlt
-        #     if currentAlt is None:
-        #         self.brake()
-        #         return -1
-
-        #     if abs(currentAlt - preAlt) < 0.2:
-        #         times += 1
-        #     else:
-        #         times = 0
-        #     if times >= 5:
-        #         break
-        #     if currentAlt > alt * 0.9:
-        #         print 'Reached Altitude'
-        #         break
-        # if not watcher.IsCancel():
-        #     self.disarm()
 
     def up_metres(self, altitude, relative=True):
         if altitude <= 0:
-            logger.warn('Altitude({}) is unvalid'.format(altitude))
+            logger.warn('Altitude({}) is invalid'.format(altitude))
             return
-        if not config.has_module('Baro'):
-            logger.warn('Baro is closed')
-            return
-        CAlt = self.get_altitude(False)
-        if CAlt is None:
-            logger.error('Baro is not health')
-            return
-        if relative:
-            TAlt = CAlt + altitude
-        else:
-            IAlt = self.ORB._HAL['InitAltitude']
-            if IAlt is None:
-                logger.error('InitAltitude is null')
+        try:
+            CAlt = self.get_altitude(False)
+             
+            if relative:
+                TAlt = CAlt + altitude
+            else:
+                init_alt = self.ORB.get_init_alt()
+                TAlt = init_alt + altitude
+            if TAlt < CAlt:
+                logger.warn('TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
                 return
-            TAlt = IAlt + altitude
-        if TAlt < CAlt:
-            logger.warn(
-                'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
-            return
-        self.control_FRU(THR=1)
-        watcher = CancelWatcher()
-        while not watcher.IsCancel():
-            CAlt = self.get_altitude(False)
-            if CAlt is None or CAlt >= TAlt:
-                break
-            time.sleep(.1)
-        self.brake()
+            self.control_FRU(THR=1)
+            watcher = CancelWatcher()
+            while not watcher.IsCancel():
+                CAlt = self.get_altitude(False)
+                if CAlt >= TAlt:
+                    break
+                time.sleep(.1)
+            self.brake()
+        except AssertionError,e:
+            logger.error(e) 
+            
 
-    def down_metres(self, altitude, relative=True):
+    def down_metres(self, altitude):
+        watcher=CancelWatcher()
         if altitude <= 0:
-            logger.warn('Altitude({}) is unvalid'.format(altitude))
+            logger.warn('Altitude({}) is invalid'.format(altitude))
             return
-        if not config.has_module('Baro'):
-            logger.warn('Baro is closed')
-            return
-        CAlt = self.get_altitude(False)
-        if CAlt is None:
-            logger.error('Barometre is not health')
-            return
-
-        TAlt = CAlt - altitude
-        IAlt = self.ORB._HAL['InitAltitude']
-        if IAlt is None:
-            logger.error('InitAltitude is null')
-            return
-        if TAlt < IAlt + 1:
-            logger.warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
-            return
-        self.control_FRU(THR=-1)
-        watcher = CancelWatcher()
-        while not watcher.IsCancel():
-            CAlt = self.get_altitude(False)
-            if CAlt is None or CAlt <= TAlt:
-                break
-        self.brake()
+        try:
+            CurAlt = self.get_altitude(False)
+            TarAlt = CAlt - altitude
+            InitAlt = self.ORB.get_init_alt()
+            if TAlt < IAlt + 1:
+                logger.warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
+                return
+            self.control_FRU(THR=-1)
+            watcher = CancelWatcher()
+            while not watcher.IsCancel():
+                CAlt = self.get_altitude(False)
+                if CAlt <= TAlt:
+                    break
+            self.brake()
+        except AssertionError,e:
+            logger.error(e)
 
     def yaw_left(self):
         self.control_FRU(RUD=-1)
@@ -325,14 +288,13 @@ class Vehicle(Attribute):
         """
         0<=heading<360 (anti-clockwise)
         """
-        if heading <= 0 or heading >= 360:
+        if config.debug:
+            logger.warn('condition_yaw() ...')
             return
-
         watcher = CancelWatcher()
+        assert heading >= 0 and heading <360,'Param-heading {} is invalid'.format(heading)
+   
         CYaw = self.get_heading()
-        if CYaw is None:
-            return
-        # Relative angle to heading
         target_angle = angle_diff(CYaw, heading)
         TurnAngle = angle_diff(CYaw, target_angle)
 
@@ -348,129 +310,123 @@ class Vehicle(Attribute):
         logger.debug("Target Angle: %d" % target_angle)
         while not watcher.IsCancel():
             CYaw = self.get_heading()
-            if CYaw is None:
-                break
             if self.isStop(CYaw, target_angle, is_cw):
                 break
-            # logger.debug('{},{}'.format(CYaw, target_angle))
-        # logger.debug("Before Angle:{}".format(self.get_heading()))
         self.brake()
-        logger.debug("After  Angle:{}".format(self.get_heading()))
+        logger.debug("Fact Angle: %d" % self.get_heading())
 
-    def navigation(self, target):
-        self.publish('Target', target)
+
+    def navigation(self):
         watcher = CancelWatcher()
         radius = self.radius
         frequency = self.frequence
-        CLocation = self.get_location()
-        CYaw = self.get_heading()
-        if CLocation is None or CYaw is None or target is None:
-            return
-
-        init_angle = angle_heading_target(CLocation, target, CYaw)
-        self.condition_yaw(init_angle)
-
-        while not watcher.IsCancel():
+        try:
+            target = self.get_target()
             CLocation = self.get_location()
             CYaw = self.get_heading()
-            if CLocation is None or CYaw is None:
-                break
-            distance = get_distance_metres(CLocation, target)
-            angle = angle_heading_target(CLocation, target, CYaw)
 
-            if not self.InAngle(angle, 90) or distance <= radius:
-                logger.info("Reached Target!")
-                break
+            init_angle = angle_heading_target(CLocation, target, CYaw)
+            self.condition_yaw(init_angle)
 
-            EAngle = int(math.degrees(math.asin(radius / distance)))
+            while not watcher.IsCancel():
+                CLocation = self.get_location()
+                CYaw = self.get_heading()
+                distance = get_distance_metres(CLocation, target)
+                angle = angle_heading_target(CLocation, target, CYaw)
 
-            self._debug('{} {} {}'.format(distance, angle, EAngle))
+                if not self.InAngle(angle, 90) or distance <= radius:
+                    logger.info("Reached Target!")
+                    return True
 
-            if not self.InAngle(angle, max(EAngle, self.Epsilon)):
-                self.brake()
-                self.condition_yaw(angle)
-            self.forward()
-            time.sleep(frequency)
-            # raw_input('next')
-        self.brake()
+                EAngle = int(math.degrees(math.asin(radius / distance)))
 
-    def navigation1(self, target):
-        self.publish('Target', target)
-        watcher = CancelWatcher()
-        radius = self.radius
-        frequency = self.frequence
+                self._debug('{} {} {}'.format(distance, angle, EAngle))
 
-        CLocation = self.get_location()
-        CYaw = self.get_heading()
-        if CLocation is None or CYaw is None or target is None:
-            return
-
-        init_angle = angle_heading_target(CLocation, target, CYaw)
-        self.condition_yaw(init_angle)
-
-        while not watcher.IsCancel():
-            CLocation = self.get_location()
-            CYaw = self.get_heading()
-            if CLocation is None or CYaw is None:
-                break
-            distance = get_distance_metres(CLocation, target)
-            angle = angle_heading_target(CLocation, target, CYaw)
-
-            if not self.InAngle(angle, 90) or distance <= radius:
-                # if distance <= radius:
-                logger.info("Reached Target Waypoint!")
-                break
-            EAngle = int(math.degrees(math.asin(radius / distance)))
-
-            self._debug('{} {} {}'.format(distance, angle, EAngle))
-
-            if self.InAngle(angle, max(EAngle, self.Epsilon)):
-                self.control_FRU(ELE=1)
-            else:
-                if angle > EAngle and angle <= 90:
-                    logger.debug('Roll Left')
-                    self.control_FRU(AIL=-1, ELE=1)
-                elif angle >= 270 and angle < 360 - EAngle:
-                    logger.debug('Roll Right')
-                    self.control_FRU(AIL=1, ELE=1)
-                else:
+                if not self.InAngle(angle, max(EAngle, self.Epsilon)):
                     self.brake()
                     self.condition_yaw(angle)
-            time.sleep(frequency)
-            # raw_input('next')
-        self.brake()
+                self.forward()
+                time.sleep(frequency)
+                # raw_input('next')
+        except AssertionError,e:
+            self.brake()
+            logger.error(e)
+            return False
 
-    def navigation2(self, target):
-        self.publish('Target', target)
+    def navigation1(self):
         watcher = CancelWatcher()
         radius = self.radius
-        frequency = 1
-        CLocation = self.get_location()
-        CYaw = self.get_heading()
-        if CLocation is None or CYaw is None or target is None:
-            return
-
-        init_angle = angle_heading_target(CLocation, target, CYaw)
-        self.condition_yaw(init_angle)
-
-        while not watcher.IsCancel():
+        frequency = self.frequence
+        try:
+            target = self.get_target()
             CLocation = self.get_location()
             CYaw = self.get_heading()
-            if CLocation is None or CYaw is None:
-                break
-            distance = get_distance_metres(CLocation, target)
-            angle = angle_heading_target(CLocation, target, CYaw)
+        
+            init_angle = angle_heading_target(CLocation, target, CYaw)
+            self.condition_yaw(init_angle)
 
-            self._debug('{} {}'.format(distance, angle))
+            while not watcher.IsCancel():
+                CLocation = self.get_location()
+                CYaw = self.get_heading()
 
-            if not self.InAngle(angle, 90) or distance <= radius:
-                logger.info("Reached Target!")
-                break
+                distance = get_distance_metres(CLocation, target)
+                angle = angle_heading_target(CLocation, target, CYaw)
 
-            self.forward()
-            time.sleep(frequency)
-            # raw_input('next')
-        self.brake()
+                if not self.InAngle(angle, 90) or distance <= radius:
+                    # if distance <= radius:
+                    logger.info("Reached Target Waypoint!")
+                    return True
+                EAngle = int(math.degrees(math.asin(radius / distance)))
+
+                self._debug('{} {} {}'.format(distance, angle, EAngle))
+
+                if self.InAngle(angle, max(EAngle, self.Epsilon)):
+                    self.control_FRU(ELE=1)
+                else:
+                    if angle > EAngle and angle <= 90:
+                        logger.debug('Roll Left')
+                        self.control_FRU(AIL=-1, ELE=1)
+                    elif angle >= 270 and angle < 360 - EAngle:
+                        logger.debug('Roll Right')
+                        self.control_FRU(AIL=1, ELE=1)
+                    else:
+                        self.brake()
+                        self.condition_yaw(angle)
+                time.sleep(frequency)
+        except AssertionError,e:
+            self.brake()
+            logger.error(e)
+            return False
+
+    def navigation2(self):
+        watcher = CancelWatcher()
+        radius = self.radius
+        frequency = self.frequence
+        try:
+            target = self.get_target()
+            CLocation = self.get_location()
+            CYaw = self.get_heading()
+
+            init_angle = angle_heading_target(CLocation, target, CYaw)
+            self.condition_yaw(init_angle)
+
+            while not watcher.IsCancel():
+                CLocation = self.get_location()
+                CYaw = self.get_heading()
+                distance = get_distance_metres(CLocation, target)
+                angle = angle_heading_target(CLocation, target, CYaw)
+
+                self._debug('{} {}'.format(distance, angle))
+
+                if not self.InAngle(angle, 90) or distance <= radius:
+                    logger.info("Reached Target!")
+                    return True
+                self.forward()
+                time.sleep(frequency)     
+        except AssertionError,e:
+            self.brake()
+            logger.error(e)
+            return False 
 
     def InAngle(self, angle, EAngle):
         if angle < 360 - EAngle and angle > EAngle:
@@ -479,21 +435,20 @@ class Vehicle(Attribute):
             return True
 
     def Guided(self):
-        target = self.get_target()
-        if target is None:
-            logger.warn("Target is None!")
-            return
+        logger.info('GUIDED...')
         self.publish('Mode', 'GUIDED')
-
-        self.navigation(target)
+        self.navigation()
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
 
     def RTL(self):
-        target = self.get_home()
-        if target is None:
-            logger.warn("Home is None!")
+        logger.info('RTL...')
+        try:
+            home = self.get_home()
+        except AssertionError,e:
+            logger.error(e)
             return
+       
         self.publish('Mode', 'RTL')
 
         self.navigation(target)
@@ -505,16 +460,17 @@ class Vehicle(Attribute):
         # self.Auto()
 
     def Auto(self):
+        logger.info('Auto...')
         if self.wp.isNull():
-            logger.info('Waypoint is None')
+            logger.error('Waypoint is None')
             return
         self.publish('Mode', 'Auto')
         watcher = CancelWatcher()
-        for point in self.wp.remain_wp():
+        for point in self.wp.points:
             if watcher.IsCancel():
                 break
-
-            self.navigation(point)
+            self.publish('Target',point)
+            self.navigation()
             self.wp.add_number()
 
         self.publish('Mode', 'Loiter')
@@ -567,16 +523,16 @@ if __name__ == "__main__":
     for c in config.commands:
         enter = raw_input(c + '?').strip()
 
-        if enter == 'c' or enter == 'C':
+        if enter == 'c':
             continue
-        elif enter == 'b' or enter == 'B':
+        elif enter == 'b':
             break
         else:
             command = 'vehicle.' + c
-            # print 'Execute command ->', command
+            print 'Execute command ->', command
             try:
                 eval(command)
-            except Exception:
+            except Exception,e:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
                 vehicle.Cancel()

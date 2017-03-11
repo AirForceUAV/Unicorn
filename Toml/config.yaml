@@ -1,10 +1,10 @@
-SystemID = 3
+SystemID = 2
 version = "beta"
 # version = "alpha"
 client_id = "FC"
 debug = false
 open_module = [
-    'Sbus',
+    # 'Sbus',
     # 'Compass',
     # 'GPS',
     # 'Baro',

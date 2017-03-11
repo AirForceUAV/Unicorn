@@ -84,9 +84,9 @@ class Compass(threading.Thread):
 def compass_start(ORB):
     compass = Compass(ORB)
     compass.start()
-    while not ORB.subscribe('Compass_State'):
+    while not ORB.state('Compass'):
         time.sleep(.1)
-    logger.info('Compass is OK')
+    logger.info('>>> Compass is OK')
 
 if __name__ == '__main__':
     from lib.tools import Watcher
@@ -99,4 +99,4 @@ if __name__ == '__main__':
 
     while True:
         print ORB.subscribe('Attitude')
-        time.sleep(.1)
+        # time.sleep(.1)
