@@ -339,7 +339,7 @@ class Vehicle(Attribute):
 
                 EAngle = int(math.degrees(math.asin(radius / distance)))
 
-                self._debug('{} {} {}'.format(distance, angle, EAngle))
+                logger.debug('{} {} {}'.format(distance, angle, EAngle))
 
                 if not self.InAngle(angle, max(EAngle, self.Epsilon)):
                     self.brake()
@@ -377,7 +377,7 @@ class Vehicle(Attribute):
                     return True
                 EAngle = int(math.degrees(math.asin(radius / distance)))
 
-                self._debug('{} {} {}'.format(distance, angle, EAngle))
+                logger.debug('{} {} {}'.format(distance, angle, EAngle))
 
                 if self.InAngle(angle, max(EAngle, self.Epsilon)):
                     self.control_FRU(ELE=1)
@@ -415,7 +415,7 @@ class Vehicle(Attribute):
                 distance = get_distance_metres(CLocation, target)
                 angle = angle_heading_target(CLocation, target, CYaw)
 
-                self._debug('{} {}'.format(distance, angle))
+                logger.debug('{} {}'.format(distance, angle))
 
                 if not self.InAngle(angle, 90) or distance <= radius:
                     logger.info("Reached Target!")
@@ -436,7 +436,9 @@ class Vehicle(Attribute):
     def Guided(self):
         logger.info('GUIDED...')
         self.publish('Mode', 'GUIDED')
-        self.navigation()
+        result=self.navigation()
+        if not result:
+            logger.error("Navigation except exit")
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
 
@@ -450,7 +452,9 @@ class Vehicle(Attribute):
        
         self.publish('Mode', 'RTL')
 
-        self.navigation(target)
+        result=self.navigation()
+        if not result:
+            logger.error("Navigation except exit")
         # self.land()
         self.publish('Mode', 'STAB')
 
@@ -469,7 +473,9 @@ class Vehicle(Attribute):
             if watcher.IsCancel():
                 break
             self.publish('Target',point)
-            self.navigation()
+            result=self.navigation()
+            if not result:
+                logger.error("Navigation except exit")
             self.wp.add_number()
 
         self.publish('Mode', 'Loiter')
@@ -518,7 +524,9 @@ if __name__ == "__main__":
 
     # Initialize UAV
     vehicle = Vehicle(ORB)
-
+    vehicle.set_target(-20,0)
+    # vehicle.Guided()
+    vehicle.Auto()
     for c in config.commands:
         enter = raw_input(c + '?').strip()
 
