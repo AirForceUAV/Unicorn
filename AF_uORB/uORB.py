@@ -247,6 +247,6 @@ if __name__ == "__main__":
     # wp.add_number()
     print ORB.dataflash()
 
-    # b = FlightLog.sensors()
-    # b.ParseFromString(ORB.dataflash())
-    # print b
+    b = FlightLog.sensors()
+    b.ParseFromString(ORB.dataflash())
+    print b.gps

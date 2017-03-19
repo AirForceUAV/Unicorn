@@ -40,8 +40,8 @@ class Attribute(object):
         # Switch :[No.ch , 0 , pwm]
         self.Switch = config.channels['Switch']
         self.wp = Waypoint(ORB)
-        # self.update_home()
-        # self.init_altitude()
+        self.update_home()
+        self.init_altitude()
 
     def update_home(self):
         logger.info('Waiting for home location')
@@ -49,9 +49,8 @@ class Attribute(object):
             home = self.get_location()
             self.publish('HomeLocation', home)
             logger.info('Home location :{}'.format(home))
-        except AssertionError,e:
+        except AssertionError, e:
             logger.error(e)
-
 
     def init_altitude(self):
         logger.info('Waiting for init altitude')
@@ -59,9 +58,8 @@ class Attribute(object):
             init_alt = self.get_altitude(False)
             self.publish('InitAltitude', init_alt)
             logger.info('Init Altitude :{}'.format(init_alt))
-        except AssertionError,e:
+        except AssertionError, e:
             logger.error(e)
-
 
     def get_stars(self):
         return self.subscribe('NumStars')
@@ -70,9 +68,8 @@ class Attribute(object):
         try:
             location = self.get_location()
             self.wp.download(location, index)
-        except AssertionError,e:
+        except AssertionError, e:
             logger.error(e)
-
 
     def Phase(self):
         phase = [0] * 8
@@ -91,7 +88,7 @@ class Attribute(object):
             mid = self.subscribe('ChannelsInput')
         else:
             logger.error('Sbus receiver is not health')
-            return
+            return False
         logger.info('Channels Mid:{}'.format(mid))
         self.publish('LoiterPWM', mid)
         self.AIL[2] = mid[self.AIL[0]]
@@ -102,10 +99,14 @@ class Attribute(object):
         if self._model == 'HELI':
             self.Rate[2] = mid[self.Rate[0]]
             self.PIT[2] = mid[self.PIT[0]]
+        return True
 
     def set_gear(self, Gear):
         if int(Gear) in [1, 2, 3]:
             self.publish('Gear', int(Gear) - 1)
+            return True
+        else:
+            return False
 
     def set_target(self, dNorth, dEast):
         try:
@@ -113,8 +114,10 @@ class Attribute(object):
             target = get_location_metres(origin, dNorth, dEast)
             self.publish('Target', target)
             logger.info('Target is {}'.format(target))
-        except AssertionError,e:
+            return True
+        except AssertionError, e:
             logger.error(e)
+            return False
 
     def set_target_angle(self, distance, angle):
         angle = (360 + angle) % 360
@@ -153,11 +156,11 @@ if __name__ == "__main__":
     from AF_uORB.uORB import uORB
 
     ORB = uORB()
-    
+
     try:
         print attr.get_location()
         print attr.get_home()
         print attr.get_target()
         print attr.get_heading()
-    except AssertionError,e:
+    except AssertionError, e:
         logger.error(e)

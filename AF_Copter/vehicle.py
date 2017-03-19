@@ -44,7 +44,7 @@ class Vehicle(Attribute):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
-        channels[self.THR[0]] = self.movement2(self.THR, THR)
+        channels[self.THR[0]] = self.movement(self.THR, THR)
         channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
@@ -127,15 +127,14 @@ class Vehicle(Attribute):
 
     def arm(self):
         logger.info("Arming ...")
-        if config.drone['Model'] == 'HELI':
-            return
+
         self.control_stick(-1, -1, -1, 1)
         # time.sleep(2)
         # self.disarm()
 
     def disarm(self):
         logger.info('DisArmed ...')
-        self.control_stick(THR=-1, Mode=2)
+        self.control_stick(THR=-1)
 
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
@@ -177,7 +176,7 @@ class Vehicle(Attribute):
             if TAlt < CAlt:
                 logger.warn('TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
                 return
-            self.control_FRU(THR=1)
+            self.GradualTHR(0,60)
             watcher = CancelWatcher()
             while not watcher.IsCancel():
                 CAlt = self.get_altitude(False)
@@ -224,50 +223,50 @@ class Vehicle(Attribute):
     def yaw_left_brake(self):
         logger.info('Yaw Left')
         self.control_FRU(RUD=-1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def yaw_right_brake(self):
         logger.info('Yaw Right')
         self.control_FRU(RUD=1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def forward_brake(self):
         logger.info('Forward')
         self.control_FRU(ELE=1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def backward_brake(self):
         logger.info('Backward')
         self.control_FRU(ELE=-1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def roll_left_brake(self):
         logger.info('Roll Left')
         self.control_FRU(AIL=-1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def roll_right_brake(self):
         logger.info('Roll Right')
         self.control_FRU(AIL=1)
-        time.sleep(self.moveTime)
-        self.brake()
+        # time.sleep(self.moveTime)
+        # self.brake()
 
     def up_brake(self):
         logger.info('Throttle Up')
         self.control_FRU(THR=1)
-        time.sleep(self.moveTime)
-        self.brake(1)
+        # time.sleep(self.moveTime)
+        # self.brake(1)
 
     def down_brake(self):
         logger.info('Throttle Down')
         self.control_FRU(THR=-1)
-        time.sleep(self.moveTime)
-        self.brake(1)
+        # time.sleep(self.moveTime)
+        # self.brake(1)
 
     def send_pwm(self, channels):
         # self._debug(channels)
@@ -439,24 +438,26 @@ class Vehicle(Attribute):
         result=self.navigation()
         if not result:
             logger.error("Navigation except exit")
-        self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
+            return False
+        self.Guided_finally()
+        return Trueself
 
     def RTL(self):
         logger.info('RTL...')
+        self.publish('Mode', 'RTL')
         try:
             home = self.get_home()
         except AssertionError,e:
             logger.error(e)
-            return
-       
-        self.publish('Mode', 'RTL')
+            return False
 
         result=self.navigation()
         if not result:
             logger.error("Navigation except exit")
+            return False
         # self.land()
-        self.publish('Mode', 'STAB')
+        self.Guided_finally()
+        return True
 
     def Route(self, info):
         self.wp.Route(info)
@@ -466,18 +467,28 @@ class Vehicle(Attribute):
         logger.info('Auto...')
         if self.wp.isNull():
             logger.error('Waypoint is None')
-            return
+            return False
         self.publish('Mode', 'Auto')
         watcher = CancelWatcher()
         for point in self.wp.points:
             if watcher.IsCancel():
-                break
+                self.Auto_finally()
+                return False
             self.publish('Target',point)
             result=self.navigation()
             if not result:
                 logger.error("Navigation except exit")
+                return False
             self.wp.add_number()
+        self.Auto_finally()
+        return True
 
+    def Guided_finally(self):
+        self.publish('Mode', 'Loiter')
+        self.publish('Target', None)
+
+
+    def Auto_finally(self):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
         self.wp.clear()
@@ -487,13 +498,7 @@ class Vehicle(Attribute):
         time.sleep(.1)
         self.brake()
 
-if __name__ == "__main__":
-    from AF_uORB.uORB import uORB
-    from lib.tools import Watcher
-
-    ORB = uORB()
-    Watcher()
-
+def init_sensors(ORB):
     if config.has_module('Sbus'):
         # Initialize SBUS
         from AF_Sbus.sender import sbus_start
@@ -519,16 +524,29 @@ if __name__ == "__main__":
         from AF_Sensors.IMU import IMU_start
         IMU_start(ORB)
 
-    # Save FlightLog to SD card
+def init_vehicle(ORB):
+
+    init_sensors(ORB)
+    '''Save FlightLog to SD card'''
     # ORB.start()
 
-    # Initialize UAV
     vehicle = Vehicle(ORB)
-    vehicle.set_target(-20,0)
+    return vehicle
+
+if __name__ == "__main__":
+    from lib.tools import Watcher
+    from AF_uORB.uORB import uORB
+
+    ORB = uORB()
+    Watcher()
+    
+    '''Initialize UAV'''
+    vehicle = init_vehicle(ORB)
+    # vehicle.set_target(-20,0)
     # vehicle.Guided()
-    vehicle.Auto()
+    # vehicle.Auto()
     for c in config.commands:
-        enter = raw_input(c + '?').strip()
+        enter = raw_input(c + ' ?').strip()
 
         if enter == 'c':
             continue

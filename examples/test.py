@@ -29,13 +29,9 @@ def receive_command():
 
 
 if __name__ == '__main__':
-    # p = Pool(2)
-    # p.apply_async(send_log)
-    # p.apply_async(receive_command)
-    # p.close()
-    # p.join()
-    from logbook import Logger, StreamHandler
-    import sys
-    StreamHandler(sys.stdout).push_application()
-    log = Logger('My Awesome Logger')
-    log.warn('This is too cool for stdlib')
+    p = Pool(2)
+    p.apply_async(send_log)
+    p.apply_async(receive_command)
+    p.close()
+    p.join()
+

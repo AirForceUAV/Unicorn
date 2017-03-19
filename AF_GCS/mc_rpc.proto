@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package mc_rpc;
+
+enum Action {
+    STOP            = 0;
+    FORWARD         = 1;
+    BACKWARD        = 2;
+    LEFT_YAW        = 4;
+    RIGHT_YAW       = 8;
+    LEFT_ROLL       = 16;
+    RIGHT_ROLL      = 32;
+    UP              = 64;
+    DOWN            = 128;
+    INVALID         = 0xee;
+    ANY             = 0xff;
+}
+
+message response{
+    int32 id = 1;
+    bool ack = 2;
+}
+
+message movement{
+	int32 id = 1;
+    repeated Action actions = 2;
+}
+
+message Gear{
+	int32 id = 1;
+    int32 index = 2;
+}
+
+message DistanceMetres{
+	int32 id = 1;
+	float North = 2;
+	float East = 3;
+}
+
+message DistanceAngle{
+	int32 id = 1;
+	float distance = 2;
+	int32 angle = 3;
+}
+
+message point{
+	float latitude = 1;
+	float longitude = 2;
+	float altitude = 3;
+}
+message waypoints{
+	int32 id = 1;
+	repeated point points = 2;
+}
+
+message id{
+	float id = 1;
+}
+
+service FC {
+	rpc ResetLoiter(id) returns (response) {}
+    rpc ControlFRU(movement) returns (response) {}  
+	rpc SetGear(Gear) returns (response) {}
+	rpc TargetByMetres(DistanceMetres) returns (response) {} 
+	rpc TargetByAngle(DistanceAngle) returns (response) {} 
+	rpc PlanRoute(waypoints) returns (response) {}
+	rpc Guided(id) returns (response) {} 
+	rpc RTL(id) returns (response) {} 
+	rpc Auto(id) returns (response) {} 
+	rpc AI_Guided(id) returns (response) {} 
+	rpc AI_RTL(id) returns (response) {} 
+	rpc AI_Auto(id) returns (response) {} 
+}
+

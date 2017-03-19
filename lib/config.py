@@ -10,30 +10,34 @@ class Config:
     def __init__(self):
         import os
         file_path = os.path.join('..', 'Toml', 'config.yaml')
-        with open(file_path,'r') as f:
-            self.conf = toml.loads(f.read())
+        with open(file_path, 'r') as f:
+            conf = toml.loads(f.read())
 
-        self.version = self.conf['version']
-        self.debug = self.conf['debug']
+        self.version = conf['version']
+        self.debug = conf['debug']
 
-        self.drone, self.channels = self.init_drone()
+        self.drone, self.channels = self.init_drone(conf)
         self.volume = self.get_volume()
 
-        self.mqtt_socket = self.sock()
-        self.client_id = self.conf['client_id']
-        self.context_topic = str(self.conf['topic']['publish']['full'])
-        self.control_topic = str(self.conf['topic']['publish']['semi'])
-        self.full_auto_topic = str(self.conf['topic']['subscribe']['full'])
-        self.semi_auto_topic = str(self.conf['topic']['subscribe']['semi'])
-        self.keyboard_topic = str(self.conf['topic']['keyboard'])
+        self.mqtt_socket = self.lidar_sock(conf)
+        self.KB_socket = self.keyboard_sock(conf)
+        self.client_id = conf['client_id']
+        OA_RPC = conf['RPC']['OA']
+        self.OA_rpc_host = OA_RPC['host']
+        self.OA_rpc_port = OA_RPC['port']
+        self.context_topic = str(conf['topic']['publish']['full'])
+        self.control_topic = str(conf['topic']['publish']['semi'])
+        self.full_auto_topic = str(conf['topic']['subscribe']['full'])
+        self.semi_auto_topic = str(conf['topic']['subscribe']['semi'])
+        self.keyboard_topic = str(conf['topic']['keyboard'])
 
-        self.sbus_serial = self.get_sbus()
-        self.compass_serial = self.conf['compass']['port']
-        self.GPS_serial = self.conf['GPS']['port']
-        self.IMU_serial = self.conf['IMU']['port']
+        self.sbus_serial = self.get_sbus(conf)
+        self.compass_serial = conf['compass']['port']
+        self.GPS_serial = conf['GPS']['port']
+        self.IMU_serial = conf['IMU']['port']
 
-        self.open_module = self.conf['open_module']
-        self.commands = self.conf['commands']
+        self._open_module = conf['open_module']
+        self.commands = conf['commands']
 
     def main_channel(self, ch):
         num = ch[0] - 1
@@ -48,12 +52,12 @@ class Config:
     def aux_channel(self, ch):
         return [ch[0] - 1] + ch[1:]
 
-    def init_drone(self):
+    def init_drone(self,conf):
         drone = dict()
         chs = dict()
 
-        system = "System{}".format(self.conf["SystemID"])
-        UAV_config = self.conf[system]
+        system = "System{}".format(conf["SystemID"])
+        UAV_config = conf[system]
         # print UAV_config
         drone['UAV'] = UAV_config['UAV']
         drone['Model'] = UAV_config['Model']
@@ -76,23 +80,28 @@ class Config:
         return drone, chs
 
     def has_module(self, module):
-        return module in self.open_module
+        return module in self._open_module
 
-    def get_sbus(self):
+    def get_sbus(self,conf):
         import serial
         _sbus = {}
-        _sbus['port'] = self.conf['sbus']['port']
-        _sbus['baudrate'] = self.conf['sbus']['baudrate']
+        _sbus['port'] = conf['sbus']['port']
+        _sbus['baudrate'] = conf['sbus']['baudrate']
         _sbus['parity'] = serial.PARITY_EVEN
         _sbus['stopbits'] = serial.STOPBITS_TWO
         _sbus['bytesize'] = serial.EIGHTBITS
         return _sbus
 
-    def get_uart(self, sensor):
-        return (self.conf[sensor][port], self.conf[sensor][baudrate])
+    # def get_uart(self, sensor):
+    #     return (conf[sensor][port], conf[sensor][baudrate])
 
-    def sock(self):
-        return (self.conf['MQTT']['host'], self.conf['MQTT']['port'])
+    def lidar_sock(self,conf):
+        lidar = conf['Socket']['lidar']
+        return (lidar['host'], lidar['port'])
+
+    def keyboard_sock(self,conf):
+        KB = conf['Socket']['keyboard']
+        return (KB['host'], KB['port'])
 
     def get_volume(self):
         stroke = [[]] * 8

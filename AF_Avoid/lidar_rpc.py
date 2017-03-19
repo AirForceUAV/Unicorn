@@ -7,7 +7,7 @@ import time
 import math
 import paho.mqtt.client as mqtt
 from lib.science import *
-from lib.tools import Singleton, CancelWatcher
+from lib.tools import Singleton, CancelWatcher, exe_actions
 from lib.config import config
 from lib.logger import logger
 from oa_rpc_client import OA_Stub
@@ -35,8 +35,8 @@ def on_message(client, userdata, msg):
     stub = userdata['stub']
     vehicle = userdata['vehicle']
     userdata['semi_id'] = userdata['semi_id'] + 1
-    command = msg.payload
-    message = {'id': userdata['semi_id'], 'actions': [int(command)]}
+    command = msg.payload.split(',')
+    message = {'id': userdata['semi_id'], 'actions': map(int, command)}
     logger.debug('Send {} to Lidar'.format(message))
     try:
         id, actions = stub.SemiAuto(message)
@@ -54,26 +54,6 @@ def on_message(client, userdata, msg):
     finally:
         # time.sleep(1)
         client.publish('ACK', 'ack')
-
-
-def exe_actions(vehicle, RawActions):
-    map_action = {
-        '0': {'Mode': 2},
-        '1': {'ELE': 1}, '2': {'ELE': -1},
-        '4': {'RUD': 1}, '8': {'RUD': -1},
-        '16': {'AIL': 1}, '32': {'AIL': -1},
-        '64': {'THR': 1}, '128': {'THR': -1},
-        '0xee': None, '0xff': None
-    }
-    actions = {}
-    for action in RawActions:
-        dictaction = map_action.get(str(action))
-        assert not (dictaction is None or dictaction.keys()[0] in actions),\
-            'Command is invalid. Note: Command is {}'.format(Raw)
-        actions = dict(actions, **dictaction)
-
-    logger.debug('Execute Action:{}'.format(actions))
-    vehicle.control_FRU(**actions)
 
 
 class Lidar(object):
@@ -109,7 +89,7 @@ class Lidar(object):
                 if context == True:
                     return True
             except AssertionError, e:
-                logger.error(e)
+                logger.error(e)OA_rpc_port
                 self.vehicle.brake()
                 return False
             try:
@@ -162,6 +142,7 @@ class Lidar(object):
         self.publish('Target', None)
 
     def Auto(self):
+
         logger.debug('Auto(AI) start ...')
         if self.vehicle.wp.isNull():
             logger.warn('Waypoint is Null.Please set Waypoint')
@@ -211,6 +192,7 @@ class Lidar(object):
                 'current': self.vehicle._state,
                 'last_state': self.vehicle.pre_state,
                 'last_previous_state': self.vehicle.prepre_state}
+            print context
             return context
 
         self.full_id += 1
@@ -222,47 +204,18 @@ class Lidar(object):
 
 
 if __name__ == "__main__":
-    from AF_uORB.uORB import uORB
     from lib.tools import Watcher
+    from AF_uORB.uORB import uORB
 
     ORB = uORB()
     Watcher()
 
-    if config.has_module('Sbus'):
-        # Initialize SBUS
-        from AF_Sbus.sender import sbus_start
-        sbus_start(ORB)
-
-    if config.has_module('Compass'):
-        # Initialize Compass
-        from AF_Sensors.compass import compass_start
-        compass_start(ORB)
-
-    if config.has_module('GPS'):
-        # Initialize GPS
-        from AF_Sensors.GPS import GPS_start
-        GPS_start(ORB)
-
-    if config.has_module('Baro'):
-        # Initialize Barometre
-        from AF_Sensors.Baro import Baro_start
-        Baro_start(ORB)
-
-    if config.has_module('IMU'):
-        # Initialize IMU
-        from AF_Sensors.IMU import IMU_start
-        IMU_start(ORB)
-
-    # Save FlightLog to SD card
-    # ORB.start()
-
-    # Initialize UAV
-    from AF_Copter.vehicle import Vehicle
-    vehicle = Vehicle(ORB)
+    from AF_Copter.vehicle import init_vehicle
+    vehicle = init_vehicle(ORB)
     lidar = Lidar(vehicle)
 
     # vehicle.publish('Target', [36, 117])
-    vehicle.set_target(-20,0)
+    vehicle.set_target(-20, 0)
     lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()

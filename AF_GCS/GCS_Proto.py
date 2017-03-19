@@ -9,7 +9,7 @@ import socket
 import threading
 from lib.tools import CancelWatcher
 from lib.logger import logger
-
+import for_mc_pb2 as mc
 
 def open_sock():
     server_address = os.path.join(os.path.expanduser('~'), '.UDS_fc')
@@ -21,6 +21,23 @@ def open_sock():
         logger.error("{}:{}".format(sys.stderr, msg))
         sys.exit(1)
 
+def parse_ResetLoiter():
+    pass
+
+def parse_command(vehicle,lidar):      
+    proto2func={mc._ResetLoiter:(vehicle.set_channels_mid,parse_ResetLoiter}
+
+    def wrapper(cmmand_proto):
+        command_object = mc.SendCommand()
+        command_object.ParseFromString (command_proto)
+        code = command_object.code
+        assert code in proto2func,'code is error'
+        func = proto2func[code]
+        arg,kwargs = func[1]()
+        return code2func[code]
+    return wrapper
+
+def command_args(code):
 
 def send_Log(sock, ORB):
     message = ORB.dataflash()
@@ -29,7 +46,7 @@ def send_Log(sock, ORB):
 
 class Receiver(threading.Thread):
 
-    def __init__(self, work_queue, sock):
+    def __init__(self, work_queue, sock, vehicle, lidar=None):
         super(Receiver, self).__init__(name="Receiver")
         self.work_queue = work_queue
         self.sock = sock
@@ -39,12 +56,14 @@ class Receiver(threading.Thread):
         while True:
             # use this to receive command
             cmd = self.sock.recv(buffer_size).strip()
+            
             if cmd is '':
                 continue
-            logger.info('Receive Command:{}'.format(cmd))
-            if cmd.find('Cancel') != -1:
+            mc_cmd = mc.SendCommand()
+            mc_cmd.ParseFromString(cmd)
+            if mc_cmd.code < mc._Boundary:
                 logger.info('Execute Cancel')
-                CancelWatcher.Cancel = True
+                exc_mc_cmd(cmd,vehicle,lidar)
                 # self.work_queue.put('vehicle.brake()')
             else:
                 CancelWatcher.Cancel = True
@@ -60,15 +79,18 @@ class Executor(threading.Thread):
         self.lidar = lidar
 
     def run(self):
+        command
         while True:
             command = self.work_queue.get().strip()
             if command is '':
                 continue
-            command = "self." + command
-            logger.debug('Execute command {}'.format(command))
+            mc_cmd = mc.SendCommand()
+            mc_cmd.ParseFromString = (command)
+            code = command.code
+            logger.debug('Execute command code {}'.format(code))
             try:
                 eval(command)
-            except Exception:
+            except Exception as e:
                 info = sys.exc_info()
                 logger.error("{0}:{1}".format(*info))
                 # self.vehicle.Cancel()

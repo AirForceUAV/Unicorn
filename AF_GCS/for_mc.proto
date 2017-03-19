@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package For_GCS;
+
+import "google/protobuf/any.proto";
+
+enum Action {
+    STOP            = 0;
+    FORWARD         = 1;
+    BACKWARD        = 2;
+    LEFT_YAW        = 4;
+    RIGHT_YAW       = 8;
+    LEFT_ROLL       = 16;
+    RIGHT_ROLL      = 32;
+    UP              = 64;
+    DOWN            = 128;
+    INVALID         = 0xee;
+    ANY             = 0xff;
+}
+
+enum CommandCode{
+    _ResetLoiter = 0;
+    _SetGear = 1;
+    _Cancel = 2;
+    _Boundary = 3;   
+    _TargetByMetres = 10;
+    _TargetByAngle = 11;
+    _PlanRoute = 12;
+    _ControlFRU = 13;
+    _Guided = 14;
+    _RTL = 15;
+    _Auto = 16;
+    
+}
+
+
+message SendCommand{
+    float timestamp = 1;
+    CommandCode code = 2;
+    google.protobuf.Any command = 3;
+}
+
+message ResetLoiter{
+}
+
+message SetGear{
+    uint32 index = 1;
+}
+
+message TargetByMetres{
+    float North = 1;
+    float East = 2;
+    float altitude = 3;
+}
+
+message TargetByAngle{
+    float distance = 1;
+    float angle = 2;
+    float altitude = 3;
+}
+
+message PlanRoute{
+    repeated point points = 1;
+}
+
+message point{
+    float latitude = 1;
+    float longitude = 2;
+    float altitude = 3;
+}
+
+message ControlFRU{
+    repeated Action actions = 1;
+}
+
+message Guided{
+}
+
+message RTL{
+}
+
+message Auto{
+}
+
+message Cancel{
+}

@@ -1,6 +1,8 @@
 import sys
 sys.path.append('..')
 import time
+import keyboard
+import pygame as pg
 import paho.mqtt.client as mqtt
 from KB_Control import keyboard_event_wait, keyboard_event
 from lib.config import config
@@ -22,6 +24,32 @@ def on_message(client, userdata, msg):
 def listen_keyboard(client):
     global ACK
     print 'start listen keboard'
+
+    pg.init()
+    display = pg.display.set_mode((100, 100))
+
+    while True:
+        ACK = False
+        clock = pg.time.Clock()
+
+        command = keyboard_state()
+        if command == 'exit':
+            print 'Exit'
+            sys.exit(1)
+            pg.quit()
+
+        if command != '0':
+            print 'command', command
+        infot = client.publish(config.keyboard_topic, command, qos=2)
+        infot.wait_for_publish()
+        while not ACK:
+            clock.tick(15)
+        # clock.tick(15)
+
+
+def listen_keyboard2(client):
+    global ACK
+    print 'start listen keboard'
     precommand = ''
     while True:
         ACK = False
@@ -36,6 +64,33 @@ def listen_keyboard(client):
             time.sleep(.01)
 
 
+def keyboard_state():
+    filter_key = {pg.K_SPACE: '0',
+                  pg.K_w: '1',
+                  pg.K_s: '2',
+                  pg.K_q: '4',
+                  pg.K_e: '8',
+                  pg.K_a: '16',
+                  pg.K_d: '32',
+                  pg.K_PAGEUP: '64',
+                  pg.K_PAGEDOWN: '128',
+                  pg.K_ESCAPE: '-1'}
+    pg.event.pump()
+    pressed = pg.key.get_pressed()
+
+    if pressed[pg.K_ESCAPE]:
+        return 'exit'
+
+    keys = []
+    for i in xrange(len(pressed)):
+        if pressed[i] == 1 and (i in filter_key):
+            keys.append(filter_key[i])
+    if keys == []:
+        keys = ['0']
+    command = ','.join(keys)
+    return command
+
+
 def start_client(host, port, id):
     client = mqtt.Client(client_id=id)
     client.on_connect = on_connect
@@ -45,7 +100,27 @@ def start_client(host, port, id):
     return client
 
 if __name__ == '__main__':
+    sock = config.KB_socket
+    # args = (sock[0], sock[1], config.keyboard_topic)
     args = ('localhost', 1883, config.keyboard_topic)
-    # args = ('192.168.1.4', 12345, config.keyboard_topic)
     client = start_client(*args)
     listen_keyboard(client)
+    # import pygame
+    # pygame.init()
+
+    # display = pygame.display.set_mode((100, 100))
+
+    # clock = pygame.time.Clock()
+
+    # while True:
+    #     pygame.event.pump()
+    #     keypressed = pygame.key.get_pressed()
+
+    #     if keypressed[pygame.K_w]:
+    #         print("it worked")
+    #     elif keypressed[pygame.K_ESCAPE]:
+    #         sys.exit(1)
+    #         pygame.quit()
+
+    #     # compute how many milliseconds have passed since the previous call
+    #     clock.tick(10)
