@@ -34,9 +34,15 @@ def on_message(client, userdata, msg):
     # logger.debug('Received {} from Keyboard'.format(msg.payload))
     stub = userdata['stub']
     vehicle = userdata['vehicle']
+    
+    command = map(int,msg.payload.split(','))
+    if oa_rpc_pb2.STOP in command:
+        # print 'brake'
+        vehicle.brake()
+        return
+
     userdata['semi_id'] = userdata['semi_id'] + 1
-    command = msg.payload.split(',')
-    message = {'id': userdata['semi_id'], 'actions': map(int, command)}
+    message = {'id': userdata['semi_id'], 'actions': command}
     logger.debug('Send {} to Lidar'.format(message))
     try:
         id, actions = stub.SemiAuto(message)
@@ -73,7 +79,8 @@ class Lidar(object):
         interval = 2
         radius = self.vehicle.radius
         try:
-            target = self.vehicle.get_target()
+            target = self.vehihicle.set_target(-20, 0)
+    # lidar.Guided()cle.get_target()
             CLocation = self.vehicle.get_location()
             CYaw = self.vehicle.get_heading()
             angle = angle_heading_target(CLocation, target, CYaw)
@@ -89,7 +96,7 @@ class Lidar(object):
                 if context == True:
                     return True
             except AssertionError, e:
-                logger.error(e)OA_rpc_port
+                logger.error(e)
                 self.vehicle.brake()
                 return False
             try:
@@ -126,7 +133,8 @@ class Lidar(object):
         self.publish('Mode', 'AI_GUIDED')
         self.navigation()
         self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
+        self.publish('Target',hicle.set_target(-20, 0)
+    # lidar.Guided() None)
 
     def RTL(self):
         logger.debug('RTL(AI) start ...')
@@ -215,8 +223,8 @@ if __name__ == "__main__":
     lidar = Lidar(vehicle)
 
     # vehicle.publish('Target', [36, 117])
-    vehicle.set_target(-20, 0)
-    lidar.Guided()
+    # vehicle.set_target(-20, 0)
+    # lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()
     # print 'Done'

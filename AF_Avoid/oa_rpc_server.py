@@ -19,7 +19,7 @@ class Vehicle(oa_rpc_pb2_grpc.ObstacleAvoidanceServicer):
         actions = request.current
         response = {'id': id,
                     'actions': actions}
-        print response
+        # print response
         return oa_rpc_pb2.Strategy(**response)
 
     def SemiAutomatic(self, request, context):

@@ -82,7 +82,7 @@ commands = [
 
 [Socket]
     [Socket.keyboard]
-    host = 'localhost'
+    host = '192.168.31.10'
     port = 1883
     [Socket.lidar]
     host = 'localhost'

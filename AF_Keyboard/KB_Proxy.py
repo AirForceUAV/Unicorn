@@ -27,11 +27,11 @@ def listen_keyboard(client):
 
     pg.init()
     display = pg.display.set_mode((100, 100))
+    clock = pg.time.Clock()
 
     while True:
         ACK = False
-        clock = pg.time.Clock()
-
+        
         command = keyboard_state()
         if command == 'exit':
             print 'Exit'
@@ -50,7 +50,6 @@ def listen_keyboard(client):
 def listen_keyboard2(client):
     global ACK
     print 'start listen keboard'
-    precommand = ''
     while True:
         ACK = False
         command = keyboard_event_wait()
@@ -69,7 +68,7 @@ def keyboard_state():
                   pg.K_w: '1',
                   pg.K_s: '2',
                   pg.K_q: '4',
-                  pg.K_e: '8',
+                  pg.K_e: 'game a8',
                   pg.K_a: '16',
                   pg.K_d: '32',
                   pg.K_PAGEUP: '64',
@@ -101,8 +100,8 @@ def start_client(host, port, id):
 
 if __name__ == '__main__':
     sock = config.KB_socket
-    # args = (sock[0], sock[1], config.keyboard_topic)
-    args = ('localhost', 1883, config.keyboard_topic)
+    args = (sock[0], sock[1], config.keyboard_topic)
+    # args = ('localhost', 1883, config.keyboard_topic)
     client = start_client(*args)
     listen_keyboard(client)
     # import pygame
