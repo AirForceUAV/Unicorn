@@ -5,7 +5,7 @@ client_id = "FC"
 debug = true
 open_module = [
     # 'Sbus',
-    # 'Compass',
+    'Compass',
     # 'GPS',
     # 'Baro',
     # 'IMU',
@@ -80,11 +80,11 @@ commands = [
     Gear = [20,40,60]
 
 
-[Socket]
-    [Socket.keyboard]
-    host = '192.168.31.10'
+[MQTT]
+    [MQTT.keyboard]
+    host = '192.168.1.4'
     port = 1883
-    [Socket.lidar]
+    [MQTT.lidar]
     host = 'localhost'
     port = 1883
 
@@ -92,7 +92,7 @@ commands = [
 [RPC]  
     [RPC.OA]
     host = 'localhost'
-    port = '50051'
+    port = '12345'
 
 [sbus]
     port = '/dev/sbus'

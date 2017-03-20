@@ -202,6 +202,7 @@ def build_sbus():
 
 if __name__ == '__main__':
     package = '0f00a420a809086a504b182c00042000010807380010800014'
+    package = '0f600135A8410D165003102C00042000010807380010800014'
     sbus = SBUS()
     package = sbus.filter(package)
     if package is None:
@@ -211,3 +212,4 @@ if __name__ == '__main__':
         print sbusChannels
     print package
     print sbus.encode(sbusChannels) + '14'
+    # print sbus.encode([352, 1696, 1696, 1696, 1024, 352, 1024, 1024]) + '14'

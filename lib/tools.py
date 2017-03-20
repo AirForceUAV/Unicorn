@@ -22,34 +22,6 @@ def open_serial(portname, baudrate, timeout=None):
             time.sleep(1)
 
 
-def unpack_actions(actions):
-    map_action = {
-        '0': {},
-        '1': {'ELE': 1}, '2': {'ELE': -1},
-        '4': {'RUD': 1}, '8': {'RUD': -1},
-        '16': {'AIL': 1}, '32': {'AIL': -1},
-        '64': {'THR': 1}, '128': {'THR': -1},
-        '0xee': None, '0xff': {}
-    }
-    result = {}
-    for action in actions:
-        if str(action) in ['0','0xff']:
-            result = {}
-            break
-        dictaction = map_action.get(str(action))
-        assert not (dictaction is None or dictaction.keys()[0] in result),\
-            'Command is invalid. Note: Command is {}'.format(actions)
-        result = dict(result, **dictaction)
-    return result
-
-
-def exe_actions(vehicle, actions):
-    result = unpack_actions(actions)
-
-    logger.debug('Execute Action:{}'.format(result))
-    vehicle.control_FRU(**result)
-
-
 class Singleton(type):
 
     def __init__(cls, name, bases, dict):

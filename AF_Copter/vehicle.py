@@ -140,14 +140,14 @@ class Vehicle(Attribute):
         watcher = CancelWatcher()
         if not self.state('Baro'):
             return
-        logger.info('Takeoff to {} m'.format(alt))      
+        logger.info('Takeoff to {} m'.format(alt))
 
         self.escalate(0, 60)
 
         while not watcher.IsCancel():
             try:
                 currentAlt = self.get_altitude(True)
-            except AssertionError,e:
+            except AssertionError, e:
                 logger.error(e)
                 break
             if currentAlt > alt * 0.95:
@@ -160,23 +160,23 @@ class Vehicle(Attribute):
     def land(self):
         logger.info('Landing...')
 
-
     def up_metres(self, altitude, relative=True):
         if altitude <= 0:
             logger.warn('Altitude({}) is invalid'.format(altitude))
             return
         try:
             CAlt = self.get_altitude(False)
-             
+
             if relative:
                 TAlt = CAlt + altitude
             else:
                 init_alt = self.ORB.get_init_alt()
                 TAlt = init_alt + altitude
             if TAlt < CAlt:
-                logger.warn('TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
+                logger.warn(
+                    'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
                 return
-            self.GradualTHR(0,60)
+            self.GradualTHR(0, 60)
             watcher = CancelWatcher()
             while not watcher.IsCancel():
                 CAlt = self.get_altitude(False)
@@ -184,12 +184,11 @@ class Vehicle(Attribute):
                     break
                 time.sleep(.1)
             self.brake()
-        except AssertionError,e:
-            logger.error(e) 
-            
+        except AssertionError, e:
+            logger.error(e)
 
     def down_metres(self, altitude):
-        watcher=CancelWatcher()
+        watcher = CancelWatcher()
         if altitude <= 0:
             logger.warn('Altitude({}) is invalid'.format(altitude))
             return
@@ -207,7 +206,7 @@ class Vehicle(Attribute):
                 if CAlt <= TAlt:
                     break
             self.brake()
-        except AssertionError,e:
+        except AssertionError, e:
             logger.error(e)
 
     def yaw_left(self):
@@ -269,8 +268,8 @@ class Vehicle(Attribute):
         # self.brake(1)
 
     def send_pwm(self, channels):
-        # self._debug(channels)
-        # self._debug(self.analysis_channels(channels))
+        # logger.debug(channels)
+        # logger.debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 
     def analysis_channels(self, channels):
@@ -286,12 +285,13 @@ class Vehicle(Attribute):
         """
         0<=heading<360 (anti-clockwise)
         """
-        if config.debug:
-            logger.warn('condition_yaw() ...')
-            return
+        # if config.debug:
+        #     logger.warn('condition_yaw() ...')
+        #     return
         watcher = CancelWatcher()
-        assert heading >= 0 and heading <360,'Param-heading {} is invalid'.format(heading)
-   
+        assert heading >= 0 and heading < 360, 'Param-heading {} is invalid'.format(
+            heading)
+
         CYaw = self.get_heading()
         target_angle = angle_diff(CYaw, heading)
         TurnAngle = angle_diff(CYaw, target_angle)
@@ -312,7 +312,6 @@ class Vehicle(Attribute):
                 break
         self.brake()
         logger.debug("Fact Angle: %d" % self.get_heading())
-
 
     def navigation(self):
         watcher = CancelWatcher()
@@ -346,7 +345,7 @@ class Vehicle(Attribute):
                 self.forward()
                 time.sleep(frequency)
                 # raw_input('next')
-        except AssertionError,e:
+        except AssertionError, e:
             self.brake()
             logger.error(e)
             return False
@@ -359,7 +358,7 @@ class Vehicle(Attribute):
             target = self.get_target()
             CLocation = self.get_location()
             CYaw = self.get_heading()
-        
+
             init_angle = angle_heading_target(CLocation, target, CYaw)
             self.condition_yaw(init_angle)
 
@@ -391,7 +390,7 @@ class Vehicle(Attribute):
                         self.brake()
                         self.condition_yaw(angle)
                 time.sleep(frequency)
-        except AssertionError,e:
+        except AssertionError, e:
             self.brake()
             logger.error(e)
             return False
@@ -420,11 +419,11 @@ class Vehicle(Attribute):
                     logger.info("Reached Target!")
                     return True
                 self.forward()
-                time.sleep(frequency)     
-        except AssertionError,e:
+                time.sleep(frequency)
+        except AssertionError, e:
             self.brake()
             logger.error(e)
-            return False 
+            return False
 
     def InAngle(self, angle, EAngle):
         if angle < 360 - EAngle and angle > EAngle:
@@ -435,23 +434,23 @@ class Vehicle(Attribute):
     def Guided(self):
         logger.info('GUIDED...')
         self.publish('Mode', 'GUIDED')
-        result=self.navigation()
+        result = self.navigation()
         if not result:
             logger.error("Navigation except exit")
             return False
         self.Guided_finally()
-        return Trueself
+        return True
 
     def RTL(self):
         logger.info('RTL...')
         self.publish('Mode', 'RTL')
         try:
             home = self.get_home()
-        except AssertionError,e:
+        except AssertionError, e:
             logger.error(e)
             return False
 
-        result=self.navigation()
+        result = self.navigation()
         if not result:
             logger.error("Navigation except exit")
             return False
@@ -474,8 +473,8 @@ class Vehicle(Attribute):
             if watcher.IsCancel():
                 self.Auto_finally()
                 return False
-            self.publish('Target',point)
-            result=self.navigation()
+            self.publish('Target', point)
+            result = self.navigation()
             if not result:
                 logger.error("Navigation except exit")
                 return False
@@ -487,7 +486,6 @@ class Vehicle(Attribute):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
 
-
     def Auto_finally(self):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
@@ -497,6 +495,7 @@ class Vehicle(Attribute):
         CancelWatcher.Cancel = True
         time.sleep(.1)
         self.brake()
+
 
 def init_sensors(ORB):
     if config.has_module('Sbus'):
@@ -511,7 +510,7 @@ def init_sensors(ORB):
 
     if config.has_module('GPS'):
         # Initialize GPS
-        from AF_Sensors.GPS_module import GPS_start
+        from AF_Sensors.GPS import GPS_start
         GPS_start(ORB)
 
     if config.has_module('Baro'):
@@ -523,6 +522,7 @@ def init_sensors(ORB):
         # Initialize IMU
         from AF_Sensors.IMU import IMU_start
         IMU_start(ORB)
+
 
 def init_vehicle(ORB):
 
@@ -539,10 +539,12 @@ if __name__ == "__main__":
 
     ORB = uORB()
     Watcher()
-    
+
     '''Initialize UAV'''
     vehicle = init_vehicle(ORB)
-    # vehicle.set_target(-20,0)
+    time.sleep(2)
+    # vehicle.condition_yaw(30)
+    # vehicle.set_target(-20, 0)
     # vehicle.Guided()
     # vehicle.Auto()
     for c in config.commands:
@@ -557,7 +559,7 @@ if __name__ == "__main__":
             print 'Execute command ->', command
             try:
                 eval(command)
-            except Exception,e:
+            except Exception, e:
                 info = sys.exc_info()
                 print "{0}:{1}".format(*info)
                 vehicle.Cancel()

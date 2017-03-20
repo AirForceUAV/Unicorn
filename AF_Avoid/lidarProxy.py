@@ -18,7 +18,7 @@ def init_mqtt(userdata):
     client.user_data_set(userdata)
     client.on_connect = on_connect  # callback when connected
     client.on_message = on_message  # callback when received message
-    client.connect(*config.mqtt_socket)
+    client.connect(*config.lidar_socket)
     return client
 
 

@@ -6,7 +6,7 @@ import pygame as pg
 import paho.mqtt.client as mqtt
 from KB_Control import keyboard_event_wait, keyboard_event
 from lib.config import config
-
+import AF_Avoid.oa_rpc_pb2 as action
 ACK = False
 
 
@@ -31,19 +31,21 @@ def listen_keyboard(client):
 
     while True:
         ACK = False
-        
+
         command = keyboard_state()
         if command == 'exit':
             print 'Exit'
             sys.exit(1)
             pg.quit()
 
-        if command != '0':
-            print 'command', command
+        # if command != '0':
+        #     print 'command', command
+        print 'command', command
         infot = client.publish(config.keyboard_topic, command, qos=2)
         infot.wait_for_publish()
         while not ACK:
             clock.tick(15)
+            # time.sleep(.01)
         # clock.tick(15)
 
 
@@ -64,19 +66,19 @@ def listen_keyboard2(client):
 
 
 def keyboard_state():
-    filter_key = {pg.K_SPACE: '0',
-                  pg.K_w: '1',
-                  pg.K_s: '2',
-                  pg.K_q: '4',
-                  pg.K_e: 'game a8',
-                  pg.K_a: '16',
-                  pg.K_d: '32',
-                  pg.K_PAGEUP: '64',
-                  pg.K_PAGEDOWN: '128',
+    filter_key = {pg.K_SPACE: action.STOP,
+                  pg.K_w: action.FORWARD,
+                  pg.K_s: action.LEFT_ROLL,
+                  pg.K_q: action.LEFT_YAW,
+                  pg.K_e: action.RIGHT_YAW,
+                  pg.K_a: action.LEFT_ROLL,
+                  pg.K_d: action.RIGHT_ROLL,
+                  pg.K_PAGEUP: action.UP,
+                  pg.K_PAGEDOWN: action.DOWN,
                   pg.K_ESCAPE: '-1'}
     pg.event.pump()
     pressed = pg.key.get_pressed()
-
+a
     if pressed[pg.K_ESCAPE]:
         return 'exit'
 
@@ -85,8 +87,8 @@ def keyboard_state():
         if pressed[i] == 1 and (i in filter_key):
             keys.append(filter_key[i])
     if keys == []:
-        keys = ['0']
-    command = ','.join(keys)
+        keys = [action.STOP]
+    command = ','.join(map(str, keys))
     return command
 
 
@@ -100,6 +102,7 @@ def start_client(host, port, id):
 
 if __name__ == '__main__':
     sock = config.KB_socket
+    print sock
     args = (sock[0], sock[1], config.keyboard_topic)
     # args = ('localhost', 1883, config.keyboard_topic)
     client = start_client(*args)

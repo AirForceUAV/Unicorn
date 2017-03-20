@@ -7,7 +7,7 @@ import time
 import math
 import paho.mqtt.client as mqtt
 from lib.science import *
-from lib.tools import Singleton, CancelWatcher, exe_actions
+from lib.tools import Singleton, CancelWatcher
 from lib.config import config
 from lib.logger import logger
 from oa_rpc_client import OA_Stub
@@ -20,7 +20,7 @@ def init_mqtt(userdata):
     client.user_data_set(userdata)
     client.on_connect = on_connect  # callback when connected
     client.on_message = on_message  # callback when received message
-    client.connect(*config.mqtt_socket)
+    client.connect(*config.lidar_socket)
     return client
 
 
@@ -34,10 +34,11 @@ def on_message(client, userdata, msg):
     # logger.debug('Received {} from Keyboard'.format(msg.payload))
     stub = userdata['stub']
     vehicle = userdata['vehicle']
-    
-    command = map(int,msg.payload.split(','))
+
+    command = map(int, msg.payload.split(','))
     if oa_rpc_pb2.STOP in command:
         # print 'brake'
+        client.publish('ACK', 'ack')
         vehicle.brake()
         return
 
@@ -62,6 +63,34 @@ def on_message(client, userdata, msg):
         client.publish('ACK', 'ack')
 
 
+def unpack_actions(actions):
+    map_action = {
+        oa_rpc_pb2.STOP: {},
+        oa_rpc_pb2.FORWARD: {'ELE': 1}, oa_rpc_pb2.BACKWARD: {'ELE': -1},
+        oa_rpc_pb2.RIGHT_YAW: {'RUD': 1}, oa_rpc_pb2.LEFT_YAW: {'RUD': -1},
+        oa_rpc_pb2.RIGHT_ROLL: {'AIL': 1}, oa_rpc_pb2.LEFT_ROLL: {'AIL': -1},
+        oa_rpc_pb2.UP: {'THR': 1}, oa_rpc_pb2.DOWN: {'THR': -1},
+        oa_rpc_pb2.INVALID: None, oa_rpc_pb2.ANY: {}
+    }
+    result = {}
+    for action in actions:
+        if action in [oa_rpc_pb2.STOP, oa_rpc_pb2.ANY]:
+            result = {}
+            break
+        dictaction = map_action.get(action)
+        assert not (dictaction is None or dictaction.keys()[0] in result),
+            'Command is invalid. Note: Command is {}'.format(actions)
+        result = dict(result, **dictaction)
+    return result
+
+
+def exe_actions(vehicle, actions):
+    result = unpack_actions(actions)
+
+    logger.debug('Execute Action:{}'.format(result))
+    vehicle.control_FRU(**result)
+
+
 class Lidar(object):
     __metaclass__ = Singleton
 
@@ -79,8 +108,7 @@ class Lidar(object):
         interval = 2
         radius = self.vehicle.radius
         try:
-            target = self.vehihicle.set_target(-20, 0)
-    # lidar.Guided()cle.get_target()
+            target = self.vehicle.get_target()
             CLocation = self.vehicle.get_location()
             CYaw = self.vehicle.get_heading()
             angle = angle_heading_target(CLocation, target, CYaw)
@@ -89,11 +117,13 @@ class Lidar(object):
             logger.error(e)
             self.vehicle.brake()
             return False
+        logger.info('vehicle turn compelet')
         retry_times = 0
         while not watcher.IsCancel() and retry_times < 5:
             try:
                 context = self.full_auto_context(self.vehicle._state)
                 if context == True:
+                    logger.info("Reached Target!")
                     return True
             except AssertionError, e:
                 logger.error(e)
@@ -132,9 +162,8 @@ class Lidar(object):
             return
         self.publish('Mode', 'AI_GUIDED')
         self.navigation()
-        self.publish('Mode', 'Loiter')
-        self.publish('Target',hicle.set_target(-20, 0)
-    # lidar.Guided() None)
+        self._end()
+        # lidar.Guided() None)
 
     def RTL(self):
         logger.debug('RTL(AI) start ...')
@@ -146,8 +175,7 @@ class Lidar(object):
         self.vehicle.publish('Target', target)
         self.vehicle.publish('Mode', 'AI_RTL')
         self.navigation()
-        self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
+        self._end()
 
     def Auto(self):
 
@@ -166,9 +194,12 @@ class Lidar(object):
                 break
             self.wp.add_number()
 
+        self._end()
+        self.wp.clear()
+
+    def _end(self):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
-        self.wp.clear()
 
     def full_auto_context(self, command):
         def context_release():
@@ -183,7 +214,6 @@ class Lidar(object):
 
             # if not vehicle.InAngle(angle, 90) or distance <= radius:
             if distance <= radius:
-                logger.info("Reached Target!")
                 return True
 
             if command != self.vehicle._state:

@@ -19,25 +19,36 @@ class Config:
         self.drone, self.channels = self.init_drone(conf)
         self.volume = self.get_volume()
 
-        self.mqtt_socket = self.lidar_sock(conf)
-        self.KB_socket = self.keyboard_sock(conf)
+        self.lidar_mqtt(conf)
+        self.keyboard_mqtt(conf)
+        self.OA_RPC_Config(conf)
+
+        self.sensors_serial(conf)
+        self._open_module = conf['open_module']
+        self.commands = conf['commands']
+
+    def lidar_mqtt(self, conf):
+        self.lidar_socket = self.lidar_sock(conf)
         self.client_id = conf['client_id']
-        OA_RPC = conf['RPC']['OA']
-        self.OA_rpc_host = OA_RPC['host']
-        self.OA_rpc_port = OA_RPC['port']
         self.context_topic = str(conf['topic']['publish']['full'])
         self.control_topic = str(conf['topic']['publish']['semi'])
         self.full_auto_topic = str(conf['topic']['subscribe']['full'])
         self.semi_auto_topic = str(conf['topic']['subscribe']['semi'])
+
+    def keyboard_mqtt(self, conf):
+        self.KB_socket = self.keyboard_sock(conf)
         self.keyboard_topic = str(conf['topic']['keyboard'])
 
+    def sensors_serial(self, conf):
         self.sbus_serial = self.get_sbus(conf)
         self.compass_serial = conf['compass']['port']
         self.GPS_serial = conf['GPS']['port']
         self.IMU_serial = conf['IMU']['port']
 
-        self._open_module = conf['open_module']
-        self.commands = conf['commands']
+    def OA_RPC_Config(self, conf):
+        OA_RPC = conf['RPC']['OA']
+        self.OA_rpc_host = OA_RPC['host']
+        self.OA_rpc_port = OA_RPC['port']
 
     def main_channel(self, ch):
         num = ch[0] - 1
@@ -52,7 +63,7 @@ class Config:
     def aux_channel(self, ch):
         return [ch[0] - 1] + ch[1:]
 
-    def init_drone(self,conf):
+    def init_drone(self, conf):
         drone = dict()
         chs = dict()
 
@@ -82,7 +93,7 @@ class Config:
     def has_module(self, module):
         return module in self._open_module
 
-    def get_sbus(self,conf):
+    def get_sbus(self, conf):
         import serial
         _sbus = {}
         _sbus['port'] = conf['sbus']['port']
@@ -95,12 +106,12 @@ class Config:
     # def get_uart(self, sensor):
     #     return (conf[sensor][port], conf[sensor][baudrate])
 
-    def lidar_sock(self,conf):
-        lidar = conf['Socket']['lidar']
+    def lidar_sock(self, conf):
+        lidar = conf['MQTT']['lidar']
         return (lidar['host'], lidar['port'])
 
-    def keyboard_sock(self,conf):
-        KB = conf['Socket']['keyboard']
+    def keyboard_sock(self, conf):
+        KB = conf['MQTT']['keyboard']
         return (KB['host'], KB['port'])
 
     def get_volume(self):

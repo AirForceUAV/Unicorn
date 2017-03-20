@@ -6,10 +6,12 @@ import oa_rpc_pb2
 import oa_rpc_pb2_grpc
 from lib.config import config
 
+
 class OA_Stub:
 
     def __init__(self):
-        channel = grpc.insecure_channel(config.OA_rpc_host+':'+config.OA_rpc_port)
+        channel = grpc.insecure_channel(
+            config.OA_rpc_host + ':' + config.OA_rpc_port)
         self.stub = oa_rpc_pb2_grpc.ObstacleAvoidanceStub(channel)
         self.timeout = 5
 
@@ -38,7 +40,7 @@ if __name__ == '__main__':
         id, actions = stub.FullAuto(context)
         print id, actions
 
-        # id, actions = stub2.SemiAuto(control)
-        # print id, actions
+        id, actions = stub2.SemiAuto(control)
+        print id, actions
     except grpc.RpcError, e:
         print e

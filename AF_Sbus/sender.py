@@ -52,7 +52,7 @@ class Sbus_Sender(threading.Thread):
                 CancelWatcher.Cancel = True
                 self.IsRadio = True
                 self.send_package(package)
-            # time.sleep(.01)
+            time.sleep(.03)
             # self.send_package(package)
 
     def send_package(self, package):

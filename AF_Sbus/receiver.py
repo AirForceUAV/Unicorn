@@ -49,10 +49,11 @@ class Sbus_Receiver(threading.Thread):
             input = self.sbus.decode(sbusFrame)
 
             if not self.check(input):
+                logger.warn('Receive SBUS is invalid')
                 continue
             self.publish('ChannelsInput', input)
             self.publish('Sbus_State', True)
-            # time.sleep(.01)
+            time.sleep(.03)
 
     def check(self, channel):
         Flag = True
