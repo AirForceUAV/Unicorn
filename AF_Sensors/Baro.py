@@ -42,6 +42,7 @@ class Baro(threading.Thread):
             dic = {'Baro_State': True, 'Pressure': hpa,
                    'Temperature': round(self.tempC, 2)}
             self.update(dic)
+            time.sleep(.01)
 
     def update(self, dictories):
         for (k, v) in dictories.items():

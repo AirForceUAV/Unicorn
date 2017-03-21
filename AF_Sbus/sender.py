@@ -52,12 +52,13 @@ class Sbus_Sender(threading.Thread):
                 CancelWatcher.Cancel = True
                 self.IsRadio = True
                 self.send_package(package)
-            time.sleep(.03)
+            time.sleep(.01)
             # self.send_package(package)
 
     def send_package(self, package):
         FRAME_TAIL = self.sbus.END_BYTE[self.index]
         package = self.sbus.encode(package) + FRAME_TAIL
+        # print package.decode('hex')
         self._sbus.write(package.decode('hex'))
         self.index = (self.index + 1) % 4
 
@@ -104,3 +105,4 @@ if __name__ == "__main__":
         input = ORB.subscribe('ChannelsInput')
         output = ORB.subscribe('ChannelsOutput')
         print "Input:{} Output:{}".format(input, output)
+        # time.sleep(1)

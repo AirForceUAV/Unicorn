@@ -4,7 +4,7 @@ version = "beta"
 client_id = "FC"
 debug = true
 open_module = [
-    # 'Sbus',
+    'Sbus',
     'Compass',
     # 'GPS',
     # 'Baro',
@@ -25,14 +25,12 @@ commands = [
     # 'backward_brake()',
     # 'up_brake()'
     # 'down_brake()',
-    # 'condition_yaw(30)',
+    'condition_yaw(30)',
     # 'condition_yaw(300)',
-    # 'set_target(-20, 0)',
     # 'Guided()',
     # 'download()',
     # 'Auto()',
     'disarm()',
-    # 'GradualTHR(0, 60)'
 ]
 
 
@@ -58,7 +56,7 @@ commands = [
     ELE = [2,352,1046,1696,-1,20]
     THR = [3,352,1024,1696,-1,15]
     RUD = [4,352,1026,1696,1,10]
-    Mode = [6,352,352,1696]
+    Mode = [6,352,352,1696]    'GradualTHR(0, 60)'
     Aux1 = [5,,352,1024,1696]
     Aux2 = [7,1024,1024,1024]
     Switch = [8,352,1024,1696]

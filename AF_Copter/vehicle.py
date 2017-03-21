@@ -135,6 +135,10 @@ class Vehicle(Attribute):
     def disarm(self):
         logger.info('DisArmed ...')
         self.control_stick(THR=-1)
+        time.sleep(.5)
+        self.control_stick(1, -1, -1, 1)
+        time.sleep(2)
+        self.control_stick(THR=-1)
 
     def takeoff(self, alt=5):
         watcher = CancelWatcher()
@@ -523,6 +527,23 @@ def init_sensors(ORB):
         from AF_Sensors.IMU import IMU_start
         IMU_start(ORB)
 
+for c in config.commands:
+    enter = raw_input(c + ' ?').strip()
+
+    if enter == 'c':
+        continue
+    elif enter == 'b':
+        break
+    else:
+        command = 'vehicle.' + c
+        print 'Execute command ->', command
+        try:
+            eval(command)
+        except Exception, e:
+            info = sys.exc_info()
+            print "{0}:{1}".format(*info)
+            vehicle.Cancel()
+
 
 def init_vehicle(ORB):
 
@@ -543,10 +564,9 @@ if __name__ == "__main__":
     '''Initialize UAV'''
     vehicle = init_vehicle(ORB)
     time.sleep(2)
-    # vehicle.condition_yaw(30)
-    # vehicle.set_target(-20, 0)
-    # vehicle.Guided()
-    # vehicle.Auto()
+
+    vehicle.set_target(-100, 0)
+
     for c in config.commands:
         enter = raw_input(c + ' ?').strip()
 

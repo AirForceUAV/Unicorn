@@ -50,6 +50,7 @@ class IMU(threading.Thread):
             dic = {'IMU_State': True, 'ACC': Acc, 'GYR': Gyr,
                    'MAG': Mag, 'EUL': Eul, 'QUA': Qua}
             self.update(dic)
+            time.sleep(.01)
 
     def update(self, dictories):
         for (k, v) in dictories.items():

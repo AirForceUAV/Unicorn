@@ -53,7 +53,7 @@ class Sbus_Receiver(threading.Thread):
                 continue
             self.publish('ChannelsInput', input)
             self.publish('Sbus_State', True)
-            time.sleep(.03)
+            time.sleep(.01)
 
     def check(self, channel):
         Flag = True

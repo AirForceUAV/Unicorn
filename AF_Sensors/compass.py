@@ -31,7 +31,7 @@ class Compass(threading.Thread):
             else:
                 dic = {'Compass_State': True, 'Attitude': attitude}
             self.update(dic)
-            # time.sleep(.01)
+            time.sleep(.01)
 
     def update(self, dictories):
         for (k, v) in dictories.items():
