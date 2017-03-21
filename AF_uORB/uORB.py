@@ -20,8 +20,8 @@ class uORB(threading.Thread):
         LoiterPWM = self.InitLoiter()
 
         if config.debug:
-            from test import FlightLog
-            self._HAL = FlightLog(LoiterPWM)
+            from test import _debug
+            self._HAL = _debug(LoiterPWM)
         else:
             self._HAL = {'Compass_State': False,
                          'Attitude': None,
@@ -48,8 +48,11 @@ class uORB(threading.Thread):
                          'ACC': None, 'GYR': None, 'MAG': None, 'EUL': None,
                          'QUA': None}
 
-    # def run(self):
-    #     self.save_log()
+    def run(self):
+        self.save_log()
+
+    def save_log():
+        pass
 
     def publish(self, topic, value):
         if self._HAL[topic] != value:
@@ -92,7 +95,8 @@ class uORB(threading.Thread):
         return self._HAL['Attitude']
 
     def get_heading(self):
-        return self.get_attitude()[2]
+        assert self.state('Compass'), 'Compass is not health'
+        return self._HAL['Attitude'][2]
 
     def get_location(self):
         assert self.state('GPS'), 'GPS is not health'

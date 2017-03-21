@@ -309,11 +309,12 @@ class Vehicle(Attribute):
             logger.debug('Turn right {}'.format(360 - TurnAngle))
             self.yaw_right()
 
-        logger.debug("Target Angle: %d" % target_angle)
+        logger.debug("Current Angle:{} Target Angle:{}".format(CYaw, target_angle))
         while not watcher.IsCancel():
             CYaw = self.get_heading()
             if self.isStop(CYaw, target_angle, is_cw):
                 break
+            # time.sleep(.01)
         self.brake()
         logger.debug("Fact Angle: %d" % self.get_heading())
 
@@ -527,24 +528,6 @@ def init_sensors(ORB):
         from AF_Sensors.IMU import IMU_start
         IMU_start(ORB)
 
-for c in config.commands:
-    enter = raw_input(c + ' ?').strip()
-
-    if enter == 'c':
-        continue
-    elif enter == 'b':
-        break
-    else:
-        command = 'vehicle.' + c
-        print 'Execute command ->', command
-        try:
-            eval(command)
-        except Exception, e:
-            info = sys.exc_info()
-            print "{0}:{1}".format(*info)
-            vehicle.Cancel()
-
-
 def init_vehicle(ORB):
 
     init_sensors(ORB)
@@ -564,9 +547,8 @@ if __name__ == "__main__":
     '''Initialize UAV'''
     vehicle = init_vehicle(ORB)
     time.sleep(2)
-
-    vehicle.set_target(-100, 0)
-
+    # vehicle.set_target(100,0)
+    # vehicle.condition_yaw(30)
     for c in config.commands:
         enter = raw_input(c + ' ?').strip()
 

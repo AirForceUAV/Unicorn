@@ -22,7 +22,6 @@ class Compass(threading.Thread):
 
     def run(self):
         logger.info("Initializing Compass ...")
-
         while True:
             attitude = self.get_attitude()
 
@@ -98,5 +97,5 @@ if __name__ == '__main__':
     compass_start(ORB)
 
     while True:
-        print ORB.subscribe('Attitude')
-        # time.sleep(.1)
+        print ORB.subscribe('Attitude')[2]
+        time.sleep(.1)

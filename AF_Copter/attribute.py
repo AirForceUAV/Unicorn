@@ -135,7 +135,7 @@ class Attribute(object):
         return self.ORB.get_location()
 
     def get_heading(self):
-        return self.ORB.get_attitude()[2]
+        return self.ORB.get_heading()
 
     def get_altitude(self, relative=False):
         return self.ORB.get_altitude(relative)
