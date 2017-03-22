@@ -309,12 +309,15 @@ class Vehicle(Attribute):
             logger.debug('Turn right {}'.format(360 - TurnAngle))
             self.yaw_right()
 
-        logger.debug("Current Angle:{} Target Angle:{}".format(CYaw, target_angle))
+        logger.debug("Current Angle:{} Target Angle:{}".format(
+            CYaw, target_angle))
         while not watcher.IsCancel():
             CYaw = self.get_heading()
+            # logger.debug("Current Angle:{} Target Angle:{}".format(
+            #     CYaw, target_angle))
             if self.isStop(CYaw, target_angle, is_cw):
                 break
-            # time.sleep(.01)
+            time.sleep(.01)
         self.brake()
         logger.debug("Fact Angle: %d" % self.get_heading())
 
@@ -528,6 +531,7 @@ def init_sensors(ORB):
         from AF_Sensors.IMU import IMU_start
         IMU_start(ORB)
 
+
 def init_vehicle(ORB):
 
     init_sensors(ORB)
@@ -548,22 +552,65 @@ if __name__ == "__main__":
     vehicle = init_vehicle(ORB)
     time.sleep(2)
     # vehicle.set_target(100,0)
-    # vehicle.condition_yaw(30)
-    for c in config.commands:
-        enter = raw_input(c + ' ?').strip()
 
-        if enter == 'c':
+
+    commands = {'stop':'brake()',
+                'arm':'arm()',
+                'mid':'set_channels_mid()',
+                'gear':'set_gear(2)',
+                'yawl':'yaw_left_brake()',
+                'yawr':'yaw_right_brake()',
+                'rolll':'roll_left_brake()',
+                'rollr':'roll_right_brake()',
+                'forward':'forward_brake()',
+                'back':'backward_brake()',
+                'up':'up_brake()'
+                'down':'down_brake()',
+                'conl':'condition_yaw(30)',
+                'conr':'condition_yaw(300)',
+                'target':'set_target(100,0)',
+                'guided':'Guided()',
+                'download':'download()',
+                'auto':'Auto()',
+                'disarm':'disarm()',
+                'rtl':'RTL()',
+                'esc':'esc',
+                's':'brake()'
+                }
+
+     while True
+        enter = raw_input('Input:').strip()
+        cmd = commands.get(enter)
+        if cmd == None:
+            print 'input is error {}'.format(enter)
             continue
-        elif enter == 'b':
+        elif cmd == 'esc':
             break
-        else:
-            command = 'vehicle.' + c
-            print 'Execute command ->', command
-            try:
-                eval(command)
-            except Exception, e:
-                info = sys.exc_info()
-                print "{0}:{1}".format(*info)
-                vehicle.Cancel()
+  
+        command = 'vehicle.' + cmd
+        print 'Execute command ->', command
+        try:
+            eval(command)
+        except Exception, e:
+            info = sys.exc_info()
+            print "{0}:{1}".format(*info)
+            vehicle.Cancel()
+
+    # for c in config.commands:
+    #     enter = raw_input(c + ' ?').strip()
+
+    #     if enter == 'c':
+    #         continue
+    #     elif enter == 'b':
+    #         break
+    #     else:
+    #         command = 'vehicle.' + c
+    #         print 'Execute command ->', command
+    #         try:
+    #             eval(command)
+    #         except Exception, e:
+    #             info = sys.exc_info()
+    #             print "{0}:{1}".format(*info)
+    #             vehicle.Cancel()
 
     print 'Completed'
