@@ -52,12 +52,13 @@ class Receiver(threading.Thread):
         self.sock = sock
 
     def run(self):
+        logger.info('Start Receiver Thread')
         buffer_size = 4096
         while True:
             # use this to receive command
             cmd = self.sock.recv(buffer_size).strip()
             
-            if cmd is '':
+            if not cmd:
                 continue
             mc_cmd = mc.SendCommand()
             mc_cmd.ParseFromString(cmd)
@@ -67,6 +68,7 @@ class Receiver(threading.Thread):
                 # self.work_queue.put('vehicle.brake()')
             else:
                 CancelWatcher.Cancel = True
+                logger.debug('Receive command:{}'.format(cmd))
                 self.work_queue.put(cmd)
 
 
@@ -79,10 +81,10 @@ class Executor(threading.Thread):
         self.lidar = lidar
 
     def run(self):
-        command
+        logger.info('Start Executor Thread')
         while True:
             command = self.work_queue.get().strip()
-            if command is '':
+            if not command:
                 continue
             mc_cmd = mc.SendCommand()
             mc_cmd.ParseFromString = (command)
@@ -104,12 +106,10 @@ def GCS_start(ORB, vehicle=None, lidar=None):
     sock = open_sock()
     work_queue = Queue.Queue()
 
-    print('Start Receiver Thread')
     receiver = Receiver(work_queue, sock)
     receiver.daemon = True
     receiver.start()
 
-    print('Start Executor Thread')
     executor = Executor(work_queue, vehicle, lidar)
     executor.daemon = True
     executor.start()

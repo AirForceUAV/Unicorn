@@ -289,9 +289,9 @@ class Vehicle(Attribute):
         """
         0<=heading<360 (anti-clockwise)
         """
-        # if config.debug:
-        #     logger.warn('condition_yaw() ...')
-        #     return
+        if config.debug:
+            logger.warn('condition_yaw() ...')
+            return
         watcher = CancelWatcher()
         assert heading >= 0 and heading < 360, 'Param-heading {} is invalid'.format(
             heading)
@@ -341,6 +341,7 @@ class Vehicle(Attribute):
 
                 if not self.InAngle(angle, 90) or distance <= radius:
                     logger.info("Reached Target!")
+                    self.brake()
                     return True
 
                 EAngle = int(math.degrees(math.asin(radius / distance)))
@@ -378,8 +379,9 @@ class Vehicle(Attribute):
                 angle = angle_heading_target(CLocation, target, CYaw)
 
                 if not self.InAngle(angle, 90) or distance <= radius:
-                    # if distance <= radius:
+                # if distance <= radius:
                     logger.info("Reached Target Waypoint!")
+                    self.brake()
                     return True
                 EAngle = int(math.degrees(math.asin(radius / distance)))
 
@@ -425,6 +427,7 @@ class Vehicle(Attribute):
 
                 if not self.InAngle(angle, 90) or distance <= radius:
                     logger.info("Reached Target!")
+                    self.brake()
                     return True
                 self.forward()
                 time.sleep(frequency)
@@ -441,30 +444,37 @@ class Vehicle(Attribute):
 
     def Guided(self):
         logger.info('GUIDED...')
+        flag = True
+        try:
+            target = self.get_target()
+        except AssertionError, e:
+            logger.error(e)
+            return False
         self.publish('Mode', 'GUIDED')
         result = self.navigation()
         if not result:
             logger.error("Navigation except exit")
-            return False
-        self.Guided_finally()
-        return True
+            flag = False
+        self._finally()
+        return flag
 
     def RTL(self):
-        logger.info('RTL...')
-        self.publish('Mode', 'RTL')
+        logger.info('RTL...') 
+        flag = True     
         try:
-            home = self.get_home()
+            home = self.get_home()         
         except AssertionError, e:
             logger.error(e)
             return False
-
+        self.publish('Mode', 'RTL')
+        self.publish('Target',home)
         result = self.navigation()
         if not result:
             logger.error("Navigation except exit")
-            return False
+            flag = False
         # self.land()
-        self.Guided_finally()
-        return True
+        self._finally()
+        return flag
 
     def Route(self, info):
         self.wp.Route(info)
@@ -472,6 +482,7 @@ class Vehicle(Attribute):
 
     def Auto(self):
         logger.info('Auto...')
+        flag = True
         if self.wp.isNull():
             logger.error('Waypoint is None')
             return False
@@ -479,24 +490,26 @@ class Vehicle(Attribute):
         watcher = CancelWatcher()
         for point in self.wp.points:
             if watcher.IsCancel():
-                self.Auto_finally()
-                return False
+                logger.warn('Cancel Auto')
+                flag = False
+                break
             self.publish('Target', point)
             result = self.navigation()
             if not result:
                 logger.error("Navigation except exit")
-                return False
+                flag = False
+                break
             self.wp.add_number()
+
         self.Auto_finally()
-        return True
+        return flag
 
-    def Guided_finally(self):
+    def _finally(self):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
-
+    
     def Auto_finally(self):
-        self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
+        self._finally()
         self.wp.clear()
 
     def Cancel(self):
@@ -564,7 +577,7 @@ if __name__ == "__main__":
                 'rollr':'roll_right_brake()',
                 'forward':'forward_brake()',
                 'back':'backward_brake()',
-                'up':'up_brake()'
+                'up':'up_brake()',
                 'down':'down_brake()',
                 'conl':'condition_yaw(30)',
                 'conr':'condition_yaw(300)',
@@ -578,7 +591,7 @@ if __name__ == "__main__":
                 's':'brake()'
                 }
 
-     while True
+    while True:
         enter = raw_input('Input:').strip()
         cmd = commands.get(enter)
         if cmd == None:

@@ -70,7 +70,7 @@ def unpack_actions(actions):
         oa_rpc_pb2.RIGHT_YAW: {'RUD': 1}, oa_rpc_pb2.LEFT_YAW: {'RUD': -1},
         oa_rpc_pb2.RIGHT_ROLL: {'AIL': 1}, oa_rpc_pb2.LEFT_ROLL: {'AIL': -1},
         oa_rpc_pb2.UP: {'THR': 1}, oa_rpc_pb2.DOWN: {'THR': -1},
-        oa_rpc_pb2.INVALID: None, oa_rpc_pb2.ANY: {}
+        oa_rpc_pb2.INVALID: None, oa_rpc_pb2.ANY: {},
     }
     result = {}
     for action in actions:
@@ -78,8 +78,8 @@ def unpack_actions(actions):
             result = {}
             break
         dictaction = map_action.get(action)
-        assert not (dictaction is None or dictaction.keys()[0] in result),
-            'Command is invalid. Note: Command is {}'.format(actions)
+        assert not (dictaction is None or dictaction.keys()[
+                    0] in result), 'Command is invalid. Note: Command is {}'.format(actions)
         result = dict(result, **dictaction)
     return result
 
@@ -122,8 +122,10 @@ class Lidar(object):
         while not watcher.IsCancel() and retry_times < 5:
             try:
                 context = self.full_auto_context(self.vehicle._state)
+                logger.debug('Send to lidar {}'.format(context))
                 if context == True:
                     logger.info("Reached Target!")
+                    self.vehicle.brake()
                     return True
             except AssertionError, e:
                 logger.error(e)
@@ -131,6 +133,7 @@ class Lidar(object):
                 return False
             try:
                 id, actions = self.stub.FullAuto(context)
+                logger.debug('Receive from lidar {}'.format(actions))
             except grpc.RpcError, e:
                 logger.critical(e)
                 self.vehicle.brake()
@@ -155,51 +158,60 @@ class Lidar(object):
 
     def Guided(self):
         logger.debug('Guided(AI) start ...')
+        flag = True
         try:
             target = self.vehicle.get_target()
         except AssertionError, e:
             logger.error(e)
-            return
+            return False
         self.publish('Mode', 'AI_GUIDED')
-        self.navigation()
-        self._end()
-        # lidar.Guided() None)
+        result = self.navigation()
+        if not result:
+            logger.error("Navigation except exit")
+            flag = False
+        self.vehicle._finally()
+        return flag
 
     def RTL(self):
         logger.debug('RTL(AI) start ...')
+        flag = True
         try:
-            target = self.vehicle.get_home()
+            home = self.vehicle.get_home()
         except AssertionError, e:
             logger.error(e)
-            return
-        self.vehicle.publish('Target', target)
+            return False
+        self.vehicle.publish('Target', home)
         self.vehicle.publish('Mode', 'AI_RTL')
-        self.navigation()
-        self._end()
+        result = self.navigation()
+        if not result:
+            logger.error("Navigation except exit")
+            flag = False
+        self.vehicle._finally()
+        return flag
 
     def Auto(self):
-
         logger.debug('Auto(AI) start ...')
+        flag = True
         if self.vehicle.wp.isNull():
             logger.warn('Waypoint is Null.Please set Waypoint')
-            return
+            return False
         self.publish('Mode', 'AI_Auto')
         watcher = CancelWatcher()
         for point in self.vehicle.wp.points:
             if watcher.IsCancel():
+                logger.warn('Cancel Auto')
+                flag = False
                 break
             self.publish('Target', point)
             result = self.navigation()
             if not result:
+                logger.error("Navigation except exit")
+                flag = False
                 break
             self.wp.add_number()
 
-        self._end()
-        self.wp.clear()
-
-    def _end(self):
-        self.publish('Mode', 'Loiter')
-        self.publish('Target', None)
+        self.vehicle.Auto_finally()
+        return flag
 
     def full_auto_context(self, command):
         def context_release():
@@ -230,7 +242,7 @@ class Lidar(object):
                 'current': self.vehicle._state,
                 'last_state': self.vehicle.pre_state,
                 'last_previous_state': self.vehicle.prepre_state}
-            print context
+            # print context
             return context
 
         self.full_id += 1
@@ -253,8 +265,8 @@ if __name__ == "__main__":
     lidar = Lidar(vehicle)
 
     # vehicle.publish('Target', [36, 117])
-    # vehicle.set_target(-20, 0)
-    # lidar.Guided()
+    vehicle.set_target(-20, 0)
+    lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()
     # print 'Done'

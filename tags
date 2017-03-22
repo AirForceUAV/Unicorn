@@ -23,34 +23,34 @@ AI_RTL	AF_GCS/mc_rpc_pb2_grpc.py	/^  def AI_RTL(self, request, context):$/;"	kin
 ANY	AF_Avoid/oa_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
 ANY	AF_GCS/for_mc_pb2.py	/^ANY = 255$/;"	kind:variable	line:153
 ANY	AF_GCS/mc_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
-Acc	AF_Sensors/IMU.py	/^        Acc = ORB.subscribe('ACC')$/;"	kind:variable	line:157
+Acc	AF_Sensors/IMU.py	/^        Acc = ORB.subscribe('ACC')$/;"	kind:variable	line:158
 Action	AF_Avoid/oa_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
 Action	AF_GCS/for_mc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:87
 Action	AF_GCS/mc_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
 Attitude	protobuf/FlightLog_pb2.py	/^Attitude = _reflection.GeneratedProtocolMessageType('Attitude', (_message.Message,), dict($/;"	kind:variable	line:635
 Attribute	AF_Copter/attribute.py	/^class Attribute(object):$/;"	kind:class	line:13
 Auto	AF_Avoid/lidar.py	/^    def Auto(self):$/;"	kind:member	line:57
-Auto	AF_Avoid/lidar_rpc.py	/^    def Auto(self):$/;"	kind:member	line:178
-Auto	AF_Copter/vehicle.py	/^    def Auto(self):$/;"	kind:member	line:465
+Auto	AF_Avoid/lidar_rpc.py	/^    def Auto(self):$/;"	kind:member	line:180
+Auto	AF_Copter/vehicle.py	/^    def Auto(self):$/;"	kind:member	line:470
 Auto	AF_GCS/GCS_RPC.py	/^    def Auto(self, request, context):$/;"	kind:member	line:91
 Auto	AF_GCS/for_mc_pb2.py	/^Auto = _reflection.GeneratedProtocolMessageType('Auto', (_message.Message,), dict($/;"	kind:variable	line:648
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:608
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:719
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:759
 Auto	AF_GCS/mc_rpc_pb2_grpc.py	/^  def Auto(self, request, context):$/;"	kind:member	line:121
-Auto_finally	AF_Copter/vehicle.py	/^    def Auto_finally(self):$/;"	kind:member	line:489
+Auto_finally	AF_Copter/vehicle.py	/^    def Auto_finally(self):$/;"	kind:member	line:494
 BACKWARD	AF_Avoid/oa_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
 BACKWARD	AF_GCS/for_mc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:145
 BACKWARD	AF_GCS/mc_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
 Baro	AF_Sensors/Baro.py	/^class Baro(threading.Thread):$/;"	kind:class	line:14
 Baro.py	AF_Sensors/Baro.py	1;"	kind:file	line:1
-Baro_start	AF_Sensors/Baro.py	/^def Baro_start(ORB):$/;"	kind:function	line:191
+Baro_start	AF_Sensors/Baro.py	/^def Baro_start(ORB):$/;"	kind:function	line:192
 Barometre	protobuf/FlightLog_pb2.py	/^Barometre = _reflection.GeneratedProtocolMessageType('Barometre', (_message.Message,), dict($/;"	kind:variable	line:663
 BetaFCServicer	AF_GCS/mc_rpc_pb2.py	/^  class BetaFCServicer(object):$/;"	kind:class	line:697
 BetaFCStub	AF_GCS/mc_rpc_pb2.py	/^  class BetaFCStub(object):$/;"	kind:class	line:729
 BetaObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceServicer(object):$/;"	kind:class	line:334
 BetaObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceStub(object):$/;"	kind:class	line:346
-Cancel	AF_Copter/vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:494
+Cancel	AF_Copter/vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:499
 Cancel	AF_GCS/for_mc_pb2.py	/^Cancel = _reflection.GeneratedProtocolMessageType('Cancel', (_message.Message,), dict($/;"	kind:variable	line:655
 Cancel	lib/tools.py	/^    Cancel = False$/;"	kind:variable	line:38
 CancelWatcher	lib/tools.py	/^class CancelWatcher(object):$/;"	kind:class	line:37
@@ -112,8 +112,8 @@ DOWN	AF_GCS/for_mc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:151
 DOWN	AF_GCS/mc_rpc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:94
 DistanceAngle	AF_GCS/mc_rpc_pb2.py	/^DistanceAngle = _reflection.GeneratedProtocolMessageType('DistanceAngle', (_message.Message,), dict($/;"	kind:variable	line:457
 DistanceMetres	AF_GCS/mc_rpc_pb2.py	/^DistanceMetres = _reflection.GeneratedProtocolMessageType('DistanceMetres', (_message.Message,), dict($/;"	kind:variable	line:450
-EncodeChannels	AF_Sbus/sender.py	/^    def EncodeChannels(self, channels):$/;"	kind:member	line:64
-Eul	AF_Sensors/IMU.py	/^        Eul = ORB.subscribe('EUL')$/;"	kind:variable	line:160
+EncodeChannels	AF_Sbus/sender.py	/^    def EncodeChannels(self, channels):$/;"	kind:member	line:65
+Eul	AF_Sensors/IMU.py	/^        Eul = ORB.subscribe('EUL')$/;"	kind:variable	line:161
 Executor	AF_GCS/GCSProxy.py	/^class Executor(threading.Thread):$/;"	kind:class	line:54
 Executor	AF_GCS/GCS_Proto.py	/^class Executor(threading.Thread):$/;"	kind:class	line:73
 Executor	AF_GCS/cloud.py	/^class Executor(threading.Thread):$/;"	kind:class	line:48
@@ -126,9 +126,8 @@ FORWARD	AF_Avoid/oa_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
 FORWARD	AF_GCS/for_mc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:144
 FORWARD	AF_GCS/mc_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
 Finally	AF_Avoid/lidarProxy.py	/^def Finally(vehicle):$/;"	kind:function	line:223
-FlightLog	AF_uORB/test.py	/^def FlightLog(LoiterPWM):$/;"	kind:function	line:1
 FlightLog_pb2.py	protobuf/FlightLog_pb2.py	1;"	kind:file	line:1
-FullAuto	AF_Avoid/oa_rpc_client.py	/^    def FullAuto(self, context):$/;"	kind:member	line:16
+FullAuto	AF_Avoid/oa_rpc_client.py	/^    def FullAuto(self, context):$/;"	kind:member	line:18
 FullAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, context):$/;"	kind:member	line:305
 FullAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, context):$/;"	kind:member	line:340
 FullAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:352
@@ -151,26 +150,26 @@ GPS_start	AF_Sensors/GPS.py	/^def GPS_start(ORB):$/;"	kind:function	line:63
 Gear	AF_GCS/mc_rpc_pb2.py	/^Gear = _reflection.GeneratedProtocolMessageType('Gear', (_message.Message,), dict($/;"	kind:variable	line:443
 GradualTHR	AF_Copter/vehicle.py	/^    def GradualTHR(self, begin, end):$/;"	kind:member	line:104
 Guided	AF_Avoid/lidar.py	/^    def Guided(self):$/;"	kind:member	line:39
-Guided	AF_Avoid/lidar_rpc.py	/^    def Guided(self):$/;"	kind:member	line:154
-Guided	AF_Copter/vehicle.py	/^    def Guided(self):$/;"	kind:member	line:434
+Guided	AF_Avoid/lidar_rpc.py	/^    def Guided(self):$/;"	kind:member	line:156
+Guided	AF_Copter/vehicle.py	/^    def Guided(self):$/;"	kind:member	line:439
 Guided	AF_GCS/GCS_RPC.py	/^    def Guided(self, request, context):$/;"	kind:member	line:72
 Guided	AF_GCS/for_mc_pb2.py	/^Guided = _reflection.GeneratedProtocolMessageType('Guided', (_message.Message,), dict($/;"	kind:variable	line:634
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:598
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:715
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:753
 Guided	AF_GCS/mc_rpc_pb2_grpc.py	/^  def Guided(self, request, context):$/;"	kind:member	line:111
-Guided_finally	AF_Copter/vehicle.py	/^    def Guided_finally(self):$/;"	kind:member	line:485
-Gyr	AF_Sensors/IMU.py	/^        Gyr = ORB.subscribe('GYR')$/;"	kind:variable	line:158
+Guided_finally	AF_Copter/vehicle.py	/^    def Guided_finally(self):$/;"	kind:member	line:490
+Gyr	AF_Sensors/IMU.py	/^        Gyr = ORB.subscribe('GYR')$/;"	kind:variable	line:159
 H2TAngle	lib/science.py	/^    H2TAngle = angle_heading_target(loc, TLocation, 90)$/;"	kind:variable	line:147
 ID	AF_Copter/waypoint.py	/^    def ID(self):$/;"	kind:member	line:20
 IMU	AF_Sensors/IMU.py	/^class IMU(threading.Thread):$/;"	kind:class	line:12
 IMU.py	AF_Sensors/IMU.py	1;"	kind:file	line:1
-IMU_start	AF_Sensors/IMU.py	/^def IMU_start(ORB):$/;"	kind:function	line:131
+IMU_start	AF_Sensors/IMU.py	/^def IMU_start(ORB):$/;"	kind:function	line:132
 INVALID	AF_Avoid/oa_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
 INVALID	AF_GCS/for_mc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:152
 INVALID	AF_GCS/mc_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
-InAngle	AF_Copter/vehicle.py	/^    def InAngle(self, angle, EAngle):$/;"	kind:member	line:428
-InitLoiter	AF_uORB/uORB.py	/^    def InitLoiter(self):$/;"	kind:member	line:64
+InAngle	AF_Copter/vehicle.py	/^    def InAngle(self, angle, EAngle):$/;"	kind:member	line:433
+InitLoiter	AF_uORB/uORB.py	/^    def InitLoiter(self):$/;"	kind:member	line:67
 InitLoiter	lib/config.py	/^    def InitLoiter(self):$/;"	kind:member	line:124
 IsCancel	lib/tools.py	/^    def IsCancel(self):$/;"	kind:member	line:46
 KB_Control.py	AF_Keyboard/KB_Control.py	1;"	kind:file	line:1
@@ -184,14 +183,14 @@ LEFT_YAW	AF_GCS/mc_rpc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:89
 Lidar	AF_Avoid/lidar.py	/^class Lidar(object):$/;"	kind:class	line:15
 Lidar	AF_Avoid/lidar_rpc.py	/^class Lidar(object):$/;"	kind:class	line:94
 Location	protobuf/FlightLog_pb2.py	/^Location = _reflection.GeneratedProtocolMessageType('Location', (_message.Message,), dict($/;"	kind:variable	line:621
-Mag	AF_Sensors/IMU.py	/^        Mag = ORB.subscribe('MAG')$/;"	kind:variable	line:159
-MergeFrame	AF_Sensors/IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:116
+Mag	AF_Sensors/IMU.py	/^        Mag = ORB.subscribe('MAG')$/;"	kind:variable	line:160
+MergeFrame	AF_Sensors/IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:117
 OA_RPC_Config	lib/config.py	/^    def OA_RPC_Config(self, conf):$/;"	kind:member	line:48
-OA_Stub	AF_Avoid/oa_rpc_client.py	/^class OA_Stub:$/;"	kind:class	line:9
+OA_Stub	AF_Avoid/oa_rpc_client.py	/^class OA_Stub:$/;"	kind:class	line:10
 ORB	AF_Avoid/lidar.py	/^    ORB = uORB()$/;"	kind:variable	line:73
-ORB	AF_Avoid/lidar_rpc.py	/^    ORB = uORB()$/;"	kind:variable	line:247
+ORB	AF_Avoid/lidar_rpc.py	/^    ORB = uORB()$/;"	kind:variable	line:248
 ORB	AF_Copter/attribute.py	/^    ORB = uORB()$/;"	kind:variable	line:158
-ORB	AF_Copter/vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:540
+ORB	AF_Copter/vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:544
 ORB	AF_Copter/waypoint.py	/^    ORB = uORB()$/;"	kind:variable	line:98
 ORB	AF_GCS/GCSProxy.py	/^    ORB = uORB()$/;"	kind:variable	line:107
 ORB	AF_GCS/GCS_Proto.py	/^    ORB = uORB()$/;"	kind:variable	line:129
@@ -199,21 +198,21 @@ ORB	AF_GCS/GCS_RPC.py	/^    ORB = uORB()$/;"	kind:variable	line:172
 ORB	AF_GCS/cloud.py	/^    ORB = uORB()$/;"	kind:variable	line:101
 ORB	AF_ML/Curve.py	/^    ORB = uORB()$/;"	kind:variable	line:157
 ORB	AF_ML/collecter.py	/^    ORB = uORB()$/;"	kind:variable	line:46
-ORB	AF_Sbus/receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:89
-ORB	AF_Sbus/sender.py	/^    ORB = uORB()$/;"	kind:variable	line:98
-ORB	AF_Sensors/Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:202
+ORB	AF_Sbus/receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:90
+ORB	AF_Sbus/sender.py	/^    ORB = uORB()$/;"	kind:variable	line:99
+ORB	AF_Sensors/Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:203
 ORB	AF_Sensors/GPS.py	/^    ORB = uORB()$/;"	kind:variable	line:74
-ORB	AF_Sensors/IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:141
-ORB	AF_Sensors/compass.py	/^    ORB = uORB()$/;"	kind:variable	line:95
-ORB	AF_uORB/uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:240
+ORB	AF_Sensors/IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:142
+ORB	AF_Sensors/compass.py	/^    ORB = uORB()$/;"	kind:variable	line:94
+ORB	AF_uORB/uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:244
 ORB	examples/main.py	/^    ORB = uORB()$/;"	kind:variable	line:15
 ObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2.py	/^  class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:303
 ObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:29
 ObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2.py	/^  class ObstacleAvoidanceStub(object):$/;"	kind:class	line:283
 ObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceStub(object):$/;"	kind:class	line:9
-ParseFrag	AF_Sensors/IMU.py	/^    def ParseFrag(self, Frag):$/;"	kind:member	line:126
-ParseIMU	AF_Sensors/IMU.py	/^    def ParseIMU(self, package):$/;"	kind:member	line:90
-ParseQua	AF_Sensors/IMU.py	/^    def ParseQua(self, Qua):$/;"	kind:member	line:122
+ParseFrag	AF_Sensors/IMU.py	/^    def ParseFrag(self, Frag):$/;"	kind:member	line:127
+ParseIMU	AF_Sensors/IMU.py	/^    def ParseIMU(self, package):$/;"	kind:member	line:91
+ParseQua	AF_Sensors/IMU.py	/^    def ParseQua(self, Qua):$/;"	kind:member	line:123
 Phase	AF_Copter/attribute.py	/^    def Phase(self):$/;"	kind:member	line:74
 PlanRoute	AF_GCS/GCS_RPC.py	/^    def PlanRoute(self, request, context):$/;"	kind:member	line:100
 PlanRoute	AF_GCS/GCS_RPC_client.py	/^    def PlanRoute(self, context):$/;"	kind:member	line:25
@@ -223,7 +222,7 @@ PlanRoute	AF_GCS/mc_rpc_pb2.py	/^    def PlanRoute(self, request, context):$/;"	
 PlanRoute	AF_GCS/mc_rpc_pb2.py	/^    def PlanRoute(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:750
 PlanRoute	AF_GCS/mc_rpc_pb2_grpc.py	/^  def PlanRoute(self, request, context):$/;"	kind:member	line:106
 Point	protobuf/FlightLog_pb2.py	/^Point = _reflection.GeneratedProtocolMessageType('Point', (_message.Message,), dict($/;"	kind:variable	line:628
-Qua	AF_Sensors/IMU.py	/^        Qua = ORB.subscribe('QUA')$/;"	kind:variable	line:161
+Qua	AF_Sensors/IMU.py	/^        Qua = ORB.subscribe('QUA')$/;"	kind:variable	line:162
 RIGHT_ROLL	AF_Avoid/oa_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
 RIGHT_ROLL	AF_GCS/for_mc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:149
 RIGHT_ROLL	AF_GCS/mc_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
@@ -231,16 +230,16 @@ RIGHT_YAW	AF_Avoid/oa_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
 RIGHT_YAW	AF_GCS/for_mc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:147
 RIGHT_YAW	AF_GCS/mc_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
 RTL	AF_Avoid/lidar.py	/^    def RTL(self):$/;"	kind:member	line:48
-RTL	AF_Avoid/lidar_rpc.py	/^    def RTL(self):$/;"	kind:member	line:166
-RTL	AF_Copter/vehicle.py	/^    def RTL(self):$/;"	kind:member	line:444
+RTL	AF_Avoid/lidar_rpc.py	/^    def RTL(self):$/;"	kind:member	line:168
+RTL	AF_Copter/vehicle.py	/^    def RTL(self):$/;"	kind:member	line:449
 RTL	AF_GCS/GCS_RPC.py	/^    def RTL(self, request, context):$/;"	kind:member	line:82
 RTL	AF_GCS/for_mc_pb2.py	/^RTL = _reflection.GeneratedProtocolMessageType('RTL', (_message.Message,), dict($/;"	kind:variable	line:641
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:603
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:717
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:756
 RTL	AF_GCS/mc_rpc_pb2_grpc.py	/^  def RTL(self, request, context):$/;"	kind:member	line:116
-RawFrame	AF_Sensors/IMU.py	/^    def RawFrame(self):$/;"	kind:member	line:83
-RawFrame	AF_Sensors/compass.py	/^    def RawFrame(self, command, ack, size=8):$/;"	kind:member	line:51
+RawFrame	AF_Sensors/IMU.py	/^    def RawFrame(self):$/;"	kind:member	line:84
+RawFrame	AF_Sensors/compass.py	/^    def RawFrame(self, command, ack, size=8):$/;"	kind:member	line:50
 Receiver	AF_GCS/GCSProxy.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:30
 Receiver	AF_GCS/GCS_Proto.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:47
 Receiver	AF_GCS/cloud.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:22
@@ -250,8 +249,8 @@ ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$
 ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$/;"	kind:member	line:703
 ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:735
 ResetLoiter	AF_GCS/mc_rpc_pb2_grpc.py	/^  def ResetLoiter(self, request, context):$/;"	kind:member	line:81
-ReverseFrame	AF_Sensors/IMU.py	/^    def ReverseFrame(self, frame, length):$/;"	kind:member	line:119
-Route	AF_Copter/vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:461
+ReverseFrame	AF_Sensors/IMU.py	/^    def ReverseFrame(self, frame, length):$/;"	kind:member	line:120
+Route	AF_Copter/vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:466
 Route	AF_Copter/waypoint.py	/^    def Route(self, info):$/;"	kind:member	line:55
 SBUS	AF_Sbus/sbus.py	/^class SBUS(object):$/;"	kind:class	line:12
 STOP	AF_Avoid/oa_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
@@ -259,7 +258,7 @@ STOP	AF_GCS/for_mc_pb2.py	/^STOP = 0$/;"	kind:variable	line:143
 STOP	AF_GCS/mc_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
 Sbus_Receiver	AF_Sbus/receiver.py	/^class Sbus_Receiver(threading.Thread):$/;"	kind:class	line:15
 Sbus_Sender	AF_Sbus/sender.py	/^class Sbus_Sender(threading.Thread):$/;"	kind:class	line:15
-SemiAuto	AF_Avoid/oa_rpc_client.py	/^    def SemiAuto(self, control):$/;"	kind:member	line:21
+SemiAuto	AF_Avoid/oa_rpc_client.py	/^    def SemiAuto(self, control):$/;"	kind:member	line:23
 SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:310
 SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:342
 SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:355
@@ -354,7 +353,7 @@ __call__	lib/tools.py	/^    def __call__(cls, *args, **kw):$/;"	kind:member	line
 __del__	lib/tools.py	/^    def __del__(self):$/;"	kind:member	line:49
 __init__	AF_Avoid/lidar.py	/^    def __init__(self, vehicle):$/;"	kind:member	line:18
 __init__	AF_Avoid/lidar_rpc.py	/^    def __init__(self, vehicle):$/;"	kind:member	line:97
-__init__	AF_Avoid/oa_rpc_client.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	AF_Avoid/oa_rpc_client.py	/^    def __init__(self):$/;"	kind:member	line:12
 __init__	AF_Avoid/oa_rpc_pb2.py	/^    def __init__(self, channel):$/;"	kind:member	line:285
 __init__	AF_Avoid/oa_rpc_pb2_grpc.py	/^  def __init__(self, channel):$/;"	kind:member	line:11
 __init__	AF_Copter/attribute.py	/^    def __init__(self, ORB):$/;"	kind:member	line:15
@@ -436,17 +435,18 @@ __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:v
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:672
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:679
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:686
-__str__	AF_Sbus/receiver.py	/^    def __str__(self):$/;"	kind:member	line:71
-__str__	AF_Sbus/sender.py	/^    def __str__(self):$/;"	kind:member	line:75
-__str__	AF_uORB/uORB.py	/^    def __str__(self):$/;"	kind:member	line:232
+__str__	AF_Sbus/receiver.py	/^    def __str__(self):$/;"	kind:member	line:72
+__str__	AF_Sbus/sender.py	/^    def __str__(self):$/;"	kind:member	line:76
+__str__	AF_uORB/uORB.py	/^    def __str__(self):$/;"	kind:member	line:236
 __str__	lib/config.py	/^    def __str__(self):$/;"	kind:member	line:131
 _b	AF_Avoid/oa_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _b	AF_GCS/for_mc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _b	AF_GCS/mc_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _b	protobuf/FlightLog_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
-_calculte_mantissa	AF_Sensors/IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:58
+_calculte_mantissa	AF_Sensors/IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:59
 _construct_channel	AF_Copter/vehicle.py	/^    def _construct_channel(self, channels):$/;"	kind:member	line:63
-_end	AF_Avoid/lidar_rpc.py	/^    def _end(self):$/;"	kind:member	line:198
+_debug	AF_uORB/test.py	/^def _debug(LoiterPWM):$/;"	kind:function	line:1
+_end	AF_Avoid/lidar_rpc.py	/^    def _end(self):$/;"	kind:member	line:200
 _sym_db	AF_Avoid/oa_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 _sym_db	AF_GCS/for_mc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 _sym_db	AF_GCS/mc_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
@@ -456,7 +456,7 @@ add_FCServicer_to_server	AF_GCS/mc_rpc_pb2_grpc.py	/^def add_FCServicer_to_serve
 add_ObstacleAvoidanceServicer_to_server	AF_Avoid/oa_rpc_pb2.py	/^  def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:316
 add_ObstacleAvoidanceServicer_to_server	AF_Avoid/oa_rpc_pb2_grpc.py	/^def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:42
 add_number	AF_Copter/waypoint.py	/^    def add_number(self):$/;"	kind:member	line:73
-analysis_channels	AF_Copter/vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:275
+analysis_channels	AF_Copter/vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:279
 angle_diff	lib/science.py	/^def angle_diff(minuend, subtrahend, sign=1):$/;"	kind:function	line:86
 angle_heading_target	lib/science.py	/^def angle_heading_target(origin, target, heading):$/;"	kind:function	line:77
 args	AF_Keyboard/KB_Proxy.py	/^    args = (sock[0], sock[1], config.keyboard_topic)$/;"	kind:variable	line:106
@@ -464,9 +464,9 @@ arm	AF_Copter/vehicle.py	/^    def arm(self):$/;"	kind:member	line:128
 ascii2hex	lib/science.py	/^def ascii2hex(argv):$/;"	kind:function	line:110
 attribute.py	AF_Copter/attribute.py	1;"	kind:file	line:1
 aux_channel	lib/config.py	/^    def aux_channel(self, ch):$/;"	kind:member	line:63
-average_pressure	AF_Sensors/Baro.py	/^    def average_pressure(self):$/;"	kind:member	line:50
-b	AF_uORB/uORB.py	/^    b = FlightLog.sensors()$/;"	kind:variable	line:250
-backward_brake	AF_Copter/vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:240
+average_pressure	AF_Sensors/Baro.py	/^    def average_pressure(self):$/;"	kind:member	line:51
+b	AF_uORB/uORB.py	/^    b = FlightLog.sensors()$/;"	kind:variable	line:254
+backward_brake	AF_Copter/vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:244
 beta_create_FC_server	AF_GCS/mc_rpc_pb2.py	/^  def beta_create_FC_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:773
 beta_create_FC_stub	AF_GCS/mc_rpc_pb2.py	/^  def beta_create_FC_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):$/;"	kind:function	line:825
 beta_create_ObstacleAvoidance_server	AF_Avoid/oa_rpc_pb2.py	/^  def beta_create_ObstacleAvoidance_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:360
@@ -476,25 +476,25 @@ build_log	lib/logger.py	/^def build_log(model, suffix):$/;"	kind:function	line:1
 build_sbus	AF_Sbus/sbus.py	/^def build_sbus():$/;"	kind:function	line:191
 change_exit	AF_ML/Curve.py	/^def change_exit():$/;"	kind:function	line:51
 change_exit	AF_ML/collecter.py	/^def change_exit():$/;"	kind:function	line:13
-check	AF_Sbus/receiver.py	/^    def check(self, channel):$/;"	kind:member	line:57
+check	AF_Sbus/receiver.py	/^    def check(self, channel):$/;"	kind:member	line:58
 check_error	AF_ML/Curve.py	/^def check_error():$/;"	kind:function	line:125
-checksum	AF_Sensors/compass.py	/^    def checksum(self, package):$/;"	kind:member	line:67
+checksum	AF_Sensors/compass.py	/^    def checksum(self, package):$/;"	kind:member	line:66
 child	AF_Copter/waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:78
 clear	AF_Copter/waypoint.py	/^    def clear(self):$/;"	kind:member	line:81
 client	AF_Avoid/lidar_simu.py	/^    client = init_mqtt()$/;"	kind:variable	line:38
 client	AF_Keyboard/KB_Proxy.py	/^    client = start_client(*args)$/;"	kind:variable	line:108
 close	AF_Sensors/GPS.py	/^    def close(self):$/;"	kind:member	line:58
-close	AF_Sensors/compass.py	/^    def close(self):$/;"	kind:member	line:79
+close	AF_Sensors/compass.py	/^    def close(self):$/;"	kind:member	line:78
 cloud.py	AF_GCS/cloud.py	1;"	kind:file	line:1
 collect_pwm	AF_ML/Curve.py	/^def collect_pwm(ORB):$/;"	kind:function	line:56
 collect_pwm	AF_ML/collecter.py	/^def collect_pwm(ORB, topic):$/;"	kind:function	line:18
 collecter.py	AF_ML/collecter.py	1;"	kind:file	line:1
-command	AF_Copter/vehicle.py	/^            command = 'vehicle.' + c$/;"	kind:variable	line:556
+command	AF_Copter/vehicle.py	/^            command = 'vehicle.' + c$/;"	kind:variable	line:561
 command	AF_Keyboard/KB_Proxy.py	/^    command = ','.join(map(str, keys))$/;"	kind:variable	line:91
 command_args	AF_GCS/GCS_Proto.py	/^def command_args(code):$/;"	kind:function	line:40
 compass.py	AF_Sensors/compass.py	1;"	kind:file	line:1
-compass_start	AF_Sensors/compass.py	/^def compass_start(ORB):$/;"	kind:function	line:84
-condition_yaw	AF_Copter/vehicle.py	/^    def condition_yaw(self, heading):$/;"	kind:member	line:284
+compass_start	AF_Sensors/compass.py	/^def compass_start(ORB):$/;"	kind:function	line:83
+condition_yaw	AF_Copter/vehicle.py	/^    def condition_yaw(self, heading):$/;"	kind:member	line:288
 config	lib/config.py	/^config = Config()$/;"	kind:variable	line:134
 config.py	lib/config.py	1;"	kind:file	line:1
 config_logger	lib/logger.py	/^def config_logger(model):$/;"	kind:function	line:28
@@ -535,35 +535,35 @@ containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:var
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:387
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:467
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:79
-context	AF_Avoid/oa_rpc_client.py	/^    context = {'id':  1,$/;"	kind:variable	line:29
+context	AF_Avoid/oa_rpc_client.py	/^    context = {'id':  1,$/;"	kind:variable	line:31
 context_debug	AF_Avoid/lidarProxy.py	/^    def context_debug():$/;"	kind:function	line:138
 context_release	AF_Avoid/lidarProxy.py	/^    def context_release():$/;"	kind:function	line:147
-context_release	AF_Avoid/lidar_rpc.py	/^        def context_release():$/;"	kind:function	line:203
-control	AF_Avoid/oa_rpc_client.py	/^    control = {'id':  2,$/;"	kind:variable	line:35
+context_release	AF_Avoid/lidar_rpc.py	/^        def context_release():$/;"	kind:function	line:205
+control	AF_Avoid/oa_rpc_client.py	/^    control = {'id':  2,$/;"	kind:variable	line:37
 control_FRU	AF_Copter/vehicle.py	/^    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:43
 control_THR	AF_Copter/vehicle.py	/^    def control_THR(self, percent):$/;"	kind:member	line:117
 control_percent	AF_Copter/vehicle.py	/^    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:53
 control_stick	AF_Copter/vehicle.py	/^    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:33
-convert2In	AF_Sensors/Baro.py	/^    def convert2In(self, pressure):$/;"	kind:member	line:187
-convert_complement	AF_Sensors/IMU.py	/^    def convert_complement(self, hex_val):$/;"	kind:member	line:77
-convert_ieee754	AF_Sensors/IMU.py	/^    def convert_ieee754(self, hex_val):$/;"	kind:member	line:68
+convert2In	AF_Sensors/Baro.py	/^    def convert2In(self, pressure):$/;"	kind:member	line:188
+convert_complement	AF_Sensors/IMU.py	/^    def convert_complement(self, hex_val):$/;"	kind:member	line:78
+convert_ieee754	AF_Sensors/IMU.py	/^    def convert_ieee754(self, hex_val):$/;"	kind:member	line:69
 cos	lib/science.py	/^def cos(angle):$/;"	kind:function	line:131
 count	lib/tools.py	/^    count = 0$/;"	kind:variable	line:39
-dataflash	AF_uORB/uORB.py	/^    def dataflash(self):$/;"	kind:member	line:210
+dataflash	AF_uORB/uORB.py	/^    def dataflash(self):$/;"	kind:member	line:214
 dec2hex	lib/science.py	/^def dec2hex(decimal, length=4):$/;"	kind:function	line:123
 decode	AF_Sbus/sbus.py	/^    def decode(self, package):$/;"	kind:member	line:141
-decode_BCD	AF_Sensors/compass.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:72
+decode_BCD	AF_Sensors/compass.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:71
 decode_frame	AF_Sbus/sbus.py	/^    def decode_frame(self):$/;"	kind:member	line:82
 dependencies	AF_GCS/for_mc_pb2.py	/^  dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])$/;"	kind:variable	line:26
 disarm	AF_Copter/vehicle.py	/^    def disarm(self):$/;"	kind:member	line:135
-distance_from_home	AF_uORB/uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:80
-distance_to_target	AF_uORB/uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:71
-down_brake	AF_Copter/vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:264
-down_metres	AF_Copter/vehicle.py	/^    def down_metres(self, altitude):$/;"	kind:member	line:190
+distance_from_home	AF_uORB/uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:83
+distance_to_target	AF_uORB/uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:74
+down_brake	AF_Copter/vehicle.py	/^    def down_brake(self):$/;"	kind:member	line:268
+down_metres	AF_Copter/vehicle.py	/^    def down_metres(self, altitude):$/;"	kind:member	line:194
 download	AF_Copter/attribute.py	/^    def download(self, index=1):$/;"	kind:member	line:67
 download	AF_Copter/waypoint.py	/^    def download(self, origin, index):$/;"	kind:member	line:27
 encode	AF_Sbus/sbus.py	/^    def encode(self, sbusChannels):$/;"	kind:member	line:149
-enter	AF_Copter/vehicle.py	/^        enter = raw_input(c + ' ?').strip()$/;"	kind:variable	line:549
+enter	AF_Copter/vehicle.py	/^        enter = raw_input(c + ' ?').strip()$/;"	kind:variable	line:554
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:153
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:191
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:229
@@ -778,9 +778,9 @@ filter	AF_Sbus/sbus.py	/^    def filter(self, package):$/;"	kind:member	line:129
 fitting	AF_ML/Curve.py	/^    def fitting(self, n):$/;"	kind:member	line:23
 fitting	AF_ML/Curve.py	/^class fitting:$/;"	kind:class	line:17
 for_mc_pb2.py	AF_GCS/for_mc_pb2.py	1;"	kind:file	line:1
-forward	AF_Copter/vehicle.py	/^    def forward(self):$/;"	kind:member	line:218
-forward_brake	AF_Copter/vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:234
-full_auto_context	AF_Avoid/lidar_rpc.py	/^    def full_auto_context(self, command):$/;"	kind:member	line:202
+forward	AF_Copter/vehicle.py	/^    def forward(self):$/;"	kind:member	line:222
+forward_brake	AF_Copter/vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:238
+full_auto_context	AF_Avoid/lidar_rpc.py	/^    def full_auto_context(self, command):$/;"	kind:member	line:204
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.Action',$/;"	kind:variable	line:29
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.FullContext',$/;"	kind:variable	line:102
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.SemiContext',$/;"	kind:variable	line:168
@@ -820,42 +820,42 @@ full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.Waypoint',$/;"	kind:v
 full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.sensors',$/;"	kind:variable	line:464
 full_publish	AF_Avoid/lidarProxy.py	/^def full_publish(client, userdata, command):$/;"	kind:function	line:79
 generate_ratio	AF_ML/Curve.py	/^def generate_ratio():$/;"	kind:function	line:79
-getBus	AF_Sensors/Baro.py	/^    def getBus(self):$/;"	kind:member	line:176
-getPressure	AF_Sensors/Baro.py	/^    def getPressure(self):$/;"	kind:member	line:170
-getPressureAdj	AF_Sensors/Baro.py	/^    def getPressureAdj(self):$/;"	kind:member	line:173
-getTempC	AF_Sensors/Baro.py	/^    def getTempC(self):$/;"	kind:member	line:164
-getTempF	AF_Sensors/Baro.py	/^    def getTempF(self):$/;"	kind:member	line:167
+getBus	AF_Sensors/Baro.py	/^    def getBus(self):$/;"	kind:member	line:177
+getPressure	AF_Sensors/Baro.py	/^    def getPressure(self):$/;"	kind:member	line:171
+getPressureAdj	AF_Sensors/Baro.py	/^    def getPressureAdj(self):$/;"	kind:member	line:174
+getTempC	AF_Sensors/Baro.py	/^    def getTempC(self):$/;"	kind:member	line:165
+getTempF	AF_Sensors/Baro.py	/^    def getTempF(self):$/;"	kind:member	line:168
 get_altitude	AF_Copter/attribute.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:140
-get_altitude	AF_uORB/uORB.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:112
-get_attitude	AF_Sensors/compass.py	/^    def get_attitude(self):$/;"	kind:member	line:40
-get_attitude	AF_uORB/uORB.py	/^    def get_attitude(self):$/;"	kind:member	line:90
+get_altitude	AF_uORB/uORB.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:116
+get_attitude	AF_Sensors/compass.py	/^    def get_attitude(self):$/;"	kind:member	line:39
+get_attitude	AF_uORB/uORB.py	/^    def get_attitude(self):$/;"	kind:member	line:93
 get_bearing	lib/science.py	/^def get_bearing(aLocation1, aLocation2):$/;"	kind:function	line:28
 get_distance_metres	lib/science.py	/^def get_distance_metres(aLocation1, aLocation2):$/;"	kind:function	line:67
 get_failsafe_status	AF_Sbus/sbus.py	/^    def get_failsafe_status(self):$/;"	kind:member	line:61
 get_heading	AF_Copter/attribute.py	/^    def get_heading(self):$/;"	kind:member	line:137
-get_heading	AF_uORB/uORB.py	/^    def get_heading(self):$/;"	kind:member	line:94
+get_heading	AF_uORB/uORB.py	/^    def get_heading(self):$/;"	kind:member	line:97
 get_home	AF_Copter/attribute.py	/^    def get_home(self):$/;"	kind:member	line:131
-get_home	AF_uORB/uORB.py	/^    def get_home(self):$/;"	kind:member	line:102
-get_init_alt	AF_uORB/uORB.py	/^    def get_init_alt(self):$/;"	kind:member	line:122
+get_home	AF_uORB/uORB.py	/^    def get_home(self):$/;"	kind:member	line:106
+get_init_alt	AF_uORB/uORB.py	/^    def get_init_alt(self):$/;"	kind:member	line:126
 get_location	AF_Copter/attribute.py	/^    def get_location(self):$/;"	kind:member	line:134
 get_location	AF_Sensors/GPS.py	/^    def get_location(self, loc):$/;"	kind:member	line:52
-get_location	AF_uORB/uORB.py	/^    def get_location(self):$/;"	kind:member	line:97
+get_location	AF_uORB/uORB.py	/^    def get_location(self):$/;"	kind:member	line:101
 get_location_metres	lib/science.py	/^def get_location_metres(original_location, dNorth, dEast):$/;"	kind:function	line:43
 get_num_stars	AF_Sensors/GPS.py	/^    def get_num_stars(self, loc):$/;"	kind:member	line:55
-get_pressure	AF_uORB/uORB.py	/^    def get_pressure(self):$/;"	kind:member	line:127
+get_pressure	AF_uORB/uORB.py	/^    def get_pressure(self):$/;"	kind:member	line:131
 get_rx_channel	AF_Sbus/sbus.py	/^    def get_rx_channel(self, num_ch):$/;"	kind:member	line:52
 get_rx_channels	AF_Sbus/sbus.py	/^    def get_rx_channels(self):$/;"	kind:member	line:44
 get_rx_report	AF_Sbus/sbus.py	/^    def get_rx_report(self):$/;"	kind:member	line:68
 get_sbus	lib/config.py	/^    def get_sbus(self, conf):$/;"	kind:member	line:96
 get_stars	AF_Copter/attribute.py	/^    def get_stars(self):$/;"	kind:member	line:64
 get_target	AF_Copter/attribute.py	/^    def get_target(self):$/;"	kind:member	line:128
-get_target	AF_uORB/uORB.py	/^    def get_target(self):$/;"	kind:member	line:107
+get_target	AF_uORB/uORB.py	/^    def get_target(self):$/;"	kind:member	line:111
 get_volume	lib/config.py	/^    def get_volume(self):$/;"	kind:member	line:117
 geterror	AF_ML/Curve.py	/^    def geterror(self):$/;"	kind:member	line:34
 has_module	AF_Copter/attribute.py	/^    def has_module(self, module):$/;"	kind:member	line:152
 has_module	lib/config.py	/^    def has_module(self, module):$/;"	kind:member	line:93
 id	AF_GCS/mc_rpc_pb2.py	/^id = _reflection.GeneratedProtocolMessageType('id', (_message.Message,), dict($/;"	kind:variable	line:478
-info	AF_Copter/vehicle.py	/^                info = sys.exc_info()$/;"	kind:variable	line:561
+info	AF_Copter/vehicle.py	/^                info = sys.exc_info()$/;"	kind:variable	line:566
 info	AF_Copter/waypoint.py	/^    info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"$/;"	kind:variable	line:102
 init_altitude	AF_Copter/attribute.py	/^    def init_altitude(self):$/;"	kind:member	line:55
 init_drone	lib/config.py	/^    def init_drone(self, conf):$/;"	kind:member	line:66
@@ -863,14 +863,14 @@ init_logger	lib/logger.py	/^def init_logger(model):$/;"	kind:function	line:97
 init_mqtt	AF_Avoid/lidarProxy.py	/^def init_mqtt(userdata):$/;"	kind:function	line:16
 init_mqtt	AF_Avoid/lidar_rpc.py	/^def init_mqtt(userdata):$/;"	kind:function	line:18
 init_mqtt	AF_Avoid/lidar_simu.py	/^def init_mqtt(userdata=None):$/;"	kind:function	line:10
-init_pressure	AF_Sensors/Baro.py	/^    init_pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:207
-init_sensors	AF_Copter/vehicle.py	/^def init_sensors(ORB):$/;"	kind:function	line:500
-init_vehicle	AF_Copter/vehicle.py	/^def init_vehicle(ORB):$/;"	kind:function	line:527
-input	AF_Sbus/receiver.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:95
-input	AF_Sbus/sender.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:104
+init_pressure	AF_Sensors/Baro.py	/^    init_pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:208
+init_sensors	AF_Copter/vehicle.py	/^def init_sensors(ORB):$/;"	kind:function	line:505
+init_vehicle	AF_Copter/vehicle.py	/^def init_vehicle(ORB):$/;"	kind:function	line:531
+input	AF_Sbus/receiver.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:96
+input	AF_Sbus/sender.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:105
 isNull	AF_Copter/waypoint.py	/^    def isNull(self):$/;"	kind:member	line:86
 isNum	lib/science.py	/^def isNum(s):$/;"	kind:function	line:93
-isStop	AF_Copter/vehicle.py	/^    def isStop(self, heading, target, sign):$/;"	kind:member	line:279
+isStop	AF_Copter/vehicle.py	/^    def isStop(self, heading, target, sign):$/;"	kind:member	line:283
 is_extendable	AF_Avoid/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:156
 is_extendable	AF_Avoid/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:194
 is_extendable	AF_Avoid/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:232
@@ -913,9 +913,9 @@ keyboard_state	AF_Keyboard/KB_Proxy.py	/^def keyboard_state():$/;"	kind:function
 keys	AF_Keyboard/KB_Proxy.py	/^        keys = [action.STOP]$/;"	kind:variable	line:90
 keys	AF_Keyboard/KB_Proxy.py	/^    keys = []$/;"	kind:variable	line:85
 kill	lib/tools.py	/^    def kill(self):$/;"	kind:member	line:91
-land	AF_Copter/vehicle.py	/^    def land(self):$/;"	kind:member	line:160
+land	AF_Copter/vehicle.py	/^    def land(self):$/;"	kind:member	line:164
 lidar	AF_Avoid/lidar.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:107
-lidar	AF_Avoid/lidar_rpc.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:252
+lidar	AF_Avoid/lidar_rpc.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:253
 lidar	AF_GCS/GCSProxy.py	/^    lidar = None$/;"	kind:variable	line:111
 lidar	AF_GCS/GCS_Proto.py	/^    lidar = None$/;"	kind:variable	line:133
 lidar	AF_GCS/GCS_RPC.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:177
@@ -931,7 +931,7 @@ listen_keyboard	AF_Keyboard/KB_Proxy.py	/^def listen_keyboard(client):$/;"	kind:
 listen_keyboard2	AF_Keyboard/KB_Proxy.py	/^def listen_keyboard2(client):$/;"	kind:function	line:52
 loc	lib/science.py	/^    loc = [36.1111, 116.2222]$/;"	kind:variable	line:142
 localtime	lib/logger.py	/^def localtime():$/;"	kind:function	line:14
-log_proto	AF_uORB/uORB.py	/^    def log_proto(self):$/;"	kind:member	line:213
+log_proto	AF_uORB/uORB.py	/^    def log_proto(self):$/;"	kind:member	line:217
 logger	lib/logger.py	/^logger = init_logger(model)$/;"	kind:variable	line:105
 logger.py	lib/logger.py	1;"	kind:file	line:1
 main	AF_Keyboard/KB_Control.py	/^def main():$/;"	kind:function	line:77
@@ -989,9 +989,9 @@ name	protobuf/FlightLog_pb2.py	/^  name='Waypoint',$/;"	kind:variable	line:338
 name	protobuf/FlightLog_pb2.py	/^  name='sensors',$/;"	kind:variable	line:463
 navigation	AF_Avoid/lidar.py	/^    def navigation(self, target):$/;"	kind:member	line:29
 navigation	AF_Avoid/lidar_rpc.py	/^    def navigation(self):$/;"	kind:member	line:106
-navigation	AF_Copter/vehicle.py	/^    def navigation(self):$/;"	kind:member	line:316
-navigation1	AF_Copter/vehicle.py	/^    def navigation1(self):$/;"	kind:member	line:353
-navigation2	AF_Copter/vehicle.py	/^    def navigation2(self):$/;"	kind:member	line:398
+navigation	AF_Copter/vehicle.py	/^    def navigation(self):$/;"	kind:member	line:321
+navigation1	AF_Copter/vehicle.py	/^    def navigation1(self):$/;"	kind:member	line:358
+navigation2	AF_Copter/vehicle.py	/^    def navigation2(self):$/;"	kind:member	line:403
 nested_types	AF_Avoid/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:152
 nested_types	AF_Avoid/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:190
 nested_types	AF_Avoid/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:228
@@ -1245,7 +1245,7 @@ options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:451
 options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:587
 options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:63
 origin	AF_Copter/waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:100
-output	AF_Sbus/sender.py	/^        output = ORB.subscribe('ChannelsOutput')$/;"	kind:variable	line:105
+output	AF_Sbus/sender.py	/^        output = ORB.subscribe('ChannelsOutput')$/;"	kind:variable	line:106
 p	examples/test.py	/^    p = Pool(2)$/;"	kind:variable	line:32
 pack	AF_Avoid/lidarProxy.py	/^def pack(context):$/;"	kind:function	line:116
 package	AF_Avoid/oa_rpc_pb2.py	/^  package='oa_rpc',$/;"	kind:variable	line:21
@@ -1263,23 +1263,23 @@ point	AF_GCS/mc_rpc_pb2.py	/^point = _reflection.GeneratedProtocolMessageType('p
 points	AF_Copter/waypoint.py	/^    def points(self):$/;"	kind:member	line:16
 predict	AF_ML/Curve.py	/^    def predict(self, x):$/;"	kind:member	line:47
 pressure2Alt	lib/science.py	/^def pressure2Alt(hpa):$/;"	kind:function	line:10
-printResults	AF_Sensors/Baro.py	/^    def printResults(self):$/;"	kind:member	line:179
+printResults	AF_Sensors/Baro.py	/^    def printResults(self):$/;"	kind:member	line:180
 publish	AF_Avoid/lidar.py	/^    def publish(self, topic, message):$/;"	kind:member	line:66
-publish	AF_Avoid/lidar_rpc.py	/^    def publish(self, topic, message):$/;"	kind:member	line:239
+publish	AF_Avoid/lidar_rpc.py	/^    def publish(self, topic, message):$/;"	kind:member	line:240
 publish	AF_Copter/attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:143
 publish	AF_Copter/waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:89
-publish	AF_Sbus/receiver.py	/^    def publish(self, topic, value):$/;"	kind:member	line:65
-publish	AF_Sbus/sender.py	/^    def publish(self, topic, value):$/;"	kind:member	line:69
-publish	AF_uORB/uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:54
+publish	AF_Sbus/receiver.py	/^    def publish(self, topic, value):$/;"	kind:member	line:66
+publish	AF_Sbus/sender.py	/^    def publish(self, topic, value):$/;"	kind:member	line:70
+publish	AF_uORB/uORB.py	/^    def publish(self, topic, value):$/;"	kind:member	line:57
 ratio_file	AF_ML/Curve.py	/^ratio_file = os.path.join('..', 'ML', UAV + ".ratio")$/;"	kind:variable	line:14
-read	AF_Sensors/Baro.py	/^    def read(self):$/;"	kind:member	line:71
+read	AF_Sensors/Baro.py	/^    def read(self):$/;"	kind:member	line:72
 receive_command	examples/test.py	/^def receive_command():$/;"	kind:function	line:20
 receiver.py	AF_Sbus/receiver.py	1;"	kind:file	line:1
 remain_wp	AF_Copter/waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:70
 response	AF_GCS/mc_rpc_pb2.py	/^response = _reflection.GeneratedProtocolMessageType('response', (_message.Message,), dict($/;"	kind:variable	line:429
 revid_is_valid	AF_Avoid/lidarProxy.py	/^def revid_is_valid(topic, revid, userdata):$/;"	kind:function	line:64
-roll_left_brake	AF_Copter/vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:246
-roll_right_brake	AF_Copter/vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:252
+roll_left_brake	AF_Copter/vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:250
+roll_right_brake	AF_Copter/vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:256
 run	AF_GCS/GCSProxy.py	/^    def run(self):$/;"	kind:member	line:37
 run	AF_GCS/GCSProxy.py	/^    def run(self):$/;"	kind:member	line:62
 run	AF_GCS/GCS_Proto.py	/^    def run(self):$/;"	kind:member	line:54
@@ -1292,20 +1292,22 @@ run	AF_Sensors/Baro.py	/^    def run(self):$/;"	kind:member	line:36
 run	AF_Sensors/GPS.py	/^    def run(self):$/;"	kind:member	line:23
 run	AF_Sensors/IMU.py	/^    def run(self):$/;"	kind:member	line:45
 run	AF_Sensors/compass.py	/^    def run(self):$/;"	kind:member	line:23
+run	AF_uORB/uORB.py	/^    def run(self):$/;"	kind:member	line:51
 run_codegen.py	AF_GCS/run_codegen.py	1;"	kind:file	line:1
 run_codegen.py	protobuf/run_codegen.py	1;"	kind:file	line:1
+save_log	AF_uORB/uORB.py	/^    def save_log():$/;"	kind:member	line:54
 sbus	AF_Sbus/sbus.py	/^    sbus = SBUS()$/;"	kind:variable	line:206
 sbus.py	AF_Sbus/sbus.py	1;"	kind:file	line:1
 sbusChannels	AF_Sbus/sbus.py	/^        sbusChannels = sbus.decode(package)$/;"	kind:variable	line:211
-sbus_receive_start	AF_Sbus/receiver.py	/^def sbus_receive_start(ORB, com=None):$/;"	kind:function	line:76
-sbus_start	AF_Sbus/sender.py	/^def sbus_start(ORB):$/;"	kind:function	line:81
+sbus_receive_start	AF_Sbus/receiver.py	/^def sbus_receive_start(ORB, com=None):$/;"	kind:function	line:77
+sbus_start	AF_Sbus/sender.py	/^def sbus_start(ORB):$/;"	kind:function	line:82
 science.py	lib/science.py	1;"	kind:file	line:1
 send_Log	AF_GCS/GCSProxy.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:25
 send_Log	AF_GCS/GCS_Proto.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:42
 send_Log	AF_GCS/cloud.py	/^def send_Log(Redis, ORB):$/;"	kind:function	line:14
 send_log	examples/test.py	/^def send_log():$/;"	kind:function	line:8
 send_package	AF_Sbus/sender.py	/^    def send_package(self, package):$/;"	kind:member	line:58
-send_pwm	AF_Copter/vehicle.py	/^    def send_pwm(self, channels):$/;"	kind:member	line:270
+send_pwm	AF_Copter/vehicle.py	/^    def send_pwm(self, channels):$/;"	kind:member	line:274
 sender.py	AF_Sbus/sender.py	1;"	kind:file	line:1
 sensors	protobuf/FlightLog_pb2.py	/^sensors = _reflection.GeneratedProtocolMessageType('sensors', (_message.Message,), dict($/;"	kind:variable	line:684
 sensors_serial	lib/config.py	/^    def sensors_serial(self, conf):$/;"	kind:member	line:42
@@ -1388,9 +1390,9 @@ serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=552,$/;"	kind:va
 serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=669,$/;"	kind:variable	line:593
 serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=95,$/;"	kind:variable	line:107
 serve	AF_Avoid/oa_rpc_server.py	/^def serve():$/;"	kind:function	line:34
-setElevation	AF_Sensors/Baro.py	/^    def setElevation(self, elevation):$/;"	kind:member	line:62
-setElevationFt	AF_Sensors/Baro.py	/^    def setElevationFt(self, elevation):$/;"	kind:member	line:65
-setI2c	AF_Sensors/Baro.py	/^    def setI2c(self, i2c):$/;"	kind:member	line:68
+setElevation	AF_Sensors/Baro.py	/^    def setElevation(self, elevation):$/;"	kind:member	line:63
+setElevationFt	AF_Sensors/Baro.py	/^    def setElevationFt(self, elevation):$/;"	kind:member	line:66
+setI2c	AF_Sensors/Baro.py	/^    def setI2c(self, i2c):$/;"	kind:member	line:69
 set_channels_mid	AF_Copter/attribute.py	/^    def set_channels_mid(self):$/;"	kind:member	line:85
 set_gear	AF_Copter/attribute.py	/^    def set_gear(self, Gear):$/;"	kind:member	line:104
 set_target	AF_Copter/attribute.py	/^    def set_target(self, dNorth, dEast):$/;"	kind:member	line:111
@@ -1400,15 +1402,15 @@ sin	lib/science.py	/^def sin(angle):$/;"	kind:function	line:136
 sock	AF_Keyboard/KB_Proxy.py	/^    sock = config.KB_socket$/;"	kind:variable	line:104
 start_client	AF_Keyboard/KB_Proxy.py	/^def start_client(host, port, id):$/;"	kind:function	line:95
 state	AF_Copter/attribute.py	/^    def state(self, module):$/;"	kind:member	line:149
-state	AF_uORB/uORB.py	/^    def state(self, module):$/;"	kind:member	line:61
-stub	AF_Avoid/oa_rpc_client.py	/^    stub = OA_Stub()$/;"	kind:variable	line:27
+state	AF_uORB/uORB.py	/^    def state(self, module):$/;"	kind:member	line:64
+stub	AF_Avoid/oa_rpc_client.py	/^    stub = OA_Stub()$/;"	kind:variable	line:29
 stub	AF_GCS/GCS_RPC_client.py	/^    stub = GCS_Stub()$/;"	kind:variable	line:70
-stub2	AF_Avoid/oa_rpc_client.py	/^    stub2 = OA_Stub()$/;"	kind:variable	line:28
+stub2	AF_Avoid/oa_rpc_client.py	/^    stub2 = OA_Stub()$/;"	kind:variable	line:30
 subscribe	AF_Copter/attribute.py	/^    def subscribe(self, topic):$/;"	kind:member	line:146
 subscribe	AF_Copter/waypoint.py	/^    def subscribe(self, topic):$/;"	kind:member	line:92
-subscribe	AF_Sbus/receiver.py	/^    def subscribe(self, topic):$/;"	kind:member	line:68
-subscribe	AF_Sbus/sender.py	/^    def subscribe(self, topic):$/;"	kind:member	line:72
-subscribe	AF_uORB/uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:58
+subscribe	AF_Sbus/receiver.py	/^    def subscribe(self, topic):$/;"	kind:member	line:69
+subscribe	AF_Sbus/sender.py	/^    def subscribe(self, topic):$/;"	kind:member	line:73
+subscribe	AF_uORB/uORB.py	/^    def subscribe(self, topic):$/;"	kind:member	line:61
 syntax	AF_Avoid/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:157
 syntax	AF_Avoid/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:195
 syntax	AF_Avoid/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:22
@@ -1446,7 +1448,7 @@ syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:373
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:453
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:589
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:65
-takeoff	AF_Copter/vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:139
+takeoff	AF_Copter/vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:143
 test.py	AF_uORB/test.py	1;"	kind:file	line:1
 test.py	examples/test.py	1;"	kind:file	line:1
 test_ControlFRU	AF_GCS/GCS_RPC_client.py	/^def test_ControlFRU():$/;"	kind:function	line:36
@@ -1504,29 +1506,29 @@ uORB	AF_uORB/uORB.py	/^class uORB(threading.Thread):$/;"	kind:class	line:15
 uORB.py	AF_uORB/uORB.py	1;"	kind:file	line:1
 unpack	AF_Avoid/lidarProxy.py	/^def unpack(message):$/;"	kind:function	line:122
 unpack_actions	AF_Avoid/lidar_rpc.py	/^def unpack_actions(actions):$/;"	kind:function	line:66
-up_brake	AF_Copter/vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:258
-up_metres	AF_Copter/vehicle.py	/^    def up_metres(self, altitude, relative=True):$/;"	kind:member	line:163
-update	AF_Sensors/Baro.py	/^    def update(self, dictories):$/;"	kind:member	line:46
+up_brake	AF_Copter/vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:262
+up_metres	AF_Copter/vehicle.py	/^    def up_metres(self, altitude, relative=True):$/;"	kind:member	line:167
+update	AF_Sensors/Baro.py	/^    def update(self, dictories):$/;"	kind:member	line:47
 update	AF_Sensors/GPS.py	/^    def update(self, dictories):$/;"	kind:member	line:35
-update	AF_Sensors/IMU.py	/^    def update(self, dictories):$/;"	kind:member	line:54
-update	AF_Sensors/compass.py	/^    def update(self, dictories):$/;"	kind:member	line:36
-update_Baro	AF_uORB/uORB.py	/^    def update_Baro(self):$/;"	kind:member	line:163
-update_GPS	AF_uORB/uORB.py	/^    def update_GPS(self):$/;"	kind:member	line:144
-update_attitude	AF_uORB/uORB.py	/^    def update_attitude(self, ProtoAttitude, Attitude):$/;"	kind:member	line:139
-update_channelsInput	AF_uORB/uORB.py	/^    def update_channelsInput(self):$/;"	kind:member	line:189
-update_channelsOutput	AF_uORB/uORB.py	/^    def update_channelsOutput(self):$/;"	kind:member	line:196
-update_compass	AF_uORB/uORB.py	/^    def update_compass(self):$/;"	kind:member	line:154
+update	AF_Sensors/IMU.py	/^    def update(self, dictories):$/;"	kind:member	line:55
+update	AF_Sensors/compass.py	/^    def update(self, dictories):$/;"	kind:member	line:35
+update_Baro	AF_uORB/uORB.py	/^    def update_Baro(self):$/;"	kind:member	line:167
+update_GPS	AF_uORB/uORB.py	/^    def update_GPS(self):$/;"	kind:member	line:148
+update_attitude	AF_uORB/uORB.py	/^    def update_attitude(self, ProtoAttitude, Attitude):$/;"	kind:member	line:143
+update_channelsInput	AF_uORB/uORB.py	/^    def update_channelsInput(self):$/;"	kind:member	line:193
+update_channelsOutput	AF_uORB/uORB.py	/^    def update_channelsOutput(self):$/;"	kind:member	line:200
+update_compass	AF_uORB/uORB.py	/^    def update_compass(self):$/;"	kind:member	line:158
 update_home	AF_Copter/attribute.py	/^    def update_home(self):$/;"	kind:member	line:46
-update_location	AF_uORB/uORB.py	/^    def update_location(self, ProtoLocation, Locaiton):$/;"	kind:member	line:131
-update_loiterPWM	AF_uORB/uORB.py	/^    def update_loiterPWM(self):$/;"	kind:member	line:203
-update_waypoint	AF_uORB/uORB.py	/^    def update_waypoint(self):$/;"	kind:member	line:173
+update_location	AF_uORB/uORB.py	/^    def update_location(self, ProtoLocation, Locaiton):$/;"	kind:member	line:135
+update_loiterPWM	AF_uORB/uORB.py	/^    def update_loiterPWM(self):$/;"	kind:member	line:207
+update_waypoint	AF_uORB/uORB.py	/^    def update_waypoint(self):$/;"	kind:member	line:177
 values	AF_Avoid/oa_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
 values	AF_GCS/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:34
 values	AF_GCS/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:93
 values	AF_GCS/mc_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
 vehicle	AF_Avoid/lidar.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:106
-vehicle	AF_Avoid/lidar_rpc.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:251
-vehicle	AF_Copter/vehicle.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:544
+vehicle	AF_Avoid/lidar_rpc.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:252
+vehicle	AF_Copter/vehicle.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:548
 vehicle	AF_GCS/GCSProxy.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:110
 vehicle	AF_GCS/GCS_Proto.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:132
 vehicle	AF_GCS/GCS_RPC.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:175
@@ -1538,7 +1540,7 @@ waypoint.py	AF_Copter/waypoint.py	1;"	kind:file	line:1
 waypoints	AF_GCS/mc_rpc_pb2.py	/^waypoints = _reflection.GeneratedProtocolMessageType('waypoints', (_message.Message,), dict($/;"	kind:variable	line:471
 wp	AF_Copter/waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:99
 wrapper	AF_GCS/GCS_Proto.py	/^    def wrapper(cmmand_proto):$/;"	kind:function	line:30
-yaw_left	AF_Copter/vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:212
-yaw_left_brake	AF_Copter/vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:222
-yaw_right	AF_Copter/vehicle.py	/^    def yaw_right(self):$/;"	kind:member	line:215
-yaw_right_brake	AF_Copter/vehicle.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:228
+yaw_left	AF_Copter/vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:216
+yaw_left_brake	AF_Copter/vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:226
+yaw_right	AF_Copter/vehicle.py	/^    def yaw_right(self):$/;"	kind:member	line:219
+yaw_right_brake	AF_Copter/vehicle.py	/^    def yaw_right_brake(self):$/;"	kind:member	line:232

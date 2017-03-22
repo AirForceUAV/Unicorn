@@ -24,7 +24,7 @@ class Waypoint(object):
     def type(self):
         return self.subscribe('WaypointType')
 
-    def download(self, origin, index):
+    def download(self, origin, index=1):
         import toml
         import os
         file_path = os.path.join('..', 'Toml', 'waypoint.yaml')
@@ -48,7 +48,7 @@ class Waypoint(object):
         self.publish('WaypointID', 0)
         # self.publish('WaypointType', 'Download')
 
-        logger.debug('Trail:{}\nWaypoints:{}'.format(
+        logger.debug('Trail:{}\n Waypoints:{}'.format(
             Trail, self.subscribe('Waypoint')))
         logger.info('Download complete')
 

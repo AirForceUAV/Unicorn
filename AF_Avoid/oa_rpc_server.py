@@ -18,7 +18,7 @@ class Vehicle(oa_rpc_pb2_grpc.ObstacleAvoidanceServicer):
         id = request.id
         actions = request.current
         response = {'id': id,
-                    'actions': actions}
+                    'actions': [1]}
         # print response
         return oa_rpc_pb2.Strategy(**response)
 

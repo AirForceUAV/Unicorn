@@ -38,8 +38,8 @@ class Receiver(threading.Thread):
         buffer_size = 4096
         while True:
             # use this to receive command
-            cmd = self.sock.recv(buffer_size).strip()
-            if cmd is '':
+            cmd = self.sock.recv(buffer_size)
+            if not cmd:
                 continue
             logger.info('Receive Command:{}'.format(cmd))
             if cmd.find('Cancel') != -1:
@@ -61,13 +61,14 @@ class Executor(threading.Thread):
 
     def run(self):
         while True:
-            command = self.work_queue.get().strip()
-            if command is '':
+            command = self.work_queue.get()
+            if not command:
                 continue
             command = "self." + command
             logger.debug('Execute command {}'.format(command))
             try:
                 eval(command)
+                self.work_queue.task_done()
             except Exception:
                 info = sys.exc_info()
                 logger.error("{0}:{1}".format(*info))
