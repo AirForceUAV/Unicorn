@@ -41,14 +41,15 @@ class Receiver(threading.Thread):
             cmd = self.sock.recv(buffer_size).strip()
             if not cmd or cmd is '':
                 continue
-            logger.info('Receive Command:{}'.format(cmd))
+            logger.info('Receive Command:{} from GCS'.format(cmd))
             if cmd.find('Cancel') != -1:
                 logger.info('Execute Cancel')
                 CancelWatcher.Cancel = True
                 # self.work_queue.put('vehicle.brake()')
             else:
                 CancelWatcher.Cancel = True
-                self.work_queue.put(str(time.time()) + ',' + cmd)
+                message = str(time.time()) + ',' + cmd
+                self.work_queue.put(message)
 
 
 class Executor(threading.Thread):
@@ -61,33 +62,31 @@ class Executor(threading.Thread):
 
     def run(self):
         while True:
-            if self.work_queue.empty():
-                self.vehicle.brake()
+            if self.work_queue.empty() and self.vehicle.isArmed():
+                self.vehicle._brake()
+                time.sleep(.01)
                 continue
-            message = self.work_queue.get().strip(',')
-
+            message = self.work_queue.get().split(',')
             try:
-                _timestamp = int(message[0])
+                _timestamp = float(message[0])
                 command = message[1].strip()
             except Exception as e:
                 logger.error(e)
                 continue
             timeout = time.time() - _timestamp
-            if timeout > 2: 
+            if timeout > 1.5: 
                 logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
                 continue
             if command is '':
-                logger.info('command is null')
                 continue
             command = "self." + command
             logger.debug('Execute command {}'.format(command))
             try:
                 eval(command)
                 self.work_queue.task_done()
-            except Exception:
-                info = sys.exc_info()
-                logger.error("{0}:{1}".format(*info))
-                # self.vehicle.Cancel()
+            except Exception as e:
+                logger.error(e)
+           
 
 
 def GCS_start(ORB, vehicle=None, lidar=None):

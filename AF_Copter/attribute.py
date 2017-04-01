@@ -64,6 +64,15 @@ class Attribute(object):
     def get_stars(self):
         return self.subscribe('NumStars')
 
+    def isArmed(self):
+        return self.subscribe('Armed')
+
+    def _armed(self):
+        self.publish('Armed', True)
+
+    def _disarmd(self):
+        self.publish('Armed', False)
+
     def download(self, index=1):
         try:
             location = self.get_location()

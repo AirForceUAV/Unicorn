@@ -30,6 +30,10 @@ class Vehicle(Attribute):
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
 
+
+    def _brake(self):
+        self.send_pwm(self.subscribe('LoiterPWM'))
+
     def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.AIL[2 + AIL * self.AIL[5]]
