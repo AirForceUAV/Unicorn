@@ -11,6 +11,7 @@ from lib.tools import CancelWatcher
 from lib.logger import logger
 import for_mc_pb2 as mc
 
+
 def open_sock():
     server_address = os.path.join(os.path.expanduser('~'), '.UDS_fc')
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -21,23 +22,195 @@ def open_sock():
         logger.error("{}:{}".format(sys.stderr, msg))
         sys.exit(1)
 
-def parse_ResetLoiter():
-    pass
 
-def parse_command(vehicle,lidar):      
-    proto2func={mc._ResetLoiter:(vehicle.set_channels_mid,parse_ResetLoiter}
+def Parse_Actions(actions):
+    enum2action = {
+        mc.STOP: {},
+        mc.FORWARD: {'ELE': 1}, mc.BACKWARD: {'ELE': -1},
+        mc.RIGHT_YAW: {'RUD': 1}, mc.LEFT_YAW: {'RUD': -1},
+        mc.RIGHT_ROLL: {'AIL': 1}, mc.LEFT_ROLL: {'AIL': -1},
+        mc.UP: {'THR': 1}, mc.DOWN: {'THR': -1},
+    }
+    result = {}
+    for a in actions:
+        action = a.action
 
-    def wrapper(cmmand_proto):
-        command_object = mc.SendCommand()
-        command_object.ParseFromString (command_proto)
-        code = command_object.code
-        assert code in proto2func,'code is error'
-        func = proto2func[code]
-        arg,kwargs = func[1]()
-        return code2func[code]
-    return wrapper
+        if action == mc.STOP:
+            result = {}
+            break
+        dictaction = enum2action.get(action)
+        assert not (dictaction is None or dictaction.keys()[0] in result),\
+            'Command is invalid. Note: Command is {}'.format(actions)
+        result = dict(result, **dictaction)
+    return result
 
-def command_args(code):
+
+def deserialize(message):
+    cmd_object = mc.SendCommand()
+    cmd_object.ParseFromString(message)
+    return cmd_object
+
+
+def parse_proto(vehicle, lidar):
+
+    def Parser(cmd_object):
+        code = cmd_object.code
+        any = cmd_object.command
+        _parser = code2parser.get(code)
+        assert _parser != None,\
+            'code:{} is invalid'.format(code)
+        # print type(_parser)
+        _parser(any)
+
+    def Parse_ResetLoiter(any):
+        specified = mc.ResetLoiter()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message ResetLoiter'
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.set_channels_mid()')
+        vehicle.set_channels_mid()
+
+    def Parse_SetGear(any):
+        specified = mc.SetGear()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message SetGear'
+        any.Unpack(specified)
+        index = specified.index
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.set_gear({})'.format(index))
+        vehicle.set_gear(index)
+
+    def Parse_Cancel(any):
+        specified = mc.Cancel()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message Cancel'
+        logger.debug('Execute Command:Cancel')
+        CancelWatcher.Cancel = True
+
+    def Parse_TargetByMetres(any):
+        specified = mc.TargetByMetres()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message TargetByMetres'
+        any.Unpack(specified)
+        North = specified.North
+        East = specified.East
+        assert vehicle != None, 'vehicle is null'
+        logger.debug(
+            'Execute Command: vehicle.set_target({},{})'.format(North, East))
+        vehicle.set_target(North, East)
+
+    def Parse_TargetByAngle(any):
+        specified = mc.TargetByAngle()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message TargetByAngle'
+        any.Unpack(specified)
+        distance = specified.distance
+        angle = specified.angle
+        assert vehicle != None, 'vehicle is null'
+        logger.debug(
+            'Execute Command: vehicle.set_target_angle({},{})'.format(distance, angle))
+        vehicle.set_target_angle(distance, angle)
+
+    def Parse_PlanRoute(any):
+        specified = mc.PlanRoute()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message PlanRoute'
+        any.Unpack(specified)
+        points = specified.points
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle._Route()')
+        # for point in points:
+        #     print point.latitude, point.longitude, point.altitude
+        vehicle._Route(points)
+
+    def Parse_ControlFRU(any):
+        specified = mc.ControlFRU()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message ControlFRU'
+        any.Unpack(specified)
+        actions = specified.actions
+        kwargs = Parse_Actions(actions)
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.Control_FRU({})'.format(kwargs))
+        vehicle.control_FRU(**kwargs)
+
+    def Parse_Guided(any):
+        specified = mc.Guided()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message Guided'
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.Guided()')
+        vehicle.Guided()
+
+    def Parse_RTL(any):
+        specified = mc.RTL()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message RTL'
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.RTL()')
+        vehicle.RTL()
+
+    def Parse_Auto(any):
+        specified = mc.Auto()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message Auto'
+        assert vehicle != None, 'vehicle is null'
+        logger.debug('Execute Command: vehicle.Auto()')
+        vehicle.Auto()
+
+    def Parse_AI_Guided(any):
+        specified = mc.AI_Guided()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message AI_Guided'
+        assert lidar != None, 'liar is null'
+        logger.debug('Execute Command: lidar.Guided()')
+        lidar.Guided()
+
+    def Parse_AI_RTL(any):
+        specified = mc.AI_RTL()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message AI_RTL'
+        assert lidar != None, 'liar is null'
+        logger.debug('Execute Command: lidar.RTL()')
+        lidar.RTL()
+
+    def Parse_AI_Auto(any):
+        specified = mc.AI_Auto()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message AI_Auto'
+        assert lidar != None, 'lidar is null'
+        logger.debug('Execute Command: lidar.Auto()')
+        lidar.Auto()
+
+    def Parse_Semi_Auto(any):
+        specified = mc.Semi_Auto()
+        assert any.Is(specified.DESCRIPTOR), \
+            'Any is not message Semi_Auto'
+
+        any.Unpack(specified)
+        actions = specified.actions
+        kwargs = Parse_Actions(actions)
+        assert lidar != None, 'lidar is null'
+        logger.debug('Execute Command: lidar.Semi_Auto({})'.format(kwargs))
+
+        lidar.Semi_Auto(**kwargs)
+
+    code2parser = {mc._ResetLoiter: Parse_ResetLoiter,
+                   mc._SetGear: Parse_SetGear,
+                   mc._Cancel: Parse_Cancel,
+                   mc._TargetByMetres: Parse_TargetByMetres,
+                   mc._TargetByAngle: Parse_TargetByAngle,
+                   mc._PlanRoute: Parse_PlanRoute,
+                   mc._ControlFRU: Parse_ControlFRU,
+                   mc._Guided: Parse_Guided,
+                   mc._Rtl: Parse_RTL,
+                   mc._Auto: Parse_Auto,
+                   mc._AI_Guided: Parse_AI_Guided,
+                   mc._AI_Rtl: Parse_AI_RTL,
+                   mc._AI_Auto: Parse_AI_Auto,
+                   mc._Semi_Auto: Parse_Semi_Auto, }
+    return Parser
+
 
 def send_Log(sock, ORB):
     message = ORB.dataflash()
@@ -46,56 +219,66 @@ def send_Log(sock, ORB):
 
 class Receiver(threading.Thread):
 
-    def __init__(self, work_queue, sock, vehicle, lidar=None):
+    def __init__(self, work_queue, sock, parser):
         super(Receiver, self).__init__(name="Receiver")
+        self.timeout = 2
         self.work_queue = work_queue
         self.sock = sock
+        self.parser = parser
 
     def run(self):
         logger.info('Start Receiver Thread')
+        concurrent_command = [mc._SetGear]
         buffer_size = 4096
         while True:
             # use this to receive command
-            cmd = self.sock.recv(buffer_size).strip()
-            
-            if not cmd:
+            message = self.sock.recv(buffer_size).strip()
+
+            if not message or message is '':
                 continue
-            mc_cmd = mc.SendCommand()
-            mc_cmd.ParseFromString(cmd)
-            if mc_cmd.code < mc._Boundary:
-                logger.info('Execute Cancel')
-                exc_mc_cmd(cmd,vehicle,lidar)
-                # self.work_queue.put('vehicle.brake()')
+            try:
+                cmd_object = deserialize(message)
+                logger.debug('Receive Command:\n{}'.format(cmd_object))
+            except Exception as e:
+                logger.error(e)
+                continue
+            time_stamp = cmd_object.timestamp
+            timeout = time.time() - time_stamp
+            if timeout > self.timeout:
+                logger.warn(
+                    'Command is out-of-date,timeout:{}'.format(timeout))
+                continue
+            code = cmd_object.code
+            if code in concurrent_command:
+                self.work_queue.put(cmd_object)
             else:
                 CancelWatcher.Cancel = True
-                logger.debug('Receive command:{}'.format(cmd))
-                self.work_queue.put(cmd)
+                time.sleep(.1)
+                try:
+                    self.parser(cmd_object)
+                except Exception as e:
+                    logger.error(e)
 
 
 class Executor(threading.Thread):
 
-    def __init__(self, work_queue, vehicle, lidar):
+    def __init__(self, work_queue, parser):
         super(Executor, self).__init__(name="Executor")
         self.work_queue = work_queue
         self.vehicle = vehicle
         self.lidar = lidar
+        self.parser = parser
 
     def run(self):
         logger.info('Start Executor Thread')
         while True:
             command = self.work_queue.get().strip()
-            if not command:
+            if not command or command is '':
                 continue
-            mc_cmd = mc.SendCommand()
-            mc_cmd.ParseFromString = (command)
-            code = command.code
-            logger.debug('Execute command code {}'.format(code))
             try:
-                eval(command)
+                self.parser(cmd_object)
             except Exception as e:
-                info = sys.exc_info()
-                logger.error("{0}:{1}".format(*info))
-                # self.vehicle.Cancel()
+                logger.error(e)
 
 
 def GCS_start(ORB, vehicle=None, lidar=None):
@@ -105,12 +288,13 @@ def GCS_start(ORB, vehicle=None, lidar=None):
 
     sock = open_sock()
     work_queue = Queue.Queue()
+    parser = parse_proto(vehicle, lidar)
 
-    receiver = Receiver(work_queue, sock)
+    receiver = Receiver(work_queue, sock, parser)
     receiver.daemon = True
     receiver.start()
 
-    executor = Executor(work_queue, vehicle, lidar)
+    executor = Executor(work_queue, parser)
     executor.daemon = True
     executor.start()
 

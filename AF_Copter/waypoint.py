@@ -58,13 +58,24 @@ class Waypoint(object):
         result = []
         wps = info.split(',')
         for wp in wps:
-            loc = wp.split('+')
-            result.append([float(loc[0]), float(loc[1])])
+            loc = map(float, wp.split('+'))
+            result.append(loc)
+
+        # logger.debug('Waypoints :'.format(result))
         self.publish('Waypoint', result)
         self.publish('WaypointID', 0)
         # self.publish('WaypointType', 'Route')
+        logger.info('Route planning complete')
 
-        # print 'Waypoints :', self.points
+    def _Route(self, points):
+        result = []
+        for p in points:
+            point = [p.latitude, p.longitude]
+            result.append(point)
+
+        # logger.debug('Waypoints :'.format(result))
+        self.publish('Waypoint', result)
+        self.publish('WaypointID', 0)
         logger.info('Route planning complete')
 
     def remain_wp(self):

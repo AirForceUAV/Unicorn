@@ -11,8 +11,17 @@ from lib.tools import Singleton, CancelWatcher
 from lib.config import config
 from lib.logger import logger
 from oa_rpc_client import OA_Stub
-import oa_rpc_pb2
+import oa_rpc_pb2 as oa
 import grpc
+
+map_action = {
+    oa.STOP: {},
+    oa.FORWARD: {'ELE': 1}, oa.BACKWARD: {'ELE': -1},
+    oa.RIGHT_YAW: {'RUD': 1}, oa.LEFT_YAW: {'RUD': -1},
+    oa.RIGHT_ROLL: {'AIL': 1}, oa.LEFT_ROLL: {'AIL': -1},
+    oa.UP: {'THR': 1}, oa.DOWN: {'THR': -1},
+    oa.INVALID: None, oa.ANY: {},
+}
 
 
 def init_mqtt(userdata):
@@ -36,7 +45,7 @@ def on_message(client, userdata, msg):
     vehicle = userdata['vehicle']
 
     command = map(int, msg.payload.split(','))
-    if oa_rpc_pb2.STOP in command:
+    if oa.STOP in command:
         # print 'brake'
         client.publish('ACK', 'ack')
         vehicle.brake()
@@ -64,17 +73,10 @@ def on_message(client, userdata, msg):
 
 
 def unpack_actions(actions):
-    map_action = {
-        oa_rpc_pb2.STOP: {},
-        oa_rpc_pb2.FORWARD: {'ELE': 1}, oa_rpc_pb2.BACKWARD: {'ELE': -1},
-        oa_rpc_pb2.RIGHT_YAW: {'RUD': 1}, oa_rpc_pb2.LEFT_YAW: {'RUD': -1},
-        oa_rpc_pb2.RIGHT_ROLL: {'AIL': 1}, oa_rpc_pb2.LEFT_ROLL: {'AIL': -1},
-        oa_rpc_pb2.UP: {'THR': 1}, oa_rpc_pb2.DOWN: {'THR': -1},
-        oa_rpc_pb2.INVALID: None, oa_rpc_pb2.ANY: {},
-    }
+
     result = {}
     for action in actions:
-        if action in [oa_rpc_pb2.STOP, oa_rpc_pb2.ANY]:
+        if action in [oa.STOP, oa.ANY]:
             result = {}
             break
         dictaction = map_action.get(action)
@@ -97,13 +99,16 @@ class Lidar(object):
     def __init__(self, vehicle):
         self.full_id = 0
         self.semi_id = 0
+        self.Epsilon_Min = 20
         self.vehicle = vehicle
         self.stub = OA_Stub()
-        userdata = {'stub': self.stub, 'semi_id': 0, 'vehicle': self.vehicle}
+        userdata = {'stub': self.stub,
+                    'semi_id': self.semi_id,
+                    'vehicle': vehicle}
         self.client = init_mqtt(userdata)
         self.client.loop_start()
 
-    def navigation(self):
+    def full_auto(self):
         watcher = CancelWatcher()
         interval = 2
         radius = self.vehicle.radius
@@ -134,6 +139,7 @@ class Lidar(object):
             try:
                 id, actions = self.stub.FullAuto(context)
                 logger.debug('Receive from lidar {}'.format(actions))
+
             except grpc.RpcError, e:
                 logger.critical(e)
                 self.vehicle.brake()
@@ -143,10 +149,11 @@ class Lidar(object):
             # print 'Recv',actions
             try:
                 assert id == self.full_id,\
-                    'ID not match.Note:ExceptID:{} ReceiveID:{}'.format(
+                    'ID not match.Note:ExpectID:{} ReceiveID:{}'.format(
                         self.full_id, id)
                 # actions= [0xee]
                 exe_actions(self.vehicle, actions)
+                self.vehicle._state = actions
                 retry_times = 0
             except AssertionError, e:
                 retry_times += 1
@@ -165,7 +172,7 @@ class Lidar(object):
             logger.error(e)
             return False
         self.publish('Mode', 'AI_GUIDED')
-        result = self.navigation()
+        result = self.full_auto()
         if not result:
             logger.error("Navigation except exit")
             flag = False
@@ -182,7 +189,7 @@ class Lidar(object):
             return False
         self.vehicle.publish('Target', home)
         self.vehicle.publish('Mode', 'AI_RTL')
-        result = self.navigation()
+        result = self.full_auto()
         if not result:
             logger.error("Navigation except exit")
             flag = False
@@ -203,7 +210,7 @@ class Lidar(object):
                 flag = False
                 break
             self.publish('Target', point)
-            result = self.navigation()
+            result = self.full_auto()
             if not result:
                 logger.error("Navigation except exit")
                 flag = False
@@ -229,8 +236,8 @@ class Lidar(object):
                 return True
 
             if command != self.vehicle._state:
-                self.vehicle.prepre_state = vehicle.pre_state
-                self.vehicle.pre_state = vehicle._state
+                self.vehicle.prepre_state = self.vehicle.pre_state
+                self.vehicle.pre_state = self.vehicle._state
                 self.vehicle._state = command
                 # print 'brake'
                 self.vehicle.brake()
@@ -238,7 +245,7 @@ class Lidar(object):
             context = {
                 'id': self.full_id,
                 'target': angle,
-                'epsilon': int(Epsilon),
+                'epsilon': max(int(Epsilon), self.Epsilon_Min),
                 'current': self.vehicle._state,
                 'last_state': self.vehicle.pre_state,
                 'last_previous_state': self.vehicle.prepre_state}
@@ -248,6 +255,28 @@ class Lidar(object):
         self.full_id += 1
         context = context_release()
         return context
+
+    def semi_auto(self, command):
+        if command not in [oa.LEFT_ROLL, oa.RIGHT_ROLL, oa.FORWARD, oa.BACKWARD]:
+            logger.error('command:{} is invalid'.format(command))
+            return
+
+        self.semi_id = self.semi_id + 1
+        message = {'id': self.semi_id, 'actions': [command]}
+        logger.debug('Send {} to Lidar'.format(message))
+        try:
+            id, actions = self.stub.SemiAuto(message)
+            logger.debug(
+                'Received id:{} actions:{} from Lidar'.format(id, actions))
+            if id != self.semi_id:
+                logger.error(
+                    'ID not match.Note:ExpectID:{} ReceiveID:{}'.format(self.semi_id, id))
+                return
+            exe_actions(self.vehicle, actions)
+        except grpc.RpcError, e:
+            logger.critical(e)
+        except AssertionError, e:
+            logger.error(e)
 
     def publish(self, topic, message):
         self.vehicle.publish(topic, message)
@@ -263,12 +292,12 @@ if __name__ == "__main__":
     from AF_Copter.vehicle import init_vehicle
     vehicle = init_vehicle(ORB)
     lidar = Lidar(vehicle)
-
-    # vehicle.publish('Target', [36, 117])
-    vehicle.set_target(-20, 0)
-    lidar.Guided()
+    time.sleep(1)
+    # vehicle.set_target(-30, 0)
+    # lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()
+    # lidar.semi_auto(16)
     # print 'Done'
     while True:
         time.sleep(100)

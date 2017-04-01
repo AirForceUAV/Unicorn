@@ -7,8 +7,8 @@ import paho.mqtt.client as mqtt
 from KB_Control import keyboard_event_wait, keyboard_event
 from lib.config import config
 import AF_Avoid.oa_rpc_pb2 as action
-ACK = False
 
+ACK = False
 
 def on_connect(client, userdata, flags, rc):
     print("Keyboard has connected to mqtt. code:{}".format(rc))
@@ -78,7 +78,7 @@ def keyboard_state():
                   pg.K_ESCAPE: '-1'}
     pg.event.pump()
     pressed = pg.key.get_pressed()
-a
+
     if pressed[pg.K_ESCAPE]:
         return 'exit'
 

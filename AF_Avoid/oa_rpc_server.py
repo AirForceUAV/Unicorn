@@ -18,7 +18,7 @@ class Vehicle(oa_rpc_pb2_grpc.ObstacleAvoidanceServicer):
         id = request.id
         actions = request.current
         response = {'id': id,
-                    'actions': [1]}
+                    'actions': actions}
         # print response
         return oa_rpc_pb2.Strategy(**response)
 
@@ -34,7 +34,7 @@ class Vehicle(oa_rpc_pb2_grpc.ObstacleAvoidanceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     oa_rpc_pb2_grpc.add_ObstacleAvoidanceServicer_to_server(Vehicle(), server)
-    server.add_insecure_port('[::]:'+config.OA_rpc_port)
+    server.add_insecure_port('[::]:' + config.OA_rpc_port)
     server.start()
     try:
         while True:

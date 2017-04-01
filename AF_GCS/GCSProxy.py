@@ -38,8 +38,8 @@ class Receiver(threading.Thread):
         buffer_size = 4096
         while True:
             # use this to receive command
-            cmd = self.sock.recv(buffer_size)
-            if not cmd:
+            cmd = self.sock.recv(buffer_size).strip()
+            if not cmd or cmd is '':
                 continue
             logger.info('Receive Command:{}'.format(cmd))
             if cmd.find('Cancel') != -1:
@@ -48,7 +48,7 @@ class Receiver(threading.Thread):
                 # self.work_queue.put('vehicle.brake()')
             else:
                 CancelWatcher.Cancel = True
-                self.work_queue.put(cmd)
+                self.work_queue.put(str(time.time()) + ',' + cmd)
 
 
 class Executor(threading.Thread):
@@ -61,8 +61,20 @@ class Executor(threading.Thread):
 
     def run(self):
         while True:
-            command = self.work_queue.get()
-            if not command:
+            message = self.work_queue.get().split(',')
+
+            try:
+                _timestamp = int(message[0])
+                command = message[1].strip()
+            except Exception as e:
+                logger.error(e)
+                continue
+            timeout = time.time() - _timestamp
+            if timeout > 1:
+                logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
+                continue
+            if command is '':
+                logger.info('command is null')
                 continue
             command = "self." + command
             logger.debug('Execute command {}'.format(command))
@@ -96,21 +108,33 @@ def GCS_start(ORB, vehicle=None, lidar=None):
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
 
     scheduler.start()
-    # executor.join()
-    # receiver.join()
+    scheduler.join()
+    work_queue.join()
+    executor.join()
+    receiver.join()
 
 
 if __name__ == "__main__":
-    from AF_Copter.vehicle import Vehicle
     from lib.tools import Watcher
     from AF_uORB.uORB import uORB
 
     ORB = uORB()
     Watcher()
 
-    vehicle = Vehicle(ORB)
+    # Initialize UAV
+    from AF_Copter.vehicle import init_vehicle
+    vehicle = init_vehicle(ORB)
     lidar = None
 
+    if config.has_module('Lidar'):
+        # Initialize Lidar
+        from AF_Avoid.lidar_rpc import Lidar
+        lidar = Lidar(vehicle)
+
+    # Save FlightLog to SD
+    # ORB.start()
+
     GCS_start(ORB, vehicle, lidar)
+
     while True:
-        time.sleep(100)
+        time.sleep(10000)

@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='for_mc.proto',
   package='For_GCS',
   syntax='proto3',
-  serialized_pb=_b('\n\x0c\x66or_mc.proto\x12\x07\x46or_GCS\x1a\x19google/protobuf/any.proto\"k\n\x0bSendCommand\x12\x11\n\ttimestamp\x18\x01 \x01(\x02\x12\"\n\x04\x63ode\x18\x02 \x01(\x0e\x32\x14.For_GCS.CommandCode\x12%\n\x07\x63ommand\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\r\n\x0bResetLoiter\"\x18\n\x07SetGear\x12\r\n\x05index\x18\x01 \x01(\r\"?\n\x0eTargetByMetres\x12\r\n\x05North\x18\x01 \x01(\x02\x12\x0c\n\x04\x45\x61st\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\"B\n\rTargetByAngle\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\x12\r\n\x05\x61ngle\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\"+\n\tPlanRoute\x12\x1e\n\x06points\x18\x01 \x03(\x0b\x32\x0e.For_GCS.point\">\n\x05point\x12\x10\n\x08latitude\x18\x01 \x01(\x02\x12\x11\n\tlongitude\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\".\n\nControlFRU\x12 \n\x07\x61\x63tions\x18\x01 \x03(\x0e\x32\x0f.For_GCS.Action\"\x08\n\x06Guided\"\x05\n\x03RTL\"\x06\n\x04\x41uto\"\x08\n\x06\x43\x61ncel*\x94\x01\n\x06\x41\x63tion\x12\x08\n\x04STOP\x10\x00\x12\x0b\n\x07\x46ORWARD\x10\x01\x12\x0c\n\x08\x42\x41\x43KWARD\x10\x02\x12\x0c\n\x08LEFT_YAW\x10\x04\x12\r\n\tRIGHT_YAW\x10\x08\x12\r\n\tLEFT_ROLL\x10\x10\x12\x0e\n\nRIGHT_ROLL\x10 \x12\x06\n\x02UP\x10@\x12\t\n\x04\x44OWN\x10\x80\x01\x12\x0c\n\x07INVALID\x10\xee\x01\x12\x08\n\x03\x41NY\x10\xff\x01*\xa6\x01\n\x0b\x43ommandCode\x12\x10\n\x0c_ResetLoiter\x10\x00\x12\x0c\n\x08_SetGear\x10\x01\x12\x13\n\x0f_TargetByMetres\x10\x02\x12\x12\n\x0e_TargetByAngle\x10\x03\x12\x0e\n\n_PlanRoute\x10\x04\x12\x0f\n\x0b_ControlFRU\x10\x05\x12\x0b\n\x07_Guided\x10\x06\x12\x08\n\x04_RTL\x10\x07\x12\t\n\x05_Auto\x10\x08\x12\x0b\n\x07_Cancel\x10\tb\x06proto3')
+  serialized_pb=_b('\n\x0c\x66or_mc.proto\x12\x07\x46or_GCS\x1a\x19google/protobuf/any.proto\"k\n\x0bSendCommand\x12\x11\n\ttimestamp\x18\x01 \x01(\x02\x12\"\n\x04\x63ode\x18\x02 \x01(\x0e\x32\x14.For_GCS.CommandCode\x12%\n\x07\x63ommand\x18\x03 \x01(\x0b\x32\x14.google.protobuf.Any\"\r\n\x0bResetLoiter\"\x18\n\x07SetGear\x12\r\n\x05index\x18\x01 \x01(\r\"?\n\x0eTargetByMetres\x12\r\n\x05North\x18\x01 \x01(\x02\x12\x0c\n\x04\x45\x61st\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\"B\n\rTargetByAngle\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\x12\r\n\x05\x61ngle\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\"+\n\tPlanRoute\x12\x1e\n\x06points\x18\x01 \x03(\x0b\x32\x0e.For_GCS.point\">\n\x05point\x12\x10\n\x08latitude\x18\x01 \x01(\x02\x12\x11\n\tlongitude\x18\x02 \x01(\x02\x12\x10\n\x08\x61ltitude\x18\x03 \x01(\x02\"/\n\nControlFRU\x12!\n\x07\x61\x63tions\x18\x01 \x03(\x0b\x32\x10.For_GCS.Actions\"*\n\x07\x41\x63tions\x12\x1f\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x0f.For_GCS.Action\"\x08\n\x06Guided\"\x05\n\x03RTL\"\x06\n\x04\x41uto\"\x08\n\x06\x43\x61ncel\"\x0b\n\tAI_Guided\"\x08\n\x06\x41I_RTL\"\t\n\x07\x41I_Auto\".\n\tSemi_Auto\x12!\n\x07\x61\x63tions\x18\x01 \x03(\x0b\x32\x10.For_GCS.Actions*|\n\x06\x41\x63tion\x12\x08\n\x04STOP\x10\x00\x12\x0b\n\x07\x46ORWARD\x10\x01\x12\x0c\n\x08\x42\x41\x43KWARD\x10\x02\x12\x0c\n\x08LEFT_YAW\x10\x04\x12\r\n\tRIGHT_YAW\x10\x08\x12\r\n\tLEFT_ROLL\x10\x10\x12\x0e\n\nRIGHT_ROLL\x10 \x12\x06\n\x02UP\x10@\x12\t\n\x04\x44OWN\x10\x80\x01*\xe1\x01\n\x0b\x43ommandCode\x12\x10\n\x0c_ResetLoiter\x10\x00\x12\x0c\n\x08_SetGear\x10\x01\x12\x0b\n\x07_Cancel\x10\x02\x12\x13\n\x0f_TargetByMetres\x10\n\x12\x12\n\x0e_TargetByAngle\x10\x0b\x12\x0e\n\n_PlanRoute\x10\x0c\x12\x0f\n\x0b_ControlFRU\x10\r\x12\x0b\n\x07_Guided\x10\x0e\x12\x08\n\x04_Rtl\x10\x0f\x12\t\n\x05_Auto\x10\x10\x12\x0e\n\n_AI_Guided\x10\x11\x12\x0b\n\x07_AI_Rtl\x10\x12\x12\x0c\n\x08_AI_Auto\x10\x13\x12\x0e\n\n_Semi_Auto\x10\x14\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -68,19 +68,11 @@ _ACTION = _descriptor.EnumDescriptor(
       name='DOWN', index=8, number=128,
       options=None,
       type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INVALID', index=9, number=238,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ANY', index=10, number=255,
-      options=None,
-      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=528,
-  serialized_end=676,
+  serialized_start=654,
+  serialized_end=778,
 )
 _sym_db.RegisterEnumDescriptor(_ACTION)
 
@@ -100,42 +92,58 @@ _COMMANDCODE = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_TargetByMetres', index=2, number=2,
+      name='_Cancel', index=2, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_TargetByAngle', index=3, number=3,
+      name='_TargetByMetres', index=3, number=10,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_PlanRoute', index=4, number=4,
+      name='_TargetByAngle', index=4, number=11,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_ControlFRU', index=5, number=5,
+      name='_PlanRoute', index=5, number=12,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_Guided', index=6, number=6,
+      name='_ControlFRU', index=6, number=13,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_RTL', index=7, number=7,
+      name='_Guided', index=7, number=14,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_Auto', index=8, number=8,
+      name='_Rtl', index=8, number=15,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='_Cancel', index=9, number=9,
+      name='_Auto', index=9, number=16,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='_AI_Guided', index=10, number=17,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='_AI_Rtl', index=11, number=18,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='_AI_Auto', index=12, number=19,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='_Semi_Auto', index=13, number=20,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=679,
-  serialized_end=845,
+  serialized_start=781,
+  serialized_end=1006,
 )
 _sym_db.RegisterEnumDescriptor(_COMMANDCODE)
 
@@ -149,18 +157,20 @@ LEFT_ROLL = 16
 RIGHT_ROLL = 32
 UP = 64
 DOWN = 128
-INVALID = 238
-ANY = 255
 _ResetLoiter = 0
 _SetGear = 1
-_TargetByMetres = 2
-_TargetByAngle = 3
-_PlanRoute = 4
-_ControlFRU = 5
-_Guided = 6
-_RTL = 7
-_Auto = 8
-_Cancel = 9
+_Cancel = 2
+_TargetByMetres = 10
+_TargetByAngle = 11
+_PlanRoute = 12
+_ControlFRU = 13
+_Guided = 14
+_Rtl = 15
+_Auto = 16
+_AI_Guided = 17
+_AI_Rtl = 18
+_AI_Auto = 19
+_Semi_Auto = 20
 
 
 
@@ -439,7 +449,7 @@ _CONTROLFRU = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='actions', full_name='For_GCS.ControlFRU.actions', index=0,
-      number=1, type=14, cpp_type=8, label=3,
+      number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -457,7 +467,38 @@ _CONTROLFRU = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=444,
-  serialized_end=490,
+  serialized_end=491,
+)
+
+
+_ACTIONS = _descriptor.Descriptor(
+  name='Actions',
+  full_name='For_GCS.Actions',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='action', full_name='For_GCS.Actions.action', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=493,
+  serialized_end=535,
 )
 
 
@@ -480,8 +521,8 @@ _GUIDED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=492,
-  serialized_end=500,
+  serialized_start=537,
+  serialized_end=545,
 )
 
 
@@ -504,8 +545,8 @@ _RTL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=502,
-  serialized_end=507,
+  serialized_start=547,
+  serialized_end=552,
 )
 
 
@@ -528,8 +569,8 @@ _AUTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=509,
-  serialized_end=515,
+  serialized_start=554,
+  serialized_end=560,
 )
 
 
@@ -552,14 +593,119 @@ _CANCEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=517,
-  serialized_end=525,
+  serialized_start=562,
+  serialized_end=570,
+)
+
+
+_AI_GUIDED = _descriptor.Descriptor(
+  name='AI_Guided',
+  full_name='For_GCS.AI_Guided',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=572,
+  serialized_end=583,
+)
+
+
+_AI_RTL = _descriptor.Descriptor(
+  name='AI_RTL',
+  full_name='For_GCS.AI_RTL',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=585,
+  serialized_end=593,
+)
+
+
+_AI_AUTO = _descriptor.Descriptor(
+  name='AI_Auto',
+  full_name='For_GCS.AI_Auto',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=595,
+  serialized_end=604,
+)
+
+
+_SEMI_AUTO = _descriptor.Descriptor(
+  name='Semi_Auto',
+  full_name='For_GCS.Semi_Auto',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='actions', full_name='For_GCS.Semi_Auto.actions', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=606,
+  serialized_end=652,
 )
 
 _SENDCOMMAND.fields_by_name['code'].enum_type = _COMMANDCODE
 _SENDCOMMAND.fields_by_name['command'].message_type = google_dot_protobuf_dot_any__pb2._ANY
 _PLANROUTE.fields_by_name['points'].message_type = _POINT
-_CONTROLFRU.fields_by_name['actions'].enum_type = _ACTION
+_CONTROLFRU.fields_by_name['actions'].message_type = _ACTIONS
+_ACTIONS.fields_by_name['action'].enum_type = _ACTION
+_SEMI_AUTO.fields_by_name['actions'].message_type = _ACTIONS
 DESCRIPTOR.message_types_by_name['SendCommand'] = _SENDCOMMAND
 DESCRIPTOR.message_types_by_name['ResetLoiter'] = _RESETLOITER
 DESCRIPTOR.message_types_by_name['SetGear'] = _SETGEAR
@@ -568,10 +714,15 @@ DESCRIPTOR.message_types_by_name['TargetByAngle'] = _TARGETBYANGLE
 DESCRIPTOR.message_types_by_name['PlanRoute'] = _PLANROUTE
 DESCRIPTOR.message_types_by_name['point'] = _POINT
 DESCRIPTOR.message_types_by_name['ControlFRU'] = _CONTROLFRU
+DESCRIPTOR.message_types_by_name['Actions'] = _ACTIONS
 DESCRIPTOR.message_types_by_name['Guided'] = _GUIDED
 DESCRIPTOR.message_types_by_name['RTL'] = _RTL
 DESCRIPTOR.message_types_by_name['Auto'] = _AUTO
 DESCRIPTOR.message_types_by_name['Cancel'] = _CANCEL
+DESCRIPTOR.message_types_by_name['AI_Guided'] = _AI_GUIDED
+DESCRIPTOR.message_types_by_name['AI_RTL'] = _AI_RTL
+DESCRIPTOR.message_types_by_name['AI_Auto'] = _AI_AUTO
+DESCRIPTOR.message_types_by_name['Semi_Auto'] = _SEMI_AUTO
 DESCRIPTOR.enum_types_by_name['Action'] = _ACTION
 DESCRIPTOR.enum_types_by_name['CommandCode'] = _COMMANDCODE
 
@@ -631,6 +782,13 @@ ControlFRU = _reflection.GeneratedProtocolMessageType('ControlFRU', (_message.Me
   ))
 _sym_db.RegisterMessage(ControlFRU)
 
+Actions = _reflection.GeneratedProtocolMessageType('Actions', (_message.Message,), dict(
+  DESCRIPTOR = _ACTIONS,
+  __module__ = 'for_mc_pb2'
+  # @@protoc_insertion_point(class_scope:For_GCS.Actions)
+  ))
+_sym_db.RegisterMessage(Actions)
+
 Guided = _reflection.GeneratedProtocolMessageType('Guided', (_message.Message,), dict(
   DESCRIPTOR = _GUIDED,
   __module__ = 'for_mc_pb2'
@@ -658,6 +816,34 @@ Cancel = _reflection.GeneratedProtocolMessageType('Cancel', (_message.Message,),
   # @@protoc_insertion_point(class_scope:For_GCS.Cancel)
   ))
 _sym_db.RegisterMessage(Cancel)
+
+AI_Guided = _reflection.GeneratedProtocolMessageType('AI_Guided', (_message.Message,), dict(
+  DESCRIPTOR = _AI_GUIDED,
+  __module__ = 'for_mc_pb2'
+  # @@protoc_insertion_point(class_scope:For_GCS.AI_Guided)
+  ))
+_sym_db.RegisterMessage(AI_Guided)
+
+AI_RTL = _reflection.GeneratedProtocolMessageType('AI_RTL', (_message.Message,), dict(
+  DESCRIPTOR = _AI_RTL,
+  __module__ = 'for_mc_pb2'
+  # @@protoc_insertion_point(class_scope:For_GCS.AI_RTL)
+  ))
+_sym_db.RegisterMessage(AI_RTL)
+
+AI_Auto = _reflection.GeneratedProtocolMessageType('AI_Auto', (_message.Message,), dict(
+  DESCRIPTOR = _AI_AUTO,
+  __module__ = 'for_mc_pb2'
+  # @@protoc_insertion_point(class_scope:For_GCS.AI_Auto)
+  ))
+_sym_db.RegisterMessage(AI_Auto)
+
+Semi_Auto = _reflection.GeneratedProtocolMessageType('Semi_Auto', (_message.Message,), dict(
+  DESCRIPTOR = _SEMI_AUTO,
+  __module__ = 'for_mc_pb2'
+  # @@protoc_insertion_point(class_scope:For_GCS.Semi_Auto)
+  ))
+_sym_db.RegisterMessage(Semi_Auto)
 
 
 # @@protoc_insertion_point(module_scope)

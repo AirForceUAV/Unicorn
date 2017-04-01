@@ -321,7 +321,7 @@ class Vehicle(Attribute):
         self.brake()
         logger.debug("Fact Angle: %d" % self.get_heading())
 
-    def navigation(self):
+    def _navigation(self):
         watcher = CancelWatcher()
         radius = self.radius
         frequency = self.frequence
@@ -359,7 +359,7 @@ class Vehicle(Attribute):
             logger.error(e)
             return False
 
-    def navigation1(self):
+    def navigation(self):
         watcher = CancelWatcher()
         radius = self.radius
         frequency = self.frequence
@@ -379,7 +379,7 @@ class Vehicle(Attribute):
                 angle = angle_heading_target(CLocation, target, CYaw)
 
                 if not self.InAngle(angle, 90) or distance <= radius:
-                # if distance <= radius:
+                    # if distance <= radius:
                     logger.info("Reached Target Waypoint!")
                     self.brake()
                     return True
@@ -405,10 +405,10 @@ class Vehicle(Attribute):
             logger.error(e)
             return False
 
-    def navigation2(self):
+    def __navigation(self):
         watcher = CancelWatcher()
         radius = self.radius
-        frequency = self.frequence
+        frequency = 1
         try:
             target = self.get_target()
             CLocation = self.get_location()
@@ -459,15 +459,15 @@ class Vehicle(Attribute):
         return flag
 
     def RTL(self):
-        logger.info('RTL...') 
-        flag = True     
+        logger.info('RTL...')
+        flag = True
         try:
-            home = self.get_home()         
+            home = self.get_home()
         except AssertionError, e:
             logger.error(e)
             return False
         self.publish('Mode', 'RTL')
-        self.publish('Target',home)
+        self.publish('Target', home)
         result = self.navigation()
         if not result:
             logger.error("Navigation except exit")
@@ -479,6 +479,9 @@ class Vehicle(Attribute):
     def Route(self, info):
         self.wp.Route(info)
         # self.Auto()
+
+    def _Route(self, points):
+        self.wp._Route(points)
 
     def Auto(self):
         logger.info('Auto...')
@@ -507,7 +510,8 @@ class Vehicle(Attribute):
     def _finally(self):
         self.publish('Mode', 'Loiter')
         self.publish('Target', None)
-    
+        self.brake()
+
     def Auto_finally(self):
         self._finally()
         self.wp.clear()
@@ -566,29 +570,28 @@ if __name__ == "__main__":
     time.sleep(2)
     # vehicle.set_target(100,0)
 
-
-    commands = {'stop':'brake()',
-                'arm':'arm()',
-                'mid':'set_channels_mid()',
-                'gear':'set_gear(2)',
-                'yawl':'yaw_left_brake()',
-                'yawr':'yaw_right_brake()',
-                'rolll':'roll_left_brake()',
-                'rollr':'roll_right_brake()',
-                'forward':'forward_brake()',
-                'back':'backward_brake()',
-                'up':'up_brake()',
-                'down':'down_brake()',
-                'conl':'condition_yaw(30)',
-                'conr':'condition_yaw(300)',
-                'target':'set_target(100,0)',
-                'guided':'Guided()',
-                'download':'download()',
-                'auto':'Auto()',
-                'disarm':'disarm()',
-                'rtl':'RTL()',
-                'esc':'esc',
-                's':'brake()'
+    commands = {'stop': 'brake()',
+                'arm': 'arm()',
+                'mid': 'set_channels_mid()',
+                'gear': 'set_gear(2)',
+                'yawl': 'yaw_left_brake()',
+                'yawr': 'yaw_right_brake()',
+                'rolll': 'roll_left_brake()',
+                'rollr': 'roll_right_brake()',
+                'forward': 'forward_brake()',
+                'back': 'backward_brake()',
+                'up': 'up_brake()',
+                'down': 'down_brake()',
+                'conl': 'condition_yaw(30)',
+                'conr': 'condition_yaw(300)',
+                'target': 'set_target(100,0)',
+                'guided': 'Guided()',
+                'download': 'download()',
+                'auto': 'Auto()',
+                'disarm': 'disarm()',
+                'rtl': 'RTL()',
+                'esc': 'esc',
+                's': 'brake()',
                 }
 
     while True:
@@ -599,7 +602,7 @@ if __name__ == "__main__":
             continue
         elif cmd == 'esc':
             break
-  
+
         command = 'vehicle.' + cmd
         print 'Execute command ->', command
         try:

@@ -14,23 +14,23 @@ enum Action {
     RIGHT_ROLL      = 32;
     UP              = 64;
     DOWN            = 128;
-    INVALID         = 0xee;
-    ANY             = 0xff;
 }
 
 enum CommandCode{
     _ResetLoiter = 0;
     _SetGear = 1;
-    _Cancel = 2;
-    _Boundary = 3;   
+    _Cancel = 2; 
     _TargetByMetres = 10;
     _TargetByAngle = 11;
     _PlanRoute = 12;
     _ControlFRU = 13;
     _Guided = 14;
-    _RTL = 15;
+    _Rtl = 15;
     _Auto = 16;
-    
+    _AI_Guided = 17;
+    _AI_Rtl = 18;
+    _AI_Auto = 19;
+    _Semi_Auto = 20;
 }
 
 
@@ -70,7 +70,11 @@ message point{
 }
 
 message ControlFRU{
-    repeated Action actions = 1;
+    repeated Actions actions = 1;
+}
+
+message Actions{
+    Action action = 1;
 }
 
 message Guided{
@@ -83,4 +87,17 @@ message Auto{
 }
 
 message Cancel{
+}
+
+message AI_Guided{
+}
+
+message AI_RTL{
+}
+
+message AI_Auto{
+}
+
+message Semi_Auto{
+    repeated Actions actions = 1;
 }
