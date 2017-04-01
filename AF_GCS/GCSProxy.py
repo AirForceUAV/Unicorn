@@ -49,6 +49,8 @@ class Receiver(threading.Thread):
             else:
                 CancelWatcher.Cancel = True
                 message = str(time.time()) + ',' + cmd
+                if cmd == 'vehicle.brake()':
+                    continue
                 self.work_queue.put(message)
 
 
