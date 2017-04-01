@@ -61,7 +61,10 @@ class Executor(threading.Thread):
 
     def run(self):
         while True:
-            message = self.work_queue.get().split(',')
+            if self.work_queue.empty():
+                self.vehicle.brake()
+                continue
+            message = self.work_queue.get().strip(',')
 
             try:
                 _timestamp = int(message[0])
@@ -70,7 +73,7 @@ class Executor(threading.Thread):
                 logger.error(e)
                 continue
             timeout = time.time() - _timestamp
-            if timeout > 1:
+            if timeout > 2: 
                 logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
                 continue
             if command is '':
@@ -108,7 +111,6 @@ def GCS_start(ORB, vehicle=None, lidar=None):
     scheduler.add_job(send_Log, 'interval', args=(sock, ORB), seconds=1)
 
     scheduler.start()
-    scheduler.join()
     work_queue.join()
     executor.join()
     receiver.join()
