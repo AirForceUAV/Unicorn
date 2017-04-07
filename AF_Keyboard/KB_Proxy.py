@@ -68,7 +68,7 @@ def listen_keyboard2(client):
 def keyboard_state():
     filter_key = {pg.K_SPACE: action.STOP,
                   pg.K_w: action.FORWARD,
-                  pg.K_s: action.LEFT_ROLL,
+                  pg.K_s: action.BACKWARD,
                   pg.K_q: action.LEFT_YAW,
                   pg.K_e: action.RIGHT_YAW,
                   pg.K_a: action.LEFT_ROLL,

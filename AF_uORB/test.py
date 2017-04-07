@@ -1,5 +1,5 @@
 def _debug(LoiterPWM):
-    test = {
+    test = {'Armed':True,
         'Compass_State': True,
         'Sbus_State': True,
         'Attitude': [-0.32, 0.01, 66],

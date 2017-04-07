@@ -18,17 +18,27 @@ class Compass(threading.Thread):
         super(Compass, self).__init__(name="Compass")
         # print("Connecting to Compass ...")
         self.ORB = ORB
-        self.ser = open_serial(config.compass_serial, 9600, timeout=0.01)
+        _compass = config.compass
+        self.ser = open_serial(
+            _compass['port'], _compass['baudrate'], timeout=0.01)
+        self._type = _compass['type']
 
     def run(self):
         logger.info("Initializing Compass ...")
         while True:
-            attitude = self.get_attitude()
+            if self._type == '3D':
+                attitude = self.get_attitude()
 
-            if attitude is None:
-                dic = {'Compass_State': False}
+                if attitude is None:
+                    dic = {'Compass_State': False}
+                else:
+                    dic = {'Compass_State': True, 'Attitude': attitude}
             else:
-                dic = {'Compass_State': True, 'Attitude': attitude}
+                yaw = self.get_heading()
+                if yaw is None:
+                    dic = {'Compass_State': False}
+                else:
+                    dic = {'Compass_State': True, 'Attitude': [0, 0, yaw]}
             self.update(dic)
             time.sleep(.01)
 
@@ -47,6 +57,16 @@ class Compass(threading.Thread):
             yaw = self.decode_BCD(package[20:26])
             return [pitch, roll, int(yaw)]
 
+    def get_heading(self):
+        command = '6804000307'
+        package = self.RawFrame(command, '83')
+
+        if package is None:
+            return None
+        else:
+            yaw = self.decode_BCD(package[8:14])
+            return int(yaw)
+
     def RawFrame(self, command, ack, size=8):
         command = command.decode("hex")
         times = 0
@@ -58,14 +78,14 @@ class Compass(threading.Thread):
             index = package.find('68')
             if index == -1 or len(package) < index + size * 2:
                 continue
-            package = package[index:index + size * 2]
-            if package[6:8] == ack and self.checksum(package):
+            package = package[index: index + size * 2]
+            if package[6: 8] == ack and self.checksum(package):
                 return package
         return None
 
     def checksum(self, package):
         pieces = CutFrame(package)
-        sum = reduce(lambda x, y: x + y, pieces[1:-1]) % 256
+        sum = reduce(lambda x, y: x + y, pieces[1: -1]) % 256
         return sum == pieces[-1]
 
     def decode_BCD(self, package):

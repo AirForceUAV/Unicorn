@@ -70,7 +70,7 @@ class Attribute(object):
     def _armed(self):
         self.publish('Armed', True)
 
-    def _disarmd(self):
+    def _disarmed(self):
         self.publish('Armed', False)
 
     def download(self, index=1):

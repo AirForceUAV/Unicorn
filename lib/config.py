@@ -41,9 +41,9 @@ class Config:
 
     def sensors_serial(self, conf):
         self.sbus_serial = self.get_sbus(conf)
-        self.compass_serial = conf['compass']['port']
-        self.GPS_serial = conf['GPS']['port']
-        self.IMU_serial = conf['IMU']['port']
+        self.compass = conf['compass']
+        self.GPS = conf['GPS']
+        self.IMU = conf['IMU']
 
     def OA_RPC_Config(self, conf):
         OA_RPC = conf['RPC']['OA']

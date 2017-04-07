@@ -40,7 +40,8 @@ class IMU(threading.Thread):
         self.EUL_UNIT = 100.0    # °
 
         self.ORB = ORB
-        self._imu = open_serial(config.IMU_serial, 115200)
+        _IMU = config.IMU
+        self._imu = open_serial(_IMU['port'], _IMU['baudrate'])
 
     def run(self):
         logger.info('Initializing IMU....')

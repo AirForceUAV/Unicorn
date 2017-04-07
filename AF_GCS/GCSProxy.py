@@ -48,9 +48,7 @@ class Receiver(threading.Thread):
                 # self.work_queue.put('vehicle.brake()')
             else:
                 CancelWatcher.Cancel = True
-                message = str(time.time()) + ',' + cmd
-                if cmd == 'vehicle.brake()':
-                    continue
+                message = str(time.time()) + '#' + cmd
                 self.work_queue.put(message)
 
 
@@ -68,7 +66,7 @@ class Executor(threading.Thread):
                 self.vehicle._brake()
                 time.sleep(.01)
                 continue
-            message = self.work_queue.get().split(',')
+            message = self.work_queue.get().split('#')
             try:
                 _timestamp = float(message[0])
                 command = message[1].strip()
