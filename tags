@@ -11,54 +11,89 @@ AI_Auto	AF_GCS/mc_rpc_pb2.py	/^    def AI_Auto(self, request, context):$/;"	kind
 AI_Auto	AF_GCS/mc_rpc_pb2.py	/^    def AI_Auto(self, request, context):$/;"	kind:member	line:725
 AI_Auto	AF_GCS/mc_rpc_pb2.py	/^    def AI_Auto(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:768
 AI_Auto	AF_GCS/mc_rpc_pb2_grpc.py	/^  def AI_Auto(self, request, context):$/;"	kind:member	line:136
+AI_Auto	protobuf/for_mc_pb2.py	/^AI_Auto = _reflection.GeneratedProtocolMessageType('AI_Auto', (_message.Message,), dict($/;"	kind:variable	line:834
+AI_Auto	protobuf/mc_rpc_pb2.py	/^    def AI_Auto(self, request, context):$/;"	kind:member	line:623
+AI_Auto	protobuf/mc_rpc_pb2.py	/^    def AI_Auto(self, request, context):$/;"	kind:member	line:725
+AI_Auto	protobuf/mc_rpc_pb2.py	/^    def AI_Auto(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:768
+AI_Auto	protobuf/mc_rpc_pb2_grpc.py	/^  def AI_Auto(self, request, context):$/;"	kind:member	line:136
 AI_Guided	AF_GCS/GCS_RPC.py	/^    def AI_Guided(self, request, context):$/;"	kind:member	line:115
 AI_Guided	AF_GCS/for_mc_pb2.py	/^AI_Guided = _reflection.GeneratedProtocolMessageType('AI_Guided', (_message.Message,), dict($/;"	kind:variable	line:820
 AI_Guided	AF_GCS/mc_rpc_pb2.py	/^    def AI_Guided(self, request, context):$/;"	kind:member	line:613
 AI_Guided	AF_GCS/mc_rpc_pb2.py	/^    def AI_Guided(self, request, context):$/;"	kind:member	line:721
 AI_Guided	AF_GCS/mc_rpc_pb2.py	/^    def AI_Guided(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:762
 AI_Guided	AF_GCS/mc_rpc_pb2_grpc.py	/^  def AI_Guided(self, request, context):$/;"	kind:member	line:126
+AI_Guided	protobuf/for_mc_pb2.py	/^AI_Guided = _reflection.GeneratedProtocolMessageType('AI_Guided', (_message.Message,), dict($/;"	kind:variable	line:820
+AI_Guided	protobuf/mc_rpc_pb2.py	/^    def AI_Guided(self, request, context):$/;"	kind:member	line:613
+AI_Guided	protobuf/mc_rpc_pb2.py	/^    def AI_Guided(self, request, context):$/;"	kind:member	line:721
+AI_Guided	protobuf/mc_rpc_pb2.py	/^    def AI_Guided(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:762
+AI_Guided	protobuf/mc_rpc_pb2_grpc.py	/^  def AI_Guided(self, request, context):$/;"	kind:member	line:126
 AI_RTL	AF_GCS/GCS_RPC.py	/^    def AI_RTL(self, request, context):$/;"	kind:member	line:128
 AI_RTL	AF_GCS/for_mc_pb2.py	/^AI_RTL = _reflection.GeneratedProtocolMessageType('AI_RTL', (_message.Message,), dict($/;"	kind:variable	line:827
 AI_RTL	AF_GCS/mc_rpc_pb2.py	/^    def AI_RTL(self, request, context):$/;"	kind:member	line:618
 AI_RTL	AF_GCS/mc_rpc_pb2.py	/^    def AI_RTL(self, request, context):$/;"	kind:member	line:723
 AI_RTL	AF_GCS/mc_rpc_pb2.py	/^    def AI_RTL(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:765
 AI_RTL	AF_GCS/mc_rpc_pb2_grpc.py	/^  def AI_RTL(self, request, context):$/;"	kind:member	line:131
+AI_RTL	protobuf/for_mc_pb2.py	/^AI_RTL = _reflection.GeneratedProtocolMessageType('AI_RTL', (_message.Message,), dict($/;"	kind:variable	line:827
+AI_RTL	protobuf/mc_rpc_pb2.py	/^    def AI_RTL(self, request, context):$/;"	kind:member	line:618
+AI_RTL	protobuf/mc_rpc_pb2.py	/^    def AI_RTL(self, request, context):$/;"	kind:member	line:723
+AI_RTL	protobuf/mc_rpc_pb2.py	/^    def AI_RTL(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:765
+AI_RTL	protobuf/mc_rpc_pb2_grpc.py	/^  def AI_RTL(self, request, context):$/;"	kind:member	line:131
 ANY	AF_Avoid/oa_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
 ANY	AF_GCS/mc_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
-Acc	AF_Sensors/IMU.py	/^        Acc = ORB.subscribe('ACC')$/;"	kind:variable	line:158
+ANY	protobuf/mc_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
+ANY	protobuf/oa_rpc_pb2.py	/^ANY = 255$/;"	kind:variable	line:96
+Acc	AF_Sensors/IMU.py	/^        Acc = ORB.subscribe('ACC')$/;"	kind:variable	line:161
 Action	AF_Avoid/oa_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
 Action	AF_GCS/for_mc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:79
 Action	AF_GCS/mc_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
+Action	protobuf/for_mc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:79
+Action	protobuf/mc_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
+Action	protobuf/oa_rpc_pb2.py	/^Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)$/;"	kind:variable	line:85
 Actions	AF_GCS/for_mc_pb2.py	/^Actions = _reflection.GeneratedProtocolMessageType('Actions', (_message.Message,), dict($/;"	kind:variable	line:785
+Actions	protobuf/for_mc_pb2.py	/^Actions = _reflection.GeneratedProtocolMessageType('Actions', (_message.Message,), dict($/;"	kind:variable	line:785
 Attitude	protobuf/FlightLog_pb2.py	/^Attitude = _reflection.GeneratedProtocolMessageType('Attitude', (_message.Message,), dict($/;"	kind:variable	line:635
 Attribute	AF_Copter/attribute.py	/^class Attribute(object):$/;"	kind:class	line:13
 Auto	AF_Avoid/lidar.py	/^    def Auto(self):$/;"	kind:member	line:57
-Auto	AF_Avoid/lidar_rpc.py	/^    def Auto(self):$/;"	kind:member	line:199
-Auto	AF_Copter/vehicle.py	/^    def Auto(self):$/;"	kind:member	line:490
+Auto	AF_Avoid/lidar_rpc.py	/^    def Auto(self):$/;"	kind:member	line:200
+Auto	AF_Copter/vehicle.py	/^    def Auto(self):$/;"	kind:member	line:494
 Auto	AF_GCS/GCS_RPC.py	/^    def Auto(self, request, context):$/;"	kind:member	line:91
 Auto	AF_GCS/for_mc_pb2.py	/^Auto = _reflection.GeneratedProtocolMessageType('Auto', (_message.Message,), dict($/;"	kind:variable	line:806
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:608
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:719
 Auto	AF_GCS/mc_rpc_pb2.py	/^    def Auto(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:759
 Auto	AF_GCS/mc_rpc_pb2_grpc.py	/^  def Auto(self, request, context):$/;"	kind:member	line:121
-Auto_finally	AF_Copter/vehicle.py	/^    def Auto_finally(self):$/;"	kind:member	line:519
+Auto	protobuf/for_mc_pb2.py	/^Auto = _reflection.GeneratedProtocolMessageType('Auto', (_message.Message,), dict($/;"	kind:variable	line:806
+Auto	protobuf/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:608
+Auto	protobuf/mc_rpc_pb2.py	/^    def Auto(self, request, context):$/;"	kind:member	line:719
+Auto	protobuf/mc_rpc_pb2.py	/^    def Auto(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:759
+Auto	protobuf/mc_rpc_pb2_grpc.py	/^  def Auto(self, request, context):$/;"	kind:member	line:121
+Auto_finally	AF_Copter/vehicle.py	/^    def Auto_finally(self):$/;"	kind:member	line:523
 BACKWARD	AF_Avoid/oa_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
 BACKWARD	AF_GCS/for_mc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:153
 BACKWARD	AF_GCS/mc_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
+BACKWARD	protobuf/for_mc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:153
+BACKWARD	protobuf/mc_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
+BACKWARD	protobuf/oa_rpc_pb2.py	/^BACKWARD = 2$/;"	kind:variable	line:88
 Baro	AF_Sensors/Baro.py	/^class Baro(threading.Thread):$/;"	kind:class	line:14
 Baro.py	AF_Sensors/Baro.py	1;"	kind:file	line:1
 Baro_start	AF_Sensors/Baro.py	/^def Baro_start(ORB):$/;"	kind:function	line:192
 Barometre	protobuf/FlightLog_pb2.py	/^Barometre = _reflection.GeneratedProtocolMessageType('Barometre', (_message.Message,), dict($/;"	kind:variable	line:663
 BetaFCServicer	AF_GCS/mc_rpc_pb2.py	/^  class BetaFCServicer(object):$/;"	kind:class	line:697
+BetaFCServicer	protobuf/mc_rpc_pb2.py	/^  class BetaFCServicer(object):$/;"	kind:class	line:697
 BetaFCStub	AF_GCS/mc_rpc_pb2.py	/^  class BetaFCStub(object):$/;"	kind:class	line:729
+BetaFCStub	protobuf/mc_rpc_pb2.py	/^  class BetaFCStub(object):$/;"	kind:class	line:729
 BetaObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceServicer(object):$/;"	kind:class	line:334
+BetaObstacleAvoidanceServicer	protobuf/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceServicer(object):$/;"	kind:class	line:334
 BetaObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceStub(object):$/;"	kind:class	line:346
-Cancel	AF_Copter/vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:523
+BetaObstacleAvoidanceStub	protobuf/oa_rpc_pb2.py	/^  class BetaObstacleAvoidanceStub(object):$/;"	kind:class	line:346
+Cancel	AF_Copter/vehicle.py	/^    def Cancel(self):$/;"	kind:member	line:527
 Cancel	AF_GCS/for_mc_pb2.py	/^Cancel = _reflection.GeneratedProtocolMessageType('Cancel', (_message.Message,), dict($/;"	kind:variable	line:813
 Cancel	lib/tools.py	/^    Cancel = False$/;"	kind:variable	line:38
+Cancel	protobuf/for_mc_pb2.py	/^Cancel = _reflection.GeneratedProtocolMessageType('Cancel', (_message.Message,), dict($/;"	kind:variable	line:813
 CancelWatcher	lib/tools.py	/^class CancelWatcher(object):$/;"	kind:class	line:37
 Channels	protobuf/FlightLog_pb2.py	/^Channels = _reflection.GeneratedProtocolMessageType('Channels', (_message.Message,), dict($/;"	kind:variable	line:677
 CommandCode	AF_GCS/for_mc_pb2.py	/^CommandCode = enum_type_wrapper.EnumTypeWrapper(_COMMANDCODE)$/;"	kind:variable	line:150
+CommandCode	protobuf/for_mc_pb2.py	/^CommandCode = enum_type_wrapper.EnumTypeWrapper(_COMMANDCODE)$/;"	kind:variable	line:150
 Compass	AF_Sensors/compass.py	/^class Compass(threading.Thread):$/;"	kind:class	line:14
 Compass	protobuf/FlightLog_pb2.py	/^Compass = _reflection.GeneratedProtocolMessageType('Compass', (_message.Message,), dict($/;"	kind:variable	line:656
 Config	lib/config.py	/^class Config:$/;"	kind:class	line:8
@@ -69,6 +104,11 @@ ControlFRU	AF_GCS/mc_rpc_pb2.py	/^    def ControlFRU(self, request, context):$/;
 ControlFRU	AF_GCS/mc_rpc_pb2.py	/^    def ControlFRU(self, request, context):$/;"	kind:member	line:705
 ControlFRU	AF_GCS/mc_rpc_pb2.py	/^    def ControlFRU(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:738
 ControlFRU	AF_GCS/mc_rpc_pb2_grpc.py	/^  def ControlFRU(self, request, context):$/;"	kind:member	line:86
+ControlFRU	protobuf/for_mc_pb2.py	/^ControlFRU = _reflection.GeneratedProtocolMessageType('ControlFRU', (_message.Message,), dict($/;"	kind:variable	line:778
+ControlFRU	protobuf/mc_rpc_pb2.py	/^    def ControlFRU(self, request, context):$/;"	kind:member	line:573
+ControlFRU	protobuf/mc_rpc_pb2.py	/^    def ControlFRU(self, request, context):$/;"	kind:member	line:705
+ControlFRU	protobuf/mc_rpc_pb2.py	/^    def ControlFRU(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:738
+ControlFRU	protobuf/mc_rpc_pb2_grpc.py	/^  def ControlFRU(self, request, context):$/;"	kind:member	line:86
 Coordinate	protobuf/FlightLog_pb2.py	/^Coordinate = _reflection.GeneratedProtocolMessageType('Coordinate', (_message.Message,), dict($/;"	kind:variable	line:642
 Curve.py	AF_ML/Curve.py	1;"	kind:file	line:1
 CutFrame	lib/science.py	/^def CutFrame(package, length=2):$/;"	kind:function	line:16
@@ -115,24 +155,68 @@ DESCRIPTOR	protobuf/FlightLog_pb2.py	/^  DESCRIPTOR = _POINT,$/;"	kind:variable	
 DESCRIPTOR	protobuf/FlightLog_pb2.py	/^  DESCRIPTOR = _SENSORS,$/;"	kind:variable	line:685
 DESCRIPTOR	protobuf/FlightLog_pb2.py	/^  DESCRIPTOR = _WAYPOINT,$/;"	kind:variable	line:671
 DESCRIPTOR	protobuf/FlightLog_pb2.py	/^DESCRIPTOR = _descriptor.FileDescriptor($/;"	kind:variable	line:18
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _ACTIONS,$/;"	kind:variable	line:786
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _AI_AUTO,$/;"	kind:variable	line:835
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _AI_GUIDED,$/;"	kind:variable	line:821
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _AI_RTL,$/;"	kind:variable	line:828
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _AUTO,$/;"	kind:variable	line:807
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _CANCEL,$/;"	kind:variable	line:814
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _CONTROLFRU,$/;"	kind:variable	line:779
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _GUIDED,$/;"	kind:variable	line:793
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _PLANROUTE,$/;"	kind:variable	line:765
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _POINT,$/;"	kind:variable	line:772
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _RESETLOITER,$/;"	kind:variable	line:737
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _RTL,$/;"	kind:variable	line:800
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _SEMI_AUTO,$/;"	kind:variable	line:842
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _SENDCOMMAND,$/;"	kind:variable	line:730
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _SETGEAR,$/;"	kind:variable	line:744
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _TARGETBYANGLE,$/;"	kind:variable	line:758
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^  DESCRIPTOR = _TARGETBYMETRES,$/;"	kind:variable	line:751
+DESCRIPTOR	protobuf/for_mc_pb2.py	/^DESCRIPTOR = _descriptor.FileDescriptor($/;"	kind:variable	line:20
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _DISTANCEANGLE,$/;"	kind:variable	line:458
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _DISTANCEMETRES,$/;"	kind:variable	line:451
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _GEAR,$/;"	kind:variable	line:444
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _ID,$/;"	kind:variable	line:479
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _MOVEMENT,$/;"	kind:variable	line:437
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _POINT,$/;"	kind:variable	line:465
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _RESPONSE,$/;"	kind:variable	line:430
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^  DESCRIPTOR = _WAYPOINTS,$/;"	kind:variable	line:472
+DESCRIPTOR	protobuf/mc_rpc_pb2.py	/^DESCRIPTOR = _descriptor.FileDescriptor($/;"	kind:variable	line:19
+DESCRIPTOR	protobuf/oa_rpc_pb2.py	/^  DESCRIPTOR = _FULLCONTEXT,$/;"	kind:variable	line:252
+DESCRIPTOR	protobuf/oa_rpc_pb2.py	/^  DESCRIPTOR = _SEMICONTEXT,$/;"	kind:variable	line:259
+DESCRIPTOR	protobuf/oa_rpc_pb2.py	/^  DESCRIPTOR = _STRATEGY,$/;"	kind:variable	line:266
+DESCRIPTOR	protobuf/oa_rpc_pb2.py	/^DESCRIPTOR = _descriptor.FileDescriptor($/;"	kind:variable	line:19
 DOWN	AF_Avoid/oa_rpc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:94
 DOWN	AF_GCS/for_mc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:159
 DOWN	AF_GCS/mc_rpc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:94
+DOWN	protobuf/for_mc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:159
+DOWN	protobuf/mc_rpc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:94
+DOWN	protobuf/oa_rpc_pb2.py	/^DOWN = 128$/;"	kind:variable	line:94
 DistanceAngle	AF_GCS/mc_rpc_pb2.py	/^DistanceAngle = _reflection.GeneratedProtocolMessageType('DistanceAngle', (_message.Message,), dict($/;"	kind:variable	line:457
+DistanceAngle	protobuf/mc_rpc_pb2.py	/^DistanceAngle = _reflection.GeneratedProtocolMessageType('DistanceAngle', (_message.Message,), dict($/;"	kind:variable	line:457
 DistanceMetres	AF_GCS/mc_rpc_pb2.py	/^DistanceMetres = _reflection.GeneratedProtocolMessageType('DistanceMetres', (_message.Message,), dict($/;"	kind:variable	line:450
+DistanceMetres	protobuf/mc_rpc_pb2.py	/^DistanceMetres = _reflection.GeneratedProtocolMessageType('DistanceMetres', (_message.Message,), dict($/;"	kind:variable	line:450
 EncodeChannels	AF_Sbus/sender.py	/^    def EncodeChannels(self, channels):$/;"	kind:member	line:65
-Eul	AF_Sensors/IMU.py	/^        Eul = ORB.subscribe('EUL')$/;"	kind:variable	line:161
+Eul	AF_Sensors/IMU.py	/^        Eul = ORB.subscribe('EUL')$/;"	kind:variable	line:164
 Executor	AF_GCS/GCSProxy.py	/^class Executor(threading.Thread):$/;"	kind:class	line:55
-Executor	AF_GCS/GCS_Proto.py	/^class Executor(threading.Thread):$/;"	kind:class	line:263
-Executor	AF_GCS/cloud.py	/^class Executor(threading.Thread):$/;"	kind:class	line:48
+Executor	AF_GCS/GCS_Proto.py	/^class Executor(threading.Thread):$/;"	kind:class	line:75
+Executor	AF_GCS/GCS_Redis.py	/^class Executor(threading.Thread):$/;"	kind:class	line:48
 FCServicer	AF_GCS/mc_rpc_pb2.py	/^  class FCServicer(object):$/;"	kind:class	line:566
 FCServicer	AF_GCS/mc_rpc_pb2_grpc.py	/^class FCServicer(object):$/;"	kind:class	line:79
+FCServicer	protobuf/mc_rpc_pb2.py	/^  class FCServicer(object):$/;"	kind:class	line:566
+FCServicer	protobuf/mc_rpc_pb2_grpc.py	/^class FCServicer(object):$/;"	kind:class	line:79
 FCStub	AF_GCS/mc_rpc_pb2.py	/^  class FCStub(object):$/;"	kind:class	line:496
 FCStub	AF_GCS/mc_rpc_pb2_grpc.py	/^class FCStub(object):$/;"	kind:class	line:9
+FCStub	protobuf/mc_rpc_pb2.py	/^  class FCStub(object):$/;"	kind:class	line:496
+FCStub	protobuf/mc_rpc_pb2_grpc.py	/^class FCStub(object):$/;"	kind:class	line:9
 FC_RPC	AF_GCS/GCS_RPC.py	/^class FC_RPC(mc_rpc_pb2_grpc.FCServicer):$/;"	kind:class	line:18
 FORWARD	AF_Avoid/oa_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
 FORWARD	AF_GCS/for_mc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:152
 FORWARD	AF_GCS/mc_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
+FORWARD	protobuf/for_mc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:152
+FORWARD	protobuf/mc_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
+FORWARD	protobuf/oa_rpc_pb2.py	/^FORWARD = 1$/;"	kind:variable	line:87
+Filter_Epsilon	AF_Copter/vehicle.py	/^    def Filter_Epsilon(self,angle):$/;"	kind:member	line:443
 Finally	AF_Avoid/lidarProxy.py	/^def Finally(vehicle):$/;"	kind:function	line:223
 FlightLog_pb2.py	protobuf/FlightLog_pb2.py	1;"	kind:file	line:1
 FullAuto	AF_Avoid/oa_rpc_client.py	/^    def FullAuto(self, context):$/;"	kind:member	line:18
@@ -141,40 +225,54 @@ FullAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, cont
 FullAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:352
 FullAutomatic	AF_Avoid/oa_rpc_pb2_grpc.py	/^  def FullAutomatic(self, request, context):$/;"	kind:member	line:31
 FullAutomatic	AF_Avoid/oa_rpc_server.py	/^    def FullAutomatic(self, request, context):$/;"	kind:member	line:17
+FullAutomatic	protobuf/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, context):$/;"	kind:member	line:305
+FullAutomatic	protobuf/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, context):$/;"	kind:member	line:340
+FullAutomatic	protobuf/oa_rpc_pb2.py	/^    def FullAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:352
+FullAutomatic	protobuf/oa_rpc_pb2_grpc.py	/^  def FullAutomatic(self, request, context):$/;"	kind:member	line:31
 FullContext	AF_Avoid/oa_rpc_pb2.py	/^FullContext = _reflection.GeneratedProtocolMessageType('FullContext', (_message.Message,), dict($/;"	kind:variable	line:251
+FullContext	protobuf/oa_rpc_pb2.py	/^FullContext = _reflection.GeneratedProtocolMessageType('FullContext', (_message.Message,), dict($/;"	kind:variable	line:251
 GCSProxy.py	AF_GCS/GCSProxy.py	1;"	kind:file	line:1
 GCS_Proto.py	AF_GCS/GCS_Proto.py	1;"	kind:file	line:1
 GCS_RPC.py	AF_GCS/GCS_RPC.py	1;"	kind:file	line:1
 GCS_RPC_client.py	AF_GCS/GCS_RPC_client.py	1;"	kind:file	line:1
+GCS_Redis.py	AF_GCS/GCS_Redis.py	1;"	kind:file	line:1
 GCS_Start	AF_GCS/GCS_RPC.py	/^def GCS_Start(vehicle, lidar=None):$/;"	kind:function	line:155
 GCS_Stub	AF_GCS/GCS_RPC_client.py	/^class GCS_Stub:$/;"	kind:class	line:9
 GCS_start	AF_GCS/GCSProxy.py	/^def GCS_start(ORB, vehicle=None, lidar=None):$/;"	kind:function	line:92
-GCS_start	AF_GCS/GCS_Proto.py	/^def GCS_start(ORB, vehicle=None, lidar=None):$/;"	kind:function	line:284
-GCS_start	AF_GCS/cloud.py	/^def GCS_start(ORB, vehicle=None, lidar=None):$/;"	kind:function	line:72
+GCS_start	AF_GCS/GCS_Proto.py	/^def GCS_start(ORB, vehicle=None, lidar=None):$/;"	kind:function	line:96
+GCS_start	AF_GCS/GCS_Redis.py	/^def GCS_start(vehicle, lidar=None):$/;"	kind:function	line:72
 GPS	AF_Sensors/GPS.py	/^class GPS(threading.Thread):$/;"	kind:class	line:14
 GPS	protobuf/FlightLog_pb2.py	/^GPS = _reflection.GeneratedProtocolMessageType('GPS', (_message.Message,), dict($/;"	kind:variable	line:649
 GPS.py	AF_Sensors/GPS.py	1;"	kind:file	line:1
-GPS_start	AF_Sensors/GPS.py	/^def GPS_start(ORB):$/;"	kind:function	line:63
+GPS_start	AF_Sensors/GPS.py	/^def GPS_start(ORB):$/;"	kind:function	line:64
 Gear	AF_GCS/mc_rpc_pb2.py	/^Gear = _reflection.GeneratedProtocolMessageType('Gear', (_message.Message,), dict($/;"	kind:variable	line:443
+Gear	protobuf/mc_rpc_pb2.py	/^Gear = _reflection.GeneratedProtocolMessageType('Gear', (_message.Message,), dict($/;"	kind:variable	line:443
 GradualTHR	AF_Copter/vehicle.py	/^    def GradualTHR(self, begin, end):$/;"	kind:member	line:108
 Guided	AF_Avoid/lidar.py	/^    def Guided(self):$/;"	kind:member	line:39
-Guided	AF_Avoid/lidar_rpc.py	/^    def Guided(self):$/;"	kind:member	line:166
-Guided	AF_Copter/vehicle.py	/^    def Guided(self):$/;"	kind:member	line:449
+Guided	AF_Avoid/lidar_rpc.py	/^    def Guided(self):$/;"	kind:member	line:167
+Guided	AF_Copter/vehicle.py	/^    def Guided(self):$/;"	kind:member	line:453
 Guided	AF_GCS/GCS_RPC.py	/^    def Guided(self, request, context):$/;"	kind:member	line:72
 Guided	AF_GCS/for_mc_pb2.py	/^Guided = _reflection.GeneratedProtocolMessageType('Guided', (_message.Message,), dict($/;"	kind:variable	line:792
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:598
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:715
 Guided	AF_GCS/mc_rpc_pb2.py	/^    def Guided(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:753
 Guided	AF_GCS/mc_rpc_pb2_grpc.py	/^  def Guided(self, request, context):$/;"	kind:member	line:111
-Gyr	AF_Sensors/IMU.py	/^        Gyr = ORB.subscribe('GYR')$/;"	kind:variable	line:159
+Guided	protobuf/for_mc_pb2.py	/^Guided = _reflection.GeneratedProtocolMessageType('Guided', (_message.Message,), dict($/;"	kind:variable	line:792
+Guided	protobuf/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:598
+Guided	protobuf/mc_rpc_pb2.py	/^    def Guided(self, request, context):$/;"	kind:member	line:715
+Guided	protobuf/mc_rpc_pb2.py	/^    def Guided(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:753
+Guided	protobuf/mc_rpc_pb2_grpc.py	/^  def Guided(self, request, context):$/;"	kind:member	line:111
+Gyr	AF_Sensors/IMU.py	/^        Gyr = ORB.subscribe('GYR')$/;"	kind:variable	line:162
 H2TAngle	lib/science.py	/^    H2TAngle = angle_heading_target(loc, TLocation, 90)$/;"	kind:variable	line:147
 ID	AF_Copter/waypoint.py	/^    def ID(self):$/;"	kind:member	line:20
-IMU	AF_Sensors/IMU.py	/^class IMU(threading.Thread):$/;"	kind:class	line:12
+IMU	AF_Sensors/IMU.py	/^class IMU(threading.Thread):$/;"	kind:class	line:14
 IMU.py	AF_Sensors/IMU.py	1;"	kind:file	line:1
-IMU_start	AF_Sensors/IMU.py	/^def IMU_start(ORB):$/;"	kind:function	line:132
+IMU_start	AF_Sensors/IMU.py	/^def IMU_start(ORB):$/;"	kind:function	line:135
 INVALID	AF_Avoid/oa_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
 INVALID	AF_GCS/mc_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
-InAngle	AF_Copter/vehicle.py	/^    def InAngle(self, angle, EAngle):$/;"	kind:member	line:443
+INVALID	protobuf/mc_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
+INVALID	protobuf/oa_rpc_pb2.py	/^INVALID = 238$/;"	kind:variable	line:95
+InAngle	AF_Copter/vehicle.py	/^    def InAngle(self, angle, Epsilon):$/;"	kind:member	line:447
 InitLoiter	AF_uORB/uORB.py	/^    def InitLoiter(self):$/;"	kind:member	line:77
 InitLoiter	lib/config.py	/^    def InitLoiter(self):$/;"	kind:member	line:124
 IsCancel	lib/tools.py	/^    def IsCancel(self):$/;"	kind:member	line:46
@@ -183,59 +281,70 @@ KB_Proxy.py	AF_Keyboard/KB_Proxy.py	1;"	kind:file	line:1
 LEFT_ROLL	AF_Avoid/oa_rpc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:91
 LEFT_ROLL	AF_GCS/for_mc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:156
 LEFT_ROLL	AF_GCS/mc_rpc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:91
+LEFT_ROLL	protobuf/for_mc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:156
+LEFT_ROLL	protobuf/mc_rpc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:91
+LEFT_ROLL	protobuf/oa_rpc_pb2.py	/^LEFT_ROLL = 16$/;"	kind:variable	line:91
 LEFT_YAW	AF_Avoid/oa_rpc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:89
 LEFT_YAW	AF_GCS/for_mc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:154
 LEFT_YAW	AF_GCS/mc_rpc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:89
+LEFT_YAW	protobuf/for_mc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:154
+LEFT_YAW	protobuf/mc_rpc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:89
+LEFT_YAW	protobuf/oa_rpc_pb2.py	/^LEFT_YAW = 4$/;"	kind:variable	line:89
 Lidar	AF_Avoid/lidar.py	/^class Lidar(object):$/;"	kind:class	line:15
 Lidar	AF_Avoid/lidar_rpc.py	/^class Lidar(object):$/;"	kind:class	line:96
 Location	protobuf/FlightLog_pb2.py	/^Location = _reflection.GeneratedProtocolMessageType('Location', (_message.Message,), dict($/;"	kind:variable	line:621
-Mag	AF_Sensors/IMU.py	/^        Mag = ORB.subscribe('MAG')$/;"	kind:variable	line:160
-MergeFrame	AF_Sensors/IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:117
+Mag	AF_Sensors/IMU.py	/^        Mag = ORB.subscribe('MAG')$/;"	kind:variable	line:163
+MergeFrame	AF_Sensors/IMU.py	/^    def MergeFrame(self, package):$/;"	kind:member	line:120
 OA_RPC_Config	lib/config.py	/^    def OA_RPC_Config(self, conf):$/;"	kind:member	line:48
 OA_Stub	AF_Avoid/oa_rpc_client.py	/^class OA_Stub:$/;"	kind:class	line:10
 ORB	AF_Avoid/lidar.py	/^    ORB = uORB()$/;"	kind:variable	line:73
-ORB	AF_Avoid/lidar_rpc.py	/^    ORB = uORB()$/;"	kind:variable	line:289
+ORB	AF_Avoid/lidar_rpc.py	/^    ORB = uORB()$/;"	kind:variable	line:292
 ORB	AF_Copter/attribute.py	/^    ORB = uORB()$/;"	kind:variable	line:167
-ORB	AF_Copter/vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:569
+ORB	AF_Copter/vehicle.py	/^    ORB = uORB()$/;"	kind:variable	line:573
 ORB	AF_Copter/waypoint.py	/^    ORB = uORB()$/;"	kind:variable	line:109
 ORB	AF_GCS/GCSProxy.py	/^    ORB = uORB()$/;"	kind:variable	line:122
-ORB	AF_GCS/GCS_Proto.py	/^    ORB = uORB()$/;"	kind:variable	line:313
+ORB	AF_GCS/GCS_Proto.py	/^    ORB = uORB()$/;"	kind:variable	line:125
 ORB	AF_GCS/GCS_RPC.py	/^    ORB = uORB()$/;"	kind:variable	line:172
+ORB	AF_GCS/GCS_Redis.py	/^    ORB = uORB()$/;"	kind:variable	line:101
 ORB	AF_GCS/Test_GCS_Proto.py	/^    ORB = uORB()$/;"	kind:variable	line:169
-ORB	AF_GCS/cloud.py	/^    ORB = uORB()$/;"	kind:variable	line:101
 ORB	AF_ML/Curve.py	/^    ORB = uORB()$/;"	kind:variable	line:157
 ORB	AF_ML/collecter.py	/^    ORB = uORB()$/;"	kind:variable	line:46
 ORB	AF_Sbus/receiver.py	/^    ORB = uORB()$/;"	kind:variable	line:90
 ORB	AF_Sbus/sender.py	/^    ORB = uORB()$/;"	kind:variable	line:99
 ORB	AF_Sensors/Baro.py	/^    ORB = uORB()$/;"	kind:variable	line:203
-ORB	AF_Sensors/GPS.py	/^    ORB = uORB()$/;"	kind:variable	line:74
-ORB	AF_Sensors/IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:142
-ORB	AF_Sensors/compass.py	/^    ORB = uORB()$/;"	kind:variable	line:94
+ORB	AF_Sensors/GPS.py	/^    ORB = uORB()$/;"	kind:variable	line:75
+ORB	AF_Sensors/IMU.py	/^    ORB = uORB()$/;"	kind:variable	line:145
+ORB	AF_Sensors/compass.py	/^    ORB = uORB()$/;"	kind:variable	line:114
 ORB	AF_uORB/uORB.py	/^    ORB = uORB()$/;"	kind:variable	line:254
 ORB	examples/main.py	/^    ORB = uORB()$/;"	kind:variable	line:15
 ObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2.py	/^  class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:303
 ObstacleAvoidanceServicer	AF_Avoid/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:29
+ObstacleAvoidanceServicer	protobuf/oa_rpc_pb2.py	/^  class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:303
+ObstacleAvoidanceServicer	protobuf/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceServicer(object):$/;"	kind:class	line:29
 ObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2.py	/^  class ObstacleAvoidanceStub(object):$/;"	kind:class	line:283
 ObstacleAvoidanceStub	AF_Avoid/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceStub(object):$/;"	kind:class	line:9
-ParseFrag	AF_Sensors/IMU.py	/^    def ParseFrag(self, Frag):$/;"	kind:member	line:127
-ParseIMU	AF_Sensors/IMU.py	/^    def ParseIMU(self, package):$/;"	kind:member	line:91
-ParseQua	AF_Sensors/IMU.py	/^    def ParseQua(self, Qua):$/;"	kind:member	line:123
-Parse_AI_Auto	AF_GCS/GCS_Proto.py	/^    def Parse_AI_Auto(any):$/;"	kind:function	line:177
-Parse_AI_Guided	AF_GCS/GCS_Proto.py	/^    def Parse_AI_Guided(any):$/;"	kind:function	line:161
-Parse_AI_RTL	AF_GCS/GCS_Proto.py	/^    def Parse_AI_RTL(any):$/;"	kind:function	line:169
-Parse_Actions	AF_GCS/GCS_Proto.py	/^def Parse_Actions(actions):$/;"	kind:function	line:26
-Parse_Auto	AF_GCS/GCS_Proto.py	/^    def Parse_Auto(any):$/;"	kind:function	line:153
-Parse_Cancel	AF_GCS/GCS_Proto.py	/^    def Parse_Cancel(any):$/;"	kind:function	line:83
-Parse_ControlFRU	AF_GCS/GCS_Proto.py	/^    def Parse_ControlFRU(any):$/;"	kind:function	line:126
-Parse_Guided	AF_GCS/GCS_Proto.py	/^    def Parse_Guided(any):$/;"	kind:function	line:137
-Parse_PlanRoute	AF_GCS/GCS_Proto.py	/^    def Parse_PlanRoute(any):$/;"	kind:function	line:114
-Parse_RTL	AF_GCS/GCS_Proto.py	/^    def Parse_RTL(any):$/;"	kind:function	line:145
-Parse_ResetLoiter	AF_GCS/GCS_Proto.py	/^    def Parse_ResetLoiter(any):$/;"	kind:function	line:65
-Parse_Semi_Auto	AF_GCS/GCS_Proto.py	/^    def Parse_Semi_Auto(any):$/;"	kind:function	line:185
-Parse_SetGear	AF_GCS/GCS_Proto.py	/^    def Parse_SetGear(any):$/;"	kind:function	line:73
-Parse_TargetByAngle	AF_GCS/GCS_Proto.py	/^    def Parse_TargetByAngle(any):$/;"	kind:function	line:102
-Parse_TargetByMetres	AF_GCS/GCS_Proto.py	/^    def Parse_TargetByMetres(any):$/;"	kind:function	line:90
-Parser	AF_GCS/GCS_Proto.py	/^    def Parser(cmd_object):$/;"	kind:function	line:56
+ObstacleAvoidanceStub	protobuf/oa_rpc_pb2.py	/^  class ObstacleAvoidanceStub(object):$/;"	kind:class	line:283
+ObstacleAvoidanceStub	protobuf/oa_rpc_pb2_grpc.py	/^class ObstacleAvoidanceStub(object):$/;"	kind:class	line:9
+ParseFrag	AF_Sensors/IMU.py	/^    def ParseFrag(self, Frag):$/;"	kind:member	line:130
+ParseIMU	AF_Sensors/IMU.py	/^    def ParseIMU(self, package):$/;"	kind:member	line:94
+ParseQua	AF_Sensors/IMU.py	/^    def ParseQua(self, Qua):$/;"	kind:member	line:126
+Parse_AI_Auto	AF_GCS/Parse_Proto.py	/^    def Parse_AI_Auto(any):$/;"	kind:function	line:163
+Parse_AI_Guided	AF_GCS/Parse_Proto.py	/^    def Parse_AI_Guided(any):$/;"	kind:function	line:147
+Parse_AI_RTL	AF_GCS/Parse_Proto.py	/^    def Parse_AI_RTL(any):$/;"	kind:function	line:155
+Parse_Actions	AF_GCS/Parse_Proto.py	/^def Parse_Actions(actions):$/;"	kind:function	line:12
+Parse_Auto	AF_GCS/Parse_Proto.py	/^    def Parse_Auto(any):$/;"	kind:function	line:139
+Parse_Cancel	AF_GCS/Parse_Proto.py	/^    def Parse_Cancel(any):$/;"	kind:function	line:69
+Parse_ControlFRU	AF_GCS/Parse_Proto.py	/^    def Parse_ControlFRU(any):$/;"	kind:function	line:112
+Parse_Guided	AF_GCS/Parse_Proto.py	/^    def Parse_Guided(any):$/;"	kind:function	line:123
+Parse_PlanRoute	AF_GCS/Parse_Proto.py	/^    def Parse_PlanRoute(any):$/;"	kind:function	line:100
+Parse_Proto.py	AF_GCS/Parse_Proto.py	1;"	kind:file	line:1
+Parse_RTL	AF_GCS/Parse_Proto.py	/^    def Parse_RTL(any):$/;"	kind:function	line:131
+Parse_ResetLoiter	AF_GCS/Parse_Proto.py	/^    def Parse_ResetLoiter(any):$/;"	kind:function	line:51
+Parse_Semi_Auto	AF_GCS/Parse_Proto.py	/^    def Parse_Semi_Auto(any):$/;"	kind:function	line:171
+Parse_SetGear	AF_GCS/Parse_Proto.py	/^    def Parse_SetGear(any):$/;"	kind:function	line:59
+Parse_TargetByAngle	AF_GCS/Parse_Proto.py	/^    def Parse_TargetByAngle(any):$/;"	kind:function	line:88
+Parse_TargetByMetres	AF_GCS/Parse_Proto.py	/^    def Parse_TargetByMetres(any):$/;"	kind:function	line:76
+Parser	AF_GCS/Parse_Proto.py	/^    def Parser(cmd_object):$/;"	kind:function	line:42
 Phase	AF_Copter/attribute.py	/^    def Phase(self):$/;"	kind:member	line:83
 PlanRoute	AF_GCS/GCS_RPC.py	/^    def PlanRoute(self, request, context):$/;"	kind:member	line:100
 PlanRoute	AF_GCS/GCS_RPC_client.py	/^    def PlanRoute(self, context):$/;"	kind:member	line:25
@@ -244,41 +353,65 @@ PlanRoute	AF_GCS/mc_rpc_pb2.py	/^    def PlanRoute(self, request, context):$/;"	
 PlanRoute	AF_GCS/mc_rpc_pb2.py	/^    def PlanRoute(self, request, context):$/;"	kind:member	line:713
 PlanRoute	AF_GCS/mc_rpc_pb2.py	/^    def PlanRoute(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:750
 PlanRoute	AF_GCS/mc_rpc_pb2_grpc.py	/^  def PlanRoute(self, request, context):$/;"	kind:member	line:106
+PlanRoute	protobuf/for_mc_pb2.py	/^PlanRoute = _reflection.GeneratedProtocolMessageType('PlanRoute', (_message.Message,), dict($/;"	kind:variable	line:764
+PlanRoute	protobuf/mc_rpc_pb2.py	/^    def PlanRoute(self, request, context):$/;"	kind:member	line:593
+PlanRoute	protobuf/mc_rpc_pb2.py	/^    def PlanRoute(self, request, context):$/;"	kind:member	line:713
+PlanRoute	protobuf/mc_rpc_pb2.py	/^    def PlanRoute(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:750
+PlanRoute	protobuf/mc_rpc_pb2_grpc.py	/^  def PlanRoute(self, request, context):$/;"	kind:member	line:106
 Point	protobuf/FlightLog_pb2.py	/^Point = _reflection.GeneratedProtocolMessageType('Point', (_message.Message,), dict($/;"	kind:variable	line:628
-Qua	AF_Sensors/IMU.py	/^        Qua = ORB.subscribe('QUA')$/;"	kind:variable	line:162
+Qua	AF_Sensors/IMU.py	/^        Qua = ORB.subscribe('QUA')$/;"	kind:variable	line:165
 RIGHT_ROLL	AF_Avoid/oa_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
 RIGHT_ROLL	AF_GCS/for_mc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:157
 RIGHT_ROLL	AF_GCS/mc_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
+RIGHT_ROLL	protobuf/for_mc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:157
+RIGHT_ROLL	protobuf/mc_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
+RIGHT_ROLL	protobuf/oa_rpc_pb2.py	/^RIGHT_ROLL = 32$/;"	kind:variable	line:92
 RIGHT_YAW	AF_Avoid/oa_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
 RIGHT_YAW	AF_GCS/for_mc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:155
 RIGHT_YAW	AF_GCS/mc_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
+RIGHT_YAW	protobuf/for_mc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:155
+RIGHT_YAW	protobuf/mc_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
+RIGHT_YAW	protobuf/oa_rpc_pb2.py	/^RIGHT_YAW = 8$/;"	kind:variable	line:90
 RTL	AF_Avoid/lidar.py	/^    def RTL(self):$/;"	kind:member	line:48
-RTL	AF_Avoid/lidar_rpc.py	/^    def RTL(self):$/;"	kind:member	line:182
-RTL	AF_Copter/vehicle.py	/^    def RTL(self):$/;"	kind:member	line:465
+RTL	AF_Avoid/lidar_rpc.py	/^    def RTL(self):$/;"	kind:member	line:183
+RTL	AF_Copter/vehicle.py	/^    def RTL(self):$/;"	kind:member	line:469
 RTL	AF_GCS/GCS_RPC.py	/^    def RTL(self, request, context):$/;"	kind:member	line:82
 RTL	AF_GCS/for_mc_pb2.py	/^RTL = _reflection.GeneratedProtocolMessageType('RTL', (_message.Message,), dict($/;"	kind:variable	line:799
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:603
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:717
 RTL	AF_GCS/mc_rpc_pb2.py	/^    def RTL(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:756
 RTL	AF_GCS/mc_rpc_pb2_grpc.py	/^  def RTL(self, request, context):$/;"	kind:member	line:116
-RawFrame	AF_Sensors/IMU.py	/^    def RawFrame(self):$/;"	kind:member	line:84
-RawFrame	AF_Sensors/compass.py	/^    def RawFrame(self, command, ack, size=8):$/;"	kind:member	line:50
+RTL	protobuf/for_mc_pb2.py	/^RTL = _reflection.GeneratedProtocolMessageType('RTL', (_message.Message,), dict($/;"	kind:variable	line:799
+RTL	protobuf/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:603
+RTL	protobuf/mc_rpc_pb2.py	/^    def RTL(self, request, context):$/;"	kind:member	line:717
+RTL	protobuf/mc_rpc_pb2.py	/^    def RTL(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:756
+RTL	protobuf/mc_rpc_pb2_grpc.py	/^  def RTL(self, request, context):$/;"	kind:member	line:116
+RawFrame	AF_Sensors/IMU.py	/^    def RawFrame(self):$/;"	kind:member	line:87
+RawFrame	AF_Sensors/compass.py	/^    def RawFrame(self, command, ack, size=8):$/;"	kind:member	line:70
 Receiver	AF_GCS/GCSProxy.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:30
-Receiver	AF_GCS/GCS_Proto.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:220
-Receiver	AF_GCS/cloud.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:22
+Receiver	AF_GCS/GCS_Proto.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:32
+Receiver	AF_GCS/GCS_Redis.py	/^class Receiver(threading.Thread):$/;"	kind:class	line:22
 ResetLoiter	AF_GCS/GCS_RPC.py	/^    def ResetLoiter(self):$/;"	kind:member	line:25
 ResetLoiter	AF_GCS/for_mc_pb2.py	/^ResetLoiter = _reflection.GeneratedProtocolMessageType('ResetLoiter', (_message.Message,), dict($/;"	kind:variable	line:736
 ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$/;"	kind:member	line:568
 ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$/;"	kind:member	line:703
 ResetLoiter	AF_GCS/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:735
 ResetLoiter	AF_GCS/mc_rpc_pb2_grpc.py	/^  def ResetLoiter(self, request, context):$/;"	kind:member	line:81
-ReverseFrame	AF_Sensors/IMU.py	/^    def ReverseFrame(self, frame, length):$/;"	kind:member	line:120
-Route	AF_Copter/vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:483
+ResetLoiter	protobuf/for_mc_pb2.py	/^ResetLoiter = _reflection.GeneratedProtocolMessageType('ResetLoiter', (_message.Message,), dict($/;"	kind:variable	line:736
+ResetLoiter	protobuf/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$/;"	kind:member	line:568
+ResetLoiter	protobuf/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, context):$/;"	kind:member	line:703
+ResetLoiter	protobuf/mc_rpc_pb2.py	/^    def ResetLoiter(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:735
+ResetLoiter	protobuf/mc_rpc_pb2_grpc.py	/^  def ResetLoiter(self, request, context):$/;"	kind:member	line:81
+ReverseFrame	AF_Sensors/IMU.py	/^    def ReverseFrame(self, frame, length):$/;"	kind:member	line:123
+Route	AF_Copter/vehicle.py	/^    def Route(self, info):$/;"	kind:member	line:487
 Route	AF_Copter/waypoint.py	/^    def Route(self, info):$/;"	kind:member	line:55
 SBUS	AF_Sbus/sbus.py	/^class SBUS(object):$/;"	kind:class	line:12
 STOP	AF_Avoid/oa_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
 STOP	AF_GCS/for_mc_pb2.py	/^STOP = 0$/;"	kind:variable	line:151
 STOP	AF_GCS/mc_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
+STOP	protobuf/for_mc_pb2.py	/^STOP = 0$/;"	kind:variable	line:151
+STOP	protobuf/mc_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
+STOP	protobuf/oa_rpc_pb2.py	/^STOP = 0$/;"	kind:variable	line:86
 Sbus_Receiver	AF_Sbus/receiver.py	/^class Sbus_Receiver(threading.Thread):$/;"	kind:class	line:15
 Sbus_Sender	AF_Sbus/sender.py	/^class Sbus_Sender(threading.Thread):$/;"	kind:class	line:15
 SemiAuto	AF_Avoid/oa_rpc_client.py	/^    def SemiAuto(self, control):$/;"	kind:member	line:23
@@ -286,10 +419,17 @@ SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, cont
 SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:342
 SemiAutomatic	AF_Avoid/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:355
 SemiAutomatic	AF_Avoid/oa_rpc_pb2_grpc.py	/^  def SemiAutomatic(self, request, context):$/;"	kind:member	line:36
-SemiAutomatic	AF_Avoid/oa_rpc_server.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:25
+SemiAutomatic	AF_Avoid/oa_rpc_server.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:26
+SemiAutomatic	protobuf/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:310
+SemiAutomatic	protobuf/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, context):$/;"	kind:member	line:342
+SemiAutomatic	protobuf/oa_rpc_pb2.py	/^    def SemiAutomatic(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:355
+SemiAutomatic	protobuf/oa_rpc_pb2_grpc.py	/^  def SemiAutomatic(self, request, context):$/;"	kind:member	line:36
 SemiContext	AF_Avoid/oa_rpc_pb2.py	/^SemiContext = _reflection.GeneratedProtocolMessageType('SemiContext', (_message.Message,), dict($/;"	kind:variable	line:258
+SemiContext	protobuf/oa_rpc_pb2.py	/^SemiContext = _reflection.GeneratedProtocolMessageType('SemiContext', (_message.Message,), dict($/;"	kind:variable	line:258
 Semi_Auto	AF_GCS/for_mc_pb2.py	/^Semi_Auto = _reflection.GeneratedProtocolMessageType('Semi_Auto', (_message.Message,), dict($/;"	kind:variable	line:841
+Semi_Auto	protobuf/for_mc_pb2.py	/^Semi_Auto = _reflection.GeneratedProtocolMessageType('Semi_Auto', (_message.Message,), dict($/;"	kind:variable	line:841
 SendCommand	AF_GCS/for_mc_pb2.py	/^SendCommand = _reflection.GeneratedProtocolMessageType('SendCommand', (_message.Message,), dict($/;"	kind:variable	line:729
+SendCommand	protobuf/for_mc_pb2.py	/^SendCommand = _reflection.GeneratedProtocolMessageType('SendCommand', (_message.Message,), dict($/;"	kind:variable	line:729
 SetGear	AF_GCS/GCS_RPC.py	/^    def SetGear(self, request, context):$/;"	kind:member	line:45
 SetGear	AF_GCS/GCS_RPC_client.py	/^    def SetGear(self, context):$/;"	kind:member	line:20
 SetGear	AF_GCS/for_mc_pb2.py	/^SetGear = _reflection.GeneratedProtocolMessageType('SetGear', (_message.Message,), dict($/;"	kind:variable	line:743
@@ -297,8 +437,14 @@ SetGear	AF_GCS/mc_rpc_pb2.py	/^    def SetGear(self, request, context):$/;"	kind
 SetGear	AF_GCS/mc_rpc_pb2.py	/^    def SetGear(self, request, context):$/;"	kind:member	line:707
 SetGear	AF_GCS/mc_rpc_pb2.py	/^    def SetGear(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:741
 SetGear	AF_GCS/mc_rpc_pb2_grpc.py	/^  def SetGear(self, request, context):$/;"	kind:member	line:91
+SetGear	protobuf/for_mc_pb2.py	/^SetGear = _reflection.GeneratedProtocolMessageType('SetGear', (_message.Message,), dict($/;"	kind:variable	line:743
+SetGear	protobuf/mc_rpc_pb2.py	/^    def SetGear(self, request, context):$/;"	kind:member	line:578
+SetGear	protobuf/mc_rpc_pb2.py	/^    def SetGear(self, request, context):$/;"	kind:member	line:707
+SetGear	protobuf/mc_rpc_pb2.py	/^    def SetGear(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:741
+SetGear	protobuf/mc_rpc_pb2_grpc.py	/^  def SetGear(self, request, context):$/;"	kind:member	line:91
 Singleton	lib/tools.py	/^class Singleton(type):$/;"	kind:class	line:25
 Strategy	AF_Avoid/oa_rpc_pb2.py	/^Strategy = _reflection.GeneratedProtocolMessageType('Strategy', (_message.Message,), dict($/;"	kind:variable	line:265
+Strategy	protobuf/oa_rpc_pb2.py	/^Strategy = _reflection.GeneratedProtocolMessageType('Strategy', (_message.Message,), dict($/;"	kind:variable	line:265
 T2P_file	AF_ML/Curve.py	/^T2P_file = os.path.join('..', 'ML', UAV + ".t2p")$/;"	kind:variable	line:13
 THR2PIT	AF_ML/Curve.py	/^def THR2PIT(x):$/;"	kind:function	line:135
 TLocation	lib/science.py	/^    TLocation = get_location_metres(loc, 1000, 1000)$/;"	kind:variable	line:146
@@ -308,6 +454,11 @@ TargetByAngle	AF_GCS/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, contex
 TargetByAngle	AF_GCS/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, context):$/;"	kind:member	line:711
 TargetByAngle	AF_GCS/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:747
 TargetByAngle	AF_GCS/mc_rpc_pb2_grpc.py	/^  def TargetByAngle(self, request, context):$/;"	kind:member	line:101
+TargetByAngle	protobuf/for_mc_pb2.py	/^TargetByAngle = _reflection.GeneratedProtocolMessageType('TargetByAngle', (_message.Message,), dict($/;"	kind:variable	line:757
+TargetByAngle	protobuf/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, context):$/;"	kind:member	line:588
+TargetByAngle	protobuf/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, context):$/;"	kind:member	line:711
+TargetByAngle	protobuf/mc_rpc_pb2.py	/^    def TargetByAngle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:747
+TargetByAngle	protobuf/mc_rpc_pb2_grpc.py	/^  def TargetByAngle(self, request, context):$/;"	kind:member	line:101
 TargetByMetres	AF_GCS/GCS_RPC.py	/^    def TargetByMetres(self, request, context):$/;"	kind:member	line:54
 TargetByMetres	AF_GCS/GCS_RPC_client.py	/^    def TargetByMetres(self, context):$/;"	kind:member	line:30
 TargetByMetres	AF_GCS/for_mc_pb2.py	/^TargetByMetres = _reflection.GeneratedProtocolMessageType('TargetByMetres', (_message.Message,), dict($/;"	kind:variable	line:750
@@ -315,6 +466,11 @@ TargetByMetres	AF_GCS/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, cont
 TargetByMetres	AF_GCS/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, context):$/;"	kind:member	line:709
 TargetByMetres	AF_GCS/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:744
 TargetByMetres	AF_GCS/mc_rpc_pb2_grpc.py	/^  def TargetByMetres(self, request, context):$/;"	kind:member	line:96
+TargetByMetres	protobuf/for_mc_pb2.py	/^TargetByMetres = _reflection.GeneratedProtocolMessageType('TargetByMetres', (_message.Message,), dict($/;"	kind:variable	line:750
+TargetByMetres	protobuf/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, context):$/;"	kind:member	line:583
+TargetByMetres	protobuf/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, context):$/;"	kind:member	line:709
+TargetByMetres	protobuf/mc_rpc_pb2.py	/^    def TargetByMetres(self, request, timeout, metadata=None, with_call=False, protocol_options=None):$/;"	kind:member	line:744
+TargetByMetres	protobuf/mc_rpc_pb2_grpc.py	/^  def TargetByMetres(self, request, context):$/;"	kind:member	line:96
 Test_AI_Auto	AF_GCS/Test_GCS_Proto.py	/^def Test_AI_Auto():$/;"	kind:function	line:144
 Test_AI_Guided	AF_GCS/Test_GCS_Proto.py	/^def Test_AI_Guided():$/;"	kind:function	line:126
 Test_AI_RTL	AF_GCS/Test_GCS_Proto.py	/^def Test_AI_RTL():$/;"	kind:function	line:135
@@ -335,6 +491,9 @@ UAV	AF_ML/Curve.py	/^UAV = config.drone['UAV']$/;"	kind:variable	line:12
 UP	AF_Avoid/oa_rpc_pb2.py	/^UP = 64$/;"	kind:variable	line:93
 UP	AF_GCS/for_mc_pb2.py	/^UP = 64$/;"	kind:variable	line:158
 UP	AF_GCS/mc_rpc_pb2.py	/^UP = 64$/;"	kind:variable	line:93
+UP	protobuf/for_mc_pb2.py	/^UP = 64$/;"	kind:variable	line:158
+UP	protobuf/mc_rpc_pb2.py	/^UP = 64$/;"	kind:variable	line:93
+UP	protobuf/oa_rpc_pb2.py	/^UP = 64$/;"	kind:variable	line:93
 Vehicle	AF_Avoid/oa_rpc_server.py	/^class Vehicle(oa_rpc_pb2_grpc.ObstacleAvoidanceServicer):$/;"	kind:class	line:15
 Vehicle	AF_Copter/vehicle.py	/^class Vehicle(Attribute):$/;"	kind:class	line:16
 Watcher	lib/tools.py	/^class Watcher(object):$/;"	kind:class	line:55
@@ -343,63 +502,109 @@ Waypoint	protobuf/FlightLog_pb2.py	/^Waypoint = _reflection.GeneratedProtocolMes
 _ACTION	AF_Avoid/oa_rpc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:27
 _ACTION	AF_GCS/for_mc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:29
 _ACTION	AF_GCS/mc_rpc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:27
+_ACTION	protobuf/for_mc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:29
+_ACTION	protobuf/mc_rpc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:27
+_ACTION	protobuf/oa_rpc_pb2.py	/^_ACTION = _descriptor.EnumDescriptor($/;"	kind:variable	line:27
 _ACTIONS	AF_GCS/for_mc_pb2.py	/^_ACTIONS = _descriptor.Descriptor($/;"	kind:variable	line:474
+_ACTIONS	protobuf/for_mc_pb2.py	/^_ACTIONS = _descriptor.Descriptor($/;"	kind:variable	line:474
 _AI_AUTO	AF_GCS/for_mc_pb2.py	/^_AI_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:649
+_AI_AUTO	protobuf/for_mc_pb2.py	/^_AI_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:649
 _AI_Auto	AF_GCS/for_mc_pb2.py	/^_AI_Auto = 19$/;"	kind:variable	line:172
+_AI_Auto	protobuf/for_mc_pb2.py	/^_AI_Auto = 19$/;"	kind:variable	line:172
 _AI_GUIDED	AF_GCS/for_mc_pb2.py	/^_AI_GUIDED = _descriptor.Descriptor($/;"	kind:variable	line:601
+_AI_GUIDED	protobuf/for_mc_pb2.py	/^_AI_GUIDED = _descriptor.Descriptor($/;"	kind:variable	line:601
 _AI_Guided	AF_GCS/for_mc_pb2.py	/^_AI_Guided = 17$/;"	kind:variable	line:170
+_AI_Guided	protobuf/for_mc_pb2.py	/^_AI_Guided = 17$/;"	kind:variable	line:170
 _AI_RTL	AF_GCS/for_mc_pb2.py	/^_AI_RTL = _descriptor.Descriptor($/;"	kind:variable	line:625
+_AI_RTL	protobuf/for_mc_pb2.py	/^_AI_RTL = _descriptor.Descriptor($/;"	kind:variable	line:625
 _AI_Rtl	AF_GCS/for_mc_pb2.py	/^_AI_Rtl = 18$/;"	kind:variable	line:171
+_AI_Rtl	protobuf/for_mc_pb2.py	/^_AI_Rtl = 18$/;"	kind:variable	line:171
 _ATTITUDE	protobuf/FlightLog_pb2.py	/^_ATTITUDE = _descriptor.Descriptor($/;"	kind:variable	line:112
 _AUTO	AF_GCS/for_mc_pb2.py	/^_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:553
+_AUTO	protobuf/for_mc_pb2.py	/^_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:553
 _Auto	AF_GCS/for_mc_pb2.py	/^_Auto = 16$/;"	kind:variable	line:169
+_Auto	protobuf/for_mc_pb2.py	/^_Auto = 16$/;"	kind:variable	line:169
 _BAROMETRE	protobuf/FlightLog_pb2.py	/^_BAROMETRE = _descriptor.Descriptor($/;"	kind:variable	line:285
 _CANCEL	AF_GCS/for_mc_pb2.py	/^_CANCEL = _descriptor.Descriptor($/;"	kind:variable	line:577
+_CANCEL	protobuf/for_mc_pb2.py	/^_CANCEL = _descriptor.Descriptor($/;"	kind:variable	line:577
 _CHANNELS	protobuf/FlightLog_pb2.py	/^_CHANNELS = _descriptor.Descriptor($/;"	kind:variable	line:382
 _COMMANDCODE	AF_GCS/for_mc_pb2.py	/^_COMMANDCODE = _descriptor.EnumDescriptor($/;"	kind:variable	line:80
+_COMMANDCODE	protobuf/for_mc_pb2.py	/^_COMMANDCODE = _descriptor.EnumDescriptor($/;"	kind:variable	line:80
 _COMPASS	protobuf/FlightLog_pb2.py	/^_COMPASS = _descriptor.Descriptor($/;"	kind:variable	line:247
 _CONTROLFRU	AF_GCS/for_mc_pb2.py	/^_CONTROLFRU = _descriptor.Descriptor($/;"	kind:variable	line:443
+_CONTROLFRU	protobuf/for_mc_pb2.py	/^_CONTROLFRU = _descriptor.Descriptor($/;"	kind:variable	line:443
 _COORDINATE	protobuf/FlightLog_pb2.py	/^_COORDINATE = _descriptor.Descriptor($/;"	kind:variable	line:157
 _Cancel	AF_GCS/for_mc_pb2.py	/^_Cancel = 2$/;"	kind:variable	line:162
+_Cancel	protobuf/for_mc_pb2.py	/^_Cancel = 2$/;"	kind:variable	line:162
 _ControlFRU	AF_GCS/for_mc_pb2.py	/^_ControlFRU = 13$/;"	kind:variable	line:166
+_ControlFRU	protobuf/for_mc_pb2.py	/^_ControlFRU = 13$/;"	kind:variable	line:166
 _DISTANCEANGLE	AF_GCS/mc_rpc_pb2.py	/^_DISTANCEANGLE = _descriptor.Descriptor($/;"	kind:variable	line:259
+_DISTANCEANGLE	protobuf/mc_rpc_pb2.py	/^_DISTANCEANGLE = _descriptor.Descriptor($/;"	kind:variable	line:259
 _DISTANCEMETRES	AF_GCS/mc_rpc_pb2.py	/^_DISTANCEMETRES = _descriptor.Descriptor($/;"	kind:variable	line:214
+_DISTANCEMETRES	protobuf/mc_rpc_pb2.py	/^_DISTANCEMETRES = _descriptor.Descriptor($/;"	kind:variable	line:214
 _FULLCONTEXT	AF_Avoid/oa_rpc_pb2.py	/^_FULLCONTEXT = _descriptor.Descriptor($/;"	kind:variable	line:100
+_FULLCONTEXT	protobuf/oa_rpc_pb2.py	/^_FULLCONTEXT = _descriptor.Descriptor($/;"	kind:variable	line:100
 _GEAR	AF_GCS/mc_rpc_pb2.py	/^_GEAR = _descriptor.Descriptor($/;"	kind:variable	line:176
+_GEAR	protobuf/mc_rpc_pb2.py	/^_GEAR = _descriptor.Descriptor($/;"	kind:variable	line:176
 _GPS	protobuf/FlightLog_pb2.py	/^_GPS = _descriptor.Descriptor($/;"	kind:variable	line:202
 _GUIDED	AF_GCS/for_mc_pb2.py	/^_GUIDED = _descriptor.Descriptor($/;"	kind:variable	line:505
+_GUIDED	protobuf/for_mc_pb2.py	/^_GUIDED = _descriptor.Descriptor($/;"	kind:variable	line:505
 _Guided	AF_GCS/for_mc_pb2.py	/^_Guided = 14$/;"	kind:variable	line:167
+_Guided	protobuf/for_mc_pb2.py	/^_Guided = 14$/;"	kind:variable	line:167
 _ID	AF_GCS/mc_rpc_pb2.py	/^_ID = _descriptor.Descriptor($/;"	kind:variable	line:387
+_ID	protobuf/mc_rpc_pb2.py	/^_ID = _descriptor.Descriptor($/;"	kind:variable	line:387
 _LOCATION	protobuf/FlightLog_pb2.py	/^_LOCATION = _descriptor.Descriptor($/;"	kind:variable	line:29
 _MOVEMENT	AF_GCS/mc_rpc_pb2.py	/^_MOVEMENT = _descriptor.Descriptor($/;"	kind:variable	line:138
+_MOVEMENT	protobuf/mc_rpc_pb2.py	/^_MOVEMENT = _descriptor.Descriptor($/;"	kind:variable	line:138
 _ONE_DAY_IN_SECONDS	AF_Avoid/oa_rpc_server.py	/^_ONE_DAY_IN_SECONDS = 60 * 60 * 24$/;"	kind:variable	line:12
 _ONE_DAY_IN_SECONDS	AF_GCS/GCS_RPC.py	/^_ONE_DAY_IN_SECONDS = 60 * 60 * 24$/;"	kind:variable	line:15
 _PLANROUTE	AF_GCS/for_mc_pb2.py	/^_PLANROUTE = _descriptor.Descriptor($/;"	kind:variable	line:367
+_PLANROUTE	protobuf/for_mc_pb2.py	/^_PLANROUTE = _descriptor.Descriptor($/;"	kind:variable	line:367
 _POINT	AF_GCS/for_mc_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:398
 _POINT	AF_GCS/mc_rpc_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:304
 _POINT	protobuf/FlightLog_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:74
+_POINT	protobuf/for_mc_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:398
+_POINT	protobuf/mc_rpc_pb2.py	/^_POINT = _descriptor.Descriptor($/;"	kind:variable	line:304
 _PlanRoute	AF_GCS/for_mc_pb2.py	/^_PlanRoute = 12$/;"	kind:variable	line:165
+_PlanRoute	protobuf/for_mc_pb2.py	/^_PlanRoute = 12$/;"	kind:variable	line:165
 _RESETLOITER	AF_GCS/for_mc_pb2.py	/^_RESETLOITER = _descriptor.Descriptor($/;"	kind:variable	line:222
+_RESETLOITER	protobuf/for_mc_pb2.py	/^_RESETLOITER = _descriptor.Descriptor($/;"	kind:variable	line:222
 _RESPONSE	AF_GCS/mc_rpc_pb2.py	/^_RESPONSE = _descriptor.Descriptor($/;"	kind:variable	line:100
+_RESPONSE	protobuf/mc_rpc_pb2.py	/^_RESPONSE = _descriptor.Descriptor($/;"	kind:variable	line:100
 _RTL	AF_GCS/for_mc_pb2.py	/^_RTL = _descriptor.Descriptor($/;"	kind:variable	line:529
+_RTL	protobuf/for_mc_pb2.py	/^_RTL = _descriptor.Descriptor($/;"	kind:variable	line:529
 _ResetLoiter	AF_GCS/for_mc_pb2.py	/^_ResetLoiter = 0$/;"	kind:variable	line:160
-_Route	AF_Copter/vehicle.py	/^    def _Route(self, points):$/;"	kind:member	line:487
+_ResetLoiter	protobuf/for_mc_pb2.py	/^_ResetLoiter = 0$/;"	kind:variable	line:160
+_Route	AF_Copter/vehicle.py	/^    def _Route(self, points):$/;"	kind:member	line:491
 _Route	AF_Copter/waypoint.py	/^    def _Route(self, points):$/;"	kind:member	line:70
 _Rtl	AF_GCS/for_mc_pb2.py	/^_Rtl = 15$/;"	kind:variable	line:168
+_Rtl	protobuf/for_mc_pb2.py	/^_Rtl = 15$/;"	kind:variable	line:168
 _SEMICONTEXT	AF_Avoid/oa_rpc_pb2.py	/^_SEMICONTEXT = _descriptor.Descriptor($/;"	kind:variable	line:166
+_SEMICONTEXT	protobuf/oa_rpc_pb2.py	/^_SEMICONTEXT = _descriptor.Descriptor($/;"	kind:variable	line:166
 _SEMI_AUTO	AF_GCS/for_mc_pb2.py	/^_SEMI_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:673
+_SEMI_AUTO	protobuf/for_mc_pb2.py	/^_SEMI_AUTO = _descriptor.Descriptor($/;"	kind:variable	line:673
 _SENDCOMMAND	AF_GCS/for_mc_pb2.py	/^_SENDCOMMAND = _descriptor.Descriptor($/;"	kind:variable	line:177
+_SENDCOMMAND	protobuf/for_mc_pb2.py	/^_SENDCOMMAND = _descriptor.Descriptor($/;"	kind:variable	line:177
 _SENSORS	protobuf/FlightLog_pb2.py	/^_SENSORS = _descriptor.Descriptor($/;"	kind:variable	line:462
 _SETGEAR	AF_GCS/for_mc_pb2.py	/^_SETGEAR = _descriptor.Descriptor($/;"	kind:variable	line:246
+_SETGEAR	protobuf/for_mc_pb2.py	/^_SETGEAR = _descriptor.Descriptor($/;"	kind:variable	line:246
 _STRATEGY	AF_Avoid/oa_rpc_pb2.py	/^_STRATEGY = _descriptor.Descriptor($/;"	kind:variable	line:204
+_STRATEGY	protobuf/oa_rpc_pb2.py	/^_STRATEGY = _descriptor.Descriptor($/;"	kind:variable	line:204
 _Semi_Auto	AF_GCS/for_mc_pb2.py	/^_Semi_Auto = 20$/;"	kind:variable	line:173
+_Semi_Auto	protobuf/for_mc_pb2.py	/^_Semi_Auto = 20$/;"	kind:variable	line:173
 _SetGear	AF_GCS/for_mc_pb2.py	/^_SetGear = 1$/;"	kind:variable	line:161
+_SetGear	protobuf/for_mc_pb2.py	/^_SetGear = 1$/;"	kind:variable	line:161
 _TARGETBYANGLE	AF_GCS/for_mc_pb2.py	/^_TARGETBYANGLE = _descriptor.Descriptor($/;"	kind:variable	line:322
+_TARGETBYANGLE	protobuf/for_mc_pb2.py	/^_TARGETBYANGLE = _descriptor.Descriptor($/;"	kind:variable	line:322
 _TARGETBYMETRES	AF_GCS/for_mc_pb2.py	/^_TARGETBYMETRES = _descriptor.Descriptor($/;"	kind:variable	line:277
+_TARGETBYMETRES	protobuf/for_mc_pb2.py	/^_TARGETBYMETRES = _descriptor.Descriptor($/;"	kind:variable	line:277
 _TargetByAngle	AF_GCS/for_mc_pb2.py	/^_TargetByAngle = 11$/;"	kind:variable	line:164
+_TargetByAngle	protobuf/for_mc_pb2.py	/^_TargetByAngle = 11$/;"	kind:variable	line:164
 _TargetByMetres	AF_GCS/for_mc_pb2.py	/^_TargetByMetres = 10$/;"	kind:variable	line:163
+_TargetByMetres	protobuf/for_mc_pb2.py	/^_TargetByMetres = 10$/;"	kind:variable	line:163
 _WAYPOINT	protobuf/FlightLog_pb2.py	/^_WAYPOINT = _descriptor.Descriptor($/;"	kind:variable	line:337
 _WAYPOINTS	AF_GCS/mc_rpc_pb2.py	/^_WAYPOINTS = _descriptor.Descriptor($/;"	kind:variable	line:349
+_WAYPOINTS	protobuf/mc_rpc_pb2.py	/^_WAYPOINTS = _descriptor.Descriptor($/;"	kind:variable	line:349
 __call__	lib/tools.py	/^    def __call__(cls, *args, **kw):$/;"	kind:member	line:31
 __del__	lib/tools.py	/^    def __del__(self):$/;"	kind:member	line:49
 __init__	AF_Avoid/lidar.py	/^    def __init__(self, vehicle):$/;"	kind:member	line:18
@@ -412,12 +617,12 @@ __init__	AF_Copter/vehicle.py	/^    def __init__(self, ORB):$/;"	kind:member	lin
 __init__	AF_Copter/waypoint.py	/^    def __init__(self, ORB):$/;"	kind:member	line:12
 __init__	AF_GCS/GCSProxy.py	/^    def __init__(self, work_queue, sock):$/;"	kind:member	line:32
 __init__	AF_GCS/GCSProxy.py	/^    def __init__(self, work_queue, vehicle, lidar):$/;"	kind:member	line:57
-__init__	AF_GCS/GCS_Proto.py	/^    def __init__(self, work_queue, parser):$/;"	kind:member	line:265
-__init__	AF_GCS/GCS_Proto.py	/^    def __init__(self, work_queue, sock, parser):$/;"	kind:member	line:222
+__init__	AF_GCS/GCS_Proto.py	/^    def __init__(self, work_queue, parser):$/;"	kind:member	line:77
+__init__	AF_GCS/GCS_Proto.py	/^    def __init__(self, work_queue, sock, parser):$/;"	kind:member	line:34
 __init__	AF_GCS/GCS_RPC.py	/^    def __init__(self, vehicle, lidar):$/;"	kind:member	line:20
 __init__	AF_GCS/GCS_RPC_client.py	/^    def __init__(self):$/;"	kind:member	line:11
-__init__	AF_GCS/cloud.py	/^    def __init__(self, work_queue, Redis):$/;"	kind:member	line:24
-__init__	AF_GCS/cloud.py	/^    def __init__(self, work_queue, vehicle, lidar):$/;"	kind:member	line:50
+__init__	AF_GCS/GCS_Redis.py	/^    def __init__(self, work_queue, Redis):$/;"	kind:member	line:24
+__init__	AF_GCS/GCS_Redis.py	/^    def __init__(self, work_queue, vehicle, lidar):$/;"	kind:member	line:50
 __init__	AF_GCS/mc_rpc_pb2.py	/^    def __init__(self, channel):$/;"	kind:member	line:498
 __init__	AF_GCS/mc_rpc_pb2_grpc.py	/^  def __init__(self, channel):$/;"	kind:member	line:11
 __init__	AF_ML/Curve.py	/^    def __init__(self, X, Y):$/;"	kind:member	line:19
@@ -426,13 +631,17 @@ __init__	AF_Sbus/sbus.py	/^    def __init__(self):$/;"	kind:member	line:14
 __init__	AF_Sbus/sender.py	/^    def __init__(self, ORB, com):$/;"	kind:member	line:18
 __init__	AF_Sensors/Baro.py	/^    def __init__(self, ORB, bus=1, i2c=0x77, elevation=0):$/;"	kind:member	line:17
 __init__	AF_Sensors/GPS.py	/^    def __init__(self, ORB):$/;"	kind:member	line:17
-__init__	AF_Sensors/IMU.py	/^    def __init__(self, ORB):$/;"	kind:member	line:15
+__init__	AF_Sensors/IMU.py	/^    def __init__(self, ORB):$/;"	kind:member	line:17
 __init__	AF_Sensors/compass.py	/^    def __init__(self, ORB):$/;"	kind:member	line:17
 __init__	AF_uORB/uORB.py	/^    def __init__(self):$/;"	kind:member	line:18
 __init__	lib/config.py	/^    def __init__(self):$/;"	kind:member	line:10
 __init__	lib/tools.py	/^    def __init__(cls, name, bases, dict):$/;"	kind:member	line:27
 __init__	lib/tools.py	/^    def __init__(self):$/;"	kind:member	line:41
 __init__	lib/tools.py	/^    def __init__(self):$/;"	kind:member	line:71
+__init__	protobuf/mc_rpc_pb2.py	/^    def __init__(self, channel):$/;"	kind:member	line:498
+__init__	protobuf/mc_rpc_pb2_grpc.py	/^  def __init__(self, channel):$/;"	kind:member	line:11
+__init__	protobuf/oa_rpc_pb2.py	/^    def __init__(self, channel):$/;"	kind:member	line:285
+__init__	protobuf/oa_rpc_pb2_grpc.py	/^  def __init__(self, channel):$/;"	kind:member	line:11
 __init__.py	AF_Avoid/__init__.py	1;"	kind:file	line:1
 __init__.py	AF_Copter/__init__.py	1;"	kind:file	line:1
 __init__.py	AF_GCS/__init__.py	1;"	kind:file	line:1
@@ -450,7 +659,7 @@ __metaclass__	AF_Sbus/receiver.py	/^    __metaclass__ = Singleton$/;"	kind:varia
 __metaclass__	AF_Sbus/sender.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:16
 __metaclass__	AF_Sensors/Baro.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:15
 __metaclass__	AF_Sensors/GPS.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:15
-__metaclass__	AF_Sensors/IMU.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:13
+__metaclass__	AF_Sensors/IMU.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:15
 __metaclass__	AF_Sensors/compass.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:15
 __metaclass__	AF_uORB/uORB.py	/^    __metaclass__ = Singleton$/;"	kind:variable	line:16
 __module__	AF_Avoid/oa_rpc_pb2.py	/^  __module__ = 'oa_rpc_pb2'$/;"	kind:variable	line:253
@@ -491,6 +700,34 @@ __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:v
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:672
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:679
 __module__	protobuf/FlightLog_pb2.py	/^  __module__ = 'FlightLog_pb2'$/;"	kind:variable	line:686
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:731
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:738
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:745
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:752
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:759
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:766
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:773
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:780
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:787
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:794
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:801
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:808
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:815
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:822
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:829
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:836
+__module__	protobuf/for_mc_pb2.py	/^  __module__ = 'for_mc_pb2'$/;"	kind:variable	line:843
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:431
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:438
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:445
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:452
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:459
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:466
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:473
+__module__	protobuf/mc_rpc_pb2.py	/^  __module__ = 'mc_rpc_pb2'$/;"	kind:variable	line:480
+__module__	protobuf/oa_rpc_pb2.py	/^  __module__ = 'oa_rpc_pb2'$/;"	kind:variable	line:253
+__module__	protobuf/oa_rpc_pb2.py	/^  __module__ = 'oa_rpc_pb2'$/;"	kind:variable	line:260
+__module__	protobuf/oa_rpc_pb2.py	/^  __module__ = 'oa_rpc_pb2'$/;"	kind:variable	line:267
 __navigation	AF_Copter/vehicle.py	/^    def __navigation(self):$/;"	kind:member	line:412
 __str__	AF_Sbus/receiver.py	/^    def __str__(self):$/;"	kind:member	line:72
 __str__	AF_Sbus/sender.py	/^    def __str__(self):$/;"	kind:member	line:76
@@ -502,23 +739,33 @@ _b	AF_Avoid/oa_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda
 _b	AF_GCS/for_mc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _b	AF_GCS/mc_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _b	protobuf/FlightLog_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
+_b	protobuf/for_mc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
+_b	protobuf/mc_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
+_b	protobuf/oa_rpc_pb2.py	/^_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))$/;"	kind:variable	line:5
 _brake	AF_Copter/vehicle.py	/^    def _brake(self):$/;"	kind:member	line:34
-_calculte_mantissa	AF_Sensors/IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:59
+_calculte_mantissa	AF_Sensors/IMU.py	/^    def _calculte_mantissa(self, bin_number, exponent):$/;"	kind:member	line:62
 _construct_channel	AF_Copter/vehicle.py	/^    def _construct_channel(self, channels):$/;"	kind:member	line:67
 _debug	AF_uORB/test.py	/^def _debug(LoiterPWM):$/;"	kind:function	line:1
 _disarmed	AF_Copter/attribute.py	/^    def _disarmed(self):$/;"	kind:member	line:73
 _disarmed	AF_uORB/uORB.py	/^    def _disarmed(self):$/;"	kind:member	line:71
-_finally	AF_Copter/vehicle.py	/^    def _finally(self):$/;"	kind:member	line:514
+_finally	AF_Copter/vehicle.py	/^    def _finally(self):$/;"	kind:member	line:518
 _navigation	AF_Copter/vehicle.py	/^    def _navigation(self):$/;"	kind:member	line:328
 _parser	AF_GCS/Test_GCS_Proto.py	/^    _parser = parse_proto(vehicle, lidar)$/;"	kind:variable	line:174
 _sym_db	AF_Avoid/oa_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 _sym_db	AF_GCS/for_mc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 _sym_db	AF_GCS/mc_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 _sym_db	protobuf/FlightLog_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:13
+_sym_db	protobuf/for_mc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
+_sym_db	protobuf/mc_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
+_sym_db	protobuf/oa_rpc_pb2.py	/^_sym_db = _symbol_database.Default()$/;"	kind:variable	line:14
 add_FCServicer_to_server	AF_GCS/mc_rpc_pb2.py	/^  def add_FCServicer_to_server(servicer, server):$/;"	kind:function	line:629
 add_FCServicer_to_server	AF_GCS/mc_rpc_pb2_grpc.py	/^def add_FCServicer_to_server(servicer, server):$/;"	kind:function	line:142
+add_FCServicer_to_server	protobuf/mc_rpc_pb2.py	/^  def add_FCServicer_to_server(servicer, server):$/;"	kind:function	line:629
+add_FCServicer_to_server	protobuf/mc_rpc_pb2_grpc.py	/^def add_FCServicer_to_server(servicer, server):$/;"	kind:function	line:142
 add_ObstacleAvoidanceServicer_to_server	AF_Avoid/oa_rpc_pb2.py	/^  def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:316
 add_ObstacleAvoidanceServicer_to_server	AF_Avoid/oa_rpc_pb2_grpc.py	/^def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:42
+add_ObstacleAvoidanceServicer_to_server	protobuf/oa_rpc_pb2.py	/^  def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:316
+add_ObstacleAvoidanceServicer_to_server	protobuf/oa_rpc_pb2_grpc.py	/^def add_ObstacleAvoidanceServicer_to_server(servicer, server):$/;"	kind:function	line:42
 add_number	AF_Copter/waypoint.py	/^    def add_number(self):$/;"	kind:member	line:84
 analysis_channels	AF_Copter/vehicle.py	/^    def analysis_channels(self, channels):$/;"	kind:member	line:283
 angle_diff	lib/science.py	/^def angle_diff(minuend, subtrahend, sign=1):$/;"	kind:function	line:86
@@ -532,33 +779,36 @@ average_pressure	AF_Sensors/Baro.py	/^    def average_pressure(self):$/;"	kind:m
 b	AF_uORB/uORB.py	/^    b = FlightLog.sensors()$/;"	kind:variable	line:264
 backward_brake	AF_Copter/vehicle.py	/^    def backward_brake(self):$/;"	kind:member	line:248
 beta_create_FC_server	AF_GCS/mc_rpc_pb2.py	/^  def beta_create_FC_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:773
+beta_create_FC_server	protobuf/mc_rpc_pb2.py	/^  def beta_create_FC_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:773
 beta_create_FC_stub	AF_GCS/mc_rpc_pb2.py	/^  def beta_create_FC_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):$/;"	kind:function	line:825
+beta_create_FC_stub	protobuf/mc_rpc_pb2.py	/^  def beta_create_FC_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):$/;"	kind:function	line:825
 beta_create_ObstacleAvoidance_server	AF_Avoid/oa_rpc_pb2.py	/^  def beta_create_ObstacleAvoidance_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:360
+beta_create_ObstacleAvoidance_server	protobuf/oa_rpc_pb2.py	/^  def beta_create_ObstacleAvoidance_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):$/;"	kind:function	line:360
 beta_create_ObstacleAvoidance_stub	AF_Avoid/oa_rpc_pb2.py	/^  def beta_create_ObstacleAvoidance_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):$/;"	kind:function	line:382
-brake	AF_Copter/vehicle.py	/^    def brake(self, braketime=0.5):$/;"	kind:member	line:29
+beta_create_ObstacleAvoidance_stub	protobuf/oa_rpc_pb2.py	/^  def beta_create_ObstacleAvoidance_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):$/;"	kind:function	line:382
+brake	AF_Copter/vehicle.py	/^    def brake(self, braketime=0.5):$/;"	kind:member	line:30
 build_log	lib/logger.py	/^def build_log(model, suffix):$/;"	kind:function	line:19
 build_sbus	AF_Sbus/sbus.py	/^def build_sbus():$/;"	kind:function	line:191
 change_exit	AF_ML/Curve.py	/^def change_exit():$/;"	kind:function	line:51
 change_exit	AF_ML/collecter.py	/^def change_exit():$/;"	kind:function	line:13
 check	AF_Sbus/receiver.py	/^    def check(self, channel):$/;"	kind:member	line:58
 check_error	AF_ML/Curve.py	/^def check_error():$/;"	kind:function	line:125
-checksum	AF_Sensors/compass.py	/^    def checksum(self, package):$/;"	kind:member	line:66
+checksum	AF_Sensors/compass.py	/^    def checksum(self, package):$/;"	kind:member	line:86
 child	AF_Copter/waypoint.py	/^    def child(self, point, index):$/;"	kind:member	line:89
 clear	AF_Copter/waypoint.py	/^    def clear(self):$/;"	kind:member	line:92
 client	AF_Avoid/lidar_simu.py	/^    client = init_mqtt()$/;"	kind:variable	line:38
 client	AF_Keyboard/KB_Proxy.py	/^    client = start_client(*args)$/;"	kind:variable	line:108
-close	AF_Sensors/GPS.py	/^    def close(self):$/;"	kind:member	line:58
-close	AF_Sensors/compass.py	/^    def close(self):$/;"	kind:member	line:78
-cloud.py	AF_GCS/cloud.py	1;"	kind:file	line:1
-cmd	AF_Copter/vehicle.py	/^        cmd = commands.get(enter)$/;"	kind:variable	line:603
+close	AF_Sensors/GPS.py	/^    def close(self):$/;"	kind:member	line:59
+close	AF_Sensors/compass.py	/^    def close(self):$/;"	kind:member	line:98
+cmd	AF_Copter/vehicle.py	/^        cmd = commands.get(enter)$/;"	kind:variable	line:607
 cmd_object	AF_GCS/Test_GCS_Proto.py	/^        cmd_object = deserialize(message)$/;"	kind:variable	line:194
 collect_pwm	AF_ML/Curve.py	/^def collect_pwm(ORB):$/;"	kind:function	line:56
 collect_pwm	AF_ML/collecter.py	/^def collect_pwm(ORB, topic):$/;"	kind:function	line:18
 collecter.py	AF_ML/collecter.py	1;"	kind:file	line:1
-command	AF_Copter/vehicle.py	/^        command = 'vehicle.' + cmd$/;"	kind:variable	line:610
-commands	AF_Copter/vehicle.py	/^    commands = {'stop': 'brake()',$/;"	kind:variable	line:577
+command	AF_Copter/vehicle.py	/^        command = 'vehicle.' + cmd$/;"	kind:variable	line:614
+commands	AF_Copter/vehicle.py	/^    commands = {'stop': 'brake()',$/;"	kind:variable	line:581
 compass.py	AF_Sensors/compass.py	1;"	kind:file	line:1
-compass_start	AF_Sensors/compass.py	/^def compass_start(ORB):$/;"	kind:function	line:83
+compass_start	AF_Sensors/compass.py	/^def compass_start(ORB):$/;"	kind:function	line:103
 condition_yaw	AF_Copter/vehicle.py	/^    def condition_yaw(self, heading):$/;"	kind:member	line:292
 config	lib/config.py	/^config = Config()$/;"	kind:variable	line:134
 config.py	lib/config.py	1;"	kind:file	line:1
@@ -605,27 +855,60 @@ containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:var
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:387
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:467
 containing_type	protobuf/FlightLog_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:79
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:143
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:182
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:227
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:251
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:282
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:327
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:372
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:403
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:448
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:479
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:510
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:534
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:558
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:582
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:606
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:630
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:654
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:678
+containing_type	protobuf/for_mc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:72
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:105
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:143
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:181
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:219
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:264
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:309
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:354
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:392
+containing_type	protobuf/mc_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:78
+containing_type	protobuf/oa_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:105
+containing_type	protobuf/oa_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:171
+containing_type	protobuf/oa_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:209
+containing_type	protobuf/oa_rpc_pb2.py	/^  containing_type=None,$/;"	kind:variable	line:78
 context	AF_Avoid/oa_rpc_client.py	/^    context = {'id':  1,$/;"	kind:variable	line:31
 context_debug	AF_Avoid/lidarProxy.py	/^    def context_debug():$/;"	kind:function	line:138
 context_release	AF_Avoid/lidarProxy.py	/^    def context_release():$/;"	kind:function	line:147
-context_release	AF_Avoid/lidar_rpc.py	/^        def context_release():$/;"	kind:function	line:224
+context_release	AF_Avoid/lidar_rpc.py	/^        def context_release():$/;"	kind:function	line:225
 control	AF_Avoid/oa_rpc_client.py	/^    control = {'id':  2,$/;"	kind:variable	line:37
-control_FRU	AF_Copter/vehicle.py	/^    def control_FRU(self, AIL=0, ELE=0, THR=0, R   UD=0, Mode=2):$/;"	kind:member	line:47
+control_FRU	AF_Copter/vehicle.py	/^    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:47
 control_THR	AF_Copter/vehicle.py	/^    def control_THR(self, percent):$/;"	kind:member	line:121
 control_percent	AF_Copter/vehicle.py	/^    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:57
 control_stick	AF_Copter/vehicle.py	/^    def control_stick(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):$/;"	kind:member	line:37
 convert2In	AF_Sensors/Baro.py	/^    def convert2In(self, pressure):$/;"	kind:member	line:188
-convert_complement	AF_Sensors/IMU.py	/^    def convert_complement(self, hex_val):$/;"	kind:member	line:78
-convert_ieee754	AF_Sensors/IMU.py	/^    def convert_ieee754(self, hex_val):$/;"	kind:member	line:69
+convert_complement	AF_Sensors/IMU.py	/^    def convert_complement(self, hex_val):$/;"	kind:member	line:81
+convert_ieee754	AF_Sensors/IMU.py	/^    def convert_ieee754(self, hex_val):$/;"	kind:member	line:72
 cos	lib/science.py	/^def cos(angle):$/;"	kind:function	line:131
 count	lib/tools.py	/^    count = 0$/;"	kind:variable	line:39
 dataflash	AF_uORB/uORB.py	/^    def dataflash(self):$/;"	kind:member	line:224
 dec2hex	lib/science.py	/^def dec2hex(decimal, length=4):$/;"	kind:function	line:123
 decode	AF_Sbus/sbus.py	/^    def decode(self, package):$/;"	kind:member	line:141
-decode_BCD	AF_Sensors/compass.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:71
+decode_BCD	AF_Sensors/compass.py	/^    def decode_BCD(self, package):$/;"	kind:member	line:91
 decode_frame	AF_Sbus/sbus.py	/^    def decode_frame(self):$/;"	kind:member	line:82
 dependencies	AF_GCS/for_mc_pb2.py	/^  dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])$/;"	kind:variable	line:26
-deserialize	AF_GCS/GCS_Proto.py	/^def deserialize(message):$/;"	kind:function	line:48
+dependencies	protobuf/for_mc_pb2.py	/^  dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])$/;"	kind:variable	line:26
+deserialize	AF_GCS/Parse_Proto.py	/^def deserialize(message):$/;"	kind:function	line:34
 disarm	AF_Copter/vehicle.py	/^    def disarm(self):$/;"	kind:member	line:139
 distance_from_home	AF_uORB/uORB.py	/^    def distance_from_home(self):$/;"	kind:member	line:93
 distance_to_target	AF_uORB/uORB.py	/^    def distance_to_target(self):$/;"	kind:member	line:84
@@ -634,7 +917,7 @@ down_metres	AF_Copter/vehicle.py	/^    def down_metres(self, altitude):$/;"	kind
 download	AF_Copter/attribute.py	/^    def download(self, index=1):$/;"	kind:member	line:76
 download	AF_Copter/waypoint.py	/^    def download(self, origin, index=1):$/;"	kind:member	line:27
 encode	AF_Sbus/sbus.py	/^    def encode(self, sbusChannels):$/;"	kind:member	line:149
-enter	AF_Copter/vehicle.py	/^        enter = raw_input('Input:').strip()$/;"	kind:variable	line:602
+enter	AF_Copter/vehicle.py	/^        enter = raw_input('Input:').strip()$/;"	kind:variable	line:606
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:153
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:191
 enum_types	AF_Avoid/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:229
@@ -673,6 +956,34 @@ enum_types	protobuf/FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:449
 enum_types	protobuf/FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:585
 enum_types	protobuf/FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:61
 enum_types	protobuf/FlightLog_pb2.py	/^  enum_types=[$/;"	kind:variable	line:99
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:209
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:233
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:264
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:309
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:354
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:385
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:430
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:461
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:492
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:516
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:540
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:564
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:588
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:612
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:636
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:660
+enum_types	protobuf/for_mc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:691
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:125
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:163
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:201
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:246
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:291
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:336
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:374
+enum_types	protobuf/mc_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:405
+enum_types	protobuf/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:153
+enum_types	protobuf/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:191
+enum_types	protobuf/oa_rpc_pb2.py	/^  enum_types=[$/;"	kind:variable	line:229
 exe_actions	AF_Avoid/lidar_rpc.py	/^def exe_actions(vehicle, actions):$/;"	kind:function	line:89
 exe_cmd	AF_Keyboard/KB_Control.py	/^def exe_cmd(vehicle, command):$/;"	kind:function	line:59
 exit	AF_ML/Curve.py	/^exit = False$/;"	kind:variable	line:11
@@ -715,6 +1026,34 @@ extension_ranges	protobuf/FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:var
 extension_ranges	protobuf/FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:454
 extension_ranges	protobuf/FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:590
 extension_ranges	protobuf/FlightLog_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:66
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:214
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:238
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:269
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:314
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:359
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:390
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:435
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:466
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:497
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:521
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:545
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:569
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:593
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:617
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:641
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:665
+extension_ranges	protobuf/for_mc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:696
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:130
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:168
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:206
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:251
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:296
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:341
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:379
+extension_ranges	protobuf/mc_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:410
+extension_ranges	protobuf/oa_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:158
+extension_ranges	protobuf/oa_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:196
+extension_ranges	protobuf/oa_rpc_pb2.py	/^  extension_ranges=[],$/;"	kind:variable	line:234
 extensions	AF_Avoid/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:150
 extensions	AF_Avoid/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:188
 extensions	AF_Avoid/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:226
@@ -753,6 +1092,34 @@ extensions	protobuf/FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:446
 extensions	protobuf/FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:58
 extensions	protobuf/FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:582
 extensions	protobuf/FlightLog_pb2.py	/^  extensions=[$/;"	kind:variable	line:96
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:206
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:230
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:261
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:306
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:351
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:382
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:427
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:458
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:489
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:513
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:537
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:561
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:585
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:609
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:633
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:657
+extensions	protobuf/for_mc_pb2.py	/^  extensions=[$/;"	kind:variable	line:688
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:122
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:160
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:198
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:243
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:288
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:333
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:371
+extensions	protobuf/mc_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:402
+extensions	protobuf/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:150
+extensions	protobuf/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:188
+extensions	protobuf/oa_rpc_pb2.py	/^  extensions=[$/;"	kind:variable	line:226
 fields	AF_Avoid/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:106
 fields	AF_Avoid/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:172
 fields	AF_Avoid/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:210
@@ -791,6 +1158,34 @@ fields	protobuf/FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:35
 fields	protobuf/FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:388
 fields	protobuf/FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:468
 fields	protobuf/FlightLog_pb2.py	/^  fields=[$/;"	kind:variable	line:80
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:183
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:228
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:252
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:283
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:328
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:373
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:404
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:449
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:480
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:511
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:535
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:559
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:583
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:607
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:631
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:655
+fields	protobuf/for_mc_pb2.py	/^  fields=[$/;"	kind:variable	line:679
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:106
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:144
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:182
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:220
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:265
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:310
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:355
+fields	protobuf/mc_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:393
+fields	protobuf/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:106
+fields	protobuf/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:172
+fields	protobuf/oa_rpc_pb2.py	/^  fields=[$/;"	kind:variable	line:210
 file	AF_Avoid/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:104
 file	AF_Avoid/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:170
 file	AF_Avoid/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:208
@@ -833,6 +1228,38 @@ file	protobuf/FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:341
 file	protobuf/FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:386
 file	protobuf/FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:466
 file	protobuf/FlightLog_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:78
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:181
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:226
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:250
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:281
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:326
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:33
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:371
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:402
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:447
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:478
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:509
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:533
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:557
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:581
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:605
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:629
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:653
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:677
+file	protobuf/for_mc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:84
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:104
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:142
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:180
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:218
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:263
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:308
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:31
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:353
+file	protobuf/mc_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:391
+file	protobuf/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:104
+file	protobuf/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:170
+file	protobuf/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:208
+file	protobuf/oa_rpc_pb2.py	/^  file=DESCRIPTOR,$/;"	kind:variable	line:31
 filename	AF_Avoid/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:103
 filename	AF_Avoid/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:169
 filename	AF_Avoid/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:207
@@ -875,14 +1302,47 @@ filename	protobuf/FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:340
 filename	protobuf/FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:385
 filename	protobuf/FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:465
 filename	protobuf/FlightLog_pb2.py	/^  filename=None,$/;"	kind:variable	line:77
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:180
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:225
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:249
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:280
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:32
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:325
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:370
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:401
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:446
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:477
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:508
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:532
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:556
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:580
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:604
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:628
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:652
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:676
+filename	protobuf/for_mc_pb2.py	/^  filename=None,$/;"	kind:variable	line:83
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:103
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:141
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:179
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:217
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:262
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:30
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:307
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:352
+filename	protobuf/mc_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:390
+filename	protobuf/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:103
+filename	protobuf/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:169
+filename	protobuf/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:207
+filename	protobuf/oa_rpc_pb2.py	/^  filename=None,$/;"	kind:variable	line:30
 filter	AF_Sbus/sbus.py	/^    def filter(self, package):$/;"	kind:member	line:129
 fitting	AF_ML/Curve.py	/^    def fitting(self, n):$/;"	kind:member	line:23
 fitting	AF_ML/Curve.py	/^class fitting:$/;"	kind:class	line:17
 for_mc_pb2.py	AF_GCS/for_mc_pb2.py	1;"	kind:file	line:1
+for_mc_pb2.py	protobuf/for_mc_pb2.py	1;"	kind:file	line:1
 forward	AF_Copter/vehicle.py	/^    def forward(self):$/;"	kind:member	line:226
 forward_brake	AF_Copter/vehicle.py	/^    def forward_brake(self):$/;"	kind:member	line:242
-full_auto	AF_Avoid/lidar_rpc.py	/^    def full_auto(self):$/;"	kind:member	line:111
-full_auto_context	AF_Avoid/lidar_rpc.py	/^    def full_auto_context(self, command):$/;"	kind:member	line:223
+full_auto	AF_Avoid/lidar_rpc.py	/^    def full_auto(self):$/;"	kind:member	line:110
+full_auto_context	AF_Avoid/lidar_rpc.py	/^    def full_auto_context(self, command):$/;"	kind:member	line:224
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.Action',$/;"	kind:variable	line:29
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.FullContext',$/;"	kind:variable	line:102
 full_name	AF_Avoid/oa_rpc_pb2.py	/^  full_name='oa_rpc.SemiContext',$/;"	kind:variable	line:168
@@ -925,6 +1385,38 @@ full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.Location',$/;"	kind:v
 full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.Point',$/;"	kind:variable	line:76
 full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.Waypoint',$/;"	kind:variable	line:339
 full_name	protobuf/FlightLog_pb2.py	/^  full_name='buffers.sensors',$/;"	kind:variable	line:464
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.AI_Auto',$/;"	kind:variable	line:651
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.AI_Guided',$/;"	kind:variable	line:603
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.AI_RTL',$/;"	kind:variable	line:627
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Action',$/;"	kind:variable	line:31
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Actions',$/;"	kind:variable	line:476
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Auto',$/;"	kind:variable	line:555
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Cancel',$/;"	kind:variable	line:579
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.CommandCode',$/;"	kind:variable	line:82
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.ControlFRU',$/;"	kind:variable	line:445
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Guided',$/;"	kind:variable	line:507
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.PlanRoute',$/;"	kind:variable	line:369
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.RTL',$/;"	kind:variable	line:531
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.ResetLoiter',$/;"	kind:variable	line:224
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.Semi_Auto',$/;"	kind:variable	line:675
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.SendCommand',$/;"	kind:variable	line:179
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.SetGear',$/;"	kind:variable	line:248
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.TargetByAngle',$/;"	kind:variable	line:324
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.TargetByMetres',$/;"	kind:variable	line:279
+full_name	protobuf/for_mc_pb2.py	/^  full_name='For_GCS.point',$/;"	kind:variable	line:400
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.Action',$/;"	kind:variable	line:29
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.DistanceAngle',$/;"	kind:variable	line:261
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.DistanceMetres',$/;"	kind:variable	line:216
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.Gear',$/;"	kind:variable	line:178
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.id',$/;"	kind:variable	line:389
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.movement',$/;"	kind:variable	line:140
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.point',$/;"	kind:variable	line:306
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.response',$/;"	kind:variable	line:102
+full_name	protobuf/mc_rpc_pb2.py	/^  full_name='mc_rpc.waypoints',$/;"	kind:variable	line:351
+full_name	protobuf/oa_rpc_pb2.py	/^  full_name='oa_rpc.Action',$/;"	kind:variable	line:29
+full_name	protobuf/oa_rpc_pb2.py	/^  full_name='oa_rpc.FullContext',$/;"	kind:variable	line:102
+full_name	protobuf/oa_rpc_pb2.py	/^  full_name='oa_rpc.SemiContext',$/;"	kind:variable	line:168
+full_name	protobuf/oa_rpc_pb2.py	/^  full_name='oa_rpc.Strategy',$/;"	kind:variable	line:206
 full_publish	AF_Avoid/lidarProxy.py	/^def full_publish(client, userdata, command):$/;"	kind:function	line:79
 generate_ratio	AF_ML/Curve.py	/^def generate_ratio():$/;"	kind:function	line:79
 getBus	AF_Sensors/Baro.py	/^    def getBus(self):$/;"	kind:member	line:177
@@ -934,21 +1426,22 @@ getTempC	AF_Sensors/Baro.py	/^    def getTempC(self):$/;"	kind:member	line:165
 getTempF	AF_Sensors/Baro.py	/^    def getTempF(self):$/;"	kind:member	line:168
 get_altitude	AF_Copter/attribute.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:149
 get_altitude	AF_uORB/uORB.py	/^    def get_altitude(self, relative=False):$/;"	kind:member	line:126
-get_attitude	AF_Sensors/compass.py	/^    def get_attitude(self):$/;"	kind:member	line:39
+get_attitude	AF_Sensors/compass.py	/^    def get_attitude(self):$/;"	kind:member	line:49
 get_attitude	AF_uORB/uORB.py	/^    def get_attitude(self):$/;"	kind:member	line:103
 get_bearing	lib/science.py	/^def get_bearing(aLocation1, aLocation2):$/;"	kind:function	line:28
 get_distance_metres	lib/science.py	/^def get_distance_metres(aLocation1, aLocation2):$/;"	kind:function	line:67
 get_failsafe_status	AF_Sbus/sbus.py	/^    def get_failsafe_status(self):$/;"	kind:member	line:61
 get_heading	AF_Copter/attribute.py	/^    def get_heading(self):$/;"	kind:member	line:146
+get_heading	AF_Sensors/compass.py	/^    def get_heading(self):$/;"	kind:member	line:60
 get_heading	AF_uORB/uORB.py	/^    def get_heading(self):$/;"	kind:member	line:107
 get_home	AF_Copter/attribute.py	/^    def get_home(self):$/;"	kind:member	line:140
 get_home	AF_uORB/uORB.py	/^    def get_home(self):$/;"	kind:member	line:116
 get_init_alt	AF_uORB/uORB.py	/^    def get_init_alt(self):$/;"	kind:member	line:136
 get_location	AF_Copter/attribute.py	/^    def get_location(self):$/;"	kind:member	line:143
-get_location	AF_Sensors/GPS.py	/^    def get_location(self, loc):$/;"	kind:member	line:52
+get_location	AF_Sensors/GPS.py	/^    def get_location(self, loc):$/;"	kind:member	line:53
 get_location	AF_uORB/uORB.py	/^    def get_location(self):$/;"	kind:member	line:111
 get_location_metres	lib/science.py	/^def get_location_metres(original_location, dNorth, dEast):$/;"	kind:function	line:43
-get_num_stars	AF_Sensors/GPS.py	/^    def get_num_stars(self, loc):$/;"	kind:member	line:55
+get_num_stars	AF_Sensors/GPS.py	/^    def get_num_stars(self, loc):$/;"	kind:member	line:56
 get_pressure	AF_uORB/uORB.py	/^    def get_pressure(self):$/;"	kind:member	line:141
 get_rx_channel	AF_Sbus/sbus.py	/^    def get_rx_channel(self, num_ch):$/;"	kind:member	line:52
 get_rx_channels	AF_Sbus/sbus.py	/^    def get_rx_channels(self):$/;"	kind:member	line:44
@@ -962,7 +1455,8 @@ geterror	AF_ML/Curve.py	/^    def geterror(self):$/;"	kind:member	line:34
 has_module	AF_Copter/attribute.py	/^    def has_module(self, module):$/;"	kind:member	line:161
 has_module	lib/config.py	/^    def has_module(self, module):$/;"	kind:member	line:93
 id	AF_GCS/mc_rpc_pb2.py	/^id = _reflection.GeneratedProtocolMessageType('id', (_message.Message,), dict($/;"	kind:variable	line:478
-info	AF_Copter/vehicle.py	/^            info = sys.exc_info()$/;"	kind:variable	line:615
+id	protobuf/mc_rpc_pb2.py	/^id = _reflection.GeneratedProtocolMessageType('id', (_message.Message,), dict($/;"	kind:variable	line:478
+info	AF_Copter/vehicle.py	/^            info = sys.exc_info()$/;"	kind:variable	line:619
 info	AF_Copter/waypoint.py	/^    info = "36.1+116.1,36.2+116.2,36.3+116.3,36.4+116.4,36.5+116.5"$/;"	kind:variable	line:113
 init_altitude	AF_Copter/attribute.py	/^    def init_altitude(self):$/;"	kind:member	line:55
 init_drone	lib/config.py	/^    def init_drone(self, conf):$/;"	kind:member	line:66
@@ -971,8 +1465,9 @@ init_mqtt	AF_Avoid/lidarProxy.py	/^def init_mqtt(userdata):$/;"	kind:function	li
 init_mqtt	AF_Avoid/lidar_rpc.py	/^def init_mqtt(userdata):$/;"	kind:function	line:27
 init_mqtt	AF_Avoid/lidar_simu.py	/^def init_mqtt(userdata=None):$/;"	kind:function	line:10
 init_pressure	AF_Sensors/Baro.py	/^    init_pressure = ORB.subscribe('Pressure')$/;"	kind:variable	line:208
-init_sensors	AF_Copter/vehicle.py	/^def init_sensors(ORB):$/;"	kind:function	line:529
-init_vehicle	AF_Copter/vehicle.py	/^def init_vehicle(ORB):$/;"	kind:function	line:556
+init_sensors	AF_Copter/vehicle.py	/^def init_sensors(ORB):$/;"	kind:function	line:533
+init_vehicle	AF_Copter/vehicle.py	/^def init_vehicle(ORB):$/;"	kind:function	line:560
+input	AF_Sbus/receiver.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:96
 input	AF_Sbus/sender.py	/^        input = ORB.subscribe('ChannelsInput')$/;"	kind:variable	line:105
 isArmed	AF_Copter/attribute.py	/^    def isArmed(self):$/;"	kind:member	line:67
 isArmed	AF_uORB/uORB.py	/^    def isArmed(self):$/;"	kind:member	line:65
@@ -1017,6 +1512,34 @@ is_extendable	protobuf/FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variab
 is_extendable	protobuf/FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:452
 is_extendable	protobuf/FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:588
 is_extendable	protobuf/FlightLog_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:64
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:212
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:236
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:267
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:312
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:357
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:388
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:433
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:464
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:495
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:519
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:543
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:567
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:591
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:615
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:639
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:663
+is_extendable	protobuf/for_mc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:694
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:128
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:166
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:204
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:249
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:294
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:339
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:377
+is_extendable	protobuf/mc_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:408
+is_extendable	protobuf/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:156
+is_extendable	protobuf/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:194
+is_extendable	protobuf/oa_rpc_pb2.py	/^  is_extendable=False,$/;"	kind:variable	line:232
 keyboard_event	AF_Keyboard/KB_Control.py	/^keyboard_event = {'w': '1', 's': '2',$/;"	kind:variable	line:15
 keyboard_event_wait	AF_Keyboard/KB_Control.py	/^def keyboard_event_wait():$/;"	kind:function	line:30
 keyboard_filter	AF_Keyboard/KB_Control.py	/^def keyboard_filter(event):$/;"	kind:function	line:47
@@ -1026,10 +1549,10 @@ keyboard_state	AF_Keyboard/KB_Proxy.py	/^def keyboard_state():$/;"	kind:function
 kill	lib/tools.py	/^    def kill(self):$/;"	kind:member	line:91
 land	AF_Copter/vehicle.py	/^    def land(self):$/;"	kind:member	line:168
 lidar	AF_Avoid/lidar.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:107
-lidar	AF_Avoid/lidar_rpc.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:294
+lidar	AF_Avoid/lidar_rpc.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:297
 lidar	AF_GCS/GCSProxy.py	/^        lidar = Lidar(vehicle)$/;"	kind:variable	line:133
 lidar	AF_GCS/GCSProxy.py	/^    lidar = None$/;"	kind:variable	line:128
-lidar	AF_GCS/GCS_Proto.py	/^    lidar = None$/;"	kind:variable	line:317
+lidar	AF_GCS/GCS_Proto.py	/^    lidar = None$/;"	kind:variable	line:129
 lidar	AF_GCS/GCS_RPC.py	/^    lidar = Lidar(vehicle)$/;"	kind:variable	line:177
 lidar	AF_GCS/Test_GCS_Proto.py	/^    lidar = None$/;"	kind:variable	line:172
 lidar	examples/main.py	/^        lidar = Lidar(vehicle)$/;"	kind:variable	line:26
@@ -1053,11 +1576,14 @@ main_channel	lib/config.py	/^    def main_channel(self, ch):$/;"	kind:member	lin
 map_action	AF_Avoid/lidar_rpc.py	/^map_action = {$/;"	kind:variable	line:17
 map_event_args	AF_Keyboard/KB_Control.py	/^map_event_args = {'FORWARD': ('ELE', 1), 'BACKWARD': ('ELE', -1),$/;"	kind:variable	line:22
 mc_rpc_pb2.py	AF_GCS/mc_rpc_pb2.py	1;"	kind:file	line:1
+mc_rpc_pb2.py	protobuf/mc_rpc_pb2.py	1;"	kind:file	line:1
 mc_rpc_pb2_grpc.py	AF_GCS/mc_rpc_pb2_grpc.py	1;"	kind:file	line:1
+mc_rpc_pb2_grpc.py	protobuf/mc_rpc_pb2_grpc.py	1;"	kind:file	line:1
 messages	AF_GCS/Test_GCS_Proto.py	/^    messages = [$/;"	kind:variable	line:176
 model	lib/logger.py	/^model = config.drone['Model']$/;"	kind:variable	line:104
 movement	AF_Copter/vehicle.py	/^    def movement(self, channel, sign=1):$/;"	kind:member	line:77
 movement	AF_GCS/mc_rpc_pb2.py	/^movement = _reflection.GeneratedProtocolMessageType('movement', (_message.Message,), dict($/;"	kind:variable	line:436
+movement	protobuf/mc_rpc_pb2.py	/^movement = _reflection.GeneratedProtocolMessageType('movement', (_message.Message,), dict($/;"	kind:variable	line:436
 movement2	AF_Copter/vehicle.py	/^    def movement2(self, channel, sign=1):$/;"	kind:member	line:86
 movement3	AF_Copter/vehicle.py	/^    def movement3(self, channel, percent=0):$/;"	kind:member	line:94
 mqtt_publish	AF_Avoid/lidarProxy.py	/^def mqtt_publish(client, topic, message, userdata, blocking=False):$/;"	kind:function	line:210
@@ -1107,6 +1633,41 @@ name	protobuf/FlightLog_pb2.py	/^  name='Location',$/;"	kind:variable	line:30
 name	protobuf/FlightLog_pb2.py	/^  name='Point',$/;"	kind:variable	line:75
 name	protobuf/FlightLog_pb2.py	/^  name='Waypoint',$/;"	kind:variable	line:338
 name	protobuf/FlightLog_pb2.py	/^  name='sensors',$/;"	kind:variable	line:463
+name	protobuf/for_mc_pb2.py	/^  name='AI_Auto',$/;"	kind:variable	line:650
+name	protobuf/for_mc_pb2.py	/^  name='AI_Guided',$/;"	kind:variable	line:602
+name	protobuf/for_mc_pb2.py	/^  name='AI_RTL',$/;"	kind:variable	line:626
+name	protobuf/for_mc_pb2.py	/^  name='Action',$/;"	kind:variable	line:30
+name	protobuf/for_mc_pb2.py	/^  name='Actions',$/;"	kind:variable	line:475
+name	protobuf/for_mc_pb2.py	/^  name='Auto',$/;"	kind:variable	line:554
+name	protobuf/for_mc_pb2.py	/^  name='Cancel',$/;"	kind:variable	line:578
+name	protobuf/for_mc_pb2.py	/^  name='CommandCode',$/;"	kind:variable	line:81
+name	protobuf/for_mc_pb2.py	/^  name='ControlFRU',$/;"	kind:variable	line:444
+name	protobuf/for_mc_pb2.py	/^  name='Guided',$/;"	kind:variable	line:506
+name	protobuf/for_mc_pb2.py	/^  name='PlanRoute',$/;"	kind:variable	line:368
+name	protobuf/for_mc_pb2.py	/^  name='RTL',$/;"	kind:variable	line:530
+name	protobuf/for_mc_pb2.py	/^  name='ResetLoiter',$/;"	kind:variable	line:223
+name	protobuf/for_mc_pb2.py	/^  name='Semi_Auto',$/;"	kind:variable	line:674
+name	protobuf/for_mc_pb2.py	/^  name='SendCommand',$/;"	kind:variable	line:178
+name	protobuf/for_mc_pb2.py	/^  name='SetGear',$/;"	kind:variable	line:247
+name	protobuf/for_mc_pb2.py	/^  name='TargetByAngle',$/;"	kind:variable	line:323
+name	protobuf/for_mc_pb2.py	/^  name='TargetByMetres',$/;"	kind:variable	line:278
+name	protobuf/for_mc_pb2.py	/^  name='for_mc.proto',$/;"	kind:variable	line:21
+name	protobuf/for_mc_pb2.py	/^  name='point',$/;"	kind:variable	line:399
+name	protobuf/mc_rpc_pb2.py	/^  name='Action',$/;"	kind:variable	line:28
+name	protobuf/mc_rpc_pb2.py	/^  name='DistanceAngle',$/;"	kind:variable	line:260
+name	protobuf/mc_rpc_pb2.py	/^  name='DistanceMetres',$/;"	kind:variable	line:215
+name	protobuf/mc_rpc_pb2.py	/^  name='Gear',$/;"	kind:variable	line:177
+name	protobuf/mc_rpc_pb2.py	/^  name='id',$/;"	kind:variable	line:388
+name	protobuf/mc_rpc_pb2.py	/^  name='mc_rpc.proto',$/;"	kind:variable	line:20
+name	protobuf/mc_rpc_pb2.py	/^  name='movement',$/;"	kind:variable	line:139
+name	protobuf/mc_rpc_pb2.py	/^  name='point',$/;"	kind:variable	line:305
+name	protobuf/mc_rpc_pb2.py	/^  name='response',$/;"	kind:variable	line:101
+name	protobuf/mc_rpc_pb2.py	/^  name='waypoints',$/;"	kind:variable	line:350
+name	protobuf/oa_rpc_pb2.py	/^  name='Action',$/;"	kind:variable	line:28
+name	protobuf/oa_rpc_pb2.py	/^  name='FullContext',$/;"	kind:variable	line:101
+name	protobuf/oa_rpc_pb2.py	/^  name='SemiContext',$/;"	kind:variable	line:167
+name	protobuf/oa_rpc_pb2.py	/^  name='Strategy',$/;"	kind:variable	line:205
+name	protobuf/oa_rpc_pb2.py	/^  name='oa_rpc.proto',$/;"	kind:variable	line:20
 navigation	AF_Avoid/lidar.py	/^    def navigation(self, target):$/;"	kind:member	line:29
 navigation	AF_Copter/vehicle.py	/^    def navigation(self):$/;"	kind:member	line:366
 nested_types	AF_Avoid/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:152
@@ -1147,9 +1708,39 @@ nested_types	protobuf/FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	li
 nested_types	protobuf/FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:584
 nested_types	protobuf/FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:60
 nested_types	protobuf/FlightLog_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:98
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:208
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:232
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:263
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:308
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:353
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:384
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:429
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:460
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:491
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:515
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:539
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:563
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:587
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:611
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:635
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:659
+nested_types	protobuf/for_mc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:690
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:124
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:162
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:200
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:245
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:290
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:335
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:373
+nested_types	protobuf/mc_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:404
+nested_types	protobuf/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:152
+nested_types	protobuf/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:190
+nested_types	protobuf/oa_rpc_pb2.py	/^  nested_types=[],$/;"	kind:variable	line:228
 oa_rpc_client.py	AF_Avoid/oa_rpc_client.py	1;"	kind:file	line:1
 oa_rpc_pb2.py	AF_Avoid/oa_rpc_pb2.py	1;"	kind:file	line:1
+oa_rpc_pb2.py	protobuf/oa_rpc_pb2.py	1;"	kind:file	line:1
 oa_rpc_pb2_grpc.py	AF_Avoid/oa_rpc_pb2_grpc.py	1;"	kind:file	line:1
+oa_rpc_pb2_grpc.py	protobuf/oa_rpc_pb2_grpc.py	1;"	kind:file	line:1
 oa_rpc_server.py	AF_Avoid/oa_rpc_server.py	1;"	kind:file	line:1
 obstacle_context	AF_Avoid/lidarProxy.py	/^def obstacle_context(vehicle, command=None):$/;"	kind:function	line:137
 on_connect	AF_Avoid/lidarProxy.py	/^def on_connect(client, userdata, flags, rc):$/;"	kind:function	line:25
@@ -1198,9 +1789,37 @@ oneofs	protobuf/FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:375
 oneofs	protobuf/FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:455
 oneofs	protobuf/FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:591
 oneofs	protobuf/FlightLog_pb2.py	/^  oneofs=[$/;"	kind:variable	line:67
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:215
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:239
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:270
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:315
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:360
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:391
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:436
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:467
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:498
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:522
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:546
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:570
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:594
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:618
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:642
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:666
+oneofs	protobuf/for_mc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:697
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:131
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:169
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:207
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:252
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:297
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:342
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:380
+oneofs	protobuf/mc_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:411
+oneofs	protobuf/oa_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:159
+oneofs	protobuf/oa_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:197
+oneofs	protobuf/oa_rpc_pb2.py	/^  oneofs=[$/;"	kind:variable	line:235
 open_serial	lib/tools.py	/^def open_serial(portname, baudrate, timeout=None):$/;"	kind:function	line:14
 open_sock	AF_GCS/GCSProxy.py	/^def open_sock():$/;"	kind:function	line:14
-open_sock	AF_GCS/GCS_Proto.py	/^def open_sock():$/;"	kind:function	line:15
+open_sock	AF_GCS/GCS_Proto.py	/^def open_sock():$/;"	kind:function	line:16
 options	AF_Avoid/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:113
 options	AF_Avoid/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:120
 options	AF_Avoid/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:127
@@ -1380,6 +1999,128 @@ options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:371
 options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:451
 options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:587
 options	protobuf/FlightLog_pb2.py	/^  options=None,$/;"	kind:variable	line:63
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:190
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:197
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:204
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:259
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:290
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:297
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:304
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:335
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:342
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:349
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:380
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:411
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:418
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:425
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:456
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:487
+options	protobuf/for_mc_pb2.py	/^      options=None),$/;"	kind:variable	line:686
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:100
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:104
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:108
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:112
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:116
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:120
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:124
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:128
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:132
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:136
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:140
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:37
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:41
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:45
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:49
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:53
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:57
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:61
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:65
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:69
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:88
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:92
+options	protobuf/for_mc_pb2.py	/^      options=None,$/;"	kind:variable	line:96
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:144
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:211
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:235
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:266
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:311
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:356
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:387
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:432
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:463
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:494
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:518
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:542
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:566
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:590
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:614
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:638
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:662
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:693
+options	protobuf/for_mc_pb2.py	/^  options=None,$/;"	kind:variable	line:73
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:113
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:120
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:151
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:158
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:189
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:196
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:227
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:234
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:241
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:272
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:279
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:286
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:317
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:324
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:331
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:362
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:369
+options	protobuf/mc_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:400
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:35
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:39
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:43
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:47
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:51
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:55
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:59
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:63
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:67
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:71
+options	protobuf/mc_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:75
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:127
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:165
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:203
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:248
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:293
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:338
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:376
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:407
+options	protobuf/mc_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:79
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:113
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:120
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:127
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:134
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:141
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:148
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:179
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:186
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:217
+options	protobuf/oa_rpc_pb2.py	/^      options=None),$/;"	kind:variable	line:224
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:35
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:39
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:43
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:47
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:51
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:55
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:59
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:63
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:67
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:71
+options	protobuf/oa_rpc_pb2.py	/^      options=None,$/;"	kind:variable	line:75
+options	protobuf/oa_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:155
+options	protobuf/oa_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:193
+options	protobuf/oa_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:231
+options	protobuf/oa_rpc_pb2.py	/^  options=None,$/;"	kind:variable	line:79
 origin	AF_Copter/waypoint.py	/^    origin = [36.111111, 116.222222]$/;"	kind:variable	line:111
 output	AF_Sbus/sender.py	/^        output = ORB.subscribe('ChannelsOutput')$/;"	kind:variable	line:106
 p	examples/test.py	/^    p = Pool(2)$/;"	kind:variable	line:32
@@ -1387,20 +2128,24 @@ pack	AF_Avoid/lidarProxy.py	/^def pack(context):$/;"	kind:function	line:116
 package	AF_Avoid/oa_rpc_pb2.py	/^  package='oa_rpc',$/;"	kind:variable	line:21
 package	AF_GCS/for_mc_pb2.py	/^  package='For_GCS',$/;"	kind:variable	line:22
 package	AF_GCS/mc_rpc_pb2.py	/^  package='mc_rpc',$/;"	kind:variable	line:21
-package	AF_Sbus/sbus.py	/^    package = '0f00a420a809086a504b182c00042000010807380010800014'$/;"	kind:variable	line:204
 package	AF_Sbus/sbus.py	/^    package = '0f600135A8410D165003102C00042000010807380010800014'$/;"	kind:variable	line:205
 package	AF_Sbus/sbus.py	/^    package = sbus.filter(package)$/;"	kind:variable	line:207
 package	protobuf/FlightLog_pb2.py	/^  package='buffers',$/;"	kind:variable	line:20
-parseGPS	AF_Sensors/GPS.py	/^    def parseGPS(self):$/;"	kind:member	line:39
-parse_proto	AF_GCS/GCS_Proto.py	/^def parse_proto(vehicle, lidar):$/;"	kind:function	line:54
+package	protobuf/for_mc_pb2.py	/^  package='For_GCS',$/;"	kind:variable	line:22
+package	protobuf/mc_rpc_pb2.py	/^  package='mc_rpc',$/;"	kind:variable	line:21
+package	protobuf/oa_rpc_pb2.py	/^  package='oa_rpc',$/;"	kind:variable	line:21
+parseGPS	AF_Sensors/GPS.py	/^    def parseGPS(self):$/;"	kind:member	line:40
+parse_proto	AF_GCS/Parse_Proto.py	/^def parse_proto(vehicle, lidar):$/;"	kind:function	line:40
 point	AF_GCS/for_mc_pb2.py	/^point = _reflection.GeneratedProtocolMessageType('point', (_message.Message,), dict($/;"	kind:variable	line:771
 point	AF_GCS/mc_rpc_pb2.py	/^point = _reflection.GeneratedProtocolMessageType('point', (_message.Message,), dict($/;"	kind:variable	line:464
+point	protobuf/for_mc_pb2.py	/^point = _reflection.GeneratedProtocolMessageType('point', (_message.Message,), dict($/;"	kind:variable	line:771
+point	protobuf/mc_rpc_pb2.py	/^point = _reflection.GeneratedProtocolMessageType('point', (_message.Message,), dict($/;"	kind:variable	line:464
 points	AF_Copter/waypoint.py	/^    def points(self):$/;"	kind:member	line:16
 predict	AF_ML/Curve.py	/^    def predict(self, x):$/;"	kind:member	line:47
 pressure2Alt	lib/science.py	/^def pressure2Alt(hpa):$/;"	kind:function	line:10
 printResults	AF_Sensors/Baro.py	/^    def printResults(self):$/;"	kind:member	line:180
 publish	AF_Avoid/lidar.py	/^    def publish(self, topic, message):$/;"	kind:member	line:66
-publish	AF_Avoid/lidar_rpc.py	/^    def publish(self, topic, message):$/;"	kind:member	line:281
+publish	AF_Avoid/lidar_rpc.py	/^    def publish(self, topic, message):$/;"	kind:member	line:284
 publish	AF_Copter/attribute.py	/^    def publish(self, topic, value):$/;"	kind:member	line:152
 publish	AF_Copter/waypoint.py	/^    def publish(self, topic, value):$/;"	kind:member	line:100
 publish	AF_Sbus/receiver.py	/^    def publish(self, topic, value):$/;"	kind:member	line:66
@@ -1412,21 +2157,22 @@ receive_command	examples/test.py	/^def receive_command():$/;"	kind:function	line
 receiver.py	AF_Sbus/receiver.py	1;"	kind:file	line:1
 remain_wp	AF_Copter/waypoint.py	/^    def remain_wp(self):$/;"	kind:member	line:81
 response	AF_GCS/mc_rpc_pb2.py	/^response = _reflection.GeneratedProtocolMessageType('response', (_message.Message,), dict($/;"	kind:variable	line:429
+response	protobuf/mc_rpc_pb2.py	/^response = _reflection.GeneratedProtocolMessageType('response', (_message.Message,), dict($/;"	kind:variable	line:429
 revid_is_valid	AF_Avoid/lidarProxy.py	/^def revid_is_valid(topic, revid, userdata):$/;"	kind:function	line:64
 roll_left_brake	AF_Copter/vehicle.py	/^    def roll_left_brake(self):$/;"	kind:member	line:254
 roll_right_brake	AF_Copter/vehicle.py	/^    def roll_right_brake(self):$/;"	kind:member	line:260
 run	AF_GCS/GCSProxy.py	/^    def run(self):$/;"	kind:member	line:37
 run	AF_GCS/GCSProxy.py	/^    def run(self):$/;"	kind:member	line:63
-run	AF_GCS/GCS_Proto.py	/^    def run(self):$/;"	kind:member	line:229
-run	AF_GCS/GCS_Proto.py	/^    def run(self):$/;"	kind:member	line:272
-run	AF_GCS/cloud.py	/^    def run(self):$/;"	kind:member	line:29
-run	AF_GCS/cloud.py	/^    def run(self):$/;"	kind:member	line:56
+run	AF_GCS/GCS_Proto.py	/^    def run(self):$/;"	kind:member	line:41
+run	AF_GCS/GCS_Proto.py	/^    def run(self):$/;"	kind:member	line:84
+run	AF_GCS/GCS_Redis.py	/^    def run(self):$/;"	kind:member	line:29
+run	AF_GCS/GCS_Redis.py	/^    def run(self):$/;"	kind:member	line:56
 run	AF_Sbus/receiver.py	/^    def run(self):$/;"	kind:member	line:25
 run	AF_Sbus/sender.py	/^    def run(self):$/;"	kind:member	line:26
 run	AF_Sensors/Baro.py	/^    def run(self):$/;"	kind:member	line:36
-run	AF_Sensors/GPS.py	/^    def run(self):$/;"	kind:member	line:23
-run	AF_Sensors/IMU.py	/^    def run(self):$/;"	kind:member	line:45
-run	AF_Sensors/compass.py	/^    def run(self):$/;"	kind:member	line:23
+run	AF_Sensors/GPS.py	/^    def run(self):$/;"	kind:member	line:24
+run	AF_Sensors/IMU.py	/^    def run(self):$/;"	kind:member	line:48
+run	AF_Sensors/compass.py	/^    def run(self):$/;"	kind:member	line:26
 run	AF_uORB/uORB.py	/^    def run(self):$/;"	kind:member	line:52
 run_codegen.py	AF_GCS/run_codegen.py	1;"	kind:file	line:1
 run_codegen.py	protobuf/run_codegen.py	1;"	kind:file	line:1
@@ -1437,10 +2183,10 @@ sbusChannels	AF_Sbus/sbus.py	/^        sbusChannels = sbus.decode(package)$/;"	k
 sbus_receive_start	AF_Sbus/receiver.py	/^def sbus_receive_start(ORB, com=None):$/;"	kind:function	line:77
 sbus_start	AF_Sbus/sender.py	/^def sbus_start(ORB):$/;"	kind:function	line:82
 science.py	lib/science.py	1;"	kind:file	line:1
-semi_auto	AF_Avoid/lidar_rpc.py	/^    def semi_auto(self, command):$/;"	kind:member	line:259
+semi_auto	AF_Avoid/lidar_rpc.py	/^    def semi_auto(self, command):$/;"	kind:member	line:262
 send_Log	AF_GCS/GCSProxy.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:25
-send_Log	AF_GCS/GCS_Proto.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:215
-send_Log	AF_GCS/cloud.py	/^def send_Log(Redis, ORB):$/;"	kind:function	line:14
+send_Log	AF_GCS/GCS_Proto.py	/^def send_Log(sock, ORB):$/;"	kind:function	line:27
+send_Log	AF_GCS/GCS_Redis.py	/^def send_Log(Redis, ORB):$/;"	kind:function	line:14
 send_log	examples/test.py	/^def send_log():$/;"	kind:function	line:8
 send_package	AF_Sbus/sender.py	/^    def send_package(self, package):$/;"	kind:member	line:58
 send_pwm	AF_Copter/vehicle.py	/^    def send_pwm(self, channels):$/;"	kind:member	line:278
@@ -1489,10 +2235,45 @@ serialized_end	protobuf/FlightLog_pb2.py	/^  serialized_end=478,$/;"	kind:variab
 serialized_end	protobuf/FlightLog_pb2.py	/^  serialized_end=550,$/;"	kind:variable	line:378
 serialized_end	protobuf/FlightLog_pb2.py	/^  serialized_end=666,$/;"	kind:variable	line:458
 serialized_end	protobuf/FlightLog_pb2.py	/^  serialized_end=93,$/;"	kind:variable	line:70
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=1006,$/;"	kind:variable	line:146
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=159,$/;"	kind:variable	line:218
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=174,$/;"	kind:variable	line:242
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=200,$/;"	kind:variable	line:273
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=265,$/;"	kind:variable	line:318
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=333,$/;"	kind:variable	line:363
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=378,$/;"	kind:variable	line:394
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=442,$/;"	kind:variable	line:439
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=491,$/;"	kind:variable	line:470
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=535,$/;"	kind:variable	line:501
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=545,$/;"	kind:variable	line:525
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=552,$/;"	kind:variable	line:549
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=560,$/;"	kind:variable	line:573
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=570,$/;"	kind:variable	line:597
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=583,$/;"	kind:variable	line:621
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=593,$/;"	kind:variable	line:645
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=604,$/;"	kind:variable	line:669
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=652,$/;"	kind:variable	line:700
+serialized_end	protobuf/for_mc_pb2.py	/^  serialized_end=778,$/;"	kind:variable	line:75
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=116,$/;"	kind:variable	line:172
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=151,$/;"	kind:variable	line:210
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=210,$/;"	kind:variable	line:255
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=272,$/;"	kind:variable	line:300
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=336,$/;"	kind:variable	line:345
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=392,$/;"	kind:variable	line:383
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=410,$/;"	kind:variable	line:414
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=561,$/;"	kind:variable	line:81
+serialized_end	protobuf/mc_rpc_pb2.py	/^  serialized_end=59,$/;"	kind:variable	line:134
+serialized_end	protobuf/oa_rpc_pb2.py	/^  serialized_end=197,$/;"	kind:variable	line:162
+serialized_end	protobuf/oa_rpc_pb2.py	/^  serialized_end=257,$/;"	kind:variable	line:200
+serialized_end	protobuf/oa_rpc_pb2.py	/^  serialized_end=314,$/;"	kind:variable	line:238
+serialized_end	protobuf/oa_rpc_pb2.py	/^  serialized_end=465,$/;"	kind:variable	line:81
 serialized_pb	AF_Avoid/oa_rpc_pb2.py	/^  serialized_pb=_b('\\n\\x0coa_rpc.proto\\x12\\x06oa_rpc\\"\\xac\\x01\\n\\x0b\\x46ullContext\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x0e\\n\\x06target\\x18\\x02 \\x01(\\x05\\x12\\x0f\\n\\x07\\x65psilon\\x18\\x03 \\x01(\\x05\\x12\\x1f\\n\\x07\\x63urrent\\x18\\x04 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\x12\\"\\n\\nlast_state\\x18\\x05 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\x12+\\n\\x13last_previous_state\\x18\\x06 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\":\\n\\x0bSemiContext\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\"7\\n\\x08Strategy\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action*\\x94\\x01\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01\\x12\\x0c\\n\\x07INVALID\\x10\\xee\\x01\\x12\\x08\\n\\x03\\x41NY\\x10\\xff\\x01\\x32\\x87\\x01\\n\\x11ObstacleAvoidance\\x12\\x38\\n\\rFullAutomatic\\x12\\x13.oa_rpc.FullContext\\x1a\\x10.oa_rpc.Strategy\\"\\x00\\x12\\x38\\n\\rSemiAutomatic\\x12\\x13.oa_rpc.SemiContext\\x1a\\x10.oa_rpc.Strategy\\"\\x00\\x62\\x06proto3')$/;"	kind:variable	line:23
 serialized_pb	AF_GCS/for_mc_pb2.py	/^  serialized_pb=_b('\\n\\x0c\\x66or_mc.proto\\x12\\x07\\x46or_GCS\\x1a\\x19google\/protobuf\/any.proto\\"k\\n\\x0bSendCommand\\x12\\x11\\n\\ttimestamp\\x18\\x01 \\x01(\\x02\\x12\\"\\n\\x04\\x63ode\\x18\\x02 \\x01(\\x0e\\x32\\x14.For_GCS.CommandCode\\x12%\\n\\x07\\x63ommand\\x18\\x03 \\x01(\\x0b\\x32\\x14.google.protobuf.Any\\"\\r\\n\\x0bResetLoiter\\"\\x18\\n\\x07SetGear\\x12\\r\\n\\x05index\\x18\\x01 \\x01(\\r\\"?\\n\\x0eTargetByMetres\\x12\\r\\n\\x05North\\x18\\x01 \\x01(\\x02\\x12\\x0c\\n\\x04\\x45\\x61st\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"B\\n\\rTargetByAngle\\x12\\x10\\n\\x08\\x64istance\\x18\\x01 \\x01(\\x02\\x12\\r\\n\\x05\\x61ngle\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"+\\n\\tPlanRoute\\x12\\x1e\\n\\x06points\\x18\\x01 \\x03(\\x0b\\x32\\x0e.For_GCS.point\\">\\n\\x05point\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"\/\\n\\nControlFRU\\x12!\\n\\x07\\x61\\x63tions\\x18\\x01 \\x03(\\x0b\\x32\\x10.For_GCS.Actions\\"*\\n\\x07\\x41\\x63tions\\x12\\x1f\\n\\x06\\x61\\x63tion\\x18\\x01 \\x01(\\x0e\\x32\\x0f.For_GCS.Action\\"\\x08\\n\\x06Guided\\"\\x05\\n\\x03RTL\\"\\x06\\n\\x04\\x41uto\\"\\x08\\n\\x06\\x43\\x61ncel\\"\\x0b\\n\\tAI_Guided\\"\\x08\\n\\x06\\x41I_RTL\\"\\t\\n\\x07\\x41I_Auto\\".\\n\\tSemi_Auto\\x12!\\n\\x07\\x61\\x63tions\\x18\\x01 \\x03(\\x0b\\x32\\x10.For_GCS.Actions*|\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01*\\xe1\\x01\\n\\x0b\\x43ommandCode\\x12\\x10\\n\\x0c_ResetLoiter\\x10\\x00\\x12\\x0c\\n\\x08_SetGear\\x10\\x01\\x12\\x0b\\n\\x07_Cancel\\x10\\x02\\x12\\x13\\n\\x0f_TargetByMetres\\x10\\n\\x12\\x12\\n\\x0e_TargetByAngle\\x10\\x0b\\x12\\x0e\\n\\n_PlanRoute\\x10\\x0c\\x12\\x0f\\n\\x0b_ControlFRU\\x10\\r\\x12\\x0b\\n\\x07_Guided\\x10\\x0e\\x12\\x08\\n\\x04_Rtl\\x10\\x0f\\x12\\t\\n\\x05_Auto\\x10\\x10\\x12\\x0e\\n\\n_AI_Guided\\x10\\x11\\x12\\x0b\\n\\x07_AI_Rtl\\x10\\x12\\x12\\x0c\\n\\x08_AI_Auto\\x10\\x13\\x12\\x0e\\n\\n_Semi_Auto\\x10\\x14\\x62\\x06proto3')$/;"	kind:variable	line:24
 serialized_pb	AF_GCS/mc_rpc_pb2.py	/^  serialized_pb=_b('\\n\\x0cmc_rpc.proto\\x12\\x06mc_rpc\\"#\\n\\x08response\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x0b\\n\\x03\\x61\\x63k\\x18\\x02 \\x01(\\x08\\"7\\n\\x08movement\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.mc_rpc.Action\\"!\\n\\x04Gear\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\r\\n\\x05index\\x18\\x02 \\x01(\\x05\\"9\\n\\x0e\\x44istanceMetres\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\r\\n\\x05North\\x18\\x02 \\x01(\\x02\\x12\\x0c\\n\\x04\\x45\\x61st\\x18\\x03 \\x01(\\x02\\"<\\n\\rDistanceAngle\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x10\\n\\x08\\x64istance\\x18\\x02 \\x01(\\x02\\x12\\r\\n\\x05\\x61ngle\\x18\\x03 \\x01(\\x05\\">\\n\\x05point\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"6\\n\\twaypoints\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x1d\\n\\x06points\\x18\\x02 \\x03(\\x0b\\x32\\r.mc_rpc.point\\"\\x10\\n\\x02id\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x02*\\x94\\x01\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01\\x12\\x0c\\n\\x07INVALID\\x10\\xee\\x01\\x12\\x08\\n\\x03\\x41NY\\x10\\xff\\x01\\x32\\xbd\\x04\\n\\x02\\x46\\x43\\x12-\\n\\x0bResetLoiter\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12\\x32\\n\\nControlFRU\\x12\\x10.mc_rpc.movement\\x1a\\x10.mc_rpc.response\\"\\x00\\x12+\\n\\x07SetGear\\x12\\x0c.mc_rpc.Gear\\x1a\\x10.mc_rpc.response\\"\\x00\\x12<\\n\\x0eTargetByMetres\\x12\\x16.mc_rpc.DistanceMetres\\x1a\\x10.mc_rpc.response\\"\\x00\\x12:\\n\\rTargetByAngle\\x12\\x15.mc_rpc.DistanceAngle\\x1a\\x10.mc_rpc.response\\"\\x00\\x12\\x32\\n\\tPlanRoute\\x12\\x11.mc_rpc.waypoints\\x1a\\x10.mc_rpc.response\\"\\x00\\x12(\\n\\x06Guided\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12%\\n\\x03RTL\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12&\\n\\x04\\x41uto\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12+\\n\\tAI_Guided\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12(\\n\\x06\\x41I_RTL\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12)\\n\\x07\\x41I_Auto\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x62\\x06proto3')$/;"	kind:variable	line:23
 serialized_pb	protobuf/FlightLog_pb2.py	/^  serialized_pb=_b('\\n\\x0f\\x46lightLog.proto\\x12\\x07\\x62uffers\\"A\\n\\x08Location\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"8\\n\\x05Point\\x12\\n\\n\\x02ID\\x18\\x01 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Location\\"4\\n\\x08\\x41ttitude\\x12\\r\\n\\x05pitch\\x18\\x01 \\x01(\\x02\\x12\\x0c\\n\\x04roll\\x18\\x02 \\x01(\\x02\\x12\\x0b\\n\\x03yaw\\x18\\x03 \\x01(\\x02\\"-\\n\\nCoordinate\\x12\\t\\n\\x01x\\x18\\x01 \\x01(\\x02\\x12\\t\\n\\x01y\\x18\\x02 \\x01(\\x02\\x12\\t\\n\\x01z\\x18\\x03 \\x01(\\x02\\"L\\n\\x03GPS\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x11\\n\\tnum_stars\\x18\\x02 \\x01(\\x05\\x12#\\n\\x08location\\x18\\x03 \\x01(\\x0b\\x32\\x11.buffers.Location\\"=\\n\\x07\\x43ompass\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12#\\n\\x08\\x61ttitude\\x18\\x02 \\x01(\\x0b\\x32\\x11.buffers.Attitude\\"S\\n\\tBarometre\\x12\\r\\n\\x05state\\x18\\x01 \\x01(\\x08\\x12\\x10\\n\\x08Pressure\\x18\\x02 \\x01(\\x02\\x12\\x13\\n\\x0bTemperature\\x18\\x03 \\x01(\\x02\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x04 \\x01(\\x02\\"F\\n\\x08Waypoint\\x12\\r\\n\\x05index\\x18\\x01 \\x01(\\x11\\x12\\x1d\\n\\x05point\\x18\\x02 \\x03(\\x0b\\x32\\x0e.buffers.Point\\x12\\x0c\\n\\x04type\\x18\\x03 \\x01(\\t\\"r\\n\\x08\\x43hannels\\x12\\x0b\\n\\x03\\x63h1\\x18\\x01 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h2\\x18\\x02 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h3\\x18\\x03 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h4\\x18\\x04 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h5\\x18\\x05 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h6\\x18\\x06 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h7\\x18\\x07 \\x01(\\x05\\x12\\x0b\\n\\x03\\x63h8\\x18\\x08 \\x01(\\x05\\"\\xd4\\x03\\n\\x07sensors\\x12\\x11\\n\\ttimestamp\\x18\\x01 \\x01(\\x02\\x12\\x19\\n\\x03gps\\x18\\x02 \\x01(\\x0b\\x32\\x0c.buffers.GPS\\x12!\\n\\x07\\x63ompass\\x18\\x03 \\x01(\\x0b\\x32\\x10.buffers.Compass\\x12 \\n\\x04\\x62\\x61ro\\x18\\x04 \\x01(\\x0b\\x32\\x12.buffers.Barometre\\x12#\\n\\x08waypoint\\x18\\x05 \\x01(\\x0b\\x32\\x11.buffers.Waypoint\\x12!\\n\\x06target\\x18\\x06 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x1f\\n\\x04home\\x18\\x07 \\x01(\\x0b\\x32\\x11.buffers.Location\\x12\\x10\\n\\x08init_alt\\x18\\x08 \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceToTarget\\x18\\t \\x01(\\x02\\x12\\x18\\n\\x10\\x44istanceFromHome\\x18\\n \\x01(\\x02\\x12(\\n\\rChannelsInput\\x18\\x0b \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12)\\n\\x0e\\x43hannelsOutput\\x18\\x0c \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12$\\n\\tLoiterPWM\\x18\\r \\x01(\\x0b\\x32\\x11.buffers.Channels\\x12\\x10\\n\\x08\\x41ltitude\\x18\\x0e \\x01(\\x02\\x12\\x0c\\n\\x04Mode\\x18\\x0f \\x01(\\t\\x12\\x0c\\n\\x04Gear\\x18\\x10 \\x01(\\x05\\x62\\x06proto3')$/;"	kind:variable	line:22
+serialized_pb	protobuf/for_mc_pb2.py	/^  serialized_pb=_b('\\n\\x0c\\x66or_mc.proto\\x12\\x07\\x46or_GCS\\x1a\\x19google\/protobuf\/any.proto\\"k\\n\\x0bSendCommand\\x12\\x11\\n\\ttimestamp\\x18\\x01 \\x01(\\x02\\x12\\"\\n\\x04\\x63ode\\x18\\x02 \\x01(\\x0e\\x32\\x14.For_GCS.CommandCode\\x12%\\n\\x07\\x63ommand\\x18\\x03 \\x01(\\x0b\\x32\\x14.google.protobuf.Any\\"\\r\\n\\x0bResetLoiter\\"\\x18\\n\\x07SetGear\\x12\\r\\n\\x05index\\x18\\x01 \\x01(\\r\\"?\\n\\x0eTargetByMetres\\x12\\r\\n\\x05North\\x18\\x01 \\x01(\\x02\\x12\\x0c\\n\\x04\\x45\\x61st\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"B\\n\\rTargetByAngle\\x12\\x10\\n\\x08\\x64istance\\x18\\x01 \\x01(\\x02\\x12\\r\\n\\x05\\x61ngle\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"+\\n\\tPlanRoute\\x12\\x1e\\n\\x06points\\x18\\x01 \\x03(\\x0b\\x32\\x0e.For_GCS.point\\">\\n\\x05point\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"\/\\n\\nControlFRU\\x12!\\n\\x07\\x61\\x63tions\\x18\\x01 \\x03(\\x0b\\x32\\x10.For_GCS.Actions\\"*\\n\\x07\\x41\\x63tions\\x12\\x1f\\n\\x06\\x61\\x63tion\\x18\\x01 \\x01(\\x0e\\x32\\x0f.For_GCS.Action\\"\\x08\\n\\x06Guided\\"\\x05\\n\\x03RTL\\"\\x06\\n\\x04\\x41uto\\"\\x08\\n\\x06\\x43\\x61ncel\\"\\x0b\\n\\tAI_Guided\\"\\x08\\n\\x06\\x41I_RTL\\"\\t\\n\\x07\\x41I_Auto\\".\\n\\tSemi_Auto\\x12!\\n\\x07\\x61\\x63tions\\x18\\x01 \\x03(\\x0b\\x32\\x10.For_GCS.Actions*|\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01*\\xe1\\x01\\n\\x0b\\x43ommandCode\\x12\\x10\\n\\x0c_ResetLoiter\\x10\\x00\\x12\\x0c\\n\\x08_SetGear\\x10\\x01\\x12\\x0b\\n\\x07_Cancel\\x10\\x02\\x12\\x13\\n\\x0f_TargetByMetres\\x10\\n\\x12\\x12\\n\\x0e_TargetByAngle\\x10\\x0b\\x12\\x0e\\n\\n_PlanRoute\\x10\\x0c\\x12\\x0f\\n\\x0b_ControlFRU\\x10\\r\\x12\\x0b\\n\\x07_Guided\\x10\\x0e\\x12\\x08\\n\\x04_Rtl\\x10\\x0f\\x12\\t\\n\\x05_Auto\\x10\\x10\\x12\\x0e\\n\\n_AI_Guided\\x10\\x11\\x12\\x0b\\n\\x07_AI_Rtl\\x10\\x12\\x12\\x0c\\n\\x08_AI_Auto\\x10\\x13\\x12\\x0e\\n\\n_Semi_Auto\\x10\\x14\\x62\\x06proto3')$/;"	kind:variable	line:24
+serialized_pb	protobuf/mc_rpc_pb2.py	/^  serialized_pb=_b('\\n\\x0cmc_rpc.proto\\x12\\x06mc_rpc\\"#\\n\\x08response\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x0b\\n\\x03\\x61\\x63k\\x18\\x02 \\x01(\\x08\\"7\\n\\x08movement\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.mc_rpc.Action\\"!\\n\\x04Gear\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\r\\n\\x05index\\x18\\x02 \\x01(\\x05\\"9\\n\\x0e\\x44istanceMetres\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\r\\n\\x05North\\x18\\x02 \\x01(\\x02\\x12\\x0c\\n\\x04\\x45\\x61st\\x18\\x03 \\x01(\\x02\\"<\\n\\rDistanceAngle\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x10\\n\\x08\\x64istance\\x18\\x02 \\x01(\\x02\\x12\\r\\n\\x05\\x61ngle\\x18\\x03 \\x01(\\x05\\">\\n\\x05point\\x12\\x10\\n\\x08latitude\\x18\\x01 \\x01(\\x02\\x12\\x11\\n\\tlongitude\\x18\\x02 \\x01(\\x02\\x12\\x10\\n\\x08\\x61ltitude\\x18\\x03 \\x01(\\x02\\"6\\n\\twaypoints\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x05\\x12\\x1d\\n\\x06points\\x18\\x02 \\x03(\\x0b\\x32\\r.mc_rpc.point\\"\\x10\\n\\x02id\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x02*\\x94\\x01\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01\\x12\\x0c\\n\\x07INVALID\\x10\\xee\\x01\\x12\\x08\\n\\x03\\x41NY\\x10\\xff\\x01\\x32\\xbd\\x04\\n\\x02\\x46\\x43\\x12-\\n\\x0bResetLoiter\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12\\x32\\n\\nControlFRU\\x12\\x10.mc_rpc.movement\\x1a\\x10.mc_rpc.response\\"\\x00\\x12+\\n\\x07SetGear\\x12\\x0c.mc_rpc.Gear\\x1a\\x10.mc_rpc.response\\"\\x00\\x12<\\n\\x0eTargetByMetres\\x12\\x16.mc_rpc.DistanceMetres\\x1a\\x10.mc_rpc.response\\"\\x00\\x12:\\n\\rTargetByAngle\\x12\\x15.mc_rpc.DistanceAngle\\x1a\\x10.mc_rpc.response\\"\\x00\\x12\\x32\\n\\tPlanRoute\\x12\\x11.mc_rpc.waypoints\\x1a\\x10.mc_rpc.response\\"\\x00\\x12(\\n\\x06Guided\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12%\\n\\x03RTL\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12&\\n\\x04\\x41uto\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12+\\n\\tAI_Guided\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12(\\n\\x06\\x41I_RTL\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x12)\\n\\x07\\x41I_Auto\\x12\\n.mc_rpc.id\\x1a\\x10.mc_rpc.response\\"\\x00\\x62\\x06proto3')$/;"	kind:variable	line:23
+serialized_pb	protobuf/oa_rpc_pb2.py	/^  serialized_pb=_b('\\n\\x0coa_rpc.proto\\x12\\x06oa_rpc\\"\\xac\\x01\\n\\x0b\\x46ullContext\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x0e\\n\\x06target\\x18\\x02 \\x01(\\x05\\x12\\x0f\\n\\x07\\x65psilon\\x18\\x03 \\x01(\\x05\\x12\\x1f\\n\\x07\\x63urrent\\x18\\x04 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\x12\\"\\n\\nlast_state\\x18\\x05 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\x12+\\n\\x13last_previous_state\\x18\\x06 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\":\\n\\x0bSemiContext\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action\\"7\\n\\x08Strategy\\x12\\n\\n\\x02id\\x18\\x01 \\x01(\\x04\\x12\\x1f\\n\\x07\\x61\\x63tions\\x18\\x02 \\x03(\\x0e\\x32\\x0e.oa_rpc.Action*\\x94\\x01\\n\\x06\\x41\\x63tion\\x12\\x08\\n\\x04STOP\\x10\\x00\\x12\\x0b\\n\\x07\\x46ORWARD\\x10\\x01\\x12\\x0c\\n\\x08\\x42\\x41\\x43KWARD\\x10\\x02\\x12\\x0c\\n\\x08LEFT_YAW\\x10\\x04\\x12\\r\\n\\tRIGHT_YAW\\x10\\x08\\x12\\r\\n\\tLEFT_ROLL\\x10\\x10\\x12\\x0e\\n\\nRIGHT_ROLL\\x10 \\x12\\x06\\n\\x02UP\\x10@\\x12\\t\\n\\x04\\x44OWN\\x10\\x80\\x01\\x12\\x0c\\n\\x07INVALID\\x10\\xee\\x01\\x12\\x08\\n\\x03\\x41NY\\x10\\xff\\x01\\x32\\x87\\x01\\n\\x11ObstacleAvoidance\\x12\\x38\\n\\rFullAutomatic\\x12\\x13.oa_rpc.FullContext\\x1a\\x10.oa_rpc.Strategy\\"\\x00\\x12\\x38\\n\\rSemiAutomatic\\x12\\x13.oa_rpc.SemiContext\\x1a\\x10.oa_rpc.Strategy\\"\\x00\\x62\\x06proto3')$/;"	kind:variable	line:23
 serialized_start	AF_Avoid/oa_rpc_pb2.py	/^  serialized_start=199,$/;"	kind:variable	line:199
 serialized_start	AF_Avoid/oa_rpc_pb2.py	/^  serialized_start=25,$/;"	kind:variable	line:161
 serialized_start	AF_Avoid/oa_rpc_pb2.py	/^  serialized_start=259,$/;"	kind:variable	line:237
@@ -1535,7 +2316,39 @@ serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=480,$/;"	kind:va
 serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=552,$/;"	kind:variable	line:457
 serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=669,$/;"	kind:variable	line:593
 serialized_start	protobuf/FlightLog_pb2.py	/^  serialized_start=95,$/;"	kind:variable	line:107
-serve	AF_Avoid/oa_rpc_server.py	/^def serve():$/;"	kind:function	line:34
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=161,$/;"	kind:variable	line:241
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=176,$/;"	kind:variable	line:272
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=202,$/;"	kind:variable	line:317
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=267,$/;"	kind:variable	line:362
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=335,$/;"	kind:variable	line:393
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=380,$/;"	kind:variable	line:438
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=444,$/;"	kind:variable	line:469
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=493,$/;"	kind:variable	line:500
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=52,$/;"	kind:variable	line:217
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=537,$/;"	kind:variable	line:524
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=547,$/;"	kind:variable	line:548
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=554,$/;"	kind:variable	line:572
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=562,$/;"	kind:variable	line:596
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=572,$/;"	kind:variable	line:620
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=585,$/;"	kind:variable	line:644
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=595,$/;"	kind:variable	line:668
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=606,$/;"	kind:variable	line:699
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=654,$/;"	kind:variable	line:74
+serialized_start	protobuf/for_mc_pb2.py	/^  serialized_start=781,$/;"	kind:variable	line:145
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=118,$/;"	kind:variable	line:209
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=153,$/;"	kind:variable	line:254
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=212,$/;"	kind:variable	line:299
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=24,$/;"	kind:variable	line:133
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=274,$/;"	kind:variable	line:344
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=338,$/;"	kind:variable	line:382
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=394,$/;"	kind:variable	line:413
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=413,$/;"	kind:variable	line:80
+serialized_start	protobuf/mc_rpc_pb2.py	/^  serialized_start=61,$/;"	kind:variable	line:171
+serialized_start	protobuf/oa_rpc_pb2.py	/^  serialized_start=199,$/;"	kind:variable	line:199
+serialized_start	protobuf/oa_rpc_pb2.py	/^  serialized_start=25,$/;"	kind:variable	line:161
+serialized_start	protobuf/oa_rpc_pb2.py	/^  serialized_start=259,$/;"	kind:variable	line:237
+serialized_start	protobuf/oa_rpc_pb2.py	/^  serialized_start=317,$/;"	kind:variable	line:80
+serve	AF_Avoid/oa_rpc_server.py	/^def serve():$/;"	kind:function	line:36
 setElevation	AF_Sensors/Baro.py	/^    def setElevation(self, elevation):$/;"	kind:member	line:63
 setElevationFt	AF_Sensors/Baro.py	/^    def setElevationFt(self, elevation):$/;"	kind:member	line:66
 setI2c	AF_Sensors/Baro.py	/^    def setI2c(self, i2c):$/;"	kind:member	line:69
@@ -1599,6 +2412,37 @@ syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:373
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:453
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:589
 syntax	protobuf/FlightLog_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:65
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:213
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:23
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:237
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:268
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:313
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:358
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:389
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:434
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:465
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:496
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:520
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:544
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:568
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:592
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:616
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:640
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:664
+syntax	protobuf/for_mc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:695
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:129
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:167
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:205
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:22
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:250
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:295
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:340
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:378
+syntax	protobuf/mc_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:409
+syntax	protobuf/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:157
+syntax	protobuf/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:195
+syntax	protobuf/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:22
+syntax	protobuf/oa_rpc_pb2.py	/^  syntax='proto3',$/;"	kind:variable	line:233
 takeoff	AF_Copter/vehicle.py	/^    def takeoff(self, alt=5):$/;"	kind:member	line:147
 test.py	AF_uORB/test.py	1;"	kind:file	line:1
 test.py	examples/test.py	1;"	kind:file	line:1
@@ -1655,6 +2499,51 @@ type	AF_GCS/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:64
 type	AF_GCS/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:68
 type	AF_GCS/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:72
 type	AF_GCS/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:76
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:101
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:105
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:109
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:113
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:117
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:121
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:125
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:129
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:133
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:137
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:141
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:38
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:42
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:46
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:50
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:54
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:58
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:62
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:66
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:70
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:89
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:93
+type	protobuf/for_mc_pb2.py	/^      type=None),$/;"	kind:variable	line:97
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:36
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:40
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:44
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:48
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:52
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:56
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:60
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:64
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:68
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:72
+type	protobuf/mc_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:76
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:36
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:40
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:44
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:48
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:52
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:56
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:60
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:64
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:68
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:72
+type	protobuf/oa_rpc_pb2.py	/^      type=None),$/;"	kind:variable	line:76
 uORB	AF_uORB/uORB.py	/^class uORB(threading.Thread):$/;"	kind:class	line:15
 uORB.py	AF_uORB/uORB.py	1;"	kind:file	line:1
 unpack	AF_Avoid/lidarProxy.py	/^def unpack(message):$/;"	kind:function	line:122
@@ -1662,9 +2551,9 @@ unpack_actions	AF_Avoid/lidar_rpc.py	/^def unpack_actions(actions):$/;"	kind:fun
 up_brake	AF_Copter/vehicle.py	/^    def up_brake(self):$/;"	kind:member	line:266
 up_metres	AF_Copter/vehicle.py	/^    def up_metres(self, altitude, relative=True):$/;"	kind:member	line:171
 update	AF_Sensors/Baro.py	/^    def update(self, dictories):$/;"	kind:member	line:47
-update	AF_Sensors/GPS.py	/^    def update(self, dictories):$/;"	kind:member	line:35
-update	AF_Sensors/IMU.py	/^    def update(self, dictories):$/;"	kind:member	line:55
-update	AF_Sensors/compass.py	/^    def update(self, dictories):$/;"	kind:member	line:35
+update	AF_Sensors/GPS.py	/^    def update(self, dictories):$/;"	kind:member	line:36
+update	AF_Sensors/IMU.py	/^    def update(self, dictories):$/;"	kind:member	line:58
+update	AF_Sensors/compass.py	/^    def update(self, dictories):$/;"	kind:member	line:45
 update_Baro	AF_uORB/uORB.py	/^    def update_Baro(self):$/;"	kind:member	line:177
 update_GPS	AF_uORB/uORB.py	/^    def update_GPS(self):$/;"	kind:member	line:158
 update_attitude	AF_uORB/uORB.py	/^    def update_attitude(self, ProtoAttitude, Attitude):$/;"	kind:member	line:153
@@ -1679,19 +2568,24 @@ values	AF_Avoid/oa_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
 values	AF_GCS/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:34
 values	AF_GCS/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:85
 values	AF_GCS/mc_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
+values	protobuf/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:34
+values	protobuf/for_mc_pb2.py	/^  values=[$/;"	kind:variable	line:85
+values	protobuf/mc_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
+values	protobuf/oa_rpc_pb2.py	/^  values=[$/;"	kind:variable	line:32
 vehicle	AF_Avoid/lidar.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:106
-vehicle	AF_Avoid/lidar_rpc.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:293
-vehicle	AF_Copter/vehicle.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:573
+vehicle	AF_Avoid/lidar_rpc.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:296
+vehicle	AF_Copter/vehicle.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:577
 vehicle	AF_GCS/GCSProxy.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:127
-vehicle	AF_GCS/GCS_Proto.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:316
+vehicle	AF_GCS/GCS_Proto.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:128
 vehicle	AF_GCS/GCS_RPC.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:175
+vehicle	AF_GCS/GCS_Redis.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:104
 vehicle	AF_GCS/Test_GCS_Proto.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:171
-vehicle	AF_GCS/cloud.py	/^    vehicle = Vehicle(ORB)$/;"	kind:variable	line:104
 vehicle	examples/main.py	/^    vehicle = init_vehicle(ORB)$/;"	kind:variable	line:20
 vehicle.py	AF_Copter/vehicle.py	1;"	kind:file	line:1
 watch	lib/tools.py	/^    def watch(self):$/;"	kind:member	line:82
 waypoint.py	AF_Copter/waypoint.py	1;"	kind:file	line:1
 waypoints	AF_GCS/mc_rpc_pb2.py	/^waypoints = _reflection.GeneratedProtocolMessageType('waypoints', (_message.Message,), dict($/;"	kind:variable	line:471
+waypoints	protobuf/mc_rpc_pb2.py	/^waypoints = _reflection.GeneratedProtocolMessageType('waypoints', (_message.Message,), dict($/;"	kind:variable	line:471
 wp	AF_Copter/waypoint.py	/^    wp = Waypoint(ORB)$/;"	kind:variable	line:110
 yaw_left	AF_Copter/vehicle.py	/^    def yaw_left(self):$/;"	kind:member	line:220
 yaw_left_brake	AF_Copter/vehicle.py	/^    def yaw_left_brake(self):$/;"	kind:member	line:230

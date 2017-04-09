@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+import sys
+sys.path.append("..")
 import time
-import for_mc_pb2 as mc
-from GCS_Proto import deserialize, parse_proto
+import protobuf.for_mc_pb2 as mc
+from Parse_Proto import parse_proto, deserialize
 from lib.logger import logger
 
 
@@ -174,13 +177,13 @@ if __name__ == "__main__":
     _parser = parse_proto(vehicle, lidar)
 
     messages = [
-        # Test_ResetLoiter(),
-        # Test_SetGear(),
-        # Test_Cancel(),
-        # Test_TargetByMetres(),
-        # Test_TargetByAngle(),
-        # Test_PlanRoute(),
-        # Test_ControlFRU(),
+        Test_ResetLoiter(),
+        Test_SetGear(),
+        Test_Cancel(),
+        Test_TargetByMetres(),
+        Test_TargetByAngle(),
+        Test_PlanRoute(),
+        Test_ControlFRU(),
         # Test_Guided(),
         # Test_RTL(),
         # Test_Auto(),

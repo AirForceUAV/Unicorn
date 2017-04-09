@@ -140,9 +140,9 @@ def sin(angle):
 
 if __name__ == '__main__':
     loc = [36.1111, 116.2222]
-    # print get_location_metres(loc, 20, 0)
-    # print get_location_metres(loc, 0, 60)
-    # print dec2hex(1024)
-    TLocation = get_location_metres(loc, 1000, 1000)
+    TLocation = get_location_metres(loc, 100, 0)
+    distance=get_distance_metres(loc,TLocation)
+    print distance
+    print get_bearing(loc,TLocation)
     H2TAngle = angle_heading_target(loc, TLocation, 90)
     print H2TAngle

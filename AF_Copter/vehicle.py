@@ -19,9 +19,10 @@ class Vehicle(Attribute):
     def __init__(self, ORB):
         super(Vehicle, self).__init__(ORB)
         self.moveTime = 2
-        self.Epsilon = 20
         self.radius = 5
         self.frequence = 1
+        self.Epsilon_Min = 20
+        self.Epsilon_Max = 45
         self.prepre_state = [0]
         self.pre_state = [0]
         self._state = [0]
@@ -29,7 +30,6 @@ class Vehicle(Attribute):
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
-
 
     def _brake(self):
         self.send_pwm(self.subscribe('LoiterPWM'))
@@ -344,15 +344,15 @@ class Vehicle(Attribute):
                 angle = angle_heading_target(CLocation, target, CYaw)
 
                 if not self.InAngle(angle, 90) or distance <= radius:
+                # if distance <= radius:
                     logger.info("Reached Target!")
                     self.brake()
                     return True
+                Epsilon = math.degrees(math.asin(radius / distance))
+                Epsilon = self.Filter_Epsilon(Epsilon)
+                logger.debug('{} {} {}'.format(distance, angle, Epsilon))
 
-                EAngle = int(math.degrees(math.asin(radius / distance)))
-
-                logger.debug('{} {} {}'.format(distance, angle, EAngle))
-
-                if not self.InAngle(angle, max(EAngle, self.Epsilon)):
+                if not self.InAngle(angle, Epsilon):
                     self.brake()
                     self.condition_yaw(angle)
                 self.forward()
@@ -382,22 +382,22 @@ class Vehicle(Attribute):
                 distance = get_distance_metres(CLocation, target)
                 angle = angle_heading_target(CLocation, target, CYaw)
 
-                if not self.InAngle(angle, 90) or distance <= radius:
-                    # if distance <= radius:
+                # if not self.InAngle(angle, 90) or distance <= radius:
+                if distance <= radius:
                     logger.info("Reached Target Waypoint!")
                     self.brake()
                     return True
-                EAngle = int(math.degrees(math.asin(radius / distance)))
+                Epsilon = math.degrees(math.asin(radius / distance))
+                Epsilon = self.Filter_Epsilon(Epsilon)
+                logger.debug('{} {} {}'.format(distance, angle, Epsilon))
 
-                logger.debug('{} {} {}'.format(distance, angle, EAngle))
-
-                if self.InAngle(angle, max(EAngle, self.Epsilon)):
+                if self.InAngle(angle, Epsilon):
                     self.control_FRU(ELE=1)
                 else:
-                    if angle > EAngle and angle <= 90:
+                    if angle > Epsilon and angle <= 90:
                         logger.debug('Roll Left')
                         self.control_FRU(AIL=-1, ELE=1)
-                    elif angle >= 270 and angle < 360 - EAngle:
+                    elif angle >= 270 and angle < 360 - Epsilon:
                         logger.debug('Roll Right')
                         self.control_FRU(AIL=1, ELE=1)
                     else:
@@ -439,9 +439,13 @@ class Vehicle(Attribute):
             self.brake()
             logger.error(e)
             return False
+    
+    def Filter_Epsilon(self,angle):
+        Epsilon = min(max(angle, self.Epsilon_Min), self.Epsilon_Max)
+        return int(Epsilon)
 
-    def InAngle(self, angle, EAngle):
-        if angle < 360 - EAngle and angle > EAngle:
+    def InAngle(self, angle, Epsilon):
+        if angle < 360 - Epsilon and angle > Epsilon:
             return False
         else:
             return True
@@ -571,7 +575,7 @@ if __name__ == "__main__":
 
     '''Initialize UAV'''
     vehicle = init_vehicle(ORB)
-    time.sleep(2)
+    time.sleep(1)
     # vehicle.set_target(100,0)
 
     commands = {'stop': 'brake()',
@@ -604,7 +608,7 @@ if __name__ == "__main__":
         if cmd == None:
             print 'input is error {}'.format(enter)
             continue
-        elif cmd == 'esc':
+        elif cmd in ['esc', 'b']:
             break
 
         command = 'vehicle.' + cmd

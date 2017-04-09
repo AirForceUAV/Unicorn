@@ -1,35 +1,37 @@
 #! /usr/bin/env python
 # coding:utf-8
 
+import sys
+sys.path.append("..")
 import grpc
-import mc_rpc_pb2
-import mc_rpc_pb2_grpc
+import protobuf.mc_rpc_pb2 as mc
+import protobuf.mc_rpc_pb2_grpc as mc_grpc
 
 
 class GCS_Stub:
 
     def __init__(self):
         channel = grpc.insecure_channel('localhost:50051')
-        self.stub = mc_rpc_pb2_grpc.FCStub(channel)
+        self.stub = mc_grpc.FCStub(channel)
 
     def ControlFRU(self, context):
         response = self.stub.ControlFRU.future(
-            mc_rpc_pb2.movement(**context), timeout=5).result()
+            mc.movement(**context), timeout=5).result()
         return response.id, response.ack
 
     def SetGear(self, context):
         response = self.stub.SetGear.future(
-            mc_rpc_pb2.Gear(**context), timeout=5).result()
+            mc.Gear(**context), timeout=5).result()
         return response.id, response.ack
 
     def PlanRoute(self, context):
         response = self.stub.PlanRoute.future(
-            mc_rpc_pb2.waypoints(**context), timeout=5).result()
+            mc.waypoints(**context), timeout=5).result()
         return response.id, response.ack
 
     def TargetByMetres(self, context):
         response = self.stub.TargetByMetres.future(
-            mc_rpc_pb2.DistanceMetres(**context), timeout=5).result()
+            mc.DistanceMetres(**context), timeout=5).result()
         return response.id, response.ack
 
 
@@ -49,7 +51,7 @@ def test_PlanRoute():
               {'latitude': 34, 'longitude': 119, 'altitude': 10}]
     waypoints = []
     for point in points:
-        p = mc_rpc_pb2.point(**point)
+        p = mc.point(**point)
         waypoints.append(p)
     # print waypoints
     result = {'id': 3, 'points': waypoints}
@@ -69,13 +71,13 @@ def test_TargetByAngle():
 if __name__ == '__main__':
     stub = GCS_Stub()
     try:
-        # id, ACK = stub.ControlFRU(test_ControlFRU())
-        # print id, ACK
+        id, ACK = stub.ControlFRU(test_ControlFRU())
+        print id, ACK
         id, ACK = stub.PlanRoute(test_PlanRoute())
         print id, ACK
-        # id, ACK = stub.SetGear(test_SetGear())
-        # print id, ACK
-        # id, ACK = stub.TargetByMetres(test_TargetByMetres())
-        # print id, ACK
+        id, ACK = stub.SetGear(test_SetGear())
+        print id, ACK
+        id, ACK = stub.TargetByMetres(test_TargetByMetres())
+        print id, ACK
     except grpc.RpcError, e:
         print e

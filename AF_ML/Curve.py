@@ -163,8 +163,9 @@ if __name__ == '__main__':
 
     collect_pwm(ORB)
 
+    print('Generate Ratio ...')
     generate_ratio()
-
+    print("Check Error ...")
     check_error()
 
     # print THR2PIT(1000)

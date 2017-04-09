@@ -103,9 +103,6 @@ class Config:
         _sbus['bytesize'] = serial.EIGHTBITS
         return _sbus
 
-    # def get_uart(self, sensor):
-    #     return (conf[sensor][port], conf[sensor][baudrate])
-
     def lidar_sock(self, conf):
         lidar = conf['MQTT']['lidar']
         return (lidar['host'], lidar['port'])

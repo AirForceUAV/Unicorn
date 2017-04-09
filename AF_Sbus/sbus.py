@@ -201,7 +201,7 @@ def build_sbus():
             time.sleep(.5)
 
 if __name__ == '__main__':
-    package = '0f00a420a809086a504b182c00042000010807380010800014'
+    # package = '0f00a420a809086a504b182c00042000010807380010800014'
     package = '0f600135A8410D165003102C00042000010807380010800014'
     sbus = SBUS()
     package = sbus.filter(package)

@@ -7,21 +7,12 @@ import time
 import math
 import paho.mqtt.client as mqtt
 from lib.science import *
-from lib.tools import Singleton, CancelWatcher
+from lib.tools import Singleton, CancelWatcher, exe_actions
 from lib.config import config
 from lib.logger import logger
 from oa_rpc_client import OA_Stub
-import oa_rpc_pb2 as oa
+import protobuf.oa_rpc_pb2 as oa
 import grpc
-
-map_action = {
-    oa.STOP: {},
-    oa.FORWARD: {'ELE': 1}, oa.BACKWARD: {'ELE': -1},
-    oa.RIGHT_YAW: {'RUD': 1}, oa.LEFT_YAW: {'RUD': -1},
-    oa.RIGHT_ROLL: {'AIL': 1}, oa.LEFT_ROLL: {'AIL': -1},
-    oa.UP: {'THR': 1}, oa.DOWN: {'THR': -1},
-    oa.INVALID: None, oa.ANY: {},
-}
 
 
 def init_mqtt(userdata):
@@ -72,34 +63,12 @@ def on_message(client, userdata, msg):
         client.publish('ACK', 'ack')
 
 
-def unpack_actions(actions):
-
-    result = {}
-    for action in actions:
-        if action in [oa.STOP, oa.ANY]:
-            result = {}
-            break
-        dictaction = map_action.get(action)
-        assert not (dictaction is None or dictaction.keys()[
-                    0] in result), 'Command is invalid. Note: Command is {}'.format(actions)
-        result = dict(result, **dictaction)
-    return result
-
-
-def exe_actions(vehicle, actions):
-    result = unpack_actions(actions)
-
-    logger.debug('Execute Action:{}'.format(result))
-    vehicle.control_FRU(**result)
-
-
 class Lidar(object):
     __metaclass__ = Singleton
 
     def __init__(self, vehicle):
         self.full_id = 0
         self.semi_id = 0
-        self.Epsilon_Min = 20
         self.vehicle = vehicle
         self.stub = OA_Stub()
         userdata = {'stub': self.stub,
@@ -110,7 +79,7 @@ class Lidar(object):
 
     def full_auto(self):
         watcher = CancelWatcher()
-        interval = 2
+        interval = 0.1
         radius = self.vehicle.radius
         try:
             target = self.vehicle.get_target()
@@ -127,7 +96,7 @@ class Lidar(object):
         while not watcher.IsCancel() and retry_times < 5:
             try:
                 context = self.full_auto_context(self.vehicle._state)
-                logger.debug('Send to lidar {}'.format(context))
+                logger.debug('Send {} to lidar'.format(context))
                 if context == True:
                     logger.info("Reached Target!")
                     self.vehicle.brake()
@@ -138,12 +107,13 @@ class Lidar(object):
                 return False
             try:
                 id, actions = self.stub.FullAuto(context)
-                logger.debug('Receive from lidar {}'.format(actions))
+                logger.debug('Receive {} from lidar'.format(actions))
 
             except grpc.RpcError, e:
+                retry_times += 1
                 logger.critical(e)
                 self.vehicle.brake()
-                return False
+                continue
 
             # print 'Send {id} {current} {last_state} {last_previous_state}'.format(**context)
             # print 'Recv',actions
@@ -154,12 +124,13 @@ class Lidar(object):
                 # actions= [0xee]
                 exe_actions(self.vehicle, actions)
                 self.vehicle._state = actions
-                retry_times = 0
+
             except AssertionError, e:
                 retry_times += 1
                 logger.error(e)
                 logger.warn('Retry times:{}'.format(retry_times))
                 continue
+            retry_times = 0
             time.sleep(interval)
         return False
 
@@ -229,11 +200,13 @@ class Lidar(object):
 
             angle = angle_heading_target(CLocation, target, CYaw)
             distance = get_distance_metres(CLocation, target)
-            Epsilon = math.degrees(math.asin(radius / distance))
 
-            # if not vehicle.InAngle(angle, 90) or distance <= radius:
             if distance <= radius:
                 return True
+
+            Epsilon = math.degrees(math.asin(radius / distance))
+            Epsilon = self.vehicle.Filter_Epsilon(Epsilon)
+            # if not vehicle.InAngle(angle, 90) or distance <= radius:
 
             if command != self.vehicle._state:
                 self.vehicle.prepre_state = self.vehicle.pre_state
@@ -245,7 +218,7 @@ class Lidar(object):
             context = {
                 'id': self.full_id,
                 'target': angle,
-                'epsilon': max(int(Epsilon), self.Epsilon_Min),
+                'epsilon': Epsilon,
                 'current': self.vehicle._state,
                 'last_state': self.vehicle.pre_state,
                 'last_previous_state': self.vehicle.prepre_state}
@@ -293,8 +266,8 @@ if __name__ == "__main__":
     vehicle = init_vehicle(ORB)
     lidar = Lidar(vehicle)
     time.sleep(1)
-    # vehicle.set_target(-30, 0)
-    # lidar.Guided()
+    vehicle.set_target(-30, 0)
+    lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()
     # lidar.semi_auto(16)

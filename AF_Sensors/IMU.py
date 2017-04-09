@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.append('..')
 import threading
 import time
 from lib.science import CutFrame2
@@ -49,7 +51,7 @@ class IMU(threading.Thread):
             frame = self.RawFrame()
             Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)
             dic = {'IMU_State': True, 'ACC': Acc, 'GYR': Gyr,
-                   'MAG': Mag, 'EUL': Eul, 'QUA': Qua}
+                   'MAG': Ma               info = sys.exc_info()g, 'EUL': Eul, 'QUA': Qua}
             self.update(dic)
             time.sleep(.01)
 
@@ -162,4 +164,5 @@ if __name__ == "__main__":
         Eul = ORB.subscribe('EUL')
         Qua = ORB.subscribe('QUA')
         print 'ACC:{}, GYR:{}, MAG:{}, EUL:{}, QUA:{}'.format(Acc, Gyr, Mag, Eul, Qua)
-        raw_input('Next')
+        # raw_input('Next')
+        time.sleep(.1)
