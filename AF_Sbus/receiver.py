@@ -50,6 +50,7 @@ class Sbus_Receiver(threading.Thread):
             if not self.check(input):
                 logger.warn('Receive SBUS is invalid')
                 continue
+            # print 'input',input
             self.publish('ChannelsInput', input)
             self.publish('Sbus_State', True)
             time.sleep(.01)
@@ -90,10 +91,11 @@ if __name__ == "__main__":
     Watcher()
 
     sbus_receive_start(ORB)
+
     from AF_ML.Curve import THR2PIT
     while True:
         input = ORB.subscribe('ChannelsInput')
         print input
-        # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
+        # print input[2],input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
         # raw_input('Next')
-        time.sleep(1)
+        time.sleep(.1)

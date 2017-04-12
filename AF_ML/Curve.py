@@ -113,7 +113,7 @@ def generate_ratio():
            for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
 
     with open(ratio_file, 'w') as f:
-        message = toml.dumps(message)
+        message = toml.dumps(T2P)
         print message
         f.write(message)
 
@@ -152,12 +152,12 @@ if __name__ == '__main__':
 
     from lib.tools import Watcher
     from AF_uORB.uORB import uORB
-    from AF_Sbus.receiver import sbus_recevie_start
+    from AF_Sbus.receiver import sbus_receive_start
 
     ORB = uORB()
     Watcher()
 
-    sbus_recevie_start(ORB)
+    sbus_receive_start(ORB)
 
     print('Sbus is OK')
 
