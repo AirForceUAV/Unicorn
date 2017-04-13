@@ -88,7 +88,7 @@ class Attribute(object):
         phase[self.RUD[0]] = self.RUD[5]
         # phase[self.mode[0]] = 1
         if config.drone['Model'] == 'HELI':
-            phase[self.PIT[0]] = self.PIT[5]
+            phase[self.PIT[0]] = self.PIT[4]
         return phase
 
     def set_channels_mid(self):

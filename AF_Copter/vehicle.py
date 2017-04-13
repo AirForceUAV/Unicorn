@@ -55,6 +55,10 @@ class Vehicle(Attribute):
         self.send_pwm(channels)
 
     def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+        channels = self.BaseChannels(AIL, ELE, THR, RUD, Mode)
+        self.send_pwm(channels)
+
+    def BaseChannels(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
@@ -62,7 +66,7 @@ class Vehicle(Attribute):
         channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
-        self.send_pwm(channels)
+        return channels
 
     def _construct_channel(self, channels):
         if config.drone['Model'] == 'HELI':
@@ -277,11 +281,11 @@ class Vehicle(Attribute):
 
     def send_pwm(self, channels):
         # logger.debug(channels)
-        # logger.debug(self.analysis_channels(channels))
+        logger.debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 
     def analysis_channels(self, channels):
-        a = [x - y for x, y in zip(channels, self.subscribe('LoiterPWM'))]
+        a = [x - y for x, y in zip(channels, self.BaseChannels())]
         return [x * y for x, y in zip(a, self.Phase())]
 
     def isStop(self, heading, target, sign):
@@ -344,7 +348,7 @@ class Vehicle(Attribute):
                 angle = angle_heading_target(CLocation, target, CYaw)
 
                 if not self.InAngle(angle, 90) or distance <= radius:
-                # if distance <= radius:
+                    # if distance <= radius:
                     logger.info("Reached Target!")
                     self.brake()
                     return True
@@ -439,8 +443,8 @@ class Vehicle(Attribute):
             self.brake()
             logger.error(e)
             return False
-    
-    def Filter_Epsilon(self,angle):
+
+    def Filter_Epsilon(self, angle):
         Epsilon = min(max(angle, self.Epsilon_Min), self.Epsilon_Max)
         return int(Epsilon)
 
@@ -598,18 +602,19 @@ if __name__ == "__main__":
                 'auto': 'Auto()',
                 'disarm': 'disarm()',
                 'rtl': 'RTL()',
-                'esc': 'esc',
                 's': 'brake()',
+                'thr10': 'control_percent(THR=10)',
+                'thr0': 'control_percent()',
                 }
 
     while True:
         enter = raw_input('Input:').strip()
         cmd = commands.get(enter)
+        if enter == 'q':
+            break
         if cmd == None:
             print 'input is error {}'.format(enter)
             continue
-        elif cmd in ['esc', 'b']:
-            break
 
         command = 'vehicle.' + cmd
         print 'Execute command ->', command
