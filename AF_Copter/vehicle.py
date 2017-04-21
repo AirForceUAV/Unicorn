@@ -603,7 +603,7 @@ if __name__ == "__main__":
                 'disarm': 'disarm()',
                 'rtl': 'RTL()',
                 's': 'brake()',
-                'thr10': 'control_percent(THR=10)',
+                'thr20': 'control_percent(THR=20)',
                 'thr0': 'control_percent()',
                 }
 

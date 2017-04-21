@@ -64,7 +64,7 @@ class Executor(threading.Thread):
         while True:
             if self.work_queue.empty() and self.vehicle.isArmed():
                 self.vehicle._brake()
-                time.sleep(.01)
+                time.sleep(.1)
                 continue
             message = self.work_queue.get().split('#')
             try:
