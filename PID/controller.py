@@ -154,9 +154,9 @@ if __name__ == "__main__":
 
     p = PIDC(P=0.3)
 
-    p.yaw_pid(0, 90)
+    p.yaw_pid(0, 90,0)
 
-    p.yaw_pid(10, 90)
-    p.yaw_pid(20, 90)
-    p.yaw_pid(30, 90)
+    p.yaw_pid(10, 90,0)
+    p.yaw_pid(20, 90,0)
+    p.yaw_pid(30, 90,0)
     # p.show()

@@ -116,4 +116,5 @@ commands = [
     semi = 'Control'
     [topic.subscribe]
     full = 'Full-Automatic'
-    semi = 'Semi-Automatic'
+    semi = 'Semi-Automatic'# from lib.science import abs_angle
+
