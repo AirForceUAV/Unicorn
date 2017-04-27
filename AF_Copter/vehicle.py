@@ -55,20 +55,32 @@ class Vehicle(Attribute):
         self._construct_channel(channels)
         self.send_pwm(channels)
 
-    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
-        channels = self.BaseChannels(AIL, ELE, THR, RUD, Mode)
+    def control_percent(self, AIL=0, ELE=0, RUD=0, Mode=2):
+        channels = self.BaseChannels(AIL, ELE, RUD, Mode)
         # print channels
         self.send_pwm(channels)
 
-    def BaseChannels(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+    def BaseChannels(self, AIL=0, ELE=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
-        channels[self.THR[0]] = self.control_THR(THR)
+        # channels[self.THR[0]] = self.control_THR(THR)
+        channels[self.THR[0]] = self.THR[2]
         channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
         return channels
+    
+    def control_THR(self, percent):
+        # 0 <= percent <= 100
+        THR = self.THR
+        rate = percent / 100.0
+        section = THR[4]
+        if THR[5] < 0:
+            rate = 1 - rate
+        variation = int(section * rate)
+        result = THR[1] + variation
+        return result
 
     def _construct_channel(self, channels):
         if config.drone['Model'] == 'HELI':
@@ -123,17 +135,6 @@ class Vehicle(Attribute):
                 self.control_percent(THR=begin)
                 begin -= 1
                 time.sleep(0.05)
-
-    def control_THR(self, percent):
-        # 0 <= percent <= 100
-        THR = self.THR
-        rate = percent / 100.0
-        section = THR[4]
-        if THR[5] < 0:
-            rate = 1 - rate
-        variation = int(section * rate)
-        result = THR[2] + variation
-        return result
 
     def arm(self):
         logger.info("Arming ...")
