@@ -27,7 +27,7 @@
 #==============================================================================
 import sys
 sys.path.append('..')
-from ivPID.PID import PID
+from PID_Source.PID import PID
 import time
 
 import numpy as np
