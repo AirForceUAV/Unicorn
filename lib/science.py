@@ -90,6 +90,45 @@ def angle_diff(minuend, subtrahend, sign=1):
     return angle
 
 
+def direction(CYaw, target_angle):
+    # rignt = 1
+    # left = 2
+    # difference = feedback - setpoint
+    # if difference >= 0:
+    #     if difference >= 180:
+    #         direct = 1
+    #     elif difference < 180:
+    #         direct = 2
+    # if difference < 0:
+    #     if difference >= -180:
+    #         direct = 1
+    #     elif difference < -180:
+    #         direct = 2
+    # return direct  
+    TurnAngle = angle_diff(CYaw, target_angle)
+    if TurnAngle >= 0 and TurnAngle <= 180:
+        #Turn Left
+        is_cw = 1
+    else:
+        #Turn Right
+        is_cw=-1
+    return is_cw 
+
+
+# def decide(feedback, setpoint, flag):
+#     error = (360 + setpoint - feedback) % 360
+#     if (flag == 1 or flag == 2) and error > 180:
+#         error -= 360
+
+
+# def abs_angle(heading):
+#     if heading > 180:
+#         angle = 360 - heading
+#     else:
+#         angle = heading
+#     return angle
+
+
 def isNum(s):
     try:
         float(s)
@@ -141,8 +180,8 @@ def sin(angle):
 if __name__ == '__main__':
     loc = [36.1111, 116.2222]
     TLocation = get_location_metres(loc, 100, 0)
-    distance=get_distance_metres(loc,TLocation)
+    distance = get_distance_metres(loc, TLocation)
     print distance
-    print get_bearing(loc,TLocation)
+    print get_bearing(loc, TLocation)
     H2TAngle = angle_heading_target(loc, TLocation, 90)
     print H2TAngle

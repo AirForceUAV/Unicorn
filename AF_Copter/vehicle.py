@@ -26,6 +26,7 @@ class Vehicle(Attribute):
         self.prepre_state = [0]
         self.pre_state = [0]
         self._state = [0]
+        self.success_time = 30
 
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
@@ -56,6 +57,7 @@ class Vehicle(Attribute):
 
     def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = self.BaseChannels(AIL, ELE, THR, RUD, Mode)
+        # print channels
         self.send_pwm(channels)
 
     def BaseChannels(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
@@ -102,7 +104,7 @@ class Vehicle(Attribute):
             sign = -1
         elif percent > 0:
             sign = 1
-        rate = percent / 100.0
+        rate = percent * 0.01
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
         variation = int(channel[5] * section * rate)
@@ -130,7 +132,7 @@ class Vehicle(Attribute):
         if THR[5] < 0:
             rate = 1 - rate
         variation = int(section * rate)
-        result = THR[1] + variation
+        result = THR[2] + variation
         return result
 
     def arm(self):
@@ -301,12 +303,12 @@ class Vehicle(Attribute):
             logger.warn('condition_yaw() ...')
             return
         watcher = CancelWatcher()
-        assert heading >= 0 and heading < 360, 'Param-heading {} is invalid'.format(
+        assert heading > 0 and heading < 360, 'Param-heading {} is invalid'.format(
             heading)
 
         CYaw = self.get_heading()
         target_angle = angle_diff(CYaw, heading)
-        TurnAngle = angle_diff(CYaw, target_angle)
+        TurnAngle = heading
 
         if TurnAngle >= 0 and TurnAngle <= 180:
             is_cw = 1
@@ -328,6 +330,62 @@ class Vehicle(Attribute):
             time.sleep(.01)
         self.brake()
         logger.debug("Fact Angle: %d" % self.get_heading())
+
+    def condition_yaw_pid(self, heading):
+        P = 0.3
+        I = 0.1
+        D = 0.0
+        feedbacks = []
+        assert heading > 0 and heading < 360, 'Param-heading {} is invalid'.format(
+            heading)
+        watcher = CancelWatcher()
+        from PID.controller import PIDC
+        p = PIDC(P, I, D)
+        CYaw = self.get_heading()
+        feedbacks.append(CYaw)
+        origin = CYaw
+
+        target_angle = angle_diff(CYaw, heading)
+
+        # abs_angl = abs_angle(heading)
+
+        # decide_position = decide_diff(CYaw, heading)
+        # print CYaw,target_angle
+
+        if heading > 0 and heading < 180:
+            # Turn Left
+            Epsilon = 1.3 * heading
+        else:
+            # Turn Right
+            Epsilon = 1.3 * (360 - heading)
+        # print target_angle,Epsilon
+        times = 0
+        while not watcher.IsCancel() and times < self.success_time:
+            CYaw = self.get_heading()
+            feedbacks.append(CYaw)
+            if self.is_overshoot(CYaw, origin, Epsilon):
+                logger.error('overshoot')
+                break
+
+            output_uni = p.yaw_pid(CYaw, target_angle, origin)
+            # output_uni = p.yaw_pid(CYaw, target_angle, decide_position)
+
+            logger.debug('percent {}'.format(output_uni))
+            if output_uni == 0:
+                times += 1
+            else:
+                times = 0
+            self.control_percent(RUD=output_uni)
+            time.sleep(.1)
+        self.brake()
+        print 'target_angle',target_angle
+        print 'feedbacks',feedbacks
+
+    def is_overshoot(self, CYaw, origin, Epsilon):
+        TurnAngle = angle_diff(CYaw, origin)
+        if TurnAngle > 180:
+            TurnAngle = 360 - TurnAngle
+        return TurnAngle > Epsilon
 
     def _navigation(self):
         watcher = CancelWatcher()
@@ -605,6 +663,8 @@ if __name__ == "__main__":
                 's': 'brake()',
                 'thr20': 'control_percent(THR=20)',
                 'thr0': 'control_percent()',
+                'pidr': 'condition_yaw_pid(330)',
+                'pidl': 'condition_yaw_pid(30)',
                 }
 
     while True:
@@ -624,6 +684,7 @@ if __name__ == "__main__":
             info = sys.exc_info()
             print "{0}:{1}".format(*info)
             vehicle.Cancel()
+    # vehicle.condition_yaw_pid(330)
 
     # for c in config.commands:
     #     enter = raw_input(c + ' ?').strip()
