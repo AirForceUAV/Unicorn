@@ -152,7 +152,7 @@ commands = [
 [compass]
     port = '/dev/compass'
     baudrate = 9600
-    type = '2D'
+    type = '3D'
 
 [IMU]
     port = '/dev/IMU'

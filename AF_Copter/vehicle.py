@@ -70,6 +70,17 @@ class Vehicle(Attribute):
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
         return channels
+
+    def _control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+        channels = [0] * 8
+        channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
+        channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
+        channels[self.THR[0]] = self.control_THR(THR)
+        # channels[self.THR[0]] = self.THR[2]
+        channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
+        channels[self.mode[0]] = self.mode[Mode]
+        self._construct_channel(channels)
+        self.send_pwm(channels)
     
     def control_THR(self, percent):
         # 0 <= percent <= 100
@@ -283,7 +294,7 @@ class Vehicle(Attribute):
         # self.brake(1)
 
     def send_pwm(self, channels):
-        # logger.debug(channels)
+        logger.debug(channels)
         logger.debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 
@@ -368,7 +379,6 @@ class Vehicle(Attribute):
             if self.is_overshoot(CYaw, origin, Epsilon):
                 logger.error('overshoot')
                 break
-
 
             output_uni = p.yaw_pid(CYaw, target_angle, origin)
             # output_uni = p.yaw_pid(CYaw, target_angle, decide_position)
@@ -709,7 +719,8 @@ if __name__ == "__main__":
     time.sleep(1)
     # vehicle.set_target(100,0)
 
-    commands = {'stop': 'brake()',
+    commands = {'test':'_control_percent(THR=0,AIL=-20)',
+                'stop': 'brake()',
                 'arm': 'arm()',
                 'mid': 'set_channels_mid()',
                 'gear': 'set_gear(2)',
