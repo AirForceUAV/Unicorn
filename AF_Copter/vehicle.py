@@ -5,6 +5,7 @@ import sys
 sys.path.append('..')
 import time
 import math
+import numpy as np
 from attribute import Attribute
 from AF_ML.Curve import THR2PIT
 from lib.config import config
@@ -26,8 +27,7 @@ class Vehicle(Attribute):
         self.prepre_state = [0]
         self.pre_state = [0]
         self._state = [0]
-        self.success_time = 30
-
+        
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
@@ -333,15 +333,16 @@ class Vehicle(Attribute):
         logger.debug("Fact Angle: %d" % self.get_heading())
 
     def condition_yaw_pid(self, heading):
-        P = 0.3
-        I = 0.1
-        D = 0.0
+        direct=config.direction
+        overshoot_value=direct['overshoot']
+        success_time = direct['success_time']
+
         feedbacks = []
         assert heading > 0 and heading < 360, 'Param-heading {} is invalid'.format(
             heading)
         watcher = CancelWatcher()
         from PID.controller import PIDC
-        p = PIDC(P, I, D)
+        p = PIDC()
         CYaw = self.get_heading()
         feedbacks.append(CYaw)
         origin = CYaw
@@ -355,18 +356,19 @@ class Vehicle(Attribute):
 
         if heading > 0 and heading < 180:
             # Turn Left
-            Epsilon = 1.3 * heading
+            Epsilon = overshoot_value * heading
         else:
             # Turn Right
-            Epsilon = 1.3 * (360 - heading)
+            Epsilon = overshoot_value * (360 - heading)
         # print target_angle,Epsilon
         times = 0
-        while not watcher.IsCancel() and times < self.success_time:
+        while not watcher.IsCancel() and times < success_time:
             CYaw = self.get_heading()
             feedbacks.append(CYaw)
             if self.is_overshoot(CYaw, origin, Epsilon):
                 logger.error('overshoot')
                 break
+
 
             output_uni = p.yaw_pid(CYaw, target_angle, origin)
             # output_uni = p.yaw_pid(CYaw, target_angle, decide_position)
@@ -379,7 +381,73 @@ class Vehicle(Attribute):
             self.control_percent(RUD=output_uni)
             time.sleep(.1)
         self.brake()
+        print 'origin',origin
         print 'target_angle',target_angle
+        print 'feedbacks',feedbacks
+
+    def condition_speed_pid(self,target_speed=1.0):
+        watcher = CancelWatcher()
+        P = 10
+        I = 0.1
+        D = 0.0
+        feedbacks = []
+        times = 0
+
+        from PID.speed import PIDC
+
+        p = PIDC(P, I, D)
+
+        origin_acc = ORB.subscribe('ACC')[1] * 9.8
+        last_acc = origin_acc
+        last_time = time.time()
+
+        # time.sleep(0.1)
+        # y_acc = ORB.subscribe('ACC')[1] * 9.8
+
+        # y_velocity = np.trapz([origin_acc, y_acc], dx=0.1)
+        # feedbacks.append(y_velocity)
+
+
+        while not watcher.IsCancel() and times < self.success_time:
+            # origin_acc = ORB.subscribe('ACC')[1] * 9.8
+
+            time.sleep(0.1)
+
+            y_acc = ORB.subscribe('ACC')[1] * 9.8
+            
+            current_time = time.time()
+            delta_time = current_time - last_time
+
+            y_velocity = np.trapz([last_acc, y_acc], dx = delta_time)
+
+            feedbacks.append(y_velocity)
+
+            # if self.is_overshoot(y_velocity, origin, Epsilon):
+            #     logger.error('overshoot')
+            #     break
+
+            output = p.speed_pid(y_velocity, target_speed)
+
+            print delta_time  # watch time
+            print last_acc,y_acc
+            print y_velocity
+            print output
+
+            # logger.debug('percent {}'.format(output))
+            if output == 0:                # equle former value
+                times += 1
+            else:
+                times = 0
+
+            self.control_percent(ELE=output)
+
+            last_acc = y_acc
+            last_time = current_time
+
+            # time.sleep(0.1)
+        # self.brake()
+
+        print 'target_speed',target_speed
         print 'feedbacks',feedbacks
 
     def is_overshoot(self, CYaw, origin, Epsilon):
@@ -666,6 +734,7 @@ if __name__ == "__main__":
                 'thr0': 'control_percent()',
                 'pidr': 'condition_yaw_pid(330)',
                 'pidl': 'condition_yaw_pid(30)',
+                'spid':'condition_speed_pid(1.0)',
                 }
 
     while True:
@@ -685,13 +754,13 @@ if __name__ == "__main__":
             info = sys.exc_info()
             print "{0}:{1}".format(*info)
             vehicle.Cancel()
+    
     # vehicle.condition_yaw_pid(330)
-
     # for c in config.commands:
     #     enter = raw_input(c + ' ?').strip()
 
     #     if enter == 'c':
-    #         continue
+    #         
     #     elif enter == 'b':
     #         break
     #     else:

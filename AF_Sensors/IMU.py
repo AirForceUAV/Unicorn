@@ -51,7 +51,7 @@ class IMU(threading.Thread):
             frame = self.RawFrame()
             Acc, Gyr, Mag, Eul, Qua = self.ParseIMU(frame)
             dic = {'IMU_State': True, 'ACC': Acc, 'GYR': Gyr,
-                   'MAG': Ma               info = sys.exc_info()g, 'EUL': Eul, 'QUA': Qua}
+                   'MAG': Mag, 'EUL': Eul, 'QUA': Qua}
             self.update(dic)
             time.sleep(.01)
 

@@ -91,20 +91,7 @@ def angle_diff(minuend, subtrahend, sign=1):
 
 
 def direction(CYaw, target_angle):
-    # rignt = 1
-    # left = 2
-    # difference = feedback - setpoint
-    # if difference >= 0:
-    #     if difference >= 180:
-    #         direct = 1
-    #     elif difference < 180:
-    #         direct = 2
-    # if difference < 0:
-    #     if difference >= -180:
-    #         direct = 1
-    #     elif difference < -180:
-    #         direct = 2
-    # return direct  
+
     TurnAngle = angle_diff(CYaw, target_angle)
     if TurnAngle >= 0 and TurnAngle <= 180:
         #Turn Left

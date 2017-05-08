@@ -33,18 +33,22 @@ import time
 import numpy as np
 # from scipy.interpolate import spline
 from lib.science import direction
+from lib.config import config
 
 
 class PIDC:
 
-    def __init__(self, P=0.2,  I=0.0, D=0.0):
-        self.P = P
-        self.I = I
-        self.D = D
+    def __init__(self):
+        direct=config.direction
+
+        self.P = direct['P']
+        self.I = direct['I']
+        self.D = direct['D']
+        self.error = direct['error']   
+        self.max_output = direct['maxoutput']         
+        self.min = direct['min']
         self.i = 1
-        self.max_output = 15
-        self.output_max = 0
-        self.error = 4
+        self.output_max = 0  
         self.feedback_list = []
         self.time_list = []
         self.setpoint_list = []
@@ -111,6 +115,12 @@ class PIDC:
             output_uni = self.max_output * output / self.output_max
             # time.sleep(0.02)
 
+        if output_uni >= -1 * self.min and output_uni < 0:
+            output_uni = -1 * self.min
+        elif output_uni <= self.min and output_uni > 0:
+            output_uni = self.min
+
+
         self.feedback_list.append(feedback)
         self.setpoint_list.append(pid.SetPoint)
         self.output_uni_list.append(output_uni)
@@ -152,11 +162,11 @@ class PIDC:
 
 if __name__ == "__main__":
 
-    p = PIDC(P=0.3)
+    p = PIDC()
 
-    p.yaw_pid(0, 90,0)
+    # p.yaw_pid(0, 90,0)
 
-    p.yaw_pid(10, 90,0)
-    p.yaw_pid(20, 90,0)
-    p.yaw_pid(30, 90,0)
+    # p.yaw_pid(10, 90,0)
+    # p.yaw_pid(20, 90,0)
+    # p.yaw_pid(30, 90,0)
     # p.show()
