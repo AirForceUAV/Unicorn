@@ -266,11 +266,11 @@ if __name__ == "__main__":
     vehicle = init_vehicle(ORB)
     lidar = Lidar(vehicle)
     time.sleep(1)
-    vehicle.set_target(-30, 0)
+    vehicle.set_target(-50, 0)
     lidar.Guided()
     # lidar.RTL()
     # lidar.Auto()
     # lidar.semi_auto(16)
     # print 'Done'
     while True:
-        time.sleep(100)
+        time.sleep(1000)

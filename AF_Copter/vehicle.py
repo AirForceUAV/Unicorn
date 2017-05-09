@@ -765,23 +765,5 @@ if __name__ == "__main__":
             info = sys.exc_info()
             print "{0}:{1}".format(*info)
             vehicle.Cancel()
-    
-    # vehicle.condition_yaw_pid(330)
-    # for c in config.commands:
-    #     enter = raw_input(c + ' ?').strip()
-
-    #     if enter == 'c':
-    #         
-    #     elif enter == 'b':
-    #         break
-    #     else:
-    #         command = 'vehicle.' + c
-    #         print 'Execute command ->', command
-    #         try:
-    #             eval(command)
-    #         except Exception, e:
-    #             info = sys.exc_info()
-    #             print "{0}:{1}".format(*info)
-    #             vehicle.Cancel()
 
     print 'Completed'
