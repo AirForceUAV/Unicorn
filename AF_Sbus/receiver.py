@@ -97,5 +97,5 @@ if __name__ == "__main__":
         input = ORB.subscribe('ChannelsInput')
         print input
         # print input[2],input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
-        # raw_input('Next')
-        time.sleep(1)
+        raw_input('Next')
+        # time.sleep(1)

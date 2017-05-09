@@ -54,18 +54,22 @@ def change_exit():
 
 
 def collect_pwm(ORB):
-    import keyboard
+    import time
+    # import keyboard
+    # keyboard.add_hotkey('esc', change_exit)
     global exit
     global T2P_file
     raw_input('Start collecting pwm --> [enter]:start [esc]:exit')
 
-    keyboard.add_hotkey('esc', change_exit)
     THR_PIT = {}
-    while not exit:
+    times = 0
+    while times < 2000:
         input = ORB.subscribe('ChannelsInput')
         # print input
         THR_PIT[str(input[2])] = input[5]
-
+        times+=1
+        time.sleep(.01)
+        
     exit = False
 
     message = toml.dumps(THR_PIT)

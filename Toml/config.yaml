@@ -4,9 +4,9 @@ version = "beta"
 client_id = "FC"
 debug = false
 open_module = [
-    # 'Sbus',
-    # 'Compass',
-    # 'GPS',
+    'Sbus',
+    'Compass',
+    'GPS',
     # 'Baro',
     # 'IMU',
     # 'Lidar',
@@ -39,11 +39,11 @@ commands = [
     MainController='ACE_ONE'
     AIL = [1,352,1024,1696,1,20]
     ELE = [2,352,1024,1696,-1,20]
-    THR = [3,252,998,1655,1,15]
+    THR = [3,252,1174,1655,1,15]
     RUD = [4,352,1020,1696,-1,12]
     Mode = [7,487,1561,1561]
     Rate = [5,,1328,1328,1328]
-    PIT = [6,352,697,1158,-1]
+    PIT = [6,352,645,1124,-1]
     Switch = [8,487,1024,1561]
     Gear = [20,40,60]
     [System4.direction]
