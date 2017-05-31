@@ -8,7 +8,7 @@ import numpy
 import toml
 from lib.config import config
 
-exit = False
+# exit = False
 UAV = config.drone['UAV']
 T2P_file = os.path.join('..', 'ML', UAV + ".t2p")
 ratio_file = os.path.join('..', 'ML', UAV + ".ratio")
