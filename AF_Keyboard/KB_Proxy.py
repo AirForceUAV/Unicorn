@@ -5,7 +5,7 @@ import keyboard
 import pygame as pg
 import paho.mqtt.client as mqtt
 from lib.config import config
-import AF_Avoid.oa_rpc_pb2 as action
+import protobuf.oa_rpc_pb2 as action
 
 ACK = False
 

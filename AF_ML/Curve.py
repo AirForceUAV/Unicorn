@@ -80,7 +80,7 @@ def collect_pwm(ORB):
     print('End collecting')
 
 
-def generate_ratio():
+def generate_ratio(show=False):
     global T2P_file
     global ratio_file
     with open(T2P_file, 'r') as f:
@@ -112,6 +112,12 @@ def generate_ratio():
     F3 = fitting(X3, Y3)
     z3, p3 = F3.fitting(3)
 
+    if show:
+        F1.show()
+        F2.show()
+        F3.show()
+        return
+
     T2P = {}
     T2P = {k: v.tolist()
            for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
@@ -121,9 +127,8 @@ def generate_ratio():
         print message
         f.write(message)
 
-    # F1.show()
-    # F2.show()
-    # F3.show()
+def show():
+    generate_ratio(True)
 
 
 def check_error():
@@ -153,7 +158,6 @@ def THR2PIT(x):
     return int(numpy.polyval(fitfunction, x))
 
 if __name__ == '__main__':
-
     from lib.tools import Watcher
     from AF_uORB.uORB import uORB
     from AF_Sbus.receiver import sbus_receive_start
@@ -173,3 +177,4 @@ if __name__ == '__main__':
     check_error()
 
     # print THR2PIT(1000)
+    # show()  

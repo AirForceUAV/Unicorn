@@ -148,6 +148,8 @@ commands = [
 [GPS]
     port = '/dev/GPS'
     baudrate = 9600
+    header = 'GPGGA'
+    # header = 'GNGGA'
 
 [compass]
     port = '/dev/compass'

@@ -19,6 +19,7 @@ class GPS(threading.Thread):
         self.ORB = ORB
         logger.info("Connecting to GPS Module")
         _GPS = config.GPS
+        self.header = _GPS['header']
         self.ser = open_serial(_GPS['port'], _GPS['baudrate'], timeout=0.01)
 
     def run(self):
@@ -43,8 +44,9 @@ class GPS(threading.Thread):
         while times < 200:
             times += 1
             line = self.ser.readline()
-            if line.find('GNGGA') != -1:
+            if line.find(self.header) != -1:
                 msg = pynmea2.parse(line)
+                # print line
                 # return msg
                 if msg.altitude is not None:
                     return msg
