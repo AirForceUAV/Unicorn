@@ -230,7 +230,8 @@ class Lidar(object):
         return context
 
     def semi_auto(self, command):
-        if command not in [oa.LEFT_ROLL, oa.RIGHT_ROLL, oa.FORWARD, oa.BACKWARD]:
+        allow_cmd = [oa.LEFT_ROLL, oa.RIGHT_ROLL, oa.FORWARD, oa.BACKWARD]
+        if command not in allow_cmd:
             logger.error('command:{} is invalid'.format(command))
             return
 

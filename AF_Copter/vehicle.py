@@ -294,7 +294,7 @@ class Vehicle(Attribute):
         # self.brake(1)
 
     def send_pwm(self, channels):
-        logger.debug(channels)
+        # logger.debug(channels)
         logger.debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 

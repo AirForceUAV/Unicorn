@@ -39,7 +39,7 @@ class Receiver(threading.Thread):
         while True:
             # use this to receive command
             cmd = self.sock.recv(buffer_size).strip()
-            if not cmd or cmd is '':
+            if not cmd:
                 continue
             logger.info('Receive Command:{} from GCS'.format(cmd))
             if cmd.find('Cancel') != -1:
@@ -59,12 +59,20 @@ class Executor(threading.Thread):
         self.work_queue = work_queue
         self.vehicle = vehicle
         self.lidar = lidar
+        self.start_time = 0
 
     def run(self):
+        queue_check = 1
+        cmd_valid_time = 1.5
         while True:
             if self.work_queue.empty() and self.vehicle.isArmed():
-                self.vehicle._brake()
-                time.sleep(.1)
+                end_time = time.time()
+                time_span = end_time - self.start_time
+                self.start_time = end_time
+                if time_span > queue_check:
+                    self.vehicle.brake()
+                
+                time.sleep(.01)
                 continue
             message = self.work_queue.get().split('#')
             try:
@@ -74,7 +82,7 @@ class Executor(threading.Thread):
                 logger.error(e)
                 continue
             timeout = time.time() - _timestamp
-            if timeout > 1.5: 
+            if timeout > cmd_valid_time: 
                 logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
                 continue
             if command is '':
