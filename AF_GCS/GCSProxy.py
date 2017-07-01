@@ -76,8 +76,8 @@ class Executor(threading.Thread):
  
                 result = self.excute(command)
                 if result:
-                    self.last_command_timestamp = time.time()
-                    self.last_command = command
+                    self.last_command_timestamp = time.time()              
+                    self.last_command = command if command.find("semi_auto") else None
                 self.work_queue.task_done()
             elif isEmpty and self.vehicle.isArmed():
                 empty_queue_time = time.time() - self.last_command_timestamp
