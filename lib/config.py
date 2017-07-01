@@ -137,10 +137,9 @@ config = Config()
 if __name__ == '__main__':
     pass
     # print config
-    # print 'Drone', config.drone
+    print 'Drone', config.drone
     # print 'Channels', config.channels
     # # print 'channels volume', config.volume
-    # print 'open module', config.open_module
+    print 'open module', config._open_module
     # print 'commands', config.commands
-    # print config.has_module('GCS')
-    print config.direction
+    

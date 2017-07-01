@@ -3,11 +3,11 @@ version = "beta"
 client_id = "FC"
 debug = false
 open_module = [
-    # 'Sbus',
-    # 'Compass',
-    # 'GPS',
-    # 'Baro',
-    # 'IMU',
+    'Sbus',
+    'Compass',
+    'GPS',
+    'Baro',
+    'IMU',
     'Lidar',
     'GCS'
 ]
@@ -46,7 +46,7 @@ commands = [
     Switch = [8,487,1024,1561]
     Gear = [20,30,40]
     full_auto_interval = [0.5,0.1,0.1]
-    [System4.direction]
+    [System1.direction]
     P=0.5
     I=0
     D=0
