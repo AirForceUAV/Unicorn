@@ -60,7 +60,7 @@ class Executor(threading.Thread):
         self.vehicle = vehicle
         self.lidar = lidar
         self.last_command_timestamp = 0
-        self.end_time = 0
+        # self.end_time = 0
         self.last_command = None
 
     def run(self):
@@ -77,7 +77,7 @@ class Executor(threading.Thread):
                 result = self.excute(command)
                 if result:
                     self.last_command_timestamp = time.time()              
-                    self.last_command = command if command.find("semi_auto") else None
+                    self.last_command = command if command.find("semi_auto")>=0 else None
                 self.work_queue.task_done()
             elif isEmpty and self.vehicle.isArmed():
                 empty_queue_time = time.time() - self.last_command_timestamp
