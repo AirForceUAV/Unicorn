@@ -59,42 +59,66 @@ class Executor(threading.Thread):
         self.work_queue = work_queue
         self.vehicle = vehicle
         self.lidar = lidar
-        self.start_time = 0
+        self.last_command_timestamp = 0
+        self.end_time = 0
+        self.command = None
 
     def run(self):
-        queue_check = 1
-        cmd_valid_time = 1.5
+        empty_queue_time = 1
+        command_timeout_span = 1
         while True:
-            if self.work_queue.empty() and self.vehicle.isArmed():
-                end_time = time.time()
-                time_span = end_time - self.start_time
-                self.start_time = end_time
-                if time_span > queue_check:
-                    self.vehicle.brake()
-                
-                time.sleep(.01)
-                continue
-            message = self.work_queue.get().split('#')
-            try:
-                _timestamp = float(message[0])
-                command = message[1].strip()
-            except Exception as e:
-                logger.error(e)
-                continue
-            timeout = time.time() - _timestamp
-            if timeout > cmd_valid_time: 
-                logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
-                continue
-            if command is '':
-                continue
-            command = "self." + command
-            logger.debug('Execute command {}'.format(command))
-            try:
-                eval(command)
+            isEmpty = self.work_queue.empty()
+            if not isEmpty:
+                message = self.work_queue.get()
+                result = self.parseMessage(message)
+                if result is None:
+                    continue
+                timestamp,command = result
+                if (time.time() - timestamp) >= command_timeout_span:
+                    logger.warn("command is timeout")
+                    continue  
+                result = self.excute(command)
+                if result:
+                    self.last_command_timestamp = time.time()
                 self.work_queue.task_done()
-            except Exception as e:
-                logger.error(e)
-           
+            elif isEmpty and self.vehicle.isArmed():
+                time_span = time.time() - self.last_command_timestamp
+                if time_span >= empty_queue_time:
+                    self.vehicle.brake(braketime=0.2)
+                else:
+                    # request to avoid_module again!
+                    self.excute(self.command)               
+            time.sleep(.01)
+
+
+    def excute(self,command):
+        if command is None:
+            return False
+        try:
+            logger.debug('Execute command {}'.format(command))
+            eval('self.' + command)
+            return True
+        except Exception as e:
+            logger.error(e)
+            return False
+        
+    def parseMessage(self,message):
+        cmd_valid_interval = 1
+        try:
+            _message = message.split("#")
+            timestamp = float(message[0])
+            command = _message[1].strip()
+            if not command:
+                logger.debug('Command is None')
+                return None
+            receive_to_excute_interval = time.time() - timestamp
+            if receive_to_excute_interval > cmd_valid_interval: 
+                logger.debug('Command is timeout')
+                return None
+            return timestamp,command
+        except Exception as e:
+            logger.error(e)
+            return None
 
 
 def GCS_start(ORB, vehicle=None, lidar=None):

@@ -38,6 +38,7 @@ def unpack_actions(actions):
 
 
 def exe_actions(vehicle, actions):
+    # actions is list
     result = unpack_actions(actions)
 
     logger.debug('Execute Action:{}'.format(result))

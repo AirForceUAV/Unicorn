@@ -79,7 +79,9 @@ class Lidar(object):
 
     def full_auto(self):
         watcher = CancelWatcher()
-        interval = 0.1
+        gear_index = self.vehicle.get_gear()
+        exc_interval = config.drone['full_auto_interval'][gear_index]
+     
         radius = self.vehicle.radius
         try:
             target = self.vehicle.get_target()
@@ -91,7 +93,7 @@ class Lidar(object):
             logger.error(e)
             self.vehicle.brake()
             return False
-        logger.info('vehicle turn compelet')
+        logger.info('vehicle turn compeletly')
         retry_times = 0
         while not watcher.IsCancel() and retry_times < 5:
             try:
@@ -131,7 +133,7 @@ class Lidar(object):
                 logger.warn('Retry times:{}'.format(retry_times))
                 continue
             retry_times = 0
-            time.sleep(interval)
+            time.sleep(exc_interval)
         return False
 
     def Guided(self):
@@ -230,11 +232,6 @@ class Lidar(object):
         return context
 
     def semi_auto(self, command):
-        allow_cmd = [oa.LEFT_ROLL, oa.RIGHT_ROLL, oa.FORWARD, oa.BACKWARD]
-        if command not in allow_cmd:
-            logger.error('command:{} is invalid'.format(command))
-            return
-
         self.semi_id = self.semi_id + 1
         message = {'id': self.semi_id, 'actions': [command]}
         logger.debug('Send {} to Lidar'.format(message))

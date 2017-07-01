@@ -19,7 +19,7 @@ class GPS(threading.Thread):
         self.ORB = ORB
         logger.info("Connecting to GPS Module")
         _GPS = config.GPS
-        self.header = _GPS['header']
+        self.header = '$GPGGA'
         self.ser = open_serial(_GPS['port'], _GPS['baudrate'], timeout=0.01)
 
     def run(self):

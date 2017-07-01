@@ -32,5 +32,8 @@ if __name__ == '__main__':
         # Initialize GCSProxy
         from AF_GCS.GCSProxy import GCS_start
         GCS_start(ORB, vehicle, lidar)
+        
+    while True:
+        time.sleep(100000)
 
     logger.info('completed')

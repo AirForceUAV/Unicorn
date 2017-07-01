@@ -27,7 +27,25 @@ class Vehicle(Attribute):
         self.prepre_state = [0]
         self.pre_state = [0]
         self._state = [0]
+
+    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+        AIL=AIL*20
+        ELE=ELE*20
+        THR=THR*20
+        RUD=RUD*12
+        channels = self.BaseChannels(AIL,ELE,THR,RUD,Mode)
+        self.send_pwm(channels)
         
+     def _control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+        channels = [0] * 8
+        channels[self.AIL[0]] = self.movement(self.AIL, AIL)
+        channels[self.ELE[0]] = self.movement(self.ELE, ELE)
+        channels[self.THR[0]] = self.movement(self.THR, THR)
+        channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
+        channels[self.mode[0]] = self.mode[Mode]
+        self._construct_channel(channels)
+        self.send_pwm(channels)
+
     def brake(self, braketime=0.5):
         self.send_pwm(self.subscribe('LoiterPWM'))
         time.sleep(braketime)
@@ -45,41 +63,23 @@ class Vehicle(Attribute):
         self._construct_channel(channels)
         self.send_pwm(channels)
 
-    def control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
-        channels = [0] * 8
-        channels[self.AIL[0]] = self.movement(self.AIL, AIL)
-        channels[self.ELE[0]] = self.movement(self.ELE, ELE)
-        channels[self.THR[0]] = self.movement(self.THR, THR)
-        channels[self.RUD[0]] = self.movement2(self.RUD, RUD)
-        channels[self.mode[0]] = self.mode[Mode]
-        self._construct_channel(channels)
-        self.send_pwm(channels)
-
-    def control_percent(self, AIL=0, ELE=0, RUD=0, Mode=2):
-        channels = self.BaseChannels(AIL, ELE, RUD, Mode)
+    def control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+        channels = self.BaseChannels(AIL, ELE, THR, RUD, Mode)
         # print channels
         self.send_pwm(channels)
 
-    def BaseChannels(self, AIL=0, ELE=0, RUD=0, Mode=2):
+    def BaseChannels(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
-        # channels[self.THR[0]] = self.control_THR(THR)
-        channels[self.THR[0]] = self.THR[2]
+        channels[self.THR[0]] = self.movement3(self.THR, THR)
         channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
         channels[self.mode[0]] = self.mode[Mode]
         self._construct_channel(channels)
         return channels
 
     def _control_percent(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
-        channels = [0] * 8
-        channels[self.AIL[0]] = self.movement3(self.AIL, AIL)
-        channels[self.ELE[0]] = self.movement3(self.ELE, ELE)
-        channels[self.THR[0]] = self.control_THR(THR)
-        # channels[self.THR[0]] = self.THR[2]
-        channels[self.RUD[0]] = self.movement3(self.RUD, RUD)
-        channels[self.mode[0]] = self.mode[Mode]
-        self._construct_channel(channels)
+        channels = self.BaseChannels(AIL,ELE,THR,RUD,Mode)
         self.send_pwm(channels)
     
     def control_THR(self, percent):
@@ -103,9 +103,10 @@ class Vehicle(Attribute):
             channels[self.Aux2[0]] = self.Aux2[2]
         channels[self.Switch[0]] = self.Switch[2]
 
+
     def movement(self, channel, sign=1):
         # sign in [-1,0,1]. By Gear
-        index = self.subscribe('Gear')
+        index = self.get_gear()
         rate = config.drone['Gear'][index] / 100.0
         index = 2 + channel[5] * sign
         section = abs(channel[2] - channel[index])
@@ -134,18 +135,18 @@ class Vehicle(Attribute):
         result = channel[2] + variation
         return result
 
-    def GradualTHR(self, begin, end):
-        watcher = CancelWatcher()
-        if begin <= end:
-            while begin < end and not watcher.IsCancel():
-                self.control_percent(THR=begin)
-                begin += 1
-                time.sleep(0.05)
-        else:
-            while begin > end and not watcher.IsCancel():
-                self.control_percent(THR=begin)
-                begin -= 1
-                time.sleep(0.05)
+    # def GradualTHR(self, begin, end):
+    #     watcher = CancelWatcher()
+    #     if begin <= end:
+    #         while begin < end and not watcher.IsCancel():
+    #             self.control_percent(THR=begin)
+    #             begin += 1
+    #             time.sleep(0.05)
+    #     else:
+    #         while begin > end and not watcher.IsCancel():
+    #             self.control_percent(THR=begin)
+    #             begin -= 1
+    #             time.sleep(0.05)
 
     def arm(self):
         logger.info("Arming ...")
@@ -162,78 +163,78 @@ class Vehicle(Attribute):
         time.sleep(2)
         self.control_stick(THR=-1)
 
-    def takeoff(self, alt=5):
-        watcher = CancelWatcher()
-        if not self.state('Baro'):
-            return
-        logger.info('Takeoff to {} m'.format(alt))
+    # def takeoff(self, alt=5):
+    #     watcher = CancelWatcher()
+    #     if not self.state('Baro'):
+    #         return
+    #     logger.info('Takeoff to {} m'.format(alt))
 
-        self.escalate(0, 60)
+    #     self.escalate(0, 60)
 
-        while not watcher.IsCancel():
-            try:
-                currentAlt = self.get_altitude(True)
-            except AssertionError, e:
-                logger.error(e)
-                break
-            if currentAlt > alt * 0.95:
-                logger.info('Reached Altitude :{}'.format(currentAlt))
-                break
-            time.sleep(.01)
+    #     while not watcher.IsCancel():
+    #         try:
+    #             currentAlt = self.get_altitude(True)
+    #         except AssertionError, e:
+    #             logger.error(e)
+    #             break
+    #         if currentAlt > alt * 0.95:
+    #             logger.info('Reached Altitude :{}'.format(currentAlt))
+    #             break
+    #         time.sleep(.01)
 
-        self.brake()
+    #     self.brake()
 
     def land(self):
         logger.info('Landing...')
 
-    def up_metres(self, altitude, relative=True):
-        if altitude <= 0:
-            logger.warn('Altitude({}) is invalid'.format(altitude))
-            return
-        try:
-            CAlt = self.get_altitude(False)
+    # def up_metres(self, altitude, relative=True):
+    #     if altitude <= 0:
+    #         logger.warn('Altitude({}) is invalid'.format(altitude))
+    #         return
+    #     try:
+    #         CAlt = self.get_altitude(False)
 
-            if relative:
-                TAlt = CAlt + altitude
-            else:
-                init_alt = self.ORB.get_init_alt()
-                TAlt = init_alt + altitude
-            if TAlt < CAlt:
-                logger.warn(
-                    'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
-                return
-            self.GradualTHR(0, 60)
-            watcher = CancelWatcher()
-            while not watcher.IsCancel():
-                CAlt = self.get_altitude(False)
-                if CAlt >= TAlt:
-                    break
-                time.sleep(.1)
-            self.brake()
-        except AssertionError, e:
-            logger.error(e)
+    #         if relative:
+    #             TAlt = CAlt + altitude
+    #         else:
+    #             init_alt = self.ORB.get_init_alt()
+    #             TAlt = init_alt + altitude
+    #         if TAlt < CAlt:
+    #             logger.warn(
+    #                 'TAlt({}) is less than CAlt ({}).'.format(TAlt, CAlt))
+    #             return
+    #         self.GradualTHR(0, 60)
+    #         watcher = CancelWatcher()
+    #         while not watcher.IsCancel():
+    #             CAlt = self.get_altitude(False)
+    #             if CAlt >= TAlt:
+    #                 break
+    #             time.sleep(.1)
+    #         self.brake()
+    #     except AssertionError, e:
+    #         logger.error(e)
 
-    def down_metres(self, altitude):
-        watcher = CancelWatcher()
-        if altitude <= 0:
-            logger.warn('Altitude({}) is invalid'.format(altitude))
-            return
-        try:
-            CurAlt = self.get_altitude(False)
-            TarAlt = CAlt - altitude
-            InitAlt = self.ORB.get_init_alt()
-            if TAlt < IAlt + 1:
-                logger.warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
-                return
-            self.control_FRU(THR=-1)
-            watcher = CancelWatcher()
-            while not watcher.IsCancel():
-                CAlt = self.get_altitude(False)
-                if CAlt <= TAlt:
-                    break
-            self.brake()
-        except AssertionError, e:
-            logger.error(e)
+    # def down_metres(self, altitude):
+    #     watcher = CancelWatcher()
+    #     if altitude <= 0:
+    #         logger.warn('Altitude({}) is invalid'.format(altitude))
+    #         return
+    #     try:
+    #         CurAlt = self.get_altitude(False)
+    #         TarAlt = CAlt - altitude
+    #         InitAlt = self.ORB.get_init_alt()
+    #         if TAlt < IAlt + 1:
+    #             logger.warn('TAltitude({}) is too low.'.format(TAlt - IAlt))
+    #             return
+    #         self.control_FRU(THR=-1)
+    #         watcher = CancelWatcher()
+    #         while not watcher.IsCancel():
+    #             CAlt = self.get_altitude(False)
+    #             if CAlt <= TAlt:
+    #                 break
+    #         self.brake()
+    #     except AssertionError, e:
+    #         logger.error(e)
 
     def yaw_left(self):
         self.control_FRU(RUD=-1)
@@ -411,16 +412,7 @@ class Vehicle(Attribute):
         last_acc = origin_acc
         last_time = time.time()
 
-        # time.sleep(0.1)
-        # y_acc = ORB.subscribe('ACC')[1] * 9.8
-
-        # y_velocity = np.trapz([origin_acc, y_acc], dx=0.1)
-        # feedbacks.append(y_velocity)
-
-
         while not watcher.IsCancel() and times < self.success_time:
-            # origin_acc = ORB.subscribe('ACC')[1] * 9.8
-
             time.sleep(0.1)
 
             y_acc = ORB.subscribe('ACC')[1] * 9.8
@@ -453,9 +445,6 @@ class Vehicle(Attribute):
 
             last_acc = y_acc
             last_time = current_time
-
-            # time.sleep(0.1)
-        # self.brake()
 
         print 'target_speed',target_speed
         print 'feedbacks',feedbacks

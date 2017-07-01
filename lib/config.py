@@ -129,6 +129,9 @@ class Config:
     def __str__(self):
         return json.dumps(self.__dict__, indent=1)
 
+    def show(self):
+        pass
+
 config = Config()
 
 if __name__ == '__main__':
