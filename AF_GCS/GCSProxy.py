@@ -61,7 +61,7 @@ class Executor(threading.Thread):
         self.lidar = lidar
         self.last_command_timestamp = 0
         self.end_time = 0
-        self.command = None
+        self.last_command = None
 
     def run(self):
         max_empty_queue_time = 1
@@ -77,14 +77,16 @@ class Executor(threading.Thread):
                 result = self.excute(command)
                 if result:
                     self.last_command_timestamp = time.time()
+                    self.last_command = command
                 self.work_queue.task_done()
             elif isEmpty and self.vehicle.isArmed():
                 empty_queue_time = time.time() - self.last_command_timestamp
                 if empty_queue_time >= max_empty_queue_time:
+                    logger.debug("Brake")
                     self.vehicle.brake(braketime=0.2)
                 else:
                     # request to avoid_module again!
-                    self.excute(self.command)               
+                    self.excute(self.last_command)               
             time.sleep(.01)
 
 

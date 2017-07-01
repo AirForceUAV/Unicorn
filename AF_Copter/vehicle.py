@@ -296,7 +296,7 @@ class Vehicle(Attribute):
 
     def send_pwm(self, channels):
         # logger.debug(channels)
-        logger.debug(self.analysis_channels(channels))
+        # logger.debug(self.analysis_channels(channels))
         self.publish('ChannelsOutput', channels)
 
     def analysis_channels(self, channels):
