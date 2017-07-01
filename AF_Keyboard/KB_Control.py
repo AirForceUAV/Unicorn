@@ -6,37 +6,27 @@ sys.path.append('..')
 import keyboard
 import time
 from lib.logger import logger
+from lib.tools import exe_actions
+import protobuf.oa_rpc_pb2 as oa
 
-# keyboard_event = {'w': 'FORWARD', 's': 'BACKWARD',
-#                   'a': 'LEFT_ROLL', 'd': 'RIGHT_ROLL',
-#                   'page up': 'UP', 'page down': 'DOWN',
-#                   'space': 'STOP', 'esc': 'esc'}
 
-keyboard_event = {'w': '1', 's': '2',
-                  'a': '16', 'd': '32',
-                  'page up': '64', 'page down': '128',
-                  'space': '0', 
-                  'q':'4','e':'32',
+keyboard_event = {'w': oa.FORWARD, 's': oa.BACKWARD,
+                  'a': oa.LEFT_ROLL, 'd':oa.RIGHT_ROLL,
+                  'page up': oa.UP, 'page down': oa.DOWN,
+                  'space': oa.STOP, 
+                  'q':oa.LEFT_YAW,'e':oa.RIGHT_YAW,
                   'esc': 'esc'}
-
-map_event_args = {'FORWARD': ('ELE', 1), 'BACKWARD': ('ELE', -1),
-                  'LEFT_ROLL': ('AIL', -1), 'RIGHT_ROLL': ('AIL', 1),
-                  'UP': ('THR', 1), 'DOWN': ('THR', -1),
-                  'LEFT_YAW': ('RUD', -1), 'RIGHT_YAW': ('RUD', 1),
-                  'STOP': None
-                  }
 
 
 def keyboard_event_wait():
     global keyboard_event
     valid_event = [()]
     event = keyboard.read_key(keyboard_filter)
-    event_info = [event.name, event.event_type]
-
-    if event_info[1] == 'up':
+    
+    if event.event_type == 'up':
         name = 'space'
     else:
-        name = event_info[0]
+        name = event.name
     # print name
     command = keyboard_event.get(name)
 
@@ -55,25 +45,6 @@ def keyboard_filter(event):
     else:
         return False
 
-
-def exe_cmd(vehicle, command):
-    global map_event_args
-    action = {}
-    for cmd in command.strip().split(" "):
-        if cmd == 'STOP':
-            action = {}
-            break
-        args = map_event_args.get(cmd, None)
-        if args is None or args[0] in action:
-            logger.error('command is unvalid -- {}'.format(command))
-            return
-        action[args[0]] = args[1]
-
-    logger.info('Execute command:{}'.format(command))
-    if vehicle is not None:
-        vehicle.control_FRU(**action)
-
-
 def main():
     while True:
         command = keyboard_event_wait()
@@ -86,3 +57,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    

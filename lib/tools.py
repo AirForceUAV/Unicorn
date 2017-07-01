@@ -9,6 +9,41 @@ import os
 import signal
 from lib.config import config
 from lib.logger import logger
+import protobuf.oa_rpc_pb2 as oa
+
+
+map_action = {
+    oa.STOP: {},
+    oa.FORWARD: {'ELE': 1}, oa.BACKWARD: {'ELE': -1},
+    oa.RIGHT_YAW: {'RUD': 1}, oa.LEFT_YAW: {'RUD': -1},
+    oa.RIGHT_ROLL: {'AIL': 1}, oa.LEFT_ROLL: {'AIL': -1},
+    oa.UP: {'THR': 1}, oa.DOWN: {'THR': -1},
+    oa.INVALID: None, oa.ANY: {},
+}
+
+
+def unpack_actions(actions):
+
+    result = {}
+    for action in actions:
+        if action in [oa.STOP, oa.ANY]:
+            result = {}
+            break
+        dictaction = map_action.get(action)
+        assert not (dictaction is None or \
+        dictaction.keys()[0] in result), \
+        'Command is invalid. Note: Command is {}'.format(actions)
+        result = dict(result, **dictaction)
+    return result
+
+
+def exe_actions(vehicle, actions):
+    # actions is list
+    result = unpack_actions(actions)
+
+    logger.debug('Execute Action:{}'.format(result))
+    if vehicle is not None:
+        vehicle.control_FRU(**result)
 
 
 def open_serial(portname, baudrate, timeout=None):
@@ -17,7 +52,7 @@ def open_serial(portname, baudrate, timeout=None):
             # print("port:{0},baudrate:{1}".format(portname, baudrate))
             com = serial.Serial(portname, baudrate, timeout=timeout)
             return com
-        except serial.SerialException, e:
+        except serial.SerialException as e:
             logger.critical(e)
             time.sleep(1)
 
@@ -95,4 +130,4 @@ class Watcher(object):
             pass
 
 if __name__ == '__main__':
-    open_serial('/dev/AMA0', 9600)
+    exe_actions(None,(1,16))

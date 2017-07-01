@@ -6,8 +6,8 @@ sys.path.append('..')
 from concurrent import futures
 import time
 import grpc
-import mc_rpc_pb2
-import mc_rpc_pb2_grpc
+import protobuf.mc_rpc_pb2 as mc
+import protobuf.mc_rpc_pb2_grpc as mc_rpc
 from lib.tools import exe_actions, CancelWatcher
 from lib.logger import logger
 from multiprocessing import Pool
@@ -15,7 +15,7 @@ from multiprocessing import Pool
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
-class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
+class FC_RPC(mc_grpc.FCServicer):
 
     def __init__(self, vehicle, lidar):
         self.vehicle = vehicle
@@ -26,7 +26,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         id = request.id
         result = self.vehicle.set_channels_mid()
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def ControlFRU(self, request, context):
         CancelWatcher.Cancel = True
@@ -40,16 +40,16 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         else:
             result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def SetGear(self, request, context):
         id = request.id
         index = request.index
         # result = self.vehicle.set_gear(index)
-        self.pool.apply_async(self.vehicle.set_gear,args=(index,))
+        self.pool.apply_async(self.vehicle.set_gear, args=(index,))
         result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def TargetByMetres(self, request, context):
         CancelWatcher.Cancel = True
@@ -58,7 +58,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         East = request.East
         result = self.vehicle.set_target(North, East)
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def TargetByAngle(self, request, context):
         CancelWatcher.Cancel = True
@@ -67,7 +67,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         angle = request.angle
         result = self.vehicle.set_target_angle(distance, angle)
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def Guided(self, request, context):
         id = request.id
@@ -77,7 +77,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         self.pool.apply_async(self.vehicle.Guided)
         result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def RTL(self, request, context):
         id = request.id
@@ -86,7 +86,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         self.pool.apply_async(self.vehicle.RTL)
         result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def Auto(self, request, context):
         id = request.id
@@ -95,7 +95,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         self.pool.apply_async(self.vehicle.Auto)
         result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def PlanRoute(self, request, context):
         CancelWatcher = True
@@ -110,7 +110,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
         # result = self.vehicle.Auto()
         result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def AI_Guided(self, request, context):
         CancelWatcher = True
@@ -123,7 +123,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
             self.pool.apply_async(self.lidar.Guided)
             result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def AI_RTL(self, request, context):
         CancelWatcher = True
@@ -136,7 +136,7 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
             self.pool.apply_async(self.lidar.RTL)
             result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
     def AI_Auto(self, request, context):
         CancelWatcher = True
@@ -149,12 +149,12 @@ class FC_RPC(mc_rpc_pb2_grpc.FCServicer):
             self.pool.apply_async(self.lidar.Auto)
             result = True
         response = {'id': id, 'ack': result}
-        return mc_rpc_pb2.response(**response)
+        return mc.response(**response)
 
 
 def GCS_Start(vehicle, lidar=None):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    mc_rpc_pb2_grpc.add_FCServicer_to_server(FC_RPC(vehicle, lidar), server)
+    mc_grpc.add_FCServicer_to_server(FC_RPC(vehicle, lidar), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     logger.info('GCS_RPC_SERVER start...')

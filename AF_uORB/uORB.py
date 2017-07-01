@@ -23,7 +23,7 @@ class uORB(threading.Thread):
             from test import _debug
             self._HAL = _debug(LoiterPWM)
         else:
-            self._HAL = {'Armed': True,
+            self._HAL = {'Armed': False,
                          'Compass_State': False,
                          'Attitude': None,
                          'Baro_State': False,

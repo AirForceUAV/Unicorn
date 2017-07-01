@@ -30,10 +30,9 @@ class Sbus_Receiver(threading.Thread):
             try:
                 package = self._sbus.read(50).encode('hex')
                 # package = self._sbus.readline().encode('hex').strip()
-            except serial.SerialException:
+            except serial.SerialException as e:
                 self.publish('Sbus_State', False)
-                info = sys.exc_info()
-                logger.error("{0}:{1}".format(*info))
+                logger.error(e)
                 continue
             # print 'package', package
 
@@ -42,7 +41,7 @@ class Sbus_Receiver(threading.Thread):
 
             sbusFrame = self.sbus.filter(package)
 
-            # print sbusFrame
+            # print 'filter', sbusFrame
             if sbusFrame is None:
                 continue
 
@@ -51,6 +50,7 @@ class Sbus_Receiver(threading.Thread):
             if not self.check(input):
                 logger.warn('Receive SBUS is invalid')
                 continue
+            # print 'input',input
             self.publish('ChannelsInput', input)
             self.publish('Sbus_State', True)
             time.sleep(.01)
@@ -91,10 +91,11 @@ if __name__ == "__main__":
     Watcher()
 
     sbus_receive_start(ORB)
+
     from AF_ML.Curve import THR2PIT
     while True:
         input = ORB.subscribe('ChannelsInput')
-        # print input
-        # print input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
-        # raw_input('Next')
-        time.sleep(1)
+        print input
+        # print input[2],input[5], THR2PIT(input[2]), input[5] - THR2PIT(input[2])
+        raw_input('Next')
+        # time.sleep(1)

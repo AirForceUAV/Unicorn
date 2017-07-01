@@ -1,15 +1,14 @@
 SystemID = 2
 version = "beta"
-# version = "alpha"
 client_id = "FC"
 debug = false
 open_module = [
-    # 'Sbus',
-    # 'Compass',
-    # 'GPS',
-    # 'Baro',
-    # 'IMU',
-    # 'Lidar',
+    'Sbus',
+    'Compass',
+    'GPS',
+    'Baro',
+    'IMU',
+    'Lidar',
     'GCS'
 ]
 
@@ -33,49 +32,53 @@ commands = [
     'disarm()',
 ]
 
-
 [System1]
-    UAV="HEX6" 
-    Model='HEX' 
-    MainController='NAZA-v2'
+    UAV="HELI800" 
+    Model='HELI' 
+    MainController='ACE_ONE'
     AIL = [1,352,1024,1696,1,20]
-    ELE = [2,352,1046,1696,-1,20]
-    THR = [3,352,1020,1696,-1,15]
-    RUD = [4,352,1028,1696,1,15]
-    Mode = [5,494,1561,1561]
-    Aux1 = [6,,1024,1024,1024]
-    Aux2 = [7,494,1024,1554]
-    Switch = [8,352,1024,1696]
-    Gear = [20,40,60]
-    
+    ELE = [2,352,1024,1696,-1,20]
+    THR = [3,252,1134,1655,1,15]
+    RUD = [4,352,1020,1696,-1,12]
+    Mode = [7,487,1561,1561]
+    Rate = [5,,1328,1328,1328]
+    PIT = [6,352,670,1124,-1]
+    Switch = [8,487,1024,1561]
+    Gear = [20,30,40]
+    full_auto_interval = [0.5,0.1,0.1]
+    [System1.direction]
+    P=0.5
+    I=0
+    D=0
+    error=5
+    maxoutput=15
+    min = 5
+    overshoot=1.3
+    success_time=30
+
 [System2]
     UAV="HEX8" 
     Model='HEX' 
     MainController='N3'
     AIL = [1,352,1024,1696,1,20]
     ELE = [2,352,1046,1696,-1,20]
-    THR = [3,352,1024,1696,-1,15]
-    RUD = [4,352,1026,1696,1,15]
-    Mode = [6,352,352,1696]
+    THR = [3,352,1040,1696,-1,15]
+    RUD = [4,352,1028,1696,1,15]
+    Mode = [7,352,1696,1696]
     Aux1 = [5,,352,1024,1696]
-    Aux2 = [7,1024,1024,1024]
+    Aux2 = [6,352,1024,1696]
     Switch = [8,352,1024,1696]
-    Gear = [20,40,60]
-
-
-[System3]
-    UAV="HELI550" 
-    Model='HELI' 
-    MainController='ACE_ONE'
-    AIL = [1,352,1024,1696,-1,20]
-    ELE = [2,352,1046,1696,-1,20]
-    THR = [3,299,1125,1709,1,15]
-    RUD = [4,159,828,1503,-1,12]
-    Mode = [7,487,1575,1575]
-    Rate = [5,,1312,1312,1312]
-    PIT = [6,327,633,1066]
-    Switch = [8,352,1024,1696]
-    Gear = [20,40,60]
+    Gear = [20,30,40]
+    full_auto_interval = [0.5,0.1,0.1]
+    [System2.direction]
+    P=60
+    I=5
+    D=0
+    error=5
+    maxoutput=30
+    min = 10
+    overshoot=1.3
+    success_time=30
 
 
 [MQTT]
@@ -93,12 +96,14 @@ commands = [
     port = '12345'
 
 [sbus]
-    port = '/dev/ttyUSB0'
+    port = '/dev/sbus'
     baudrate = 100000
 
 [GPS]
     port = '/dev/GPS'
     baudrate = 9600
+    header = '$GPGGA'
+    # header = '$GNGGA'
 
 [compass]
     port = '/dev/compass'
@@ -117,3 +122,5 @@ commands = [
     [topic.subscribe]
     full = 'Full-Automatic'
     semi = 'Semi-Automatic'
+
+    

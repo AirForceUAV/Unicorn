@@ -12,11 +12,11 @@ class Config:
         file_path = os.path.join('..', 'Toml', 'config.yaml')
         with open(file_path, 'r') as f:
             conf = toml.loads(f.read())
-
+        # print conf
         self.version = conf['version']
         self.debug = conf['debug']
 
-        self.drone, self.channels = self.init_drone(conf)
+        self.drone, self.channels ,self.direction= self.init_drone(conf)
         self.volume = self.get_volume()
 
         self.lidar_mqtt(conf)
@@ -88,7 +88,8 @@ class Config:
         else:
             chs['Aux1'] = self.aux_channel(UAV_config['Aux1'])
             chs['Aux2'] = self.aux_channel(UAV_config['Aux2'])
-        return drone, chs
+        direction=UAV_config['direction']
+        return drone, chs,direction
 
     def has_module(self, module):
         return module in self._open_module
@@ -102,9 +103,6 @@ class Config:
         _sbus['stopbits'] = serial.STOPBITS_TWO
         _sbus['bytesize'] = serial.EIGHTBITS
         return _sbus
-
-    # def get_uart(self, sensor):
-    #     return (conf[sensor][port], conf[sensor][baudrate])
 
     def lidar_sock(self, conf):
         lidar = conf['MQTT']['lidar']
@@ -131,13 +129,17 @@ class Config:
     def __str__(self):
         return json.dumps(self.__dict__, indent=1)
 
+    def show(self):
+        pass
+
 config = Config()
 
 if __name__ == '__main__':
-    print config
-    # print 'Drone', config.drone
+    pass
+    # print config
+    print 'Drone', config.drone
     # print 'Channels', config.channels
     # # print 'channels volume', config.volume
-    # print 'open module', config.open_module
+    print 'open module', config._open_module
     # print 'commands', config.commands
-    # print config.has_module('GCS')
+    

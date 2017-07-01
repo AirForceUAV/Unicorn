@@ -4,9 +4,8 @@ import time
 import keyboard
 import pygame as pg
 import paho.mqtt.client as mqtt
-from KB_Control import keyboard_event_wait, keyboard_event
 from lib.config import config
-import AF_Avoid.oa_rpc_pb2 as action
+import protobuf.oa_rpc_pb2 as action
 
 ACK = False
 
@@ -50,8 +49,9 @@ def listen_keyboard(client):
 
 
 def listen_keyboard2(client):
+    from KB_Control import keyboard_event_wait
     global ACK
-    print 'start listen keboard'
+    print('start listen keboard')
     while True:
         ACK = False
         command = keyboard_event_wait()
@@ -59,7 +59,7 @@ def listen_keyboard2(client):
             print 'Exit listen keyboard'
             return
         print 'command', command
-        infot = client.publish(config.keyboard_topic, command, qos=2)
+        infot = client.publish(config.keyboard_topic, str(command), qos=2)
         infot.wait_for_publish()
         while not ACK:
             time.sleep(.01)
@@ -75,11 +75,11 @@ def keyboard_state():
                   pg.K_d: action.RIGHT_ROLL,
                   pg.K_PAGEUP: action.UP,
                   pg.K_PAGEDOWN: action.DOWN,
-                  pg.K_ESCAPE: '-1'}
+                  pg.K_ESCAPE: 'exit'}
     pg.event.pump()
     pressed = pg.key.get_pressed()
 
-    if pressed[pg.K_ESCAPE]:
+    if pressed[pg.K_ESCAPE] == 1:
         return 'exit'
 
     keys = []
@@ -107,22 +107,4 @@ if __name__ == '__main__':
     # args = ('localhost', 1883, config.keyboard_topic)
     client = start_client(*args)
     listen_keyboard(client)
-    # import pygame
-    # pygame.init()
-
-    # display = pygame.display.set_mode((100, 100))
-
-    # clock = pygame.time.Clock()
-
-    # while True:
-    #     pygame.event.pump()
-    #     keypressed = pygame.key.get_pressed()
-
-    #     if keypressed[pygame.K_w]:
-    #         print("it worked")
-    #     elif keypressed[pygame.K_ESCAPE]:
-    #         sys.exit(1)
-    #         pygame.quit()
-
-    #     # compute how many milliseconds have passed since the previous call
-    #     clock.tick(10)
+   

@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.append('..')
 import threading
 import time
 from lib.science import CutFrame2
@@ -162,4 +164,5 @@ if __name__ == "__main__":
         Eul = ORB.subscribe('EUL')
         Qua = ORB.subscribe('QUA')
         print 'ACC:{}, GYR:{}, MAG:{}, EUL:{}, QUA:{}'.format(Acc, Gyr, Mag, Eul, Qua)
-        raw_input('Next')
+        # raw_input('Next')
+        time.sleep(.1)

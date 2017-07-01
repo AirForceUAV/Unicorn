@@ -39,7 +39,7 @@ class Receiver(threading.Thread):
         while True:
             # use this to receive command
             cmd = self.sock.recv(buffer_size).strip()
-            if not cmd or cmd is '':
+            if not cmd:
                 continue
             logger.info('Receive Command:{} from GCS'.format(cmd))
             if cmd.find('Cancel') != -1:
@@ -59,34 +59,65 @@ class Executor(threading.Thread):
         self.work_queue = work_queue
         self.vehicle = vehicle
         self.lidar = lidar
+        self.last_command_timestamp = 0
+        # self.end_time = 0
+        self.last_command = None
 
     def run(self):
+        max_empty_queue_time = 1
+
         while True:
-            if self.work_queue.empty() and self.vehicle.isArmed():
-                self.vehicle._brake()
-                time.sleep(.01)
-                continue
-            message = self.work_queue.get().split('#')
-            try:
-                _timestamp = float(message[0])
-                command = message[1].strip()
-            except Exception as e:
-                logger.error(e)
-                continue
-            timeout = time.time() - _timestamp
-            if timeout > 1.5: 
-                logger.debug('Timestamp is invalid timeout:{}'.format(timeout))
-                continue
-            if command is '':
-                continue
-            command = "self." + command
-            logger.debug('Execute command {}'.format(command))
-            try:
-                eval(command)
+            isEmpty = self.work_queue.empty()
+            if not isEmpty:
+                message = self.work_queue.get()
+                command = self.parseMessage(message)
+                if command is None:
+                    continue
+ 
+                result = self.excute(command)
+                if result:
+                    self.last_command_timestamp = time.time()              
+                    self.last_command = command if command.find("semi_auto")>=0 else None
                 self.work_queue.task_done()
-            except Exception as e:
-                logger.error(e)
-           
+            elif isEmpty and self.vehicle.isArmed():
+                empty_queue_time = time.time() - self.last_command_timestamp
+                if empty_queue_time >= max_empty_queue_time:
+                    logger.debug("Brake")
+                    self.vehicle.brake(braketime=0.2)
+                else:
+                    # request to avoid_module again!
+                    self.excute(self.last_command)               
+            time.sleep(.01)
+
+
+    def excute(self,command):
+        if command is None:
+            return False
+        try:
+            logger.debug('Execute command {}'.format(command))
+            eval('self.' + command)
+            return True
+        except Exception as e:
+            logger.error(e)
+            return False
+        
+    def parseMessage(self,message):
+        command_timeout_span = 1
+        try:
+            _message = message.split("#")
+            timestamp = float(_message[0])
+            command = _message[1].strip()
+            if not command:
+                logger.debug('Command is None')
+                return None
+
+            if time.time() - timestamp > command_timeout_span: 
+                logger.debug('Command is timeout')
+                return None
+            return command
+        except Exception as e:
+            logger.error(e)
+            return None
 
 
 def GCS_start(ORB, vehicle=None, lidar=None):

@@ -29,9 +29,13 @@ def receive_command():
 
 
 if __name__ == '__main__':
-    p = Pool(2)
-    p.apply_async(send_log)
-    p.apply_async(receive_command)
-    p.close()
-    p.join()
-
+    # p = Pool(2)
+    # p.apply_async(send_log)
+    # p.apply_async(receive_command)
+    # p.close()
+    # p.join()
+    times=0
+    while times<100:
+        print 2333
+        time.sleep(1)
+        times+=1

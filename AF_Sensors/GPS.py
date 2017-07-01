@@ -19,7 +19,8 @@ class GPS(threading.Thread):
         self.ORB = ORB
         logger.info("Connecting to GPS Module")
         _GPS = config.GPS
-        self.ser = open_serial(_GPS['port'], _GPS['baudrate'] timeout=0.01)
+        self.header = '$GPGGA'
+        self.ser = open_serial(_GPS['port'], _GPS['baudrate'], timeout=0.01)
 
     def run(self):
         logger.info("Initializing GPS Module")
@@ -31,7 +32,7 @@ class GPS(threading.Thread):
             else:
                 dic = {'GPS_State': False, 'NumStars': 0}
             self.update(dic)
-            time.sleep(.01)
+            time.sleep(.1)
 
     def update(self, dictories):
         for (k, v) in dictories.items():
@@ -43,8 +44,9 @@ class GPS(threading.Thread):
         while times < 200:
             times += 1
             line = self.ser.readline()
-            if line.find('GNGGA') != -1:
+            if line.find(self.header) != -1:
                 msg = pynmea2.parse(line)
+                # print line
                 # return msg
                 if msg.altitude is not None:
                     return msg
@@ -79,4 +81,4 @@ if __name__ == "__main__":
 
     while True:
         print ORB.subscribe('Location'), ORB.subscribe('NumStars')
-        # time.sleep(.1)
+        time.sleep(.1)

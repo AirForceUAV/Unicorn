@@ -8,7 +8,7 @@ import numpy
 import toml
 from lib.config import config
 
-exit = False
+# exit = False
 UAV = config.drone['UAV']
 T2P_file = os.path.join('..', 'ML', UAV + ".t2p")
 ratio_file = os.path.join('..', 'ML', UAV + ".ratio")
@@ -54,18 +54,22 @@ def change_exit():
 
 
 def collect_pwm(ORB):
-    import keyboard
+    import time
+    # import keyboard
+    # keyboard.add_hotkey('esc', change_exit)
     global exit
     global T2P_file
     raw_input('Start collecting pwm --> [enter]:start [esc]:exit')
 
-    keyboard.add_hotkey('esc', change_exit)
     THR_PIT = {}
-    while not exit:
+    times = 0
+    while times < 2000:
         input = ORB.subscribe('ChannelsInput')
         # print input
         THR_PIT[str(input[2])] = input[5]
-
+        times+=1
+        time.sleep(.01)
+        
     exit = False
 
     message = toml.dumps(THR_PIT)
@@ -76,7 +80,7 @@ def collect_pwm(ORB):
     print('End collecting')
 
 
-def generate_ratio():
+def generate_ratio(show=False):
     global T2P_file
     global ratio_file
     with open(T2P_file, 'r') as f:
@@ -108,18 +112,23 @@ def generate_ratio():
     F3 = fitting(X3, Y3)
     z3, p3 = F3.fitting(3)
 
+    if show:
+        F1.show()
+        F2.show()
+        F3.show()
+        return
+
     T2P = {}
     T2P = {k: v.tolist()
            for k, v in zip(['z1', 'z2', 'z3'], [z1, z2, z3])}
 
     with open(ratio_file, 'w') as f:
-        message = toml.dumps(message)
+        message = toml.dumps(T2P)
         print message
         f.write(message)
 
-    # F1.show()
-    # F2.show()
-    # F3.show()
+def show():
+    generate_ratio(True)
 
 
 def check_error():
@@ -149,22 +158,23 @@ def THR2PIT(x):
     return int(numpy.polyval(fitfunction, x))
 
 if __name__ == '__main__':
-
     from lib.tools import Watcher
     from AF_uORB.uORB import uORB
-    from AF_Sbus.receiver import sbus_recevie_start
+    from AF_Sbus.receiver import sbus_receive_start
 
     ORB = uORB()
     Watcher()
 
-    sbus_recevie_start(ORB)
+    sbus_receive_start(ORB)
 
     print('Sbus is OK')
 
     collect_pwm(ORB)
 
+    print('Generate Ratio ...')
     generate_ratio()
-
+    print("Check Error ...")
     check_error()
 
     # print THR2PIT(1000)
+    # show()  

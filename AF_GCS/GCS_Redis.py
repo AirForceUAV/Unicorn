@@ -69,7 +69,7 @@ class Executor(threading.Thread):
                 # self.vehicle.Cancel()
 
 
-def GCS_start(ORB, vehicle=None, lidar=None):
+def GCS_start(vehicle, lidar=None):
     print('Initialize Cloud ...')
 
     from apscheduler.schedulers.background import BackgroundScheduler
@@ -90,7 +90,7 @@ def GCS_start(ORB, vehicle=None, lidar=None):
     executor.daemon = True
     executor.start()
 
-    scheduler.add_job(send_Log, 'interval', args=(r, ORB), seconds=1)
+    scheduler.add_job(send_Log, 'interval', args=(r, vehicle.ORB), seconds=1)
 
     scheduler.start()
 
@@ -102,4 +102,4 @@ if __name__ == "__main__":
     Watcher()
 
     vehicle = Vehicle(ORB)
-    GCS_start(ORB, vehicle)
+    GCS_start(vehicle)
