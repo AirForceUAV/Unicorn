@@ -64,26 +64,23 @@ class Executor(threading.Thread):
         self.command = None
 
     def run(self):
-        empty_queue_time = 1
-        command_timeout_span = 1
+        max_empty_queue_time = 1
+
         while True:
             isEmpty = self.work_queue.empty()
             if not isEmpty:
                 message = self.work_queue.get()
-                result = self.parseMessage(message)
-                if result is None:
+                command = self.parseMessage(message)
+                if command is None:
                     continue
-                timestamp,command = result
-                if (time.time() - timestamp) >= command_timeout_span:
-                    logger.warn("command is timeout")
-                    continue  
+ 
                 result = self.excute(command)
                 if result:
                     self.last_command_timestamp = time.time()
                 self.work_queue.task_done()
             elif isEmpty and self.vehicle.isArmed():
-                time_span = time.time() - self.last_command_timestamp
-                if time_span >= empty_queue_time:
+                empty_queue_time = time.time() - self.last_command_timestamp
+                if empty_queue_time >= max_empty_queue_time:
                     self.vehicle.brake(braketime=0.2)
                 else:
                     # request to avoid_module again!
@@ -103,19 +100,19 @@ class Executor(threading.Thread):
             return False
         
     def parseMessage(self,message):
-        cmd_valid_interval = 1
+        command_timeout_span = 1
         try:
             _message = message.split("#")
-            timestamp = float(message[0])
+            timestamp = float(_message[0])
             command = _message[1].strip()
             if not command:
                 logger.debug('Command is None')
                 return None
-            receive_to_excute_interval = time.time() - timestamp
-            if receive_to_excute_interval > cmd_valid_interval: 
+
+            if time.time() - timestamp > command_timeout_span: 
                 logger.debug('Command is timeout')
                 return None
-            return timestamp,command
+            return command
         except Exception as e:
             logger.error(e)
             return None

@@ -36,7 +36,7 @@ class Vehicle(Attribute):
         channels = self.BaseChannels(AIL,ELE,THR,RUD,Mode)
         self.send_pwm(channels)
         
-     def _control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
+    def _control_FRU(self, AIL=0, ELE=0, THR=0, RUD=0, Mode=2):
         channels = [0] * 8
         channels[self.AIL[0]] = self.movement(self.AIL, AIL)
         channels[self.ELE[0]] = self.movement(self.ELE, ELE)
